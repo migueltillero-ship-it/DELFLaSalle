@@ -1,2 +1,192 @@
-<img src="alianza.png" class="logo">
-<img src="lasalle.jpg" class="logo">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inscripción DELF Junior</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #7a0000, #b30000);
+}
+
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    height: 70px;
+}
+
+h1 {
+    text-align: center;
+    color: #8B0000;
+}
+
+.alert {
+    background: #ffe5e5;
+    color: #8B0000;
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.full {
+    grid-column: span 2;
+}
+
+input, select {
+    padding: 8px;
+    width: 100%;
+}
+
+table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background: #8B0000;
+    color: white;
+}
+
+button {
+    grid-column: span 2;
+    padding: 12px;
+    background: #8B0000;
+    color: white;
+    border: none;
+}
+
+.whatsapp {
+    text-align: center;
+    margin-top: 20px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <img src="alianza.png" class="logo">
+        <img src="lasalle.jpg" class="logo">
+    </div>
+
+    <h1>Formulario de Inscripción DELF Junior</h1>
+
+    <div class="alert">
+        LOS DATOS DEBEN SER LLENADOS CORRECTAMENTE
+    </div>
+
+    <form>
+
+        <select>
+            <option>Hombre</option>
+            <option>Mujer</option>
+        </select>
+
+        <input type="text" placeholder="Apellido paterno">
+        <input type="text" placeholder="Apellido materno">
+        <input type="date">
+
+        <input type="text" placeholder="Ciudad de nacimiento">
+        <input type="text" placeholder="País de nacimiento">
+        <input type="text" placeholder="Nacionalidad">
+        <input type="text" placeholder="Lengua materna">
+
+        <input type="tel" placeholder="Teléfono celular">
+        <input type="email" placeholder="Correo electrónico">
+
+        <input class="full" type="text" placeholder="Dirección">
+
+        <input type="text" placeholder="Ciudad">
+        <input type="text" placeholder="Estado">
+
+        <input class="full" type="text" placeholder="¿Dónde estudiaste francés?">
+
+        <select class="full">
+            <option>Motivo del examen</option>
+            <option>Estudios</option>
+            <option>Personal</option>
+            <option>Movilidad a otro país</option>
+            <option>Otros</option>
+        </select>
+
+        <select class="full">
+            <option>¿Necesitas adaptación?</option>
+            <option>Sí</option>
+            <option>No</option>
+        </select>
+
+        <button>Enviar inscripción</button>
+
+    </form>
+
+    <table>
+        <tr>
+            <th>Nivel</th>
+            <th>Precio</th>
+            <th>Seleccionar</th>
+        </tr>
+        <tr>
+            <td>A1</td>
+            <td>$1,445.00</td>
+            <td><input type="radio" name="nivel"></td>
+        </tr>
+        <tr>
+            <td>A2</td>
+            <td>$1,575.00</td>
+            <td><input type="radio" name="nivel"></td>
+        </tr>
+        <tr>
+            <td>B1</td>
+            <td>$1,800.00</td>
+            <td><input type="radio" name="nivel"></td>
+        </tr>
+        <tr>
+            <td>B2</td>
+            <td>$2,500.00</td>
+            <td><input type="radio" name="nivel"></td>
+        </tr>
+    </table>
+
+    <div class="whatsapp">
+        <p><strong>Para realizar el pago con el profesor Román Fuentes:</strong></p>
+        <a href="https://wa.me/524731219937" target="_blank">
+            Ir a WhatsApp
+        </a>
+    </div>
+
+</div>
+
+</body>
+</html>

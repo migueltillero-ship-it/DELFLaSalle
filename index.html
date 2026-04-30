@@ -4,23 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inscripción DELF Junior</title>
+    
+    <!-- Librería Three.js para el fondo 3D -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
     <style>
         /* Estilos Base y Estética Minimalista */
         :root {
             --primary: #8B0000;
             --secondary: #b30000;
-            --bg-color: #f8f9fa;
+            --bg-color: transparent; /* Transparente para ver el canvas 3D */
             --text-main: #333333;
-            --card-bg: #ffffff;
+            --card-bg: rgba(255, 255, 255, 0.95); /* Ligeramente transparente */
         }
 
         body {
             margin: 0;
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
             color: var(--text-main);
             overflow-x: hidden;
+            background-color: #ffffff;
+        }
+
+        /* Contenedor del Canvas 3D (Fondo) */
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1; /* Siempre al fondo */
+            pointer-events: none; /* No interfiere con los clics del usuario */
         }
 
         /* Control de Pantallas (SPA) */
@@ -35,6 +49,8 @@
             transition: opacity 0.8s ease-in-out;
             padding: 20px;
             box-sizing: border-box;
+            position: relative;
+            z-index: 10;
         }
 
         .screen.active {
@@ -49,7 +65,8 @@
             background: var(--card-bg);
             padding: 40px;
             border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08); /* Efecto de profundidad */
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1); 
+            backdrop-filter: blur(5px); /* Efecto cristal si el navegador lo soporta */
         }
 
         .header {
@@ -98,6 +115,7 @@
         .btn:hover {
             background: var(--secondary);
             transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(139, 0, 0, 0.3);
         }
 
         /* Formulario */
@@ -118,13 +136,14 @@
             font-size: 1rem;
             box-sizing: border-box;
             background: #fafafa;
-            transition: border-color 0.3s;
+            transition: border-color 0.3s, box-shadow 0.3s;
         }
 
         input:focus, select:focus {
             outline: none;
             border-color: var(--primary);
             background: #fff;
+            box-shadow: 0 0 8px rgba(139, 0, 0, 0.1);
         }
 
         table {
@@ -143,7 +162,7 @@
         }
 
         th { background: var(--primary); color: white; font-weight: 500; }
-        tr:nth-child(even) { background-color: #fafafa; }
+        tr:nth-child(even) { background-color: rgba(250, 250, 250, 0.8); }
 
         /* Alertas y Textos */
         .alert {
@@ -193,6 +212,9 @@
 </head>
 <body>
 
+    <!-- FONDO 3D -->
+    <div id="canvas-container"></div>
+
     <!-- 1. PANTALLA DE BIENVENIDA (Video 1.mp4) -->
     <div id="screen-welcome" class="screen active">
         <video id="vid-welcome" autoplay muted playsinline>
@@ -238,43 +260,43 @@
             <div class="alert">LOS DATOS DEBEN SER LLENADOS CORRECTAMENTE</div>
 
             <form id="inscription-form">
-                <select required>
+                <select id="genero" required>
                     <option value="" disabled selected>Género</option>
-                    <option>Hombre</option>
-                    <option>Mujer</option>
+                    <option value="Hombre">Hombre</option>
+                    <option value="Mujer">Mujer</option>
                 </select>
 
-                <input type="text" placeholder="Apellido paterno" required>
-                <input type="text" placeholder="Apellido materno" required>
-                <input type="date" required>
+                <input type="text" id="apPaterno" placeholder="Apellido paterno" required>
+                <input type="text" id="apMaterno" placeholder="Apellido materno" required>
+                <input type="date" id="fechaNacimiento" required>
 
-                <input type="text" placeholder="Ciudad de nacimiento" required>
-                <input type="text" placeholder="País de nacimiento" required>
-                <input type="text" placeholder="Nacionalidad" required>
-                <input type="text" placeholder="Lengua materna" required>
+                <input type="text" id="ciudadNac" placeholder="Ciudad de nacimiento" required>
+                <input type="text" id="paisNac" placeholder="País de nacimiento" required>
+                <input type="text" id="nacionalidad" placeholder="Nacionalidad" required>
+                <input type="text" id="lenguaMaterna" placeholder="Lengua materna" required>
 
-                <input type="tel" placeholder="Teléfono celular" required>
-                <input type="email" placeholder="Correo electrónico" required>
+                <input type="tel" id="telefono" placeholder="Teléfono celular" required>
+                <input type="email" id="correo" placeholder="Correo electrónico" required>
 
-                <input class="full" type="text" placeholder="Dirección completa" required>
+                <input class="full" type="text" id="direccion" placeholder="Dirección completa" required>
 
-                <input type="text" placeholder="Ciudad" required>
-                <input type="text" placeholder="Estado" required>
+                <input type="text" id="ciudad" placeholder="Ciudad" required>
+                <input type="text" id="estado" placeholder="Estado" required>
 
-                <input class="full" type="text" placeholder="¿Dónde estudiaste francés?" required>
+                <input class="full" type="text" id="dondeEstudio" placeholder="¿Dónde estudiaste francés?" required>
 
-                <select class="full" required>
+                <select class="full" id="motivo" required>
                     <option value="" disabled selected>Motivo del examen</option>
-                    <option>Estudios</option>
-                    <option>Personal</option>
-                    <option>Movilidad a otro país</option>
-                    <option>Otros</option>
+                    <option value="Estudios">Estudios</option>
+                    <option value="Personal">Personal</option>
+                    <option value="Movilidad">Movilidad a otro país</option>
+                    <option value="Otros">Otros</option>
                 </select>
 
-                <select class="full" required>
+                <select class="full" id="adaptacion" required>
                     <option value="" disabled selected>¿Necesitas adaptación por discapacidad?</option>
-                    <option>Sí</option>
-                    <option>No</option>
+                    <option value="Si">Sí</option>
+                    <option value="No">No</option>
                 </select>
 
                 <div class="full">
@@ -284,10 +306,10 @@
                             <th>Precio</th>
                             <th>Seleccionar</th>
                         </tr>
-                        <tr><td>A1</td><td>$1,445.00</td><td><input type="radio" name="nivel" required></td></tr>
-                        <tr><td>A2</td><td>$1,575.00</td><td><input type="radio" name="nivel"></td></tr>
-                        <tr><td>B1</td><td>$1,800.00</td><td><input type="radio" name="nivel"></td></tr>
-                        <tr><td>B2</td><td>$2,500.00</td><td><input type="radio" name="nivel"></td></tr>
+                        <tr><td>A1</td><td>$1,445.00</td><td><input type="radio" name="nivel" value="A1" required></td></tr>
+                        <tr><td>A2</td><td>$1,575.00</td><td><input type="radio" name="nivel" value="A2"></td></tr>
+                        <tr><td>B1</td><td>$1,800.00</td><td><input type="radio" name="nivel" value="B1"></td></tr>
+                        <tr><td>B2</td><td>$2,500.00</td><td><input type="radio" name="nivel" value="B2"></td></tr>
                     </table>
                 </div>
 
@@ -327,8 +349,8 @@
 
     <!-- 6. PANTALLA FINAL (Video 4.mp4) -->
     <div id="screen-outro" class="screen">
-        <div class="container" style="background: transparent; box-shadow: none; text-align: center;">
-            <h2 style="color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">¡Agradecemos tu tiempo y te deseamos mucho éxito!</h2>
+        <div class="container" style="background: transparent; box-shadow: none; text-align: center; backdrop-filter: none;">
+            <h2 style="color: var(--primary); background: rgba(255,255,255,0.8); padding: 10px; border-radius: 8px; display: inline-block;">¡Agradecemos tu tiempo y te deseamos mucho éxito!</h2>
             <video id="vid-outro" playsinline>
                 <source src="4.mp4" type="video/mp4">
             </video>
@@ -336,7 +358,130 @@
     </div>
 
     <script>
-        // Función para manejar las transiciones de pantalla
+        /* ==========================================================================
+           1. LÓGICA DEL FONDO 3D (Three.js)
+           ========================================================================== */
+        const init3DBackground = () => {
+            const container = document.getElementById('canvas-container');
+            const scene = new THREE.Scene();
+            
+            // Fondo blanco/gris muy claro
+            scene.background = new THREE.Color(0xf8f9fa);
+            scene.fog = new THREE.FogExp2(0xf8f9fa, 0.002);
+
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 30;
+
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            container.appendChild(renderer.domElement);
+
+            // Luces para dar volumen a las figuras
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+            scene.add(ambientLight);
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(10, 20, 10);
+            scene.add(directionalLight);
+
+            // Material rojo elegante para las figuras
+            const material = new THREE.MeshPhongMaterial({ 
+                color: 0x8B0000, 
+                shininess: 80,
+                specular: 0x555555
+            });
+
+            // Geometrías variadas
+            const geometries = [
+                new THREE.BoxGeometry(1, 1, 1),
+                new THREE.SphereGeometry(0.7, 32, 32),
+                new THREE.IcosahedronGeometry(0.8, 0),
+                new THREE.TorusGeometry(0.5, 0.2, 16, 100)
+            ];
+
+            const particles = [];
+            const particleCount = 40; // Cantidad de elementos flotantes
+
+            for (let i = 0; i < particleCount; i++) {
+                const geo = geometries[Math.floor(Math.random() * geometries.length)];
+                const mesh = new THREE.Mesh(geo, material);
+
+                // Posiciones aleatorias en un área amplia
+                mesh.position.x = (Math.random() - 0.5) * 60;
+                mesh.position.y = (Math.random() - 0.5) * 60;
+                mesh.position.z = (Math.random() - 0.5) * 40 - 10;
+
+                // Rotación aleatoria inicial
+                mesh.rotation.x = Math.random() * Math.PI;
+                mesh.rotation.y = Math.random() * Math.PI;
+
+                // Velocidad de rotación y movimiento
+                mesh.userData = {
+                    rx: (Math.random() - 0.5) * 0.02,
+                    ry: (Math.random() - 0.5) * 0.02,
+                    vy: (Math.random() - 0.5) * 0.05
+                };
+
+                scene.add(mesh);
+                particles.push(mesh);
+            }
+
+            // Interacción suave con el mouse
+            let mouseX = 0;
+            let mouseY = 0;
+            let targetX = 0;
+            let targetY = 0;
+            const windowHalfX = window.innerWidth / 2;
+            const windowHalfY = window.innerHeight / 2;
+
+            document.addEventListener('mousemove', (event) => {
+                mouseX = (event.clientX - windowHalfX) * 0.05;
+                mouseY = (event.clientY - windowHalfY) * 0.05;
+            });
+
+            // Animación
+            const animate = () => {
+                requestAnimationFrame(animate);
+
+                targetX = mouseX * 0.05;
+                targetY = mouseY * 0.05;
+                
+                // Movimiento suave de la cámara basado en el mouse
+                camera.position.x += (mouseX - camera.position.x) * 0.02;
+                camera.position.y += (-mouseY - camera.position.y) * 0.02;
+                camera.lookAt(scene.position);
+
+                // Animar partículas
+                particles.forEach(p => {
+                    p.rotation.x += p.userData.rx;
+                    p.rotation.y += p.userData.ry;
+                    p.position.y += p.userData.vy;
+
+                    // Si suben mucho, las reiniciamos abajo
+                    if (p.position.y > 30) p.position.y = -30;
+                    if (p.position.y < -30) p.position.y = 30;
+                });
+
+                renderer.render(scene, camera);
+            };
+
+            animate();
+
+            // Ajuste al redimensionar la ventana
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        };
+
+        // Iniciar el fondo 3D
+        init3DBackground();
+
+
+        /* ==========================================================================
+           2. LÓGICA DE NAVEGACIÓN Y VIDEOS (SPA)
+           ========================================================================== */
         function switchScreen(hideId, showId) {
             const elHide = document.getElementById(hideId);
             const elShow = document.getElementById(showId);
@@ -346,15 +491,13 @@
                 elHide.classList.remove('active');
                 elShow.classList.add('active');
                 setTimeout(() => elShow.style.opacity = 1, 50);
-            }, 800); // 800ms coincide con la transición CSS
+            }, 800);
         }
 
-        // 1. Video inicial -> Info
         document.getElementById('vid-welcome').onended = () => {
             switchScreen('screen-welcome', 'screen-info');
         };
 
-        // 2. Botón Info -> Video 5 -> Formulario
         document.getElementById('btn-to-form').onclick = () => {
             switchScreen('screen-info', 'screen-trans1');
             setTimeout(() => document.getElementById('vid-trans1').play(), 850);
@@ -364,18 +507,87 @@
             switchScreen('screen-trans1', 'screen-form');
         };
 
-        // 3. Enviar Formulario -> Video 6 -> Modal
+
+        /* ==========================================================================
+           3. LÓGICA DEL FORMULARIO Y CAPTURA DE DATOS
+           ========================================================================== */
+        
+        // Función preparada para enviar datos a tu CRM/Backend
+        const enviarDatos = async (datosFormulario) => {
+            console.log("Datos capturados listos para enviar:", datosFormulario);
+            
+            /* 
+               EJEMPLO DE CÓMO ENVIAR A UNA API/WEBHOOK (Por ejemplo, un Webhook de HubSpot)
+               
+               try {
+                   const response = await fetch('TU_URL_DEL_WEBHOOK_O_API', {
+                       method: 'POST',
+                       headers: {
+                           'Content-Type': 'application/json',
+                       },
+                       body: JSON.stringify(datosFormulario)
+                   });
+                   
+                   if(!response.ok) throw new Error('Error al enviar los datos');
+                   console.log("Datos enviados correctamente");
+               } catch (error) {
+                   console.error("Error:", error);
+               }
+            */
+        };
+
         document.getElementById('inscription-form').onsubmit = (e) => {
             e.preventDefault(); // Evita recargar la página
+
+            // 1. Recopilar datos del formulario
+            const formElements = e.target.elements;
+            let nivelSeleccionado = "";
+            
+            // Buscar cuál radio button de nivel está seleccionado
+            for(let radio of formElements['nivel']) {
+                if(radio.checked) {
+                    nivelSeleccionado = radio.value;
+                    break;
+                }
+            }
+
+            const datos = {
+                genero: document.getElementById('genero').value,
+                apPaterno: document.getElementById('apPaterno').value,
+                apMaterno: document.getElementById('apMaterno').value,
+                fechaNacimiento: document.getElementById('fechaNacimiento').value,
+                ciudadNac: document.getElementById('ciudadNac').value,
+                paisNac: document.getElementById('paisNac').value,
+                nacionalidad: document.getElementById('nacionalidad').value,
+                lenguaMaterna: document.getElementById('lenguaMaterna').value,
+                telefono: document.getElementById('telefono').value,
+                correo: document.getElementById('correo').value,
+                direccion: document.getElementById('direccion').value,
+                ciudad: document.getElementById('ciudad').value,
+                estado: document.getElementById('estado').value,
+                dondeEstudio: document.getElementById('dondeEstudio').value,
+                motivo: document.getElementById('motivo').value,
+                adaptacion: document.getElementById('adaptacion').value,
+                nivelExamen: nivelSeleccionado,
+                fechaInscripcion: new Date().toISOString()
+            };
+
+            // 2. Ejecutar la función de envío (actualmente simula el envío en la consola)
+            enviarDatos(datos);
+
+            // 3. Continuar con el flujo visual (Video 6)
             switchScreen('screen-form', 'screen-trans2');
             setTimeout(() => document.getElementById('vid-trans2').play(), 850);
         };
 
+
+        /* ==========================================================================
+           4. LÓGICA DE DESPEDIDA
+           ========================================================================== */
         document.getElementById('vid-trans2').onended = () => {
             document.getElementById('modal-return').style.display = 'flex';
         };
 
-        // 4. Lógica del Modal (Cualquier respuesta lleva al agradecimiento y Video 4)
         const showOutro = () => {
             document.getElementById('modal-return').style.display = 'none';
             switchScreen('screen-trans2', 'screen-outro');

@@ -1,192 +1,390 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Inscripción DELF Junior</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscripción DELF Junior</title>
 
-<style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #7a0000, #b30000);
-}
+    <style>
+        /* Estilos Base y Estética Minimalista */
+        :root {
+            --primary: #8B0000;
+            --secondary: #b30000;
+            --bg-color: #f8f9fa;
+            --text-main: #333333;
+            --card-bg: #ffffff;
+        }
 
-.container {
-    max-width: 900px;
-    margin: 40px auto;
-    background: white;
-    padding: 30px;
-    border-radius: 12px;
-}
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
 
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+        /* Control de Pantallas (SPA) */
+        .screen {
+            display: none;
+            min-height: 100vh;
+            width: 100%;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+            padding: 20px;
+            box-sizing: border-box;
+        }
 
-.logo {
-    height: 70px;
-}
+        .screen.active {
+            display: flex;
+            opacity: 1;
+        }
 
-h1 {
-    text-align: center;
-    color: #8B0000;
-}
+        /* Contenedores y Tarjetas 3D */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08); /* Efecto de profundidad */
+        }
 
-.alert {
-    background: #ffe5e5;
-    color: #8B0000;
-    padding: 10px;
-    text-align: center;
-    font-weight: bold;
-    margin-bottom: 20px;
-}
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 20px;
+        }
 
-form {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-}
+        .logo { height: 70px; object-fit: contain; }
+        .banner-img { width: 100%; border-radius: 12px; margin-bottom: 20px; }
 
-.full {
-    grid-column: span 2;
-}
+        h1, h2 {
+            text-align: center;
+            color: var(--primary);
+            font-weight: 600;
+        }
 
-input, select {
-    padding: 8px;
-    width: 100%;
-}
+        /* Videos */
+        video {
+            width: 100%;
+            max-width: 1000px;
+            border-radius: 16px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            background: #000;
+        }
 
-table {
-    width: 100%;
-    margin-top: 20px;
-    border-collapse: collapse;
-}
+        /* Botones */
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.3s;
+            font-weight: bold;
+            margin-top: 20px;
+            width: 100%;
+            max-width: 300px;
+        }
 
-th, td {
-    border: 1px solid #ccc;
-    padding: 10px;
-    text-align: center;
-}
+        .btn:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
 
-th {
-    background: #8B0000;
-    color: white;
-}
+        /* Formulario */
+        form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
 
-button {
-    grid-column: span 2;
-    padding: 12px;
-    background: #8B0000;
-    color: white;
-    border: none;
-}
+        .full { grid-column: span 2; }
 
-.whatsapp {
-    text-align: center;
-    margin-top: 20px;
-}
-</style>
+        input, select {
+            padding: 14px;
+            width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            background: #fafafa;
+            transition: border-color 0.3s;
+        }
 
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: #fff;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 30px;
+            border-collapse: collapse;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        th, td {
+            border-bottom: 1px solid #eee;
+            padding: 15px;
+            text-align: center;
+        }
+
+        th { background: var(--primary); color: white; font-weight: 500; }
+        tr:nth-child(even) { background-color: #fafafa; }
+
+        /* Alertas y Textos */
+        .alert {
+            background: #fff0f0;
+            color: var(--primary);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            border-left: 5px solid var(--primary);
+        }
+
+        .info-dates {
+            font-size: 1.5rem;
+            text-align: center;
+            margin: 30px 0;
+            color: #444;
+        }
+
+        /* Modal de confirmación */
+        .modal {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 25px;
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="container">
-
-    <div class="header">
-        <img src="alianza.png" class="logo">
-        <img src="lasalle.jpg" class="logo">
+    <!-- 1. PANTALLA DE BIENVENIDA (Video 1.mp4) -->
+    <div id="screen-welcome" class="screen active">
+        <video id="vid-welcome" autoplay muted playsinline>
+            <source src="1.mp4" type="video/mp4">
+        </video>
     </div>
 
-    <h1>Formulario de Inscripción DELF Junior</h1>
-
-    <div class="alert">
-        LOS DATOS DEBEN SER LLENADOS CORRECTAMENTE
+    <!-- 2. PANTALLA PRINCIPAL (Información) -->
+    <div id="screen-info" class="screen">
+        <div class="container">
+            <img src="4.png" alt="DELF Banner" class="banner-img" onerror="this.style.display='none'">
+            <div class="header" style="border:none; padding:0; margin:0;">
+                <img src="alianza.png" class="logo" alt="Alliance Française">
+                <img src="lasalle.jpg" class="logo" alt="La Salle">
+            </div>
+            <h1>Examen DELF Junior 2026</h1>
+            <div class="info-dates">
+                <strong>Fechas de evaluación:</strong><br>
+                Del 7 al 17 de mayo de 2026
+            </div>
+            <div style="text-align: center;">
+                <button id="btn-to-form" class="btn">Llenar formulario de inscripción</button>
+            </div>
+        </div>
     </div>
 
-    <form>
-
-        <select>
-            <option>Hombre</option>
-            <option>Mujer</option>
-        </select>
-
-        <input type="text" placeholder="Apellido paterno">
-        <input type="text" placeholder="Apellido materno">
-        <input type="date">
-
-        <input type="text" placeholder="Ciudad de nacimiento">
-        <input type="text" placeholder="País de nacimiento">
-        <input type="text" placeholder="Nacionalidad">
-        <input type="text" placeholder="Lengua materna">
-
-        <input type="tel" placeholder="Teléfono celular">
-        <input type="email" placeholder="Correo electrónico">
-
-        <input class="full" type="text" placeholder="Dirección">
-
-        <input type="text" placeholder="Ciudad">
-        <input type="text" placeholder="Estado">
-
-        <input class="full" type="text" placeholder="¿Dónde estudiaste francés?">
-
-        <select class="full">
-            <option>Motivo del examen</option>
-            <option>Estudios</option>
-            <option>Personal</option>
-            <option>Movilidad a otro país</option>
-            <option>Otros</option>
-        </select>
-
-        <select class="full">
-            <option>¿Necesitas adaptación?</option>
-            <option>Sí</option>
-            <option>No</option>
-        </select>
-
-        <button>Enviar inscripción</button>
-
-    </form>
-
-    <table>
-        <tr>
-            <th>Nivel</th>
-            <th>Precio</th>
-            <th>Seleccionar</th>
-        </tr>
-        <tr>
-            <td>A1</td>
-            <td>$1,445.00</td>
-            <td><input type="radio" name="nivel"></td>
-        </tr>
-        <tr>
-            <td>A2</td>
-            <td>$1,575.00</td>
-            <td><input type="radio" name="nivel"></td>
-        </tr>
-        <tr>
-            <td>B1</td>
-            <td>$1,800.00</td>
-            <td><input type="radio" name="nivel"></td>
-        </tr>
-        <tr>
-            <td>B2</td>
-            <td>$2,500.00</td>
-            <td><input type="radio" name="nivel"></td>
-        </tr>
-    </table>
-
-    <div class="whatsapp">
-        <p><strong>Para realizar el pago con el profesor Román Fuentes:</strong></p>
-        <a href="https://wa.me/524731219937" target="_blank">
-            Ir a WhatsApp
-        </a>
+    <!-- 3. PANTALLA DE TRANSICIÓN AL FORMULARIO (Video 5.mp4) -->
+    <div id="screen-trans1" class="screen">
+        <video id="vid-trans1" playsinline>
+            <source src="5.mp4" type="video/mp4">
+        </video>
     </div>
 
-</div>
+    <!-- 4. PANTALLA DEL FORMULARIO -->
+    <div id="screen-form" class="screen">
+        <div class="container">
+            <div class="header">
+                <img src="alianza.png" class="logo">
+                <img src="lasalle.jpg" class="logo">
+            </div>
 
+            <h2>Formulario de Inscripción DELF Junior</h2>
+            <div class="alert">LOS DATOS DEBEN SER LLENADOS CORRECTAMENTE</div>
+
+            <form id="inscription-form">
+                <select required>
+                    <option value="" disabled selected>Género</option>
+                    <option>Hombre</option>
+                    <option>Mujer</option>
+                </select>
+
+                <input type="text" placeholder="Apellido paterno" required>
+                <input type="text" placeholder="Apellido materno" required>
+                <input type="date" required>
+
+                <input type="text" placeholder="Ciudad de nacimiento" required>
+                <input type="text" placeholder="País de nacimiento" required>
+                <input type="text" placeholder="Nacionalidad" required>
+                <input type="text" placeholder="Lengua materna" required>
+
+                <input type="tel" placeholder="Teléfono celular" required>
+                <input type="email" placeholder="Correo electrónico" required>
+
+                <input class="full" type="text" placeholder="Dirección completa" required>
+
+                <input type="text" placeholder="Ciudad" required>
+                <input type="text" placeholder="Estado" required>
+
+                <input class="full" type="text" placeholder="¿Dónde estudiaste francés?" required>
+
+                <select class="full" required>
+                    <option value="" disabled selected>Motivo del examen</option>
+                    <option>Estudios</option>
+                    <option>Personal</option>
+                    <option>Movilidad a otro país</option>
+                    <option>Otros</option>
+                </select>
+
+                <select class="full" required>
+                    <option value="" disabled selected>¿Necesitas adaptación por discapacidad?</option>
+                    <option>Sí</option>
+                    <option>No</option>
+                </select>
+
+                <div class="full">
+                    <table>
+                        <tr>
+                            <th>Nivel</th>
+                            <th>Precio</th>
+                            <th>Seleccionar</th>
+                        </tr>
+                        <tr><td>A1</td><td>$1,445.00</td><td><input type="radio" name="nivel" required></td></tr>
+                        <tr><td>A2</td><td>$1,575.00</td><td><input type="radio" name="nivel"></td></tr>
+                        <tr><td>B1</td><td>$1,800.00</td><td><input type="radio" name="nivel"></td></tr>
+                        <tr><td>B2</td><td>$2,500.00</td><td><input type="radio" name="nivel"></td></tr>
+                    </table>
+                </div>
+
+                <div class="full" style="text-align: center; margin-top: 15px;">
+                    <button type="submit" class="btn" style="max-width: 100%;">Enviar inscripción</button>
+                </div>
+            </form>
+
+            <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
+                <p><strong>Institución libre de cobros en efectivo.</strong></p>
+                <p>Para reportar su pago en línea o depósito bancario con el profesor Román Fuentes:</p>
+                <a href="https://wa.me/524731219337" target="_blank" style="color: #25D366; text-decoration: none; font-weight: bold; font-size: 1.1rem;">
+                    📱 Notificar por WhatsApp
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. PANTALLA POST-FORMULARIO (Video 6.mp4) -->
+    <div id="screen-trans2" class="screen">
+        <video id="vid-trans2" playsinline>
+            <source src="6.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <!-- MODAL DE PREGUNTA (Retorno) -->
+    <div id="modal-return" class="modal">
+        <div class="modal-content">
+            <h3 style="color: var(--primary);">¡Inscripción registrada!</h3>
+            <p>¿Deseas volver a la página principal de información?</p>
+            <div class="modal-buttons">
+                <button id="btn-yes" class="btn" style="margin:0; padding: 10px 20px;">Sí, volver</button>
+                <button id="btn-no" class="btn" style="margin:0; padding: 10px 20px; background: #666;">No, gracias</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. PANTALLA FINAL (Video 4.mp4) -->
+    <div id="screen-outro" class="screen">
+        <div class="container" style="background: transparent; box-shadow: none; text-align: center;">
+            <h2 style="color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">¡Agradecemos tu tiempo y te deseamos mucho éxito!</h2>
+            <video id="vid-outro" playsinline>
+                <source src="4.mp4" type="video/mp4">
+            </video>
+        </div>
+    </div>
+
+    <script>
+        // Función para manejar las transiciones de pantalla
+        function switchScreen(hideId, showId) {
+            const elHide = document.getElementById(hideId);
+            const elShow = document.getElementById(showId);
+            
+            elHide.style.opacity = 0;
+            setTimeout(() => {
+                elHide.classList.remove('active');
+                elShow.classList.add('active');
+                setTimeout(() => elShow.style.opacity = 1, 50);
+            }, 800); // 800ms coincide con la transición CSS
+        }
+
+        // 1. Video inicial -> Info
+        document.getElementById('vid-welcome').onended = () => {
+            switchScreen('screen-welcome', 'screen-info');
+        };
+
+        // 2. Botón Info -> Video 5 -> Formulario
+        document.getElementById('btn-to-form').onclick = () => {
+            switchScreen('screen-info', 'screen-trans1');
+            setTimeout(() => document.getElementById('vid-trans1').play(), 850);
+        };
+
+        document.getElementById('vid-trans1').onended = () => {
+            switchScreen('screen-trans1', 'screen-form');
+        };
+
+        // 3. Enviar Formulario -> Video 6 -> Modal
+        document.getElementById('inscription-form').onsubmit = (e) => {
+            e.preventDefault(); // Evita recargar la página
+            switchScreen('screen-form', 'screen-trans2');
+            setTimeout(() => document.getElementById('vid-trans2').play(), 850);
+        };
+
+        document.getElementById('vid-trans2').onended = () => {
+            document.getElementById('modal-return').style.display = 'flex';
+        };
+
+        // 4. Lógica del Modal (Cualquier respuesta lleva al agradecimiento y Video 4)
+        const showOutro = () => {
+            document.getElementById('modal-return').style.display = 'none';
+            switchScreen('screen-trans2', 'screen-outro');
+            setTimeout(() => document.getElementById('vid-outro').play(), 850);
+        };
+
+        document.getElementById('btn-yes').onclick = showOutro;
+        document.getElementById('btn-no').onclick = showOutro;
+
+    </script>
 </body>
 </html>

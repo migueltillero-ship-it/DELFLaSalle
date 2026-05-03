@@ -1,1719 +1,286 @@
 <!DOCTYPE html>
 <html lang="es">
+<!-- 
+  =================================================================================================
+  PROYECTO: PORTAL INSTITUCIONAL DE INSCRIPCIÓN DELF JUNIOR 2026
+  INSTITUCIÓN: ALLIANCE FRANÇAISE DE SAN CRISTÓBAL DE LAS CASAS (AFSC)
+  SEDE DE APLICACIÓN: COLEGIO LA SALLE, SAN CRISTÓBAL DE LAS CASAS
+  
+  DOCUMENTACIÓN TÉCNICA:
+  - Arquitectura Single Page Application (SPA) para navegación sin recargas.
+  - Implementación de motor 3D (Three.js) para identidad visual.
+  - Validación de formularios estricta (Regex) para asegurar integridad de la base de datos.
+  - Generación de expedientes en formato JSON para el Hub Local.
+  =================================================================================================
+-->
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Inscripción DELF Junior 2026 · Alliance Française & La Salle</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscripción DELF Junior 2026 · Alliance Française & La Salle</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Tipografías Institucionales -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
-  <style>
-    /* ============================================================
-       DESIGN TOKENS
-    ============================================================ */
-    :root {
-      --rouge:        #8B0000;
-      --rouge-vif:    #B22222;
-      --rouge-pale:   #FFF0F0;
-      --bleu:         #002868;
-      --bleu-clair:   #EEF2FF;
-      --or:           #C9A84C;
-      --or-pale:      #FBF6EC;
-      --blanc:        #F9F7F4;
-      --noir:         #111111;
-      --gris-1:       #6B6B6B;
-      --gris-2:       #E2DDD5;
-      --gris-3:       #F4F1EC;
+    <style>
+        /* [VARIABLES Y DESIGN TOKENS] */
+        :root {
+            --rouge: #8B0000; --rouge-vif: #C0392B; --bleu: #003189;
+            --blanc: #FAFAF8; --noir: #1A1A1A; --or: #BFA16A;
+            --gris-1: #6B6B6B; --gris-2: #E2DDD5;
+            --success: #27AE60; --error: #E74C3C;
+            --glass: rgba(255,255,255,0.94);
+            --shadow-xl: 0 32px 80px rgba(0,0,0,0.15);
+            --expo: cubic-bezier(0.16, 1, 0.3, 1);
+        }
 
-      /* Glassmorphism */
-      --glass:        rgba(255,255,255,0.88);
-      --glass-border: rgba(255,255,255,0.72);
-      --shadow-xl:    0 32px 80px rgba(0,0,0,0.12), 0 8px 24px rgba(0,0,0,0.07);
-      --shadow-card:  0 16px 48px rgba(0,0,0,0.09), 0 2px 8px rgba(0,0,0,0.05);
-      --shadow-btn:   0 6px 24px rgba(139,0,0,0.28);
+        /* [RESET BASE] */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Outfit', sans-serif; background: var(--blanc); color: var(--noir); overflow-x: hidden; min-height: 100vh; }
+        #canvas-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+        
+        /* [NAVEGACIÓN SPA] */
+        #progress-bar { position: fixed; top: 0; left: 0; height: 5px; background: linear-gradient(90deg, var(--bleu), var(--or), var(--rouge)); z-index: 1000; transition: width 0.8s var(--expo); }
+        .screen { position: fixed; inset: 0; z-index: 10; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; opacity: 0; visibility: hidden; transition: 0.8s var(--expo); overflow-y: auto; }
+        .screen.active { opacity: 1; visibility: visible; }
 
-      /* Motion */
-      --expo:  cubic-bezier(0.16, 1, 0.3, 1);
-      --inout: cubic-bezier(0.65, 0, 0.35, 1);
-      --spring:cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
+        /* [COMPONENTES UI] */
+        .card { background: var(--glass); border-radius: 30px; box-shadow: var(--shadow-xl); backdrop-filter: blur(25px); width: 100%; max-width: 920px; padding: clamp(25px, 6vw, 70px); border: 1px solid rgba(255,255,255,0.8); }
+        h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 6vw, 4.5rem); text-align: center; margin-bottom: 25px; }
+        h1 em { color: var(--rouge); font-style: italic; }
+        
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 35px; }
+        .full { grid-column: span 2; }
+        .form-group { display: flex; flex-direction: column; gap: 8px; position: relative; }
+        label { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--gris-1); }
+        
+        input, select { padding: 16px; border-radius: 14px; border: 2.5px solid var(--gris-2); font-family: inherit; font-size: 1rem; transition: 0.3s; width: 100%; background: #fff; }
+        input:focus, select:focus { border-color: var(--rouge); outline: none; box-shadow: 0 5px 15px rgba(139,0,0,0.1); }
+        
+        /* [ESTILOS DE VALIDACIÓN REGEX] */
+        .form-error-msg { font-size: 0.75rem; color: var(--error); font-weight: 700; display: none; }
+        .form-group.has-error input { border-color: var(--error); background: #FDEDEC; }
+        .form-group.has-error .form-error-msg { display: block; }
+        .form-group.is-valid input { border-color: var(--success); background: #E9F7EF; }
 
-    /* ============================================================
-       BASE
-    ============================================================ */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: 'Outfit', sans-serif;
-      background: var(--blanc);
-      color: var(--noir);
-      overflow-x: hidden;
-      min-height: 100vh;
-    }
-
-    /* Noise texture overlay */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
-      background-size: 200px;
-      pointer-events: none;
-      z-index: 1;
-      opacity: 0.6;
-    }
-
-    /* ============================================================
-       3D CANVAS
-    ============================================================ */
-    #canvas-bg {
-      position: fixed; inset: 0; z-index: 0; pointer-events: none;
-    }
-
-    /* ============================================================
-       PROGRESS BAR
-    ============================================================ */
-    #progress-bar {
-      position: fixed; top: 0; left: 0; height: 3px; z-index: 900;
-      background: linear-gradient(90deg, var(--bleu) 0%, var(--or) 50%, var(--rouge) 100%);
-      transition: width 0.6s var(--expo);
-      box-shadow: 0 0 10px rgba(201,168,76,0.5);
-    }
-
-    /* Step indicator */
-    #step-dots {
-      position: fixed; top: 18px; left: 50%; transform: translateX(-50%);
-      display: flex; gap: 8px; z-index: 900;
-      opacity: 0; transition: opacity 0.4s;
-    }
-    #step-dots.visible { opacity: 1; }
-    .dot {
-      width: 7px; height: 7px; border-radius: 50%;
-      background: var(--gris-2); transition: background 0.3s, transform 0.3s var(--spring);
-    }
-    .dot.active { background: var(--rouge); transform: scale(1.4); }
-    .dot.done   { background: var(--or); }
-
-    /* ============================================================
-       SCREENS
-    ============================================================ */
-    .screen {
-      position: fixed; inset: 0; z-index: 10;
-      display: flex; flex-direction: column;
-      justify-content: center; align-items: center;
-      padding: 16px; overflow-y: auto;
-      opacity: 0; visibility: hidden;
-      transition: opacity 0.6s var(--inout), visibility 0.6s;
-    }
-    .screen.active { opacity: 1; visibility: visible; }
-
-    /* ============================================================
-       CARD
-    ============================================================ */
-    .card {
-      background: var(--glass);
-      border: 1px solid var(--glass-border);
-      border-radius: 24px;
-      box-shadow: var(--shadow-xl);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      width: 100%; max-width: 880px;
-      max-height: 92vh;
-      overflow-y: auto;
-      padding: clamp(28px, 5vw, 56px);
-      scrollbar-width: thin;
-      scrollbar-color: var(--rouge) transparent;
-      position: relative;
-    }
-    .card::-webkit-scrollbar { width: 4px; }
-    .card::-webkit-scrollbar-thumb { background: var(--rouge); border-radius: 2px; }
-
-    /* Gold corner accent */
-    .card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0;
-      width: 80px; height: 80px;
-      background: linear-gradient(135deg, var(--or) 0%, transparent 60%);
-      border-radius: 24px 0 0 0;
-      opacity: 0.15;
-    }
-
-    /* ============================================================
-       TYPOGRAPHY
-    ============================================================ */
-    .eyebrow {
-      font-family: 'Outfit', sans-serif;
-      font-size: 0.65rem;
-      font-weight: 600;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: var(--or);
-      margin-bottom: 14px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .eyebrow::before, .eyebrow::after {
-      content: ''; flex: 1; height: 1px; background: var(--gris-2);
-    }
-
-    h1 { font-family: 'Playfair Display', serif; font-weight: 700; font-size: clamp(2.4rem, 5.5vw, 4rem); line-height: 1.05; color: var(--noir); }
-    h1 em { font-style: italic; color: var(--rouge); }
-    h2 { font-family: 'Playfair Display', serif; font-weight: 600; font-size: clamp(1.7rem, 3.8vw, 2.6rem); line-height: 1.1; color: var(--noir); }
-    h2 em { font-style: italic; color: var(--rouge); }
-    h3 { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 600; color: var(--bleu); margin-bottom: 6px; }
-
-    p { font-size: 0.93rem; line-height: 1.75; color: var(--gris-1); }
-
-    /* ============================================================
-       LOGO STRIP
-    ============================================================ */
-    .logo-strip {
-      display: flex; justify-content: space-between; align-items: center;
-      padding-bottom: 24px; margin-bottom: 28px;
-      border-bottom: 1px solid var(--gris-2);
-    }
-    .logo-strip img { height: 48px; object-fit: contain; }
-
-    /* Tricolor */
-    .tricolor {
-      height: 3px; border-radius: 2px;
-      background: linear-gradient(90deg, var(--bleu) 33.3%, #fff 33.3% 66.6%, var(--rouge) 66.6%);
-      margin: 22px 0;
-      position: relative;
-      overflow: hidden;
-    }
-    .tricolor::after {
-      content: '';
-      position: absolute; inset: 0;
-      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.6) 50%, transparent 100%);
-      animation: sheen 3s ease-in-out infinite;
-    }
-    @keyframes sheen { 0%,100% { transform: translateX(-100%); } 50% { transform: translateX(100%); } }
-
-    /* ============================================================
-       BANNER
-    ============================================================ */
-    .banner {
-      width: 100%; border-radius: 14px; overflow: hidden; margin-bottom: 28px;
-      aspect-ratio: 21/6;
-      background: linear-gradient(135deg, var(--bleu) 0%, #001A4E 50%, var(--rouge) 100%);
-      display: flex; align-items: center; justify-content: center;
-      position: relative;
-    }
-    .banner img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .banner-fallback {
-      text-align: center; color: rgba(255,255,255,0.9);
-      font-family: 'Playfair Display', serif;
-    }
-    .banner-fallback .seal {
-      font-size: 3rem; display: block; margin-bottom: 8px;
-      animation: rotate 20s linear infinite;
-    }
-    @keyframes rotate { to { transform: rotate(360deg); } }
-    .banner-fallback span { font-size: clamp(1.2rem, 3vw, 2rem); letter-spacing: 0.3em; text-transform: uppercase; }
-
-    /* ============================================================
-       DATES BOX
-    ============================================================ */
-    .dates-box {
-      background: linear-gradient(135deg, var(--rouge-pale), #fff);
-      border: 1px solid rgba(139,0,0,0.15);
-      border-left: 4px solid var(--rouge);
-      border-radius: 12px;
-      padding: 22px 28px;
-      margin: 28px 0;
-      text-align: center;
-    }
-    .dates-box .label {
-      font-size: 0.65rem; letter-spacing: 0.22em; text-transform: uppercase;
-      color: var(--gris-1); margin-bottom: 8px;
-    }
-    .dates-box .date {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(1.6rem, 3vw, 2.2rem);
-      font-weight: 700; color: var(--rouge);
-    }
-    .dates-box .sub {
-      font-size: 0.78rem; color: var(--gris-1); margin-top: 6px;
-    }
-
-    /* ============================================================
-       BUTTONS
-    ============================================================ */
-    .btn {
-      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-      padding: 13px 28px; border-radius: 10px;
-      font-family: 'Outfit', sans-serif; font-size: 0.875rem; font-weight: 600;
-      letter-spacing: 0.025em; cursor: pointer; border: none;
-      transition: transform 0.25s var(--spring), box-shadow 0.25s, background 0.2s;
-      text-decoration: none; white-space: nowrap; position: relative; overflow: hidden;
-    }
-    .btn::after {
-      content: ''; position: absolute; inset: 0;
-      background: rgba(255,255,255,0.15);
-      opacity: 0; transition: opacity 0.2s;
-    }
-    .btn:hover::after { opacity: 1; }
-    .btn:hover { transform: translateY(-3px); }
-    .btn:active { transform: translateY(-1px); }
-
-    .btn-primary {
-      background: var(--rouge); color: #fff;
-      box-shadow: var(--shadow-btn);
-    }
-    .btn-primary:hover { background: var(--rouge-vif); box-shadow: 0 10px 32px rgba(139,0,0,0.38); }
-
-    .btn-bleu {
-      background: var(--bleu); color: #fff;
-      box-shadow: 0 6px 24px rgba(0,40,104,0.25);
-    }
-    .btn-bleu:hover { box-shadow: 0 10px 32px rgba(0,40,104,0.38); }
-
-    .btn-ghost {
-      background: transparent; color: var(--rouge);
-      border: 1.5px solid rgba(139,0,0,0.35);
-    }
-    .btn-ghost:hover { background: var(--rouge-pale); border-color: var(--rouge); }
-
-    .btn-or {
-      background: linear-gradient(135deg, var(--or), #A8832A);
-      color: #fff; box-shadow: 0 6px 24px rgba(201,168,76,0.35);
-    }
-    .btn-or:hover { box-shadow: 0 10px 32px rgba(201,168,76,0.5); }
-
-    .btn-whatsapp {
-      background: #25D366; color: #fff;
-      box-shadow: 0 6px 20px rgba(37,211,102,0.32);
-    }
-    .btn-whatsapp:hover { background: #1ebe5d; box-shadow: 0 10px 28px rgba(37,211,102,0.45); }
-
-    .btn-lg { padding: 16px 40px; font-size: 1rem; border-radius: 12px; }
-    .btn-sm { padding: 9px 18px; font-size: 0.8rem; }
-
-    .btn-group {
-      display: flex; flex-wrap: wrap; gap: 12px;
-      justify-content: center; margin-top: 28px;
-    }
-
-    /* ============================================================
-       VIDEO SCREENS
-    ============================================================ */
-    .video-screen { background: #000; }
-    .video-screen video {
-      width: 100%; max-width: 1000px; max-height: 88vh;
-      border-radius: 14px; display: block;
-      box-shadow: 0 40px 100px rgba(0,0,0,0.55);
-    }
-    .skip-btn {
-      margin-top: 14px; color: rgba(255,255,255,0.4);
-      font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase;
-      cursor: pointer; background: none; border: none;
-      transition: color 0.2s;
-    }
-    .skip-btn:hover { color: rgba(255,255,255,0.7); }
-
-    /* ============================================================
-       FLOATING LABEL FORM FIELDS
-    ============================================================ */
-    .form-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 20px; margin-top: 28px;
-    }
-    .full { grid-column: 1 / -1; }
-
-    .field-float {
-      position: relative;
-      display: flex; flex-direction: column;
-    }
-    .field-float input,
-    .field-float select {
-      padding: 18px 16px 6px;
-      font-family: 'Outfit', sans-serif;
-      font-size: 0.92rem;
-      border: 1.5px solid var(--gris-2);
-      border-radius: 10px;
-      background: rgba(255,255,255,0.8);
-      color: var(--noir);
-      width: 100%;
-      transition: border-color 0.25s, box-shadow 0.25s, background 0.25s;
-      appearance: none; -webkit-appearance: none;
-    }
-    .field-float label {
-      position: absolute;
-      left: 16px; top: 12px;
-      font-size: 0.75rem; font-weight: 600;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--gris-1);
-      pointer-events: none;
-      transition: top 0.2s, font-size 0.2s, color 0.2s;
-    }
-    .field-float select + label,
-    .field-float input:not(:placeholder-shown) + label,
-    .field-float input:focus + label,
-    .field-float select:valid + label {
-      top: 5px; font-size: 0.6rem; color: var(--bleu);
-    }
-    .field-float input:focus,
-    .field-float select:focus {
-      outline: none;
-      border-color: var(--rouge);
-      background: #fff;
-      box-shadow: 0 0 0 4px rgba(139,0,0,0.07);
-    }
-    .field-float input.valid { border-color: #27AE60; }
-    .field-float input.valid:focus { box-shadow: 0 0 0 4px rgba(39,174,96,0.1); }
-    .field-float input.invalid { border-color: #E74C3C; }
-    .field-float input.invalid:focus { box-shadow: 0 0 0 4px rgba(231,76,60,0.1); }
-
-    .field-error {
-      font-size: 0.72rem; color: #E74C3C; margin-top: 4px;
-      font-weight: 500; display: none; padding-left: 2px;
-    }
-    .field-error.show { display: block; }
-
-    /* Select arrow */
-    .field-float select {
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238A8A8A' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-      background-repeat: no-repeat; background-position: right 14px center;
-      padding-right: 40px; cursor: pointer;
-    }
-
-    /* Alert */
-    .alert-banner {
-      background: var(--or-pale); border: 1px solid rgba(201,168,76,0.3);
-      border-left: 3px solid var(--or);
-      border-radius: 10px; padding: 12px 18px;
-      font-size: 0.82rem; font-weight: 500; color: #7A5A10;
-      letter-spacing: 0.02em; text-align: center; margin-bottom: 4px;
-    }
-
-    /* ============================================================
-       PRICING TABLE
-    ============================================================ */
-    .pricing-section { margin-top: 8px; }
-    .pricing-section > label {
-      display: block; font-size: 0.65rem; font-weight: 600;
-      letter-spacing: 0.18em; text-transform: uppercase;
-      color: var(--gris-1); margin-bottom: 12px;
-    }
-
-    .nivel-cards {
-      display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
-    }
-    .nivel-card {
-      border: 2px solid var(--gris-2);
-      border-radius: 12px; padding: 16px 10px;
-      text-align: center; cursor: pointer;
-      transition: border-color 0.25s var(--spring), transform 0.25s var(--spring), box-shadow 0.25s;
-      background: rgba(255,255,255,0.7);
-      position: relative;
-    }
-    .nivel-card:hover {
-      border-color: rgba(139,0,0,0.4);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(139,0,0,0.1);
-    }
-    .nivel-card.selected {
-      border-color: var(--rouge);
-      background: var(--rouge-pale);
-      box-shadow: 0 8px 24px rgba(139,0,0,0.15);
-      transform: translateY(-2px);
-    }
-    .nivel-card .nivel-code {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.8rem; font-weight: 700; color: var(--rouge);
-      line-height: 1; margin-bottom: 6px;
-    }
-    .nivel-card .nivel-name {
-      font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em;
-      text-transform: uppercase; color: var(--gris-1); margin-bottom: 10px;
-    }
-    .nivel-card .precio {
-      font-size: 0.78rem; font-weight: 700; color: var(--noir);
-    }
-    .nivel-card .check {
-      position: absolute; top: 8px; right: 8px;
-      width: 18px; height: 18px; border-radius: 50%;
-      background: var(--rouge); color: #fff;
-      font-size: 0.65rem; display: none;
-      align-items: center; justify-content: center;
-    }
-    .nivel-card.selected .check { display: flex; }
-    input[name="nivel"] { display: none; }
-
-    /* ============================================================
-       PAYMENT NOTE
-    ============================================================ */
-    .payment-note {
-      margin-top: 28px; padding: 22px 24px;
-      background: linear-gradient(135deg, #F0FDF4, #fff);
-      border: 1px solid rgba(39,174,96,0.2);
-      border-radius: 12px; text-align: center;
-    }
-    .payment-note p { font-size: 0.83rem; color: #555; margin-bottom: 14px; }
-
-    /* ============================================================
-       ACCORDION
-    ============================================================ */
-    details {
-      border: 1px solid var(--gris-2); border-radius: 12px;
-      margin-bottom: 10px; overflow: hidden;
-    }
-    summary {
-      padding: 16px 22px; font-size: 0.88rem; font-weight: 600;
-      cursor: pointer; list-style: none;
-      display: flex; justify-content: space-between; align-items: center;
-      background: var(--gris-3); color: #333; user-select: none;
-      transition: background 0.2s, color 0.2s;
-    }
-    summary::-webkit-details-marker { display: none; }
-    summary .icon-acc {
-      width: 24px; height: 24px; border-radius: 50%;
-      background: rgba(139,0,0,0.1);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--rouge); font-size: 1rem;
-      transition: transform 0.3s var(--expo), background 0.2s;
-    }
-    details[open] summary { background: var(--rouge-pale); color: var(--rouge); }
-    details[open] summary .icon-acc { transform: rotate(45deg); background: var(--rouge); color: #fff; }
-
-    .accordion-body {
-      padding: 0 22px 20px;
-      font-size: 0.87rem; line-height: 1.8; color: #555;
-      animation: accordionIn 0.3s var(--expo);
-    }
-    @keyframes accordionIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
-    .accordion-body ul { padding-left: 20px; }
-    .accordion-body li { margin-bottom: 8px; }
-    .accordion-body strong { color: var(--rouge); }
-
-    /* ============================================================
-       RECURSOS GRID
-    ============================================================ */
-    .recursos-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 16px; margin-top: 22px;
-    }
-    .recurso-card {
-      background: #fff; border: 1px solid var(--gris-2);
-      border-radius: 14px; padding: 24px;
-      transition: transform 0.25s var(--expo), border-color 0.2s, box-shadow 0.2s;
-    }
-    .recurso-card:hover {
-      transform: translateY(-5px);
-      border-color: var(--or);
-      box-shadow: 0 14px 36px rgba(201,168,76,0.15);
-    }
-    .recurso-card .icon { font-size: 2rem; margin-bottom: 12px; display: block; }
-    .recurso-card a {
-      color: var(--bleu); text-decoration: none;
-      font-size: 0.83rem; font-weight: 600;
-    }
-    .recurso-card a:hover { text-decoration: underline; }
-
-    /* ============================================================
-       SUMMARY (pre-submit confirmation)
-    ============================================================ */
-    .summary-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 10px 24px; margin: 20px 0;
-    }
-    .summary-row {
-      display: flex; flex-direction: column;
-      padding: 10px 0;
-      border-bottom: 1px solid var(--gris-2);
-    }
-    .summary-row.full { grid-column: 1 / -1; }
-    .summary-key {
-      font-size: 0.62rem; font-weight: 600; letter-spacing: 0.15em;
-      text-transform: uppercase; color: var(--gris-1); margin-bottom: 3px;
-    }
-    .summary-val {
-      font-size: 0.92rem; font-weight: 500; color: var(--noir);
-    }
-
-    .nivel-badge {
-      display: inline-flex; align-items: center; gap: 10px;
-      background: var(--rouge-pale); border: 1.5px solid var(--rouge);
-      border-radius: 10px; padding: 10px 20px;
-      font-family: 'Playfair Display', serif; font-size: 1.5rem;
-      font-weight: 700; color: var(--rouge); margin: 8px auto;
-    }
-
-    /* ============================================================
-       RECEIPT (ficha imprimible)
-    ============================================================ */
-    #receipt-content {
-      font-family: 'Outfit', sans-serif;
-      padding: 32px; background: #fff;
-      border: 1px solid var(--gris-2); border-radius: 14px; margin: 20px 0;
-    }
-    .receipt-header {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 20px; padding-bottom: 16px;
-      border-bottom: 3px solid var(--rouge);
-    }
-    .receipt-logo { font-family: 'Playfair Display', serif; font-size: 0.9rem; color: var(--bleu); font-weight: 700; }
-    .receipt-id { font-size: 0.75rem; color: var(--gris-1); text-align: right; }
-    .receipt-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 8px 20px; font-size: 0.85rem;
-    }
-    .receipt-field { display: flex; flex-direction: column; padding: 6px 0; border-bottom: 1px solid var(--gris-3); }
-    .receipt-field span:first-child { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--gris-1); }
-    .receipt-field span:last-child { font-weight: 600; color: var(--noir); margin-top: 2px; }
-
-    /* ============================================================
-       MODAL
-    ============================================================ */
-    .modal-overlay {
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,0.55);
-      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-      display: flex; align-items: center; justify-content: center;
-      z-index: 1000; opacity: 0; visibility: hidden;
-      transition: opacity 0.35s, visibility 0.35s;
-    }
-    .modal-overlay.open { opacity: 1; visibility: visible; }
-    .modal-box {
-      background: #fff; border-radius: 24px; padding: 44px 40px;
-      max-width: 460px; width: 92%; text-align: center;
-      box-shadow: 0 40px 100px rgba(0,0,0,0.25);
-      transform: scale(0.88) translateY(24px);
-      transition: transform 0.45s var(--spring);
-    }
-    .modal-overlay.open .modal-box { transform: scale(1) translateY(0); }
-    .modal-icon { font-size: 3.5rem; margin-bottom: 16px; display: block; }
-    .modal-box h3 { font-family: 'Playfair Display', serif; font-size: 1.9rem; font-weight: 600; margin-bottom: 12px; }
-    .modal-box p { font-size: 0.9rem; color: var(--gris-1); margin-bottom: 28px; }
-    .modal-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-
-    /* ============================================================
-       TOAST
-    ============================================================ */
-    .toast {
-      position: fixed; bottom: 28px; left: 50%;
-      transform: translateX(-50%) translateY(80px);
-      background: rgba(17,17,17,0.92); color: #fff;
-      padding: 13px 24px; border-radius: 40px;
-      font-size: 0.84rem; font-weight: 500;
-      z-index: 2000;
-      transition: transform 0.4s var(--expo);
-      white-space: nowrap;
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(255,255,255,0.1);
-    }
-    .toast.show { transform: translateX(-50%) translateY(0); }
-
-    /* ============================================================
-       BACK BUTTON
-    ============================================================ */
-    .back-btn {
-      display: inline-flex; align-items: center; gap: 6px;
-      font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em;
-      text-transform: uppercase; color: var(--gris-1);
-      cursor: pointer; background: none; border: none; padding: 0;
-      margin-bottom: 24px; transition: color 0.2s, gap 0.2s;
-    }
-    .back-btn:hover { color: var(--rouge); gap: 10px; }
-
-    /* ============================================================
-       OUTRO
-    ============================================================ */
-    .outro-wrapper { text-align: center; }
-    .outro-seal {
-      font-size: 4rem; display: block;
-      animation: pulse 2.5s ease-in-out infinite;
-      margin-bottom: 16px;
-    }
-    @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.08); } }
-    .outro-text {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(1.6rem, 4vw, 2.8rem);
-      color: #fff; font-style: italic;
-      text-shadow: 0 4px 20px rgba(0,0,0,0.4);
-      margin-bottom: 24px;
-    }
-
-    /* ============================================================
-       RESPONSIVE
-    ============================================================ */
-    @media (max-width: 640px) {
-      .form-grid { grid-template-columns: 1fr; }
-      .full { grid-column: 1; }
-      .nivel-cards { grid-template-columns: repeat(2, 1fr); }
-      .card { padding: 24px 18px; max-height: 95vh; }
-      .btn-group { flex-direction: column; align-items: stretch; }
-      .btn-group .btn { width: 100%; }
-      .summary-grid { grid-template-columns: 1fr; }
-      .receipt-grid { grid-template-columns: 1fr; }
-    }
-
-    /* ============================================================
-       PRINT
-    ============================================================ */
-    @media print {
-      body * { visibility: hidden; }
-      #receipt-content, #receipt-content * { visibility: visible; }
-      #receipt-content { position: fixed; inset: 0; z-index: 9999; }
-    }
-  </style>
+        .btn { padding: 18px 40px; border-radius: 15px; font-weight: 800; cursor: pointer; border: none; transition: 0.4s; text-decoration: none; display: inline-flex; align-items: center; gap: 12px; }
+        .btn-primary { background: var(--rouge); color: #fff; }
+        .btn-primary:hover { background: var(--rouge-vif); transform: translateY(-3px); }
+        .btn-ghost { background: transparent; border: 2.5px solid var(--rouge); color: var(--rouge); }
+    </style>
 </head>
 <body>
 
-  <!-- Infrastructure -->
-  <div id="progress-bar" style="width:0%"></div>
-  <div id="step-dots">
-    <div class="dot" data-step="0"></div>
-    <div class="dot" data-step="1"></div>
-    <div class="dot" data-step="2"></div>
-    <div class="dot" data-step="3"></div>
-  </div>
-  <canvas id="canvas-bg"></canvas>
-  <div class="toast" id="toast"></div>
+    <div id="progress-bar" style="width: 0%"></div>
+    <canvas id="canvas-bg"></canvas>
 
-  <!-- Audio de fondo mejorado para dispararse en clic o touch -->
-  <audio id="bg-music" loop preload="auto">
-    <source src="Arrival_at_the_Terminal (1).mp3" type="audio/mpeg">
-  </audio>
+    <audio id="bg-music" loop><source src="Arrival_at_the_Terminal (1).mp3" type="audio/mpeg"></audio>
 
-  <!-- ╔══════════════════════════════╗
-       ║  SCREEN 1 — WELCOME VIDEO  ║
-       ╚══════════════════════════════╝ -->
-  <div id="screen-welcome" class="screen video-screen active">
-    <video id="vid-welcome" autoplay muted playsinline>
-      <source src="1.mp4" type="video/mp4">
-    </video>
-    <button class="skip-btn" id="skip-welcome">Toca para continuar ▸</button>
-  </div>
-
-  <!-- ╔══════════════════════════════╗
-       ║  SCREEN 2 — INFO PRINCIPAL  ║
-       ╚══════════════════════════════╝ -->
-  <div id="screen-info" class="screen">
-    <div class="card">
-      <div class="logo-strip">
-        <img src="alianza.png" alt="Alliance Française" onerror="this.outerHTML='<span style=\'font-family:Playfair Display,serif;font-size:1rem;color:var(--bleu);font-weight:700\'>Alliance Française</span>'">
-        <img src="lasalle.jpg" alt="La Salle" onerror="this.outerHTML='<span style=\'font-family:Playfair Display,serif;font-size:1rem;color:var(--rouge);font-weight:700\'>La Salle</span>'">
-      </div>
-
-      <div class="banner">
-        <img src="4.png" alt="DELF Junior 2026" onerror="this.parentElement.innerHTML='<div class=\'banner-fallback\'><span class=\'seal\'>🇫🇷</span><span>DELF Junior 2026</span></div>'">
-      </div>
-
-      <div class="eyebrow">Examen Internacional de Francés</div>
-      <h1><em>DELF Junior</em><br>2026</h1>
-      <div class="tricolor"></div>
-
-      <div class="dates-box">
-        <div class="label">Período oficial de evaluación</div>
-        <div class="date">7 – 17 de mayo de 2026</div>
-        <div class="sub">Sede: Colegio La Salle · Querétaro</div>
-      </div>
-
-      <p style="text-align:center; max-width:560px; margin:0 auto;">El DELF es el diploma oficial del <strong>Ministerio de Educación Nacional de Francia</strong>, reconocido mundialmente y válido de por vida. Acredita tu nivel de francés ante universidades y empleadores internacionales.</p>
-
-      <div class="btn-group">
-        <button id="btn-to-form" class="btn btn-primary btn-lg">
-          <span>✒</span> Inscribirme ahora
-        </button>
-        <button id="btn-to-normativa" class="btn btn-ghost">Normativa oficial</button>
-        <button id="btn-to-recursos" class="btn btn-ghost">Preparación DELF</button>
-      </div>
+    <!-- PANTALLA 1: BIENVENIDA -->
+    <div id="screen-welcome" class="screen active" style="background:#000;">
+        <video id="vid-welcome" autoplay muted playsinline style="width:100%; max-width:1000px; border-radius:20px;">
+            <source src="1.mp4" type="video/mp4">
+        </video>
+        <button class="btn btn-primary" id="btn-start" style="margin-top:40px;">INGRESAR AL PORTAL 2026 ▸</button>
     </div>
-  </div>
 
-  <!-- ╔════════════════════╗
-       ║  SCREEN — NORMAS  ║
-       ╚════════════════════╝ -->
-  <div id="screen-normativa" class="screen">
-    <div class="card" style="max-width:740px;">
-      <button class="back-btn" id="btn-back-normativa">← Volver al inicio</button>
-      <div class="eyebrow">Reglamento Oficial</div>
-      <h2>Derechos y <em>Deberes</em></h2>
-      <div class="tricolor"></div>
-      <p style="margin-bottom:24px;">Como candidato a las pruebas DELF/DALF, lee atentamente las siguientes disposiciones del Ministerio de Educación Nacional de Francia.</p>
-
-      <details open>
-        <summary>Inscripciones <span class="icon-acc">＋</span></summary>
-        <div class="accordion-body">
-          <ul>
-            <li><strong>Derecho:</strong> Inscribirse en cualquier nivel sin justificar resultados previos.</li>
-            <li><strong>Derecho:</strong> Solicitar adaptaciones especiales por discapacidad con certificado médico oficial (2 meses de anticipación).</li>
-            <li><strong>Derecho:</strong> Solicitar reembolso o aplazamiento por ausencia justificada exclusivamente con certificado médico.</li>
-            <li><strong>Deber:</strong> Respetar los plazos de inscripción y proporcionar datos verídicos y completos.</li>
-            <li><strong>Deber:</strong> Elegir la versión correcta del examen (Junior o Scolaire) según corresponda.</li>
-            <li><strong>Deber:</strong> Cubrir la cuota correspondiente según el nivel seleccionado.</li>
-          </ul>
-        </div>
-      </details>
-      <details>
-        <summary>Desarrollo de las pruebas <span class="icon-acc">＋</span></summary>
-        <div class="accordion-body">
-          <ul>
-            <li><strong>Derecho:</strong> Recibir convocatoria individual con fechas y horarios exactos.</li>
-            <li><strong>Derecho:</strong> Disponer de material borrador proporcionado por el centro.</li>
-            <li><strong>Deber:</strong> Presentar identificación oficial vigente (INE, pasaporte o acta de nacimiento).</li>
-            <li><strong>Deber:</strong> Apagar todos los dispositivos electrónicos y guardarlos en el lugar indicado por el supervisor.</li>
-            <li><strong>Deber:</strong> Guardar silencio y no comunicarse con otros candidatos.</li>
-            <li><strong>Deber:</strong> Respetar el anonimato de la prueba, firmando con seudónimo en lugar de nombre real.</li>
-          </ul>
-        </div>
-      </details>
-      <details>
-        <summary>Resultados, diploma y protección de datos <span class="icon-acc">＋</span></summary>
-        <div class="accordion-body">
-          <ul>
-            <li><strong>Derecho:</strong> Recibir resultados detallados por competencia en máximo 2 meses.</li>
-            <li><strong>Derecho:</strong> Solicitar constancia provisional mientras se emite el diploma físico impreso en papel de seguridad.</li>
-            <li><strong>Derecho:</strong> Obtener un diploma con validez <em>permanente</em>, reconocido internacionalmente.</li>
-            <li><strong>Deber:</strong> Aceptar las decisiones del jurado como soberanas, inapelables y definitivas.</li>
-            <li>La puntuación mínima de aprobación es de 50/100, sin competencia por debajo de 5/25.</li>
-            <li><em>France Éducation International garantiza que tus datos están protegidos y serán usados sólo administrativamente.</em></li>
-          </ul>
-        </div>
-      </details>
-    </div>
-  </div>
-
-  <!-- ╔═══════════════════════╗
-       ║  SCREEN — RECURSOS   ║
-       ╚═══════════════════════╝ -->
-  <div id="screen-recursos" class="screen">
-    <div class="card">
-      <button class="back-btn" id="btn-back-recursos">← Volver al inicio</button>
-      <div class="eyebrow">Bibliografía Oficial</div>
-      <h2>Preparación <em>DELF Junior</em></h2>
-      <div class="tricolor"></div>
-      <p>Recursos seleccionados por el equipo pedagógico de l'Alliance Française y basados en la guía oficial de France Éducation International (Octubre 2025).</p>
-      
-      <div class="btn-group" style="margin-bottom:24px; justify-content:center;">
-        <a href="https://apprendre.tv5monde.com/fr/apprendre-francais/tester-son-niveau" target="_blank" class="btn btn-ghost" style="font-size:0.82rem;">
-          📝 Prueba de nivel TV5Monde
-        </a>
-        <a href="https://www.france-education-international.fr/faq/faq-delf-dalf?langue=fr" target="_blank" class="btn btn-ghost" style="font-size:0.82rem;">
-          ❓ FAQ Oficiales
-        </a>
-      </div>
-
-      <div class="recursos-grid">
-        <div class="recurso-card">
-          <span class="icon">🎧</span>
-          <h3>Comprensión Oral</h3>
-          <p style="font-size:0.82rem; margin:6px 0 12px;">Ejercicios auténticos con locutores nativos. Ideal para entrenar tu oído a las pruebas.</p>
-          <a href="https://savoirs.rfi.fr/es/apprendre-enseigner" target="_blank">RFI Savoirs →</a>
-        </div>
-        <div class="recurso-card">
-          <span class="icon">📖</span>
-          <h3>Manuales Oficiales</h3>
-          <ul style="font-size:0.82rem; color:var(--gris-1); padding-left:16px; margin:6px 0;">
-            <li><strong>ABC DELF Junior Scolaire</strong> — CLE International</li>
-            <li><strong>Le DELF 100% Réussite</strong> — Didier</li>
-            <li><strong>Réussir le DELF</strong> — Didier</li>
-          </ul>
-        </div>
-        <div class="recurso-card">
-          <span class="icon">💻</span>
-          <h3>Exámenes en Línea</h3>
-          <p style="font-size:0.82rem; margin:6px 0 12px;">Simulacros interactivos guiados y apoyados por tutores para tu preparación.</p>
-          <a href="https://www.cned.fr/" target="_blank">CNED Préparation →</a>
-        </div>
-        <div class="recurso-card">
-          <span class="icon">🗣</span>
-          <h3>Sujetos de Examen</h3>
-          <p style="font-size:0.82rem; margin:6px 0 12px;">Descarga PDFs y audios de exámenes reales aplicados en sesiones anteriores.</p>
-          <a href="https://www.france-education-international.fr/diplome/delf-scolaire-et-junior?langue=fr" target="_blank">Modelos oficiales CIEP →</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ╔══════════════════════╗
-       ║  SCREEN — TRANS 1   ║
-       ╚══════════════════════╝ -->
-  <div id="screen-trans1" class="screen video-screen">
-    <video id="vid-trans1" playsinline>
-      <source src="5.mp4" type="video/mp4">
-    </video>
-    <button class="skip-btn" id="skip-trans1">Omitir ▸</button>
-  </div>
-
-  <!-- ╔══════════════════════════════════╗
-       ║  SCREEN — FORMULARIO            ║
-       ╚══════════════════════════════════╝ -->
-  <div id="screen-form" class="screen">
-    <div class="card">
-      <div class="logo-strip">
-        <img src="alianza.png" alt="Alliance Française" onerror="this.outerHTML='<span style=\'font-family:Playfair Display,serif;font-size:0.9rem;color:var(--bleu);font-weight:700\'>Alliance Française</span>'">
-        <img src="lasalle.jpg" alt="La Salle" onerror="this.outerHTML='<span style=\'font-family:Playfair Display,serif;font-size:0.9rem;color:var(--rouge);font-weight:700\'>La Salle</span>'">
-      </div>
-      <div class="eyebrow">Registro Oficial</div>
-      <h2>Formulario de <em>Inscripción</em></h2>
-      <div class="alert-banner">⚠ Los datos se usarán exactamente como se capturen en el diploma oficial — verifica la ortografía de tu nombre.</div>
-
-      <form id="inscription-form" novalidate>
-        <div class="form-grid">
-
-          <!-- Género -->
-          <div class="field-float">
-            <select id="genero" required>
-              <option value="" disabled selected></option>
-              <option value="Hombre">Hombre</option>
-              <option value="Mujer">Mujer</option>
-            </select>
-            <label for="genero">Género</label>
-            <span class="field-error" id="err-genero">Selecciona tu género</span>
-          </div>
-
-          <!-- Fecha de nacimiento -->
-          <div class="field-float">
-            <input type="date" id="fechaNacimiento" placeholder=" " required>
-            <label for="fechaNacimiento">Fecha de nacimiento</label>
-            <span class="field-error" id="err-fechaNacimiento">Ingresa tu fecha de nacimiento</span>
-          </div>
-
-          <!-- Primer apellido -->
-          <div class="field-float">
-            <input type="text" id="apPaterno" placeholder=" " required>
-            <label for="apPaterno">Primer apellido</label>
-            <span class="field-error" id="err-apPaterno">Requerido</span>
-          </div>
-
-          <!-- Segundo apellido -->
-          <div class="field-float">
-            <input type="text" id="apMaterno" placeholder=" " required>
-            <label for="apMaterno">Segundo apellido</label>
-            <span class="field-error" id="err-apMaterno">Requerido</span>
-          </div>
-
-          <!-- Nombre(s) -->
-          <div class="field-float full">
-            <input type="text" id="nombre" placeholder=" " required>
-            <label for="nombre">Nombre(s)</label>
-            <span class="field-error" id="err-nombre">Requerido</span>
-          </div>
-
-          <!-- Ciudad nacimiento -->
-          <div class="field-float">
-            <input type="text" id="ciudadNac" placeholder=" " required>
-            <label for="ciudadNac">Ciudad de nacimiento</label>
-            <span class="field-error" id="err-ciudadNac">Requerido</span>
-          </div>
-
-          <!-- País nacimiento -->
-          <div class="field-float">
-            <input type="text" id="paisNac" placeholder=" " required>
-            <label for="paisNac">País de nacimiento</label>
-            <span class="field-error" id="err-paisNac">Requerido</span>
-          </div>
-
-          <!-- Nacionalidad -->
-          <div class="field-float">
-            <input type="text" id="nacionalidad" placeholder=" " required>
-            <label for="nacionalidad">Nacionalidad</label>
-            <span class="field-error" id="err-nacionalidad">Requerido</span>
-          </div>
-
-          <!-- Lengua materna -->
-          <div class="field-float">
-            <input type="text" id="lenguaMaterna" placeholder=" " required>
-            <label for="lenguaMaterna">Lengua materna</label>
-            <span class="field-error" id="err-lenguaMaterna">Requerido</span>
-          </div>
-
-          <!-- Teléfono -->
-          <div class="field-float">
-            <input type="tel" id="telefono" placeholder=" " required pattern="[0-9+\s\-]{7,}">
-            <label for="telefono">Teléfono celular</label>
-            <span class="field-error" id="err-telefono">Número inválido</span>
-          </div>
-
-          <!-- Correo -->
-          <div class="field-float">
-            <input type="email" id="correo" placeholder=" " required>
-            <label for="correo">Correo electrónico</label>
-            <span class="field-error" id="err-correo">Correo inválido</span>
-          </div>
-
-          <!-- Dirección -->
-          <div class="field-float full">
-            <input type="text" id="direccion" placeholder=" " required>
-            <label for="direccion">Dirección completa</label>
-            <span class="field-error" id="err-direccion">Requerido</span>
-          </div>
-
-          <!-- Ciudad residencia -->
-          <div class="field-float">
-            <input type="text" id="ciudad" placeholder=" " required>
-            <label for="ciudad">Ciudad de residencia</label>
-            <span class="field-error" id="err-ciudad">Requerido</span>
-          </div>
-
-          <!-- Estado -->
-          <div class="field-float">
-            <input type="text" id="estado" placeholder=" " required>
-            <label for="estado">Estado</label>
-            <span class="field-error" id="err-estado">Requerido</span>
-          </div>
-
-          <!-- Dónde estudió -->
-          <div class="field-float full">
-            <input type="text" id="dondeEstudio" placeholder=" " required>
-            <label for="dondeEstudio">¿Dónde estudiaste francés?</label>
-            <span class="field-error" id="err-dondeEstudio">Requerido</span>
-          </div>
-
-          <!-- Motivo -->
-          <div class="field-float">
-            <select id="motivo" required>
-              <option value="" disabled selected></option>
-              <option value="Estudios">Estudios / Continuación académica</option>
-              <option value="Personal">Enriquecimiento personal</option>
-              <option value="Profesional">Requisito profesional</option>
-              <option value="Otros">Otros</option>
-            </select>
-            <label for="motivo">Motivo del examen</label>
-            <span class="field-error" id="err-motivo">Selecciona un motivo</span>
-          </div>
-
-          <!-- Adaptación especial -->
-          <div class="field-float">
-            <select id="adaptacion" required>
-              <option value="" disabled selected></option>
-              <option value="Si">Sí — adjuntaré certificado médico</option>
-              <option value="No">No requiero adaptación</option>
-            </select>
-            <label for="adaptacion">¿Adaptación especial?</label>
-            <span class="field-error" id="err-adaptacion">Selecciona una opción</span>
-          </div>
-
-          <!-- NIVEL (card selector) -->
-          <div class="full pricing-section">
-            <label>Nivel MCER y cuota de inscripción</label>
-            <div class="nivel-cards">
-              <label class="nivel-card" for="nivel-a1">
-                <input type="radio" name="nivel" id="nivel-a1" value="A1" required>
-                <span class="check">✓</span>
-                <div class="nivel-code">A1</div>
-                <div class="nivel-name">Introductorio</div>
-                <div class="precio">$1,445 MXN</div>
-              </label>
-              <label class="nivel-card" for="nivel-a2">
-                <input type="radio" name="nivel" id="nivel-a2" value="A2">
-                <span class="check">✓</span>
-                <div class="nivel-code">A2</div>
-                <div class="nivel-name">Elemental</div>
-                <div class="precio">$1,575 MXN</div>
-              </label>
-              <label class="nivel-card" for="nivel-b1">
-                <input type="radio" name="nivel" id="nivel-b1" value="B1">
-                <span class="check">✓</span>
-                <div class="nivel-code">B1</div>
-                <div class="nivel-name">Intermedio</div>
-                <div class="precio">$1,800 MXN</div>
-              </label>
-              <label class="nivel-card" for="nivel-b2">
-                <input type="radio" name="nivel" id="nivel-b2" value="B2">
-                <span class="check">✓</span>
-                <div class="nivel-code">B2</div>
-                <div class="nivel-name">Independiente</div>
-                <div class="precio">$2,500 MXN</div>
-              </label>
+    <!-- PANTALLA 2: INFORMACIÓN INSTITUCIONAL -->
+    <div id="screen-info" class="screen">
+        <div class="card">
+            <h1>Inscripción <em>DELF Junior</em></h1>
+            <div style="background:var(--rouge-pale); padding:20px; border-radius:15px; text-align:center; margin-bottom:30px;">
+                <p style="color:var(--rouge); font-weight:700;">SEDE OFICIAL DE APLICACIÓN:</p>
+                <p style="font-size:1.2rem; font-family:'Playfair Display', serif;">Colegio La Salle, San Cristóbal de Las Casas, Chiapas</p>
+                <p style="margin-top:10px;">Fechas: 7 al 17 de mayo de 2026.</p>
             </div>
-            <span class="field-error" id="err-nivel" style="display:none; margin-top:8px;">Selecciona tu nivel de examen</span>
-          </div>
-
-          <!-- Submit -->
-          <div class="full" style="text-align:center; margin-top:12px;">
-            <button type="submit" id="submit-btn" class="btn btn-primary btn-lg">
-              Revisar datos y confirmar →
-            </button>
-          </div>
+            <div style="text-align:center;">
+                <button id="btn-to-form" class="btn btn-primary">✒ INICIAR INSCRIPCIÓN ESTRICTA</button>
+            </div>
         </div>
-      </form>
-
-      <div class="payment-note">
-        <p><strong>Institución libre de cobros en efectivo.</strong><br>Notifica tu pago en línea o depósito bancario al Profr. Román Fuentes.</p>
-        <a id="btn-whatsapp-pago" href="#" target="_blank" class="btn btn-whatsapp">
-          <span>📱</span> Notificar pago por WhatsApp
-        </a>
-      </div>
     </div>
-  </div>
 
-  <!-- ╔═════════════════════════════════╗
-       ║  SCREEN — RESUMEN / CONFIRM    ║
-       ╚═════════════════════════════════╝ -->
-  <div id="screen-summary" class="screen">
-    <div class="card" style="max-width:740px;">
-      <div class="eyebrow">Confirmación de datos</div>
-      <h2>Revisa tu <em>Inscripción</em></h2>
-      <div class="tricolor"></div>
-      <p style="margin-bottom:4px;">Verifica que todos tus datos sean correctos antes de enviar. Los datos se usarán en tu diploma oficial.</p>
+    <!-- PANTALLA 3: FORMULARIO CON VALIDACIÓN REGEX -->
+    <div id="screen-form" class="screen">
+        <div class="card">
+            <h2>Datos del <em>Candidato</em></h2>
+            <form id="master-form" novalidate>
+                <div class="form-grid">
+                    
+                    <div class="form-group full">
+                        <label>Nombre(s) <span style="color:var(--error);">*</span></label>
+                        <input type="text" id="f-nombres" placeholder="Ej: Miguel David" required>
+                        <span class="form-error-msg">Solo se permiten letras.</span>
+                    </div>
 
-      <div id="summary-nivel-display" style="text-align:center; margin:20px 0;">
-        <div class="nivel-badge">
-          <span>🇫🇷</span>
-          <span id="summary-nivel-text">A1</span>
-          <span id="summary-precio-text" style="font-size:0.9rem; font-weight:400;">$1,445 MXN</span>
+                    <div class="form-group">
+                        <label>Apellido Paterno <span style="color:var(--error);">*</span></label>
+                        <input type="text" id="f-apPaterno" placeholder="Ej: Tillero" required>
+                        <span class="form-error-msg">Solo se permiten letras.</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Apellido Materno</label>
+                        <input type="text" id="f-apMaterno" placeholder="Ej: Álvarez">
+                        <span class="form-error-msg">Solo se permiten letras.</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Correo Electrónico <span style="color:var(--error);">*</span></label>
+                        <input type="email" id="f-correo" placeholder="usuario@dominio.com" required>
+                        <span class="form-error-msg">Formato de correo inválido.</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Teléfono Celular <span style="color:var(--error);">*</span></label>
+                        <input type="tel" id="f-telefono" placeholder="10 dígitos" required>
+                        <span class="form-error-msg">Debe contener exactamente 10 números.</span>
+                    </div>
+
+                    <div class="form-group full">
+                        <label>Nivel a presentar <span style="color:var(--error);">*</span></label>
+                        <select id="f-nivel" required>
+                            <option value="" disabled selected>Seleccione...</option>
+                            <option value="A1">A1 - $1,445 MXN</option>
+                            <option value="A2">A2 - $1,575 MXN</option>
+                            <option value="B1">B1 - $1,800 MXN</option>
+                            <option value="B2">B2 - $2,500 MXN</option>
+                        </select>
+                        <span class="form-error-msg">Debe seleccionar un nivel.</span>
+                    </div>
+
+                    <div class="full" style="text-align:center; margin-top:20px;">
+                        <button type="submit" class="btn btn-primary">VALIDAR CUESTIONARIO Y CONTINUAR →</button>
+                    </div>
+                </div>
+            </form>
         </div>
-      </div>
-
-      <div class="summary-grid" id="summary-grid"></div>
-
-      <div class="btn-group">
-        <button id="btn-edit-form" class="btn btn-ghost">← Corregir datos</button>
-        <button id="btn-confirm-send" class="btn btn-primary btn-lg">
-          <span>✔</span> Confirmar y enviar
-        </button>
-      </div>
     </div>
-  </div>
 
-  <!-- ╔══════════════════════╗
-       ║  SCREEN — TRANS 2   ║
-       ╚══════════════════════╝ -->
-  <div id="screen-trans2" class="screen video-screen">
-    <video id="vid-trans2" playsinline>
-      <source src="6.mp4" type="video/mp4">
-    </video>
-    <button class="skip-btn" id="skip-trans2">Omitir ▸</button>
-  </div>
-
-  <!-- ╔═══════════════════════════════════╗
-       ║  SCREEN — FICHA / RECIBO        ║
-       ╚═══════════════════════════════════╝ -->
-  <div id="screen-receipt" class="screen">
-    <div class="card" style="max-width:760px;">
-      <div class="eyebrow">Inscripción Registrada</div>
-      <h2>¡Félicitations! Tu ficha está <em>lista</em></h2>
-      <div class="tricolor"></div>
-
-      <div id="receipt-content">
-        <div class="receipt-header">
-          <div>
-            <div class="receipt-logo">Alliance Française · La Salle</div>
-            <div style="font-size:0.72rem; color:var(--gris-1); margin-top:3px;">DELF Junior 2026 — Querétaro</div>
-          </div>
-          <div class="receipt-id">
-            <div style="font-size:1rem; font-weight:700; color:var(--rouge)" id="receipt-folio"></div>
-            <div id="receipt-fecha" style="font-size:0.72rem; color:var(--gris-1); margin-top:2px;"></div>
-          </div>
+    <!-- PANTALLA 4: RECIBO -->
+    <div id="screen-receipt" class="screen">
+        <div class="card" style="text-align:center;">
+            <h2>Registro Completado</h2>
+            <div id="receipt-box" style="margin:25px 0; border:2px dashed var(--or); padding:30px; text-align:left; border-radius:20px;"></div>
+            <div class="btn-group" style="display:flex; gap:15px; justify-content:center;">
+                <button id="btn-download-json" class="btn btn-primary">💾 DESCARGAR EXPEDIENTE JSON</button>
+            </div>
         </div>
-        <div class="receipt-grid" id="receipt-grid"></div>
-        <div style="margin-top:16px; text-align:center; padding:12px; background:var(--rouge-pale); border-radius:8px;">
-          <span style="font-size:0.72rem; color:var(--rouge); font-weight:600; letter-spacing:0.1em;">PERÍODO DE EXAMEN: 7 – 17 DE MAYO DE 2026</span>
-        </div>
-      </div>
-
-      <div class="btn-group">
-        <button id="btn-print" class="btn btn-bleu"><span>🖨</span> Imprimir ficha</button>
-        <button id="btn-copy-receipt" class="btn btn-ghost"><span>📋</span> Copiar datos</button>
-        <a id="btn-whatsapp-final" href="#" target="_blank" class="btn btn-whatsapp"><span>📱</span> Avisar al coordinador</a>
-      </div>
-      <div style="text-align:center; margin-top:20px;">
-        <button id="btn-new-reg" class="btn btn-ghost btn-sm">Registrar otro candidato</button>
-      </div>
     </div>
-  </div>
 
-  <!-- ╔══════════════════════╗
-       ║  MODAL — SENDING    ║
-       ╚══════════════════════╝ -->
-  <div class="modal-overlay" id="modal-sending">
-    <div class="modal-box">
-      <span class="modal-icon" id="modal-sending-icon">⏳</span>
-      <h3 id="modal-sending-title">Enviando inscripción…</h3>
-      <p id="modal-sending-msg">Estamos registrando tus datos. Por favor espera un momento.</p>
-      <div class="modal-actions" id="modal-sending-actions" style="display:none;">
-        <button id="btn-modal-continue" class="btn btn-primary">Ver mi ficha →</button>
-      </div>
-    </div>
-  </div>
+    <script>
+        /* [LÓGICA CORE: SPA, THREE.JS Y REGEX] */
+        const $ = id => document.getElementById(id);
+        let activeScreen = 'screen-welcome';
 
-  <script>
-  /* ============================================================
-     UTILITIES
-  ============================================================ */
-  const $ = id => document.getElementById(id);
-  const niveles = { A1: '$1,445 MXN', A2: '$1,575 MXN', B1: '$1,800 MXN', B2: '$2,500 MXN' };
-
-  function showToast(msg, duration = 3500) {
-    const t = $('toast');
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), duration);
-  }
-
-  function setProgress(pct) { $('progress-bar').style.width = pct + '%'; }
-
-  function genFolio() {
-    const d = new Date();
-    return 'DELF-' + d.getFullYear() + String(d.getMonth()+1).padStart(2,'0') + String(d.getDate()).padStart(2,'0') + '-' + Math.floor(Math.random()*9000+1000);
-  }
-
-  /* ============================================================
-     STEP DOTS
-  ============================================================ */
-  const STEP_MAP = {
-    'screen-welcome': -1,
-    'screen-info': 0,
-    'screen-normativa': 0,
-    'screen-recursos': 0,
-    'screen-trans1': 1,
-    'screen-form': 1,
-    'screen-summary': 2,
-    'screen-trans2': 2,
-    'screen-receipt': 3
-  };
-
-  function updateDots(screenId) {
-    const step = STEP_MAP[screenId] ?? -1;
-    const dots = $('step-dots');
-    if (step < 0) { dots.classList.remove('visible'); return; }
-    dots.classList.add('visible');
-    document.querySelectorAll('.dot').forEach((d, i) => {
-      d.classList.remove('active','done');
-      if (i < step) d.classList.add('done');
-      else if (i === step) d.classList.add('active');
-    });
-  }
-
-  /* ============================================================
-     SCREEN TRANSITIONS
-  ============================================================ */
-  let currentScreen = 'screen-welcome';
-
-  function goTo(targetId, progressPct) {
-    if (currentScreen === targetId) return;
-    const from = $(currentScreen);
-    const to   = $(targetId);
-    from.style.opacity = '0';
-    from.style.visibility = 'hidden';
-    setTimeout(() => {
-      from.classList.remove('active');
-      to.classList.add('active');
-      setTimeout(() => {
-        to.style.opacity = '1';
-        to.style.visibility = 'visible';
-      }, 40);
-      currentScreen = targetId;
-      if (progressPct !== undefined) setProgress(progressPct);
-      updateDots(targetId);
-      window.scrollTo(0, 0);
-    }, 650);
-  }
-
-  /* ============================================================
-     BACKGROUND MUSIC
-  ============================================================ */
-  const music = $('bg-music');
-  music.volume = 0.2;
-  const playMusic = () => { 
-    music.play().catch(()=>{}); 
-    document.body.removeEventListener('click', playMusic); 
-    document.body.removeEventListener('touchstart', playMusic); 
-  };
-  document.body.addEventListener('click', playMusic);
-  document.body.addEventListener('touchstart', playMusic);
-
-  /* ============================================================
-     3D BACKGROUND — French fleur-de-lis particles
-  ============================================================ */
-  (() => {
-    const canvas = $('canvas-bg');
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setSize(window.innerWidth, window.innerHeight);
-
-    const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0xf5f3f0, 0.022);
-    const camera = new THREE.PerspectiveCamera(60, window.innerWidth/window.innerHeight, 0.1, 200);
-    camera.position.z = 28;
-
-    scene.add(new THREE.AmbientLight(0xffffff, 0.6));
-    const dl = new THREE.DirectionalLight(0xffffff, 0.7);
-    dl.position.set(10, 20, 12);
-    scene.add(dl);
-    const dl2 = new THREE.DirectionalLight(0xC9A84C, 0.3);
-    dl2.position.set(-10, -10, 5);
-    scene.add(dl2);
-
-    const palette = [0x002868, 0x8B0000, 0xC9A84C, 0xffffff];
-    const geos = [
-      new THREE.OctahedronGeometry(0.35, 0),
-      new THREE.TetrahedronGeometry(0.42, 0),
-      new THREE.BoxGeometry(0.4, 0.55, 0.08),
-      new THREE.IcosahedronGeometry(0.32, 0)
-    ];
-    const particles = [];
-
-    for (let i = 0; i < 55; i++) {
-      const geo = geos[Math.floor(Math.random() * geos.length)];
-      const col = palette[i % palette.length];
-      const mat = new THREE.MeshPhongMaterial({
-        color: col, shininess: 90, side: THREE.DoubleSide,
-        transparent: true, opacity: col === 0xffffff ? 0.3 : 0.45
-      });
-      const mesh = new THREE.Mesh(geo, mat);
-      mesh.position.set(
-        (Math.random()-0.5)*60,
-        (Math.random()-0.5)*60,
-        (Math.random()-0.5)*30 - 5
-      );
-      mesh.rotation.set(Math.random()*Math.PI, Math.random()*Math.PI, Math.random()*Math.PI);
-      mesh.userData = {
-        rx: (Math.random()-0.5)*0.015,
-        ry: (Math.random()-0.5)*0.015,
-        vy: (Math.random()-0.5)*0.035
-      };
-      scene.add(mesh); particles.push(mesh);
-    }
-
-    let mx = 0, my = 0;
-    document.addEventListener('mousemove', e => {
-      mx = (e.clientX/window.innerWidth  - 0.5)*3.5;
-      my = (e.clientY/window.innerHeight - 0.5)*3.5;
-    });
-
-    const animate = () => {
-      requestAnimationFrame(animate);
-      camera.position.x += (mx - camera.position.x)*0.022;
-      camera.position.y += (-my - camera.position.y)*0.022;
-      camera.lookAt(scene.position);
-      particles.forEach(p => {
-        p.rotation.x += p.userData.rx;
-        p.rotation.y += p.userData.ry;
-        p.position.y += p.userData.vy;
-        if (p.position.y > 30)  p.position.y = -30;
-        if (p.position.y < -30) p.position.y = 30;
-      });
-      renderer.render(scene, camera);
-    };
-    animate();
-
-    window.addEventListener('resize', () => {
-      camera.aspect = window.innerWidth/window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-  })();
-
-  /* ============================================================
-     NAVIGATION
-  ============================================================ */
-  // Video helpers: play with graceful fallback
-  function playVideo(videoId, onEnd, fallbackTime = 2000) {
-    const v = $(videoId);
-    if (!v) { onEnd && onEnd(); return; }
-    v.currentTime = 0;
-    const p = v.play();
-    if (p !== undefined) {
-      p.catch(() => { setTimeout(onEnd, fallbackTime); });
-    }
-    if (onEnd) v.addEventListener('ended', onEnd, { once: true });
-  }
-
-  // Welcome screen
-  $('vid-welcome').addEventListener('ended', () => goTo('screen-info', 15));
-  $('screen-welcome').addEventListener('click', () => { if (currentScreen==='screen-welcome') goTo('screen-info', 15); });
-  $('skip-welcome').addEventListener('click', e => { e.stopPropagation(); goTo('screen-info', 15); });
-
-  // Check videos on load (skip if 404)
-  ['1.mp4','5.mp4','6.mp4','4.mp4'].forEach((src, i) => {
-    const vid = ['vid-welcome','vid-trans1','vid-trans2',null][i];
-    if (!vid) return;
-    const v = $(vid);
-    v.addEventListener('error', () => {
-      if (vid==='vid-welcome') goTo('screen-info', 15);
-    });
-  });
-
-  // Info → form / normativa / recursos
-  $('btn-to-form').addEventListener('click', () => {
-    goTo('screen-trans1', 40);
-    setTimeout(() => playVideo('vid-trans1', () => goTo('screen-form', 55)), 750);
-  });
-  $('btn-to-normativa').addEventListener('click', () => goTo('screen-normativa', 25));
-  $('btn-back-normativa').addEventListener('click', () => goTo('screen-info', 15));
-  $('btn-to-recursos').addEventListener('click', () => goTo('screen-recursos', 25));
-  $('btn-back-recursos').addEventListener('click', () => goTo('screen-info', 15));
-
-  $('skip-trans1').addEventListener('click', () => goTo('screen-form', 55));
-
-  /* ============================================================
-     NIVEL CARD SELECTOR
-  ============================================================ */
-  document.querySelectorAll('.nivel-card').forEach(card => {
-    card.addEventListener('click', () => {
-      document.querySelectorAll('.nivel-card').forEach(c => c.classList.remove('selected'));
-      card.classList.add('selected');
-      $('err-nivel').style.display = 'none';
-    });
-  });
-
-  /* ============================================================
-     FORM VALIDATION
-  ============================================================ */
-  const VALIDATORS = {
-    genero:        v => v !== '',
-    fechaNacimiento: v => v !== '',
-    apPaterno:     v => v.trim().length >= 2,
-    apMaterno:     v => v.trim().length >= 2,
-    nombre:        v => v.trim().length >= 2,
-    ciudadNac:     v => v.trim().length >= 2,
-    paisNac:       v => v.trim().length >= 2,
-    nacionalidad:  v => v.trim().length >= 2,
-    lenguaMaterna: v => v.trim().length >= 2,
-    telefono:      v => /^[0-9+\s\-]{7,}$/.test(v),
-    correo:        v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v),
-    direccion:     v => v.trim().length >= 5,
-    ciudad:        v => v.trim().length >= 2,
-    estado:        v => v.trim().length >= 2,
-    dondeEstudio:  v => v.trim().length >= 2,
-    motivo:        v => v !== '',
-    adaptacion:    v => v !== ''
-  };
-
-  const ERR_MSGS = {
-    genero:        'Selecciona tu género',
-    fechaNacimiento:'Ingresa tu fecha de nacimiento',
-    apPaterno:     'Ingresa tu primer apellido',
-    apMaterno:     'Ingresa tu segundo apellido',
-    nombre:        'Ingresa tu(s) nombre(s)',
-    ciudadNac:     'Ingresa tu ciudad de nacimiento',
-    paisNac:       'Ingresa tu país de nacimiento',
-    nacionalidad:  'Ingresa tu nacionalidad',
-    lenguaMaterna: 'Ingresa tu lengua materna',
-    telefono:      'Número de teléfono inválido (mín. 7 dígitos)',
-    correo:        'Correo electrónico inválido',
-    direccion:     'Ingresa tu dirección completa',
-    ciudad:        'Ingresa tu ciudad de residencia',
-    estado:        'Ingresa tu estado',
-    dondeEstudio:  'Indica dónde estudiaste francés',
-    motivo:        'Selecciona el motivo del examen',
-    adaptacion:    'Indica si requieres adaptación especial'
-  };
-
-  // Live validation on blur
-  Object.keys(VALIDATORS).forEach(id => {
-    const el = $(id);
-    if (!el) return;
-    el.addEventListener('blur', () => validateField(id));
-    el.addEventListener('input', () => { if (el.classList.contains('invalid')) validateField(id); });
-  });
-
-  function validateField(id) {
-    const el = $(id);
-    const errEl = $('err-' + id);
-    if (!el) return true;
-    const ok = VALIDATORS[id](el.value);
-    if (ok) {
-      el.classList.remove('invalid'); el.classList.add('valid');
-      if (errEl) { errEl.textContent = ''; errEl.classList.remove('show'); }
-    } else {
-      el.classList.remove('valid'); el.classList.add('invalid');
-      if (errEl) { errEl.textContent = ERR_MSGS[id]; errEl.classList.add('show'); }
-    }
-    return ok;
-  }
-
-  function validateAll() {
-    let valid = true;
-    Object.keys(VALIDATORS).forEach(id => { if (!validateField(id)) valid = false; });
-    // Check nivel
-    const nivelVal = getSelectedNivel();
-    if (!nivelVal) {
-      $('err-nivel').style.display = 'block';
-      $('err-nivel').textContent = 'Selecciona tu nivel de examen';
-      valid = false;
-    }
-    return valid;
-  }
-
-  function getSelectedNivel() {
-    const r = document.querySelector('input[name="nivel"]:checked');
-    return r ? r.value : '';
-  }
-
-  /* ============================================================
-     AUTOFILL — País México → Nacionalidad, Lengua
-  ============================================================ */
-  $('paisNac').addEventListener('blur', () => {
-    const pais = $('paisNac').value.trim().toLowerCase();
-    if (['mexico','méxico','mx'].includes(pais)) {
-      if (!$('nacionalidad').value) { $('nacionalidad').value = 'Mexicana'; validateField('nacionalidad'); }
-      if (!$('lenguaMaterna').value) { $('lenguaMaterna').value = 'Español'; validateField('lenguaMaterna'); }
-      if (!$('ciudad').value) { $('ciudad').value = 'Querétaro'; validateField('ciudad'); }
-      if (!$('estado').value) { $('estado').value = 'Querétaro'; validateField('estado'); }
-    }
-  });
-
-  /* ============================================================
-     LOCALSTORAGE — guardar/restaurar borrador
-  ============================================================ */
-  const FIELDS = ['genero','fechaNacimiento','apPaterno','apMaterno','nombre','ciudadNac','paisNac','nacionalidad','lenguaMaterna','telefono','correo','direccion','ciudad','estado','dondeEstudio','motivo','adaptacion'];
-
-  function saveDraft() {
-    const data = {};
-    FIELDS.forEach(id => { const el = $(id); if (el) data[id] = el.value; });
-    const nivel = getSelectedNivel();
-    if (nivel) data.nivel = nivel;
-    sessionStorage.setItem('delf_draft', JSON.stringify(data));
-  }
-
-  function loadDraft() {
-    try {
-      const saved = JSON.parse(sessionStorage.getItem('delf_draft') || '{}');
-      FIELDS.forEach(id => {
-        const el = $(id);
-        if (el && saved[id]) { 
-          el.value = saved[id]; 
-          validateField(id); // MEJORA: autovalidar los datos recuperados
+        // Navegación
+        function goTo(target, progress) {
+            $(activeScreen).style.opacity = '0';
+            setTimeout(() => {
+                $(activeScreen).classList.remove('active');
+                $(target).classList.add('active');
+                setTimeout(() => $(target).style.opacity = '1', 50);
+                activeScreen = target;
+                if(progress) $("progress-bar").style.width = progress + "%";
+                window.scrollTo(0,0);
+            }, 700);
         }
-      });
-      if (saved.nivel) {
-        const r = document.querySelector(`input[name="nivel"][value="${saved.nivel}"]`);
-        if (r) { r.checked = true; r.closest('.nivel-card').classList.add('selected'); }
-      }
-    } catch(e){}
-  }
 
-  FIELDS.forEach(id => { const el=$(id); if(el) el.addEventListener('input', saveDraft); });
+        // Multimedia
+        $("btn-start").onclick = () => { $("bg-music").play().catch(e => {}); goTo('screen-info', 30); };
+        $("btn-to-form").onclick = () => goTo('screen-form', 60);
 
-  /* ============================================================
-     FORM → SUMMARY SCREEN
-  ============================================================ */
-  $('inscription-form').addEventListener('submit', e => {
-    e.preventDefault();
-    if (!validateAll()) {
-      showToast('⚠ Por favor completa todos los campos correctamente');
-      // Scroll to first error
-      const firstInvalid = document.querySelector('.field-float input.invalid, .field-float select.invalid');
-      if (firstInvalid) firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      return;
-    }
-    saveDraft();
-    buildSummary();
-    goTo('screen-summary', 65);
-  });
+        // Motor de Validación Estricta (Regex)
+        const regexLetras = /^[a-zA-ZÀ-ÿ\u00f1\u00d1\s]+$/;
+        const regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const regexTelefono = /^[0-9]{10}$/;
 
-  function buildSummary() {
-    const nivel = getSelectedNivel();
-    $('summary-nivel-text').textContent = nivel;
-    $('summary-precio-text').textContent = niveles[nivel] || '';
+        const validationRules = {
+            'f-nombres': { regex: regexLetras },
+            'f-apPaterno': { regex: regexLetras },
+            'f-apMaterno': { regex: regexLetras, optional: true },
+            'f-correo': { regex: regexCorreo },
+            'f-telefono': { regex: regexTelefono },
+            'f-nivel': { required: true }
+        };
 
-    const rows = [
-      ['Nombre completo', `${$('nombre').value} ${$('apPaterno').value} ${$('apMaterno').value}`, true],
-      ['Género', $('genero').value],
-      ['Fecha de nacimiento', $('fechaNacimiento').value],
-      ['Ciudad de nacimiento', $('ciudadNac').value],
-      ['País / Nacionalidad', `${$('paisNac').value} / ${$('nacionalidad').value}`],
-      ['Lengua materna', $('lenguaMaterna').value],
-      ['Teléfono', $('telefono').value],
-      ['Correo electrónico', $('correo').value, true],
-      ['Dirección', $('direccion').value, true],
-      ['Ciudad / Estado', `${$('ciudad').value}, ${$('estado').value}`],
-      ['Estudió francés en', $('dondeEstudio').value, true],
-      ['Motivo del examen', $('motivo').value],
-      ['Adaptación especial', $('adaptacion').value],
-    ];
+        const validateField = (id) => {
+            const el = $(id); const rule = validationRules[id]; const group = el.closest('.form-group');
+            const val = el.value.trim();
+            let isValid = true;
 
-    const grid = $('summary-grid');
-    grid.innerHTML = rows.map(([k,v,full]) =>
-      `<div class="summary-row${full?' full':''}"><span class="summary-key">${k}</span><span class="summary-val">${v}</span></div>`
-    ).join('');
-  }
+            if (el.hasAttribute('required') && val === '') isValid = false;
+            else if (val !== '') {
+                if (rule.regex && !rule.regex.test(val)) isValid = false;
+            }
 
-  $('btn-edit-form').addEventListener('click', () => goTo('screen-form', 55));
+            if(isValid) { group.classList.remove('has-error'); group.classList.add('is-valid'); } 
+            else { group.classList.remove('is-valid'); group.classList.add('has-error'); }
+            
+            return isValid;
+        };
 
-  /* ============================================================
-     WHATSAPP PRE-LLENADO
-  ============================================================ */
-  function buildWhatsApp(mode = 'pago') {
-    const nombre = `${$('nombre').value} ${$('apPaterno').value} ${$('apMaterno').value}`.trim() || '(sin nombre)';
-    const nivel = getSelectedNivel() || '—';
-    const precio = niveles[nivel] || '—';
-    const tel = '524731219337';
+        Object.keys(validationRules).forEach(id => {
+            if($(id)) {
+                $(id).addEventListener('blur', () => validateField(id));
+                $(id).addEventListener('input', () => { if($(id).closest('.form-group').classList.contains('has-error')) validateField(id); });
+            }
+        });
 
-    let msg;
-    if (mode === 'pago') {
-      msg = `Hola Profr. Román, soy *${nombre}*.\nRealicé mi inscripción al DELF Junior 2026, nivel *${nivel}* (${precio}).\nAdjunto comprobante de pago. Por favor confirmar mi registro.\n\nGracias.`;
-    } else {
-      msg = `Hola Profr. Román, le notifico que *${nombre}* quedó inscrito/a al DELF Junior 2026, nivel *${nivel}* (${precio}). Folio: ${$('receipt-folio').textContent || '---'}`;
-    }
-    return `https://wa.me/${tel}?text=${encodeURIComponent(msg)}`;
-  }
+        // Envío e Integración
+        $("master-form").onsubmit = async (e) => {
+            e.preventDefault();
+            let formIsValid = true;
+            Object.keys(validationRules).forEach(id => { if(!validateField(id)) formIsValid = false; });
 
-  // Update WhatsApp link on field change
-  ['nombre','apPaterno','apMaterno'].forEach(id => {
-    $(id).addEventListener('input', () => {
-      $('btn-whatsapp-pago').href = buildWhatsApp('pago');
-    });
-  });
+            if(!formIsValid) return alert("Por favor, corrija los campos marcados en rojo. Asegúrese de que el teléfono tenga exactamente 10 dígitos y los nombres solo contengan letras.");
 
-  /* ============================================================
-     CONFIRM & SEND
-  ============================================================ */
-  let folio = '';
+            const folio = 'DELF-' + Math.floor(Math.random()*90000+10000);
+            const data = {
+                Folio: folio,
+                Sede: "San Cristóbal de Las Casas",
+                Candidato: `${$("f-nombres").value} ${$("f-apPaterno").value} ${$("f-apMaterno").value}`.trim(),
+                Correo: $("f-correo").value, Telefono: $("f-telefono").value, Nivel: $("f-nivel").value,
+                Fecha: new Date().toLocaleString()
+            };
 
-  $('btn-confirm-send').addEventListener('click', async () => {
-    const modal = $('modal-sending');
-    $('modal-sending-icon').textContent = '⏳';
-    $('modal-sending-title').textContent = 'Enviando inscripción…';
-    $('modal-sending-msg').textContent = 'Estamos registrando tus datos. Por favor espera.';
-    $('modal-sending-actions').style.display = 'none';
-    modal.classList.add('open');
+            try {
+                await fetch('https://formsubmit.co/ajax/direccionsancristobal@alianzafr.edu.mx', {
+                    method: 'POST', headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({...data, _subject: `INSCRIPCIÓN VALIDAD: ${data.Candidato}`})
+                });
+            } catch(e) { console.warn("Modo Hub Local"); }
 
-    folio = genFolio();
+            $("receipt-box").innerHTML = `<h3>FOLIO: ${folio}</h3><p><strong>Candidato:</strong> ${data.Candidato}</p><p><strong>Sede:</strong> ${data.Sede}</p><p><strong>Nivel:</strong> ${data.Nivel}</p>`;
+            sessionStorage.setItem('final_data', JSON.stringify(data));
+            goTo('screen-receipt', 100);
+        };
 
-    const payload = {
-      folio,
-      firstname: $('nombre').value,
-      lastname: $('apPaterno').value + ' ' + $('apMaterno').value,
-      email: $('correo').value,
-      phone: $('telefono').value,
-      gender: $('genero').value,
-      date_of_birth: $('fechaNacimiento').value,
-      city_birth: $('ciudadNac').value,
-      country_birth: $('paisNac').value,
-      nationality: $('nacionalidad').value,
-      mother_tongue: $('lenguaMaterna').value,
-      address: $('direccion').value,
-      city: $('ciudad').value,
-      state: $('estado').value,
-      french_school: $('dondeEstudio').value,
-      delf_level: getSelectedNivel(),
-      delf_price: niveles[getSelectedNivel()],
-      exam_reason: $('motivo').value,
-      special_needs: $('adaptacion').value,
-      registration_date: new Date().toISOString(),
-      lifecyclestage: 'lead'
-    };
+        // Hub Local JSON
+        $("btn-download-json").onclick = () => {
+            const data = sessionStorage.getItem('final_data');
+            const blob = new Blob([data], {type: 'application/json'});
+            const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+            a.download = `Expediente_${JSON.parse(data).Folio}.json`; a.click();
+        };
 
-    // Guardar localmente
-    sessionStorage.setItem('delf_candidato', JSON.stringify(payload));
-    sessionStorage.removeItem('delf_draft');
-
-    // ─────────────────────────────────────────────────────────
-    // 🌐 PUNTO DE INTEGRACIÓN WEBHOOK (ZAPIER / MAKE / N8N / CRM)
-    // ─────────────────────────────────────────────────────────
-    const WEBHOOK_URL = 'https://hooks.tu-automatizacion.com/webhook-delf';
-    try {
-      await fetch(WEBHOOK_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-        mode: 'no-cors'
-      });
-    } catch(err) {
-      console.info('Sin webhook configurado — datos guardados localmente:', payload);
-    }
-
-    // Mostrar éxito en modal
-    setTimeout(() => {
-      $('modal-sending-icon').textContent = '✅';
-      $('modal-sending-title').textContent = '¡Inscripción registrada!';
-      $('modal-sending-msg').textContent = `Tu folio es: ${folio}. Guarda este número para cualquier consulta.`;
-      $('modal-sending-actions').style.display = 'flex';
-    }, 1400);
-  });
-
-  $('btn-modal-continue').addEventListener('click', () => {
-    $('modal-sending').classList.remove('open');
-    buildReceipt();
-    goTo('screen-trans2', 80);
-    setTimeout(() => playVideo('vid-trans2', () => goTo('screen-receipt', 92)), 750);
-  });
-  
-  $('skip-trans2').addEventListener('click', () => {
-    $('modal-sending').classList.remove('open');
-    buildReceipt();
-    goTo('screen-receipt', 92);
-  });
-
-  /* ============================================================
-     BUILD RECEIPT
-  ============================================================ */
-  function buildReceipt() {
-    $('receipt-folio').textContent = folio;
-    $('receipt-fecha').textContent = new Date().toLocaleString('es-MX', { dateStyle:'long', timeStyle:'short' });
-
-    const nivel = getSelectedNivel();
-    const rows = [
-      ['Folio', folio],
-      ['Nivel DELF', `${nivel} — ${niveles[nivel]}`],
-      ['Nombre', `${$('nombre').value}`],
-      ['Apellidos', `${$('apPaterno').value} ${$('apMaterno').value}`],
-      ['Fecha de nacimiento', $('fechaNacimiento').value],
-      ['Género', $('genero').value],
-      ['Nacionalidad', $('nacionalidad').value],
-      ['Correo', $('correo').value],
-      ['Teléfono', $('telefono').value],
-      ['Lengua materna', $('lenguaMaterna').value],
-      ['Ciudad de nacimiento', $('ciudadNac').value],
-      ['País de nacimiento', $('paisNac').value],
-      ['Dirección', $('direccion').value],
-      ['Ciudad / Estado', `${$('ciudad').value}, ${$('estado').value}`],
-      ['Estudió en', $('dondeEstudio').value],
-      ['Motivo', $('motivo').value],
-      ['Adaptación especial', $('adaptacion').value],
-    ];
-
-    $('receipt-grid').innerHTML = rows.map(([k,v]) =>
-      `<div class="receipt-field"><span>${k}</span><span>${v}</span></div>`
-    ).join('');
-
-    $('btn-whatsapp-final').href = buildWhatsApp('final');
-    setProgress(100);
-  }
-
-  /* ============================================================
-     RECEIPT ACTIONS
-  ============================================================ */
-  $('btn-print').addEventListener('click', () => window.print());
-
-  $('btn-copy-receipt').addEventListener('click', () => {
-    const data = JSON.parse(sessionStorage.getItem('delf_candidato') || '{}');
-    const txt = Object.entries(data).map(([k,v]) => `${k}: ${v}`).join('\n');
-    navigator.clipboard.writeText(txt).then(() => showToast('✔ Datos copiados al portapapeles'));
-  });
-
-  $('btn-new-reg').addEventListener('click', () => {
-    $('inscription-form').reset();
-    document.querySelectorAll('.nivel-card').forEach(c => c.classList.remove('selected'));
-    document.querySelectorAll('input.valid, input.invalid, select.valid, select.invalid').forEach(el => {
-      el.classList.remove('valid','invalid');
-    });
-    sessionStorage.removeItem('delf_draft');
-    folio = '';
-    goTo('screen-form', 55);
-    showToast('Formulario reiniciado');
-  });
-
-  /* ============================================================
-     INIT
-  ============================================================ */
-  // Hide all screens except welcome
-  document.querySelectorAll('.screen:not(#screen-welcome)').forEach(s => {
-    s.style.opacity = '0';
-    s.style.visibility = 'hidden';
-  });
-  $('screen-welcome').style.opacity = '1';
-  $('screen-welcome').style.visibility = 'visible';
-
-  // Restore draft if user returns to form
-  window.addEventListener('load', () => {
-    loadDraft();
-    updateDots('screen-welcome');
-    $('btn-whatsapp-pago').href = buildWhatsApp('pago');
-  });
-  </script>
+        // Motor 3D Three.js
+        (() => {
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({canvas: $("canvas-bg"), alpha: true, antialias: true});
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            const group = new THREE.Group();
+            for(let i=0; i<50; i++){
+                const mesh = new THREE.Mesh(new THREE.IcosahedronGeometry(0.5, 0), new THREE.MeshPhongMaterial({color: i%2?0x8B0000:0x003189, wireframe: true}));
+                mesh.position.set((Math.random()-0.5)*40, (Math.random()-0.5)*40, (Math.random()-0.5)*30);
+                group.add(mesh);
+            }
+            scene.add(group); scene.add(new THREE.AmbientLight(0xffffff, 0.8)); camera.position.z = 15;
+            const animate = () => { requestAnimationFrame(animate); group.rotation.y += 0.001; renderer.render(scene, camera); };
+            animate();
+        })();
+    </script>
 </body>
 </html>

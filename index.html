@@ -1,286 +1,1950 @@
 <!DOCTYPE html>
 <html lang="es">
-<!-- 
-  =================================================================================================
-  PROYECTO: PORTAL INSTITUCIONAL DE INSCRIPCIÓN DELF JUNIOR 2026
-  INSTITUCIÓN: ALLIANCE FRANÇAISE DE SAN CRISTÓBAL DE LAS CASAS (AFSC)
-  SEDE DE APLICACIÓN: COLEGIO LA SALLE, SAN CRISTÓBAL DE LAS CASAS
-  
-  DOCUMENTACIÓN TÉCNICA:
-  - Arquitectura Single Page Application (SPA) para navegación sin recargas.
-  - Implementación de motor 3D (Three.js) para identidad visual.
-  - Validación de formularios estricta (Regex) para asegurar integridad de la base de datos.
-  - Generación de expedientes en formato JSON para el Hub Local.
-  =================================================================================================
--->
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inscripción DELF Junior 2026 · Alliance Française & La Salle</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DELF Junior 2026 — Alianza Francesa & Colegio La Salle San Cristóbal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,300&family=Montserrat:wght@200;300;400;500;600;700&family=Playfair+Display:wght@600;700;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
 
-    <!-- Tipografías Institucionales -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+:root{
+    --af-red:#C8211E;
+    --af-gold:#C5A059;
+    --af-bg:#f5f0eb;
+    --af-dark:#1a1a1a;
+    --af-line:rgba(200,33,30,.15);
+    --azul-francia:#002654;
+    --azul-claro:#0055A4;
+    --rojo-francia:#C8211E;
+    --rojo-delf:#C8211E;
+    --rojo-oscuro:#8a1715;
+    --dorado:#C5A059;
+    --crema:#f5f0eb;
+    --gris-suave:#f5f0eb;
+    --gris:#6B7280;
+    --texto:#1A1A1A;
+    --borde:rgba(200,33,30,.15);
+    --sombra-sm:0 2px 8px rgba(0,0,0,.04);
+    --sombra-md:0 8px 24px rgba(0,0,0,.06);
+    --sombra-lg:0 40px 100px rgba(0,0,0,.08);
+}
 
-    <style>
-        /* [VARIABLES Y DESIGN TOKENS] */
-        :root {
-            --rouge: #8B0000; --rouge-vif: #C0392B; --bleu: #003189;
-            --blanc: #FAFAF8; --noir: #1A1A1A; --or: #BFA16A;
-            --gris-1: #6B6B6B; --gris-2: #E2DDD5;
-            --success: #27AE60; --error: #E74C3C;
-            --glass: rgba(255,255,255,0.94);
-            --shadow-xl: 0 32px 80px rgba(0,0,0,0.15);
-            --expo: cubic-bezier(0.16, 1, 0.3, 1);
-        }
+*{box-sizing:border-box;margin:0;padding:0}
 
-        /* [RESET BASE] */
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Outfit', sans-serif; background: var(--blanc); color: var(--noir); overflow-x: hidden; min-height: 100vh; }
-        #canvas-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
-        
-        /* [NAVEGACIÓN SPA] */
-        #progress-bar { position: fixed; top: 0; left: 0; height: 5px; background: linear-gradient(90deg, var(--bleu), var(--or), var(--rouge)); z-index: 1000; transition: width 0.8s var(--expo); }
-        .screen { position: fixed; inset: 0; z-index: 10; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; opacity: 0; visibility: hidden; transition: 0.8s var(--expo); overflow-y: auto; }
-        .screen.active { opacity: 1; visibility: visible; }
+html{scroll-behavior:smooth}
 
-        /* [COMPONENTES UI] */
-        .card { background: var(--glass); border-radius: 30px; box-shadow: var(--shadow-xl); backdrop-filter: blur(25px); width: 100%; max-width: 920px; padding: clamp(25px, 6vw, 70px); border: 1px solid rgba(255,255,255,0.8); }
-        h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 6vw, 4.5rem); text-align: center; margin-bottom: 25px; }
-        h1 em { color: var(--rouge); font-style: italic; }
-        
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 35px; }
-        .full { grid-column: span 2; }
-        .form-group { display: flex; flex-direction: column; gap: 8px; position: relative; }
-        label { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--gris-1); }
-        
-        input, select { padding: 16px; border-radius: 14px; border: 2.5px solid var(--gris-2); font-family: inherit; font-size: 1rem; transition: 0.3s; width: 100%; background: #fff; }
-        input:focus, select:focus { border-color: var(--rouge); outline: none; box-shadow: 0 5px 15px rgba(139,0,0,0.1); }
-        
-        /* [ESTILOS DE VALIDACIÓN REGEX] */
-        .form-error-msg { font-size: 0.75rem; color: var(--error); font-weight: 700; display: none; }
-        .form-group.has-error input { border-color: var(--error); background: #FDEDEC; }
-        .form-group.has-error .form-error-msg { display: block; }
-        .form-group.is-valid input { border-color: var(--success); background: #E9F7EF; }
+body{
+    font-family:'Montserrat','Poppins',-apple-system,sans-serif;
+    background:var(--af-bg);
+    color:var(--af-dark);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+}
 
-        .btn { padding: 18px 40px; border-radius: 15px; font-weight: 800; cursor: pointer; border: none; transition: 0.4s; text-decoration: none; display: inline-flex; align-items: center; gap: 12px; }
-        .btn-primary { background: var(--rouge); color: #fff; }
-        .btn-primary:hover { background: var(--rouge-vif); transform: translateY(-3px); }
-        .btn-ghost { background: transparent; border: 2.5px solid var(--rouge); color: var(--rouge); }
-    </style>
+#vanta-bg{
+    position:fixed;
+    top:0;left:0;
+    width:100%;
+    height:100%;
+    z-index:-1;
+    pointer-events:none;
+}
+
+h1,h2,h3,h4{font-family:'Cinzel','Playfair Display',serif;letter-spacing:0;line-height:1.2}
+
+/* ============== PANTALLAS ============== */
+.screen{display:none;min-height:100vh;animation:fadeIn .7s ease}
+.screen.active{display:block}
+.screen.video-screen.active{display:flex}
+
+@keyframes fadeIn{
+    from{opacity:0;transform:translateY(10px)}
+    to{opacity:1;transform:translateY(0)}
+}
+@keyframes fadeOut{
+    from{opacity:1}
+    to{opacity:0}
+}
+.fade-out{animation:fadeOut .8s forwards!important}
+
+/* ============== VIDEO SCREENS ============== */
+.video-screen{
+    position:fixed;
+    inset:0;
+    background:#000;
+    z-index:1000;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+}
+.video-screen video{
+    width:100%;
+    height:100%;
+    max-width:100vw;
+    max-height:100vh;
+    object-fit:contain;
+}
+.video-controls{
+    position:absolute;
+    bottom:32px;
+    left:50%;
+    transform:translateX(-50%);
+    display:flex;
+    gap:14px;
+    z-index:2;
+}
+.btn-video{
+    padding:12px 28px;
+    background:rgba(255,255,255,.12);
+    color:#fff;
+    border:1px solid rgba(255,255,255,.4);
+    border-radius:0;
+    font-family:'Cinzel',serif;
+    font-weight:700;
+    font-size:11px;
+    letter-spacing:.4em;
+    text-transform:uppercase;
+    cursor:pointer;
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+    transition:all .35s;
+}
+.btn-video:hover{
+    background:rgba(255,255,255,.25);
+    border-color:#fff;
+    transform:translateY(-1px);
+}
+.btn-video.primary{
+    background:var(--af-red);
+    border-color:var(--af-red);
+}
+.btn-video.primary:hover{
+    background:#fff;
+    color:var(--af-red);
+}
+
+/* ============== HERO INFO PAGE ============== */
+.hero{
+    background:transparent;
+    color:var(--af-dark);
+    padding:80px 24px 110px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+}
+.hero::before{
+    content:"";
+    position:absolute;
+    top:0;left:0;right:0;
+    height:3px;
+    background:linear-gradient(90deg,var(--azul-francia) 0% 33.33%,#fff 33.33% 66.66%,var(--af-red) 66.66% 100%);
+}
+.hero-logos{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:28px;
+    margin-bottom:30px;
+    flex-wrap:wrap;
+}
+.hero-logos img{
+    height:80px;
+    background:rgba(255,255,255,.85);
+    backdrop-filter:blur(40px);
+    -webkit-backdrop-filter:blur(40px);
+    padding:12px 18px;
+    border-radius:4px;
+    border:1px solid var(--af-line);
+    box-shadow:var(--sombra-md);
+}
+.hero-divider{
+    width:1px;
+    height:54px;
+    background:var(--af-line);
+}
+.hero-eyebrow{
+    display:inline-block;
+    font-family:'Cinzel',serif;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.5em;
+    text-transform:uppercase;
+    color:var(--af-red);
+    background:rgba(255,255,255,.7);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    padding:8px 22px;
+    border-radius:0;
+    border:1px solid var(--af-line);
+    margin-bottom:22px;
+}
+.hero h1{
+    font-family:'Cinzel',serif;
+    font-size:clamp(2.4rem,6vw,4.6rem);
+    font-weight:700;
+    margin-bottom:16px;
+    letter-spacing:-1px;
+    color:var(--af-dark);
+}
+.hero h1 span{
+    color:var(--af-red);
+    font-style:normal;
+    background:linear-gradient(135deg,var(--af-red) 0%,#8a1715 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+.hero-sub{
+    font-family:'Cormorant Garamond',serif;
+    font-size:clamp(1.05rem,1.7vw,1.35rem);
+    color:#555;
+    max-width:680px;
+    margin:0 auto 30px;
+    font-weight:400;
+    font-style:italic;
+    line-height:1.5;
+}
+.date-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:14px;
+    background:rgba(255,255,255,.85);
+    backdrop-filter:blur(40px);
+    -webkit-backdrop-filter:blur(40px);
+    color:var(--af-dark);
+    padding:16px 32px;
+    border-radius:0;
+    border:1px solid var(--af-line);
+    font-family:'Cinzel',serif;
+    font-weight:700;
+    font-size:.95rem;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    box-shadow:var(--sombra-md);
+    margin-top:14px;
+}
+.date-badge svg{width:22px;height:22px;color:var(--af-red)}
+.flag-strip{
+    display:flex;
+    height:5px;
+    width:140px;
+    margin:24px auto 0;
+    border-radius:50px;
+    overflow:hidden;
+}
+.flag-strip span{flex:1}
+.flag-strip span:nth-child(1){background:var(--azul-francia)}
+.flag-strip span:nth-child(2){background:#fff}
+.flag-strip span:nth-child(3){background:var(--af-red)}
+.motto{
+    font-family:'Cinzel',serif;
+    font-style:normal;
+    font-size:.78rem;
+    color:var(--af-gold);
+    margin-top:18px;
+    letter-spacing:.6em;
+    text-transform:uppercase;
+    font-weight:700;
+}
+
+/* ============== CONTENIDO ============== */
+.container{
+    max-width:1080px;
+    margin:0 auto;
+    padding:0 24px;
+}
+.content-section{
+    background:rgba(255,255,255,.85);
+    backdrop-filter:blur(40px);
+    -webkit-backdrop-filter:blur(40px);
+    border:1px solid var(--af-line);
+    border-radius:4px;
+    padding:54px 48px;
+    margin:-50px auto 28px;
+    box-shadow:var(--sombra-lg);
+    position:relative;
+    z-index:2;
+}
+.content-section + .content-section{margin-top:28px}
+
+.section-tag{
+    display:inline-flex;
+    align-items:center;
+    gap:12px;
+    font-family:'Cinzel',serif;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.5em;
+    text-transform:uppercase;
+    color:var(--af-gold);
+    margin-bottom:14px;
+}
+.section-tag::before{
+    content:"";
+    width:32px;
+    height:1px;
+    background:var(--af-gold);
+}
+.content-section h2{
+    font-family:'Cinzel',serif;
+    font-size:2.4rem;
+    color:var(--af-dark);
+    margin-bottom:18px;
+    font-weight:700;
+    letter-spacing:-.5px;
+}
+.content-section p{
+    color:#555;
+    margin-bottom:14px;
+    font-size:.98rem;
+    font-weight:300;
+    line-height:1.75;
+}
+
+/* Cards de info */
+.info-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:18px;
+    margin-top:26px;
+}
+.info-card{
+    padding:28px 24px;
+    background:rgba(255,255,255,.7);
+    border:1px solid var(--af-line);
+    border-radius:4px;
+    transition:all .5s cubic-bezier(.19,1,.22,1);
+    border-bottom:2px solid transparent;
+}
+.info-card:hover{
+    transform:translateY(-5px);
+    background:#fff;
+    border-bottom-color:var(--af-red);
+    box-shadow:var(--sombra-md);
+}
+.info-card-icon{
+    width:46px;height:46px;
+    background:transparent;
+    border:1px solid var(--af-red);
+    color:var(--af-red);
+    border-radius:0;
+    display:flex;align-items:center;justify-content:center;
+    margin-bottom:18px;
+    transition:all .4s;
+}
+.info-card:hover .info-card-icon{
+    background:var(--af-red);
+    color:#fff;
+}
+.info-card h4{
+    font-family:'Cinzel',serif;
+    color:var(--af-dark);
+    font-size:1rem;
+    font-weight:700;
+    margin-bottom:8px;
+    letter-spacing:.5px;
+}
+.info-card p{font-size:.88rem;color:#666;margin:0;font-weight:300;line-height:1.6}
+
+/* Niveles */
+.niveles-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:18px;
+    margin-top:24px;
+}
+.nivel{
+    text-align:center;
+    padding:36px 18px 30px;
+    background:rgba(255,255,255,.7);
+    border:1px solid var(--af-line);
+    border-radius:4px;
+    transition:all .5s cubic-bezier(.19,1,.22,1);
+    position:relative;
+    overflow:hidden;
+}
+.nivel::after{
+    content:"";
+    position:absolute;
+    bottom:0;left:0;right:0;
+    height:2px;
+    background:var(--af-red);
+    transform:scaleX(0);
+    transform-origin:left;
+    transition:transform .4s;
+}
+.nivel:hover{
+    transform:translateY(-6px);
+    background:#fff;
+    box-shadow:var(--sombra-md);
+}
+.nivel:hover::after{transform:scaleX(1)}
+.nivel-code{
+    font-family:'Cinzel',serif;
+    font-size:2.8rem;
+    font-weight:700;
+    color:var(--af-dark);
+    line-height:1;
+}
+.nivel-name{
+    font-family:'Cinzel',serif;
+    font-size:.72rem;
+    text-transform:uppercase;
+    letter-spacing:.4em;
+    color:var(--af-gold);
+    margin:10px 0 18px;
+    font-weight:700;
+}
+.nivel-price{
+    font-family:'Cinzel',serif;
+    font-size:1.2rem;
+    font-weight:700;
+    color:var(--af-red);
+    letter-spacing:1px;
+}
+.nivel-price small{
+    display:block;
+    font-size:.7rem;
+    color:var(--gris);
+    font-weight:400;
+    margin-top:4px;
+    text-transform:uppercase;
+    letter-spacing:1px;
+}
+
+/* La Salle bloque */
+.lasalle-block{
+    background:
+        linear-gradient(135deg,rgba(26,26,26,.92),rgba(138,23,21,.88)),
+        url('22.png') center/cover;
+    color:#fff;
+    border-radius:4px;
+    border:1px solid var(--af-line);
+    padding:60px 50px;
+    margin-top:28px;
+    position:relative;
+    overflow:hidden;
+    box-shadow:var(--sombra-lg);
+}
+.lasalle-block::before{
+    content:"";
+    position:absolute;
+    top:30px;right:30px;
+    width:90px;height:90px;
+    border:1px solid var(--af-gold);
+    border-radius:50%;
+    opacity:.35;
+}
+.lasalle-block .section-tag{color:var(--af-gold)}
+.lasalle-block .section-tag::before{background:var(--af-gold)}
+.lasalle-block h2{color:#fff;font-family:'Cinzel',serif}
+.lasalle-block p{color:rgba(255,255,255,.88);font-weight:300}
+.lasalle-block .highlight-name{
+    color:var(--af-gold);
+    font-weight:600;
+    font-style:italic;
+    font-family:'Cormorant Garamond',serif;
+    font-size:1.1em;
+}
+.lasalle-quote{
+    border-left:2px solid var(--af-gold);
+    padding-left:24px;
+    margin:28px 0;
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;
+    font-size:1.25rem;
+    color:rgba(255,255,255,.95);
+    line-height:1.5;
+}
+
+/* Contactos */
+.contact-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:24px;
+    margin-top:26px;
+}
+.contact-card{
+    background:rgba(255,255,255,.7);
+    border:1px solid var(--af-line);
+    border-radius:4px;
+    padding:28px 26px;
+    transition:all .4s cubic-bezier(.19,1,.22,1);
+}
+.contact-card:hover{background:#fff;box-shadow:var(--sombra-md);transform:translateY(-3px)}
+.contact-card .ico{
+    width:42px;height:42px;
+    border:1px solid var(--af-gold);
+    color:var(--af-gold);
+    display:flex;align-items:center;justify-content:center;
+    margin-bottom:16px;
+    border-radius:50%;
+}
+.contact-card h4{
+    font-family:'Cinzel',serif;
+    font-size:.7rem;
+    letter-spacing:.4em;
+    text-transform:uppercase;
+    color:var(--af-gold);
+    margin-bottom:6px;
+    font-weight:700;
+}
+.contact-card .value{
+    font-size:.95rem;
+    color:var(--af-dark);
+    font-weight:500;
+    word-break:break-word;
+}
+.contact-card a{color:var(--af-red);text-decoration:none}
+.contact-card a:hover{text-decoration:underline}
+
+/* Reglamento collapsible */
+.regla-toggle{
+    cursor:pointer;
+    background:rgba(255,255,255,.6);
+    border:1px solid var(--af-line);
+    padding:20px 26px;
+    border-radius:0;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:14px;
+    transition:all .35s cubic-bezier(.19,1,.22,1);
+    user-select:none;
+}
+.regla-toggle:hover{
+    border-color:var(--af-red);
+    background:#fff;
+    box-shadow:var(--sombra-sm);
+}
+.regla-toggle h3{
+    font-family:'Cinzel',serif;
+    font-size:.85rem;
+    color:var(--af-dark);
+    font-weight:700;
+    letter-spacing:.3em;
+    text-transform:uppercase;
+}
+.regla-toggle .arrow{transition:transform .3s;color:var(--af-red);font-size:.85rem}
+.regla-toggle.open{
+    background:#fff;
+    border-color:var(--af-red);
+    border-bottom-color:transparent;
+}
+.regla-toggle.open .arrow{transform:rotate(180deg)}
+.regla-content{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .5s ease;
+}
+.regla-content.open{max-height:3000px}
+.regla-inner{
+    padding:26px 30px;
+    background:#fff;
+    border:1px solid var(--af-red);
+    border-top:none;
+    border-radius:0;
+}
+.regla-inner h4{
+    color:var(--af-red);
+    font-family:'Cinzel',serif;
+    font-size:.78rem;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.4em;
+    margin:18px 0 10px;
+}
+.regla-inner h4:first-child{margin-top:0}
+.regla-inner ul{padding-left:22px;margin-bottom:12px}
+.regla-inner li{margin-bottom:6px;color:#444;font-size:.92rem}
+.regla-inner p{font-size:.92rem}
+
+/* CTA */
+.cta-wrap{
+    text-align:center;
+    margin:40px auto 0;
+}
+.btn-primary{
+    display:inline-flex;
+    align-items:center;
+    gap:14px;
+    padding:22px 52px;
+    background:transparent;
+    color:var(--af-red);
+    border:1px solid var(--af-red);
+    border-radius:0;
+    font-family:'Cinzel',serif;
+    font-weight:700;
+    font-size:.85rem;
+    letter-spacing:.4em;
+    text-transform:uppercase;
+    cursor:pointer;
+    transition:all .6s cubic-bezier(.19,1,.22,1);
+    text-decoration:none;
+}
+.btn-primary:hover{
+    background:var(--af-red);
+    color:#fff;
+    box-shadow:0 15px 40px rgba(200,33,30,.25);
+    transform:translateY(-2px);
+}
+.btn-primary svg{width:18px;height:18px}
+
+/* ============== FORMULARIO ============== */
+.form-page-wrap{
+    background:transparent;
+    min-height:100vh;
+    padding:60px 16px;
+    position:relative;
+}
+.form-card{
+    max-width:920px;
+    margin:0 auto;
+    background:rgba(255,255,255,.85);
+    backdrop-filter:blur(40px);
+    -webkit-backdrop-filter:blur(40px);
+    border:1px solid var(--af-line);
+    border-radius:4px;
+    box-shadow:var(--sombra-lg);
+    overflow:hidden;
+}
+.form-header{
+    background:transparent;
+    padding:40px 44px 28px;
+    border-bottom:1px solid var(--af-line);
+    position:relative;
+}
+.form-header::after{
+    content:"";
+    position:absolute;
+    bottom:-1px;left:0;right:0;
+    height:2px;
+    background:linear-gradient(90deg,var(--azul-francia) 0% 33%,#fff 33% 66%,var(--af-red) 66% 100%);
+}
+.form-header-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    flex-wrap:wrap;
+    margin-bottom:22px;
+}
+.form-header-top img{height:64px}
+.form-header h2{
+    font-family:'Cinzel',serif;
+    text-align:center;
+    color:var(--af-dark);
+    font-size:1.5rem;
+    font-weight:700;
+    letter-spacing:.5px;
+}
+.form-subtitle{
+    font-family:'Cinzel',serif;
+    text-align:center;
+    color:var(--af-gold);
+    font-size:.72rem;
+    margin-top:8px;
+    letter-spacing:.5em;
+    text-transform:uppercase;
+    font-weight:700;
+}
+.form-body{padding:40px}
+
+.form-alert{
+    background:rgba(200,33,30,.04);
+    color:var(--af-dark);
+    padding:18px 24px;
+    border-radius:0;
+    border-left:2px solid var(--af-red);
+    font-weight:400;
+    font-size:.88rem;
+    line-height:1.6;
+    margin-bottom:36px;
+    display:flex;
+    align-items:flex-start;
+    gap:14px;
+}
+.form-alert strong{color:var(--af-red);font-weight:700}
+.form-alert svg{flex-shrink:0;margin-top:2px;color:var(--af-red)}
+
+.form-section-title{
+    font-family:'Cinzel',serif;
+    color:var(--af-dark);
+    font-size:1.05rem;
+    font-weight:700;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    margin:36px 0 4px;
+    padding-bottom:14px;
+    border-bottom:1px solid var(--af-line);
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+.form-section-title:first-of-type{margin-top:0}
+.form-section-title .num{
+    width:32px;height:32px;
+    background:transparent;
+    border:1px solid var(--af-red);
+    color:var(--af-red);
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:.78rem;
+    font-weight:700;
+    font-family:'Cinzel',serif;
+    letter-spacing:0;
+}
+.form-section-desc{
+    font-family:'Cinzel',serif;
+    color:var(--af-gold);
+    font-size:.7rem;
+    margin-bottom:24px;
+    text-transform:uppercase;
+    letter-spacing:.4em;
+    font-weight:700;
+}
+
+form .grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px 20px;
+}
+form .full{grid-column:1 / -1}
+
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{
+    font-family:'Cinzel',serif;
+    font-size:.7rem;
+    font-weight:700;
+    color:var(--af-dark);
+    text-transform:uppercase;
+    letter-spacing:.3em;
+}
+.field label .req{color:var(--af-red);margin-left:4px}
+.field input[type=text],
+.field input[type=tel],
+.field input[type=email],
+.field input[type=date],
+.field select{
+    padding:14px 4px;
+    border:none;
+    border-bottom:1px solid #d6d2cc;
+    border-radius:0;
+    font-family:'Montserrat',inherit;
+    font-size:.92rem;
+    letter-spacing:1px;
+    transition:all .35s;
+    background:transparent;
+    text-transform:uppercase;
+    color:var(--af-dark);
+}
+.field input[type=email]{text-transform:none}
+.field input:focus,
+.field select:focus{
+    outline:none;
+    border-bottom-color:var(--af-red);
+    background:rgba(200,33,30,.02);
+}
+.field-hint{
+    font-size:.72rem;
+    color:var(--gris);
+    margin-top:2px;
+    font-weight:400;
+    text-transform:none;
+    letter-spacing:0;
+    font-family:'Montserrat',sans-serif;
+    font-style:italic;
+}
+
+/* Candidato number */
+.candidato-input{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    align-items:center;
+}
+.candidato-input input{
+    text-align:center;
+    letter-spacing:6px;
+    font-family:'Cinzel',serif;
+    font-weight:700;
+    font-size:1.05rem;
+}
+
+/* Tratamiento radios */
+.radio-row{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+    margin-top:4px;
+}
+.radio-pill{
+    flex:1;
+    min-width:90px;
+    position:relative;
+}
+.radio-pill input{position:absolute;opacity:0;pointer-events:none}
+.radio-pill label{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:14px 18px;
+    border:1px solid var(--af-line);
+    border-radius:0;
+    cursor:pointer;
+    transition:all .4s cubic-bezier(.19,1,.22,1);
+    font-family:'Cinzel',serif;
+    font-weight:700;
+    font-size:.72rem;
+    text-transform:uppercase;
+    letter-spacing:.3em;
+    color:#666;
+    margin:0;
+    background:rgba(255,255,255,.5);
+}
+.radio-pill input:checked + label{
+    background:var(--af-red);
+    color:#fff;
+    border-color:var(--af-red);
+    box-shadow:0 8px 22px rgba(200,33,30,.2);
+}
+.radio-pill label:hover{border-color:var(--af-red);color:var(--af-red)}
+.radio-pill input:checked + label:hover{color:#fff}
+
+/* Niveles selector dentro form */
+.nivel-selector{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+    gap:14px;
+}
+.nivel-pill{position:relative}
+.nivel-pill input{position:absolute;opacity:0;pointer-events:none}
+.nivel-pill label{
+    display:block;
+    padding:24px 16px;
+    border:1px solid var(--af-line);
+    border-radius:0;
+    cursor:pointer;
+    text-align:center;
+    transition:all .5s cubic-bezier(.19,1,.22,1);
+    background:rgba(255,255,255,.5);
+}
+.nivel-pill label .code{
+    display:block;
+    font-family:'Cinzel',serif;
+    font-size:1.9rem;
+    font-weight:700;
+    color:var(--af-dark);
+    line-height:1;
+    letter-spacing:1px;
+}
+.nivel-pill label .price{
+    display:block;
+    margin-top:12px;
+    color:var(--af-red);
+    font-family:'Cinzel',serif;
+    font-weight:700;
+    font-size:.9rem;
+    letter-spacing:1px;
+}
+.nivel-pill input:checked + label{
+    border-color:var(--af-red);
+    background:#fff;
+    transform:translateY(-3px);
+    box-shadow:0 14px 30px rgba(200,33,30,.18);
+}
+.nivel-pill input:checked + label .code{color:var(--af-red)}
+
+/* Motivo radios columna */
+.radio-stack{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:10px;
+}
+
+/* Aceptación */
+.accept-box{
+    background:rgba(200,33,30,.04);
+    border:1px solid var(--af-line);
+    border-left:2px solid var(--af-red);
+    border-radius:0;
+    padding:22px 26px;
+    display:flex;
+    gap:16px;
+    align-items:flex-start;
+    margin-top:30px;
+}
+.accept-box input[type=checkbox]{
+    width:20px;height:20px;
+    accent-color:var(--af-red);
+    flex-shrink:0;
+    margin-top:2px;
+}
+.accept-box label{
+    font-size:.88rem;
+    color:#444;
+    line-height:1.6;
+    cursor:pointer;
+    font-weight:300;
+}
+.accept-box label strong{color:var(--af-red);font-weight:700}
+
+/* Submit */
+.form-submit{
+    margin-top:32px;
+    text-align:center;
+}
+.btn-submit{
+    width:100%;
+    padding:22px 32px;
+    background:transparent;
+    color:var(--af-red);
+    border:1px solid var(--af-red);
+    border-radius:0;
+    font-family:'Cinzel',serif;
+    font-weight:700;
+    font-size:.9rem;
+    cursor:pointer;
+    letter-spacing:.6em;
+    text-transform:uppercase;
+    transition:all .6s cubic-bezier(.19,1,.22,1);
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:14px;
+}
+.btn-submit:hover{
+    background:var(--af-red);
+    color:#fff;
+    box-shadow:0 15px 40px rgba(200,33,30,.25);
+    transform:translateY(-2px);
+}
+.btn-submit:disabled{opacity:.7;cursor:not-allowed;transform:none}
+.btn-back{
+    margin-top:14px;
+    background:none;
+    border:none;
+    color:var(--gris);
+    cursor:pointer;
+    font-family:inherit;
+    font-size:.85rem;
+    text-decoration:underline;
+}
+.btn-back:hover{color:var(--af-red)}
+
+/* WhatsApp en footer */
+.whatsapp-card{
+    margin-top:30px;
+    background:linear-gradient(135deg,#25D366,#128C7E);
+    color:#fff;
+    padding:24px 26px;
+    border-radius:4px;
+    text-align:center;
+    box-shadow:0 8px 22px rgba(18,140,126,.3);
+}
+.whatsapp-card p{margin-bottom:14px;font-size:.95rem}
+.whatsapp-card a{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    background:#fff;
+    color:#128C7E;
+    padding:12px 26px;
+    border-radius:0;
+    text-decoration:none;
+    font-family:'Cinzel',serif;
+    font-weight:700;
+    font-size:.78rem;
+    letter-spacing:.3em;
+    text-transform:uppercase;
+    transition:all .35s;
+}
+.whatsapp-card a:hover{transform:scale(1.04)}
+
+/* ============== ASK RETURN ============== */
+.ask-screen{
+    background:transparent;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:40px 24px;
+    color:var(--af-dark);
+    text-align:center;
+    position:relative;
+}
+.ask-card{
+    background:rgba(255,255,255,.85);
+    backdrop-filter:blur(40px);
+    -webkit-backdrop-filter:blur(40px);
+    border:1px solid var(--af-line);
+    border-radius:4px;
+    padding:60px 44px;
+    max-width:580px;
+    width:100%;
+    box-shadow:var(--sombra-lg);
+}
+.ask-icon{
+    width:78px;height:78px;
+    background:transparent;
+    border:1px solid var(--af-red);
+    color:var(--af-red);
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    margin:0 auto 24px;
+}
+.ask-card h2{
+    font-family:'Cinzel',serif;
+    font-size:1.8rem;
+    color:var(--af-dark);
+    margin-bottom:12px;
+    font-weight:700;
+}
+.ask-card p{
+    font-family:'Cormorant Garamond',serif;
+    color:#555;
+    margin-bottom:36px;
+    font-size:1.15rem;
+    font-style:italic;
+}
+.ask-buttons{
+    display:flex;
+    gap:14px;
+    justify-content:center;
+    flex-wrap:wrap;
+}
+.ask-buttons button{
+    font-family:'Cinzel',serif;
+    letter-spacing:.4em;
+    text-transform:uppercase;
+    font-size:.78rem;
+    border-radius:0;
+    padding:18px 40px;
+    cursor:pointer;
+    transition:all .35s;
+    min-width:130px;
+    font-weight:700;
+}
+.btn-yes{
+    background:var(--af-red);
+    color:#fff;
+    border:1px solid var(--af-red);
+}
+.btn-no{
+    background:transparent;
+    color:var(--af-dark);
+    border:1px solid var(--af-line);
+}
+.btn-yes:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(200,33,30,.25)}
+.btn-no:hover{border-color:var(--af-red);color:var(--af-red)}
+
+/* Thanks final */
+.thanks-overlay{
+    position:absolute;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    z-index:3;
+    background:linear-gradient(180deg,rgba(26,26,26,.8),rgba(138,23,21,.85));
+    color:#fff;
+    text-align:center;
+    padding:30px;
+    pointer-events:none;
+    animation:fadeIn 1s ease;
+}
+.thanks-overlay h2{
+    font-family:'Cinzel',serif;
+    font-size:clamp(2rem,5vw,3.4rem);
+    margin-bottom:14px;
+    color:#fff;
+    font-weight:700;
+    letter-spacing:1px;
+}
+.thanks-overlay p{
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;
+    font-size:1.2rem;
+    opacity:.95;
+    max-width:560px;
+}
+.thanks-flag{
+    display:flex;
+    height:5px;
+    width:140px;
+    margin-top:28px;
+    border-radius:0;
+    overflow:hidden;
+}
+.thanks-flag span{flex:1}
+.thanks-flag span:nth-child(1){background:var(--azul-francia)}
+.thanks-flag span:nth-child(2){background:#fff}
+.thanks-flag span:nth-child(3){background:var(--af-red)}
+
+/* Footer */
+.footer{
+    text-align:center;
+    padding:50px 20px 40px;
+    color:#888;
+    font-family:'Cinzel',serif;
+    font-size:.7rem;
+    letter-spacing:.4em;
+    text-transform:uppercase;
+    font-weight:400;
+}
+.footer strong{color:var(--af-red);font-weight:700}
+.footer p+p{margin-top:8px;letter-spacing:.3em}
+
+/* Responsive */
+@media (max-width:768px){
+    .content-section{padding:34px 22px;margin-left:12px;margin-right:12px}
+    .form-body{padding:24px 20px}
+    form .grid{grid-template-columns:1fr}
+    .form-header{padding:24px 20px 16px}
+    .lasalle-block{padding:34px 24px}
+    .candidato-input{grid-template-columns:1fr}
+    .hero{padding:50px 18px 80px}
+}
+
+/* Loading state */
+.loading-dots::after{
+    content:"";
+    display:inline-block;
+    width:14px;
+    text-align:left;
+    animation:dots 1.4s infinite;
+}
+@keyframes dots{
+    0%,20%{content:""}
+    40%{content:"."}
+    60%{content:".."}
+    80%,100%{content:"..."}
+}
+</style>
 </head>
 <body>
 
-    <div id="progress-bar" style="width: 0%"></div>
-    <canvas id="canvas-bg"></canvas>
+<div id="vanta-bg"></div>
 
-    <audio id="bg-music" loop><source src="Arrival_at_the_Terminal (1).mp3" type="audio/mpeg"></audio>
-
-    <!-- PANTALLA 1: BIENVENIDA -->
-    <div id="screen-welcome" class="screen active" style="background:#000;">
-        <video id="vid-welcome" autoplay muted playsinline style="width:100%; max-width:1000px; border-radius:20px;">
-            <source src="1.mp4" type="video/mp4">
-        </video>
-        <button class="btn btn-primary" id="btn-start" style="margin-top:40px;">INGRESAR AL PORTAL 2026 ▸</button>
+<!-- =============== PANTALLA 1: VIDEO BIENVENIDA =============== -->
+<section id="welcome" class="screen video-screen active">
+    <video id="welcomeVideo" playsinline preload="auto">
+        <source src="1.mp4" type="video/mp4">
+    </video>
+    <div class="video-controls">
+        <button class="btn-video" onclick="toggleMute('welcomeVideo',this)">
+            <span class="mute-label">Activar sonido</span>
+        </button>
+        <button class="btn-video primary" onclick="goToInfo()">
+            Continuar →
+        </button>
     </div>
+</section>
 
-    <!-- PANTALLA 2: INFORMACIÓN INSTITUCIONAL -->
-    <div id="screen-info" class="screen">
-        <div class="card">
-            <h1>Inscripción <em>DELF Junior</em></h1>
-            <div style="background:var(--rouge-pale); padding:20px; border-radius:15px; text-align:center; margin-bottom:30px;">
-                <p style="color:var(--rouge); font-weight:700;">SEDE OFICIAL DE APLICACIÓN:</p>
-                <p style="font-size:1.2rem; font-family:'Playfair Display', serif;">Colegio La Salle, San Cristóbal de Las Casas, Chiapas</p>
-                <p style="margin-top:10px;">Fechas: 7 al 17 de mayo de 2026.</p>
-            </div>
-            <div style="text-align:center;">
-                <button id="btn-to-form" class="btn btn-primary">✒ INICIAR INSCRIPCIÓN ESTRICTA</button>
+<!-- =============== PANTALLA 2: PÁGINA INFORMATIVA =============== -->
+<section id="info" class="screen">
+    <header class="hero">
+        <div class="hero-logos">
+            <img src="alianza.png" alt="Alianza Francesa">
+            <div class="hero-divider"></div>
+            <img src="lasalle.jpg" alt="Colegio La Salle">
+        </div>
+        <span class="hero-eyebrow">Embajada de Francia · Ministerio Francés de Educación</span>
+        <h1>DELF Junior <span>2026</span></h1>
+        <p class="hero-sub">
+            Certificación oficial de francés del Ministerio Francés de Educación.
+            Una colaboración entre la Alianza Francesa de San Cristóbal y el Colegio La Salle.
+        </p>
+        <div class="date-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="4" width="18" height="18" rx="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8" y1="2" x2="8" y2="6"/>
+                <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+            Sesión de exámenes · Junio 2026
+        </div>
+        <div class="flag-strip">
+            <span></span><span></span><span></span>
+        </div>
+        <p class="motto">Liberté · Égalité · Fraternité</p>
+    </header>
+
+    <div class="container">
+
+        <!-- ¿Qué es el DELF? -->
+        <div class="content-section">
+            <span class="section-tag">Acerca del examen</span>
+            <h2>¿Qué es el DELF Junior?</h2>
+            <p>
+                El <strong>DELF</strong> (Diplôme d'Études en Langue Française) es la certificación oficial
+                del Ministerio Francés de Educación que acredita el dominio del idioma francés como lengua
+                extranjera. La versión <strong>Junior</strong> está dirigida a adolescentes en edad escolar
+                y evalúa las cuatro competencias lingüísticas fundamentales: comprensión oral, comprensión
+                escrita, producción oral y producción escrita.
+            </p>
+            <p>
+                Es un diploma <strong>internacional, vitalicio y reconocido en más de 170 países</strong>.
+                Constituye una herramienta indispensable para estudios universitarios en países francófonos,
+                programas de movilidad académica, así como una distinción curricular para el futuro profesional
+                del candidato.
+            </p>
+
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="info-card-icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                    </div>
+                    <h4>Reconocimiento mundial</h4>
+                    <p>Validez internacional permanente, expedido por Francia.</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-card-icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                    </div>
+                    <h4>Cuatro niveles MCER</h4>
+                    <p>A1, A2, B1 y B2 según el Marco Común Europeo de Referencia.</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-card-icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                    </div>
+                    <h4>Cuatro competencias</h4>
+                    <p>Comprensión oral, comprensión escrita, producción oral y escrita.</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-card-icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.5 13.5L17 22l-5-3-5 3 1.5-8.5"/></svg>
+                    </div>
+                    <h4>Diploma vitalicio</h4>
+                    <p>Sin caducidad. Una inversión académica para toda la vida.</p>
+                </div>
             </div>
         </div>
+
+        <!-- Niveles -->
+        <div class="content-section">
+            <span class="section-tag">Niveles disponibles</span>
+            <h2>Elige tu nivel</h2>
+            <p>El examen DELF Junior se divide en cuatro niveles independientes. Cada candidato puede
+            inscribirse al nivel que mejor refleje su dominio actual del idioma francés.</p>
+            <div class="niveles-grid">
+                <div class="nivel">
+                    <div class="nivel-code">A1</div>
+                    <div class="nivel-name">Introductorio</div>
+                    <div class="nivel-price">$1,445.00 <small>MXN</small></div>
+                </div>
+                <div class="nivel">
+                    <div class="nivel-code">A2</div>
+                    <div class="nivel-name">Elemental</div>
+                    <div class="nivel-price">$1,575.00 <small>MXN</small></div>
+                </div>
+                <div class="nivel">
+                    <div class="nivel-code">B1</div>
+                    <div class="nivel-name">Intermedio</div>
+                    <div class="nivel-price">$1,800.00 <small>MXN</small></div>
+                </div>
+                <div class="nivel">
+                    <div class="nivel-code">B2</div>
+                    <div class="nivel-name">Intermedio alto</div>
+                    <div class="nivel-price">$2,500.00 <small>MXN</small></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- La Salle Histórica -->
+        <div class="lasalle-block">
+            <span class="section-tag">Una alianza con historia</span>
+            <h2>Colegio La Salle &amp; Alianza Francesa</h2>
+            <p>
+                Desde hace varios años, el <strong>Colegio La Salle de San Cristóbal</strong> y la
+                <strong>Alianza Francesa</strong> mantienen una colaboración fructífera comprometida con
+                la difusión de la lengua y la cultura francesa entre la juventud chiapaneca. Esta sinergia
+                ha permitido a generaciones de estudiantes acceder a una formación lingüística de excelencia
+                avalada internacionalmente.
+            </p>
+            <p>
+                Cada año, la entrega de diplomas se realiza con la presencia distinguida de
+                <span class="highlight-name">Clémence Mayoral</span>, representante institucional, en una
+                ceremonia que reconoce el esfuerzo y la dedicación de cada candidato. Los estudiantes con
+                las mejores calificaciones reciben además <strong>menciones honoríficas</strong> que
+                celebran su excelencia académica.
+            </p>
+            <div class="lasalle-quote">
+                Aprender francés es abrir una ventana al mundo. Cada diploma DELF entregado representa
+                una historia de constancia, talento y futuro.
+            </div>
+            <p style="opacity:.85;font-size:.95rem">
+                Esta histórica colaboración consolida a San Cristóbal de Las Casas como un punto de
+                referencia en la enseñanza del francés a nivel juvenil en el sureste de México.
+            </p>
+        </div>
+
+        <!-- Contactos -->
+        <div class="content-section">
+            <span class="section-tag">Contactos institucionales</span>
+            <h2>Estamos a tu disposición</h2>
+            <p>Para cualquier consulta sobre el proceso de inscripción, fechas o requisitos, ponte en
+            contacto con la Dirección de la Alianza Francesa de San Cristóbal o con el profesor responsable
+            del DELF Junior.</p>
+
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <div class="ico">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    </div>
+                    <h4>Dirección general</h4>
+                    <p class="value"><a href="mailto:DIRECCIONSANCRISTOBAL@ALIANZAFR.EDU.FR">DIRECCIONSANCRISTOBAL@ALIANZAFR.EDU.FR</a></p>
+                </div>
+
+                <div class="contact-card">
+                    <div class="ico">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    </div>
+                    <h4>Línea administrativa</h4>
+                    <p class="value">+52 1 967 342 44 56</p>
+                </div>
+
+                <div class="contact-card">
+                    <div class="ico">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.6.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.4-2.3-1.4-.8-.7-1.4-1.6-1.6-1.9-.2-.3 0-.4.1-.6.1-.1.3-.3.4-.5.1-.1.2-.3.3-.5.1-.2 0-.3 0-.5-.1-.1-.6-1.5-.9-2-.2-.5-.5-.5-.6-.5h-.6c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2 0 1.3 1 2.6 1.1 2.7.1.2 2 3.1 4.8 4.2 1.7.7 2.3.7 3.1.6.5-.1 1.7-.7 1.9-1.3.2-.7.2-1.2.2-1.3-.1-.1-.3-.2-.6-.3z"/></svg>
+                    </div>
+                    <h4>Pagos · Prof. Román Fuentes</h4>
+                    <p class="value"><a href="https://wa.me/524731219937" target="_blank" rel="noopener">WhatsApp +52 473 121 9937</a></p>
+                </div>
+
+                <div class="contact-card">
+                    <div class="ico">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    </div>
+                    <h4>Sede de aplicación</h4>
+                    <p class="value">Colegio La Salle, San Cristóbal de Las Casas, Chiapas</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reglamento -->
+        <div class="content-section">
+            <span class="section-tag">Información oficial</span>
+            <h2>Reglamento de los Exámenes DELF / DALF</h2>
+            <p>El candidato deberá tener conocimiento del presente reglamento y firmar de conformidad
+            antes de presentar el examen.</p>
+
+            <div class="regla-toggle" onclick="toggleRegla(this)">
+                <h3>Para inscribirse</h3>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="regla-content">
+                <div class="regla-inner">
+                    <h4>El candidato</h4>
+                    <ul>
+                        <li>Puede inscribirse al nivel de su elección, cuantas veces le sea necesario,
+                        mientras cumpla con los requisitos del tipo de sesión.</li>
+                        <li>Deberá verificar que los datos de su ficha de inscripción sean correctos.</li>
+                    </ul>
+                    <h4>El centro</h4>
+                    <ul>
+                        <li>Asignará automáticamente un número único de candidato.</li>
+                        <li>En caso de reinscripción, el candidato deberá facilitar al centro su número
+                        único de candidato (presentar copia de constancia o diploma del último nivel).</li>
+                    </ul>
+                    <h4>Importante</h4>
+                    <ul>
+                        <li>Ninguna inscripción será aceptada fuera del periodo establecido.</li>
+                        <li>El candidato debe señalar durante el periodo de inscripción cualquier necesidad
+                        de adaptación de su examen, entregando comprobante médico oficial.</li>
+                        <li>En el caso de un candidato invidente, deberá hacer la solicitud al centro con
+                        dos meses de anticipación.</li>
+                        <li><strong>No hay reembolso ni prórroga de inscripciones por ningún motivo</strong>,
+                        a menos que el centro de examen cancele la sesión.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="regla-toggle" onclick="toggleRegla(this)">
+                <h3>Para presentar los exámenes</h3>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="regla-content">
+                <div class="regla-inner">
+                    <h4>El centro</h4>
+                    <ul>
+                        <li>Notificará los horarios exactos de las pruebas colectivas e individuales mediante
+                        una convocatoria individual.</li>
+                    </ul>
+                    <h4>El candidato</h4>
+                    <ul>
+                        <li>Debe acudir a la sede convocada con: convocatoria impresa, identificación oficial
+                        con fotografía y pluma azul o negra.</li>
+                        <li>Firmar los documentos de control de asistencia y notificar cualquier error en sus
+                        datos personales.</li>
+                        <li><strong>Está prohibido el uso de lápiz.</strong></li>
+                        <li><strong>Está prohibido el uso de cualquier dispositivo electrónico</strong> en la
+                        sala de exámenes.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="regla-toggle" onclick="toggleRegla(this)">
+                <h3>Resultados</h3>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="regla-content">
+                <div class="regla-inner">
+                    <h4>El centro</h4>
+                    <ul>
+                        <li>Comunicará los resultados el día indicado en el calendario oficial.</li>
+                        <li>No se entregarán resultados vía telefónica ni por correo electrónico.</li>
+                    </ul>
+                    <h4>El candidato</h4>
+                    <ul>
+                        <li>Deberá presentarse personalmente con identificación oficial con fotografía en
+                        el centro donde aplicó su examen para recibir su constancia de aprobación.</li>
+                    </ul>
+                    <p><strong>Importante:</strong> La constancia de aprobación tiene un valor oficial para
+                    todo efecto necesario, en espera de la emisión del diploma.</p>
+                </div>
+            </div>
+
+            <div class="regla-toggle" onclick="toggleRegla(this)">
+                <h3>Derechos del candidato</h3>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="regla-content">
+                <div class="regla-inner">
+                    <ul>
+                        <li>Ser informado.</li>
+                        <li>Ser tratado con dignidad.</li>
+                        <li>Ser atendido según sus necesidades específicas.</li>
+                        <li>Ser evaluado conforme a los reglamentos establecidos por la autoridad francesa
+                        gestora de los exámenes
+                        (<a href="https://www.france-education-international.fr/" target="_blank" rel="noopener" style="color:var(--af-red)">France Education International</a>).</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="cta-wrap">
+            <button class="btn-primary" onclick="goToFormVideo()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                    <line x1="16" y1="13" x2="8" y2="13"/>
+                    <line x1="16" y1="17" x2="8" y2="17"/>
+                </svg>
+                Llenar ficha de inscripción
+            </button>
+        </div>
+
+        <div class="footer">
+            <p><strong>Alianza Francesa San Cristóbal</strong> · Colegio La Salle</p>
+            <p>Sesión DELF Junior · Junio 2026 · San Cristóbal de Las Casas, Chiapas</p>
+        </div>
     </div>
+</section>
 
-    <!-- PANTALLA 3: FORMULARIO CON VALIDACIÓN REGEX -->
-    <div id="screen-form" class="screen">
-        <div class="card">
-            <h2>Datos del <em>Candidato</em></h2>
-            <form id="master-form" novalidate>
-                <div class="form-grid">
-                    
-                    <div class="form-group full">
-                        <label>Nombre(s) <span style="color:var(--error);">*</span></label>
-                        <input type="text" id="f-nombres" placeholder="Ej: Miguel David" required>
-                        <span class="form-error-msg">Solo se permiten letras.</span>
-                    </div>
+<!-- =============== PANTALLA 3: VIDEO TRANSICIÓN AL FORM =============== -->
+<section id="formVideo" class="screen video-screen">
+    <video id="formTransitionVideo" playsinline preload="auto">
+        <source src="4.mp4" type="video/mp4">
+    </video>
+    <div class="video-controls">
+        <button class="btn-video" onclick="skipFormVideo()">Saltar →</button>
+    </div>
+</section>
 
-                    <div class="form-group">
-                        <label>Apellido Paterno <span style="color:var(--error);">*</span></label>
-                        <input type="text" id="f-apPaterno" placeholder="Ej: Tillero" required>
-                        <span class="form-error-msg">Solo se permiten letras.</span>
-                    </div>
+<!-- =============== PANTALLA 4: FORMULARIO =============== -->
+<section id="formPage" class="screen">
+    <div class="form-page-wrap">
+        <div class="form-card">
+            <div class="form-header">
+                <div class="form-header-top">
+                    <img src="alianza.png" alt="Alianza Francesa">
+                    <img src="lasalle.jpg" alt="Colegio La Salle">
+                </div>
+                <h2>Formulario de Inscripción · DELF Junior 2026</h2>
+                <p class="form-subtitle">Sesión Junio 2026 — San Cristóbal de Las Casas</p>
+            </div>
 
-                    <div class="form-group">
-                        <label>Apellido Materno</label>
-                        <input type="text" id="f-apMaterno" placeholder="Ej: Álvarez">
-                        <span class="form-error-msg">Solo se permiten letras.</span>
-                    </div>
+            <div class="form-body">
 
-                    <div class="form-group">
-                        <label>Correo Electrónico <span style="color:var(--error);">*</span></label>
-                        <input type="email" id="f-correo" placeholder="usuario@dominio.com" required>
-                        <span class="form-error-msg">Formato de correo inválido.</span>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Teléfono Celular <span style="color:var(--error);">*</span></label>
-                        <input type="tel" id="f-telefono" placeholder="10 dígitos" required>
-                        <span class="form-error-msg">Debe contener exactamente 10 números.</span>
-                    </div>
-
-                    <div class="form-group full">
-                        <label>Nivel a presentar <span style="color:var(--error);">*</span></label>
-                        <select id="f-nivel" required>
-                            <option value="" disabled selected>Seleccione...</option>
-                            <option value="A1">A1 - $1,445 MXN</option>
-                            <option value="A2">A2 - $1,575 MXN</option>
-                            <option value="B1">B1 - $1,800 MXN</option>
-                            <option value="B2">B2 - $2,500 MXN</option>
-                        </select>
-                        <span class="form-error-msg">Debe seleccionar un nivel.</span>
-                    </div>
-
-                    <div class="full" style="text-align:center; margin-top:20px;">
-                        <button type="submit" class="btn btn-primary">VALIDAR CUESTIONARIO Y CONTINUAR →</button>
+                <div class="form-alert">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="8" x2="12" y2="12"/>
+                        <line x1="12" y1="16" x2="12.01" y2="16"/>
+                    </svg>
+                    <div>
+                        <strong>Llenar en MAYÚSCULAS</strong> incluyendo acentos cuando sea necesario.
+                        Si presentó anteriormente algún examen DELF/DALF, favor de presentar copia de constancia
+                        o diploma del último examen aprobado.
                     </div>
                 </div>
-            </form>
-        </div>
-    </div>
 
-    <!-- PANTALLA 4: RECIBO -->
-    <div id="screen-receipt" class="screen">
-        <div class="card" style="text-align:center;">
-            <h2>Registro Completado</h2>
-            <div id="receipt-box" style="margin:25px 0; border:2px dashed var(--or); padding:30px; text-align:left; border-radius:20px;"></div>
-            <div class="btn-group" style="display:flex; gap:15px; justify-content:center;">
-                <button id="btn-download-json" class="btn btn-primary">💾 DESCARGAR EXPEDIENTE JSON</button>
+                <form id="inscripcionForm" novalidate>
+
+                    <!-- Identificación -->
+                    <h3 class="form-section-title"><span class="num">1</span>Identificación</h3>
+                    <p class="form-section-desc">Si ya cuentas con número de candidato, escríbelo a continuación</p>
+
+                    <div class="grid">
+                        <div class="field full">
+                            <label>Número de candidato (12 dígitos) <span class="field-hint">— opcional, sólo si tiene examen previo</span></label>
+                            <div class="candidato-input">
+                                <input type="text" name="candidato_parte1" maxlength="6" pattern="\d{6}" placeholder="______">
+                                <input type="text" name="candidato_parte2" maxlength="6" pattern="\d{6}" placeholder="______">
+                            </div>
+                        </div>
+
+                        <div class="field full">
+                            <label>Tratamiento <span class="req">*</span></label>
+                            <div class="radio-row">
+                                <div class="radio-pill">
+                                    <input type="radio" id="trat-sra" name="tratamiento" value="SRA." required>
+                                    <label for="trat-sra">Sra.</label>
+                                </div>
+                                <div class="radio-pill">
+                                    <input type="radio" id="trat-sr" name="tratamiento" value="SR.">
+                                    <label for="trat-sr">Sr.</label>
+                                </div>
+                                <div class="radio-pill">
+                                    <input type="radio" id="trat-otro" name="tratamiento" value="OTRO">
+                                    <label for="trat-otro">Otro</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Información personal -->
+                    <h3 class="form-section-title"><span class="num">2</span>Información Personal</h3>
+                    <p class="form-section-desc">Datos del candidato(a)</p>
+
+                    <div class="grid">
+                        <div class="field full">
+                            <label>Apellidos (paterno y materno) <span class="req">*</span></label>
+                            <input type="text" name="apellidos" required>
+                        </div>
+
+                        <div class="field full">
+                            <label>Nombre(s) <span class="req">*</span></label>
+                            <input type="text" name="nombres" required>
+                        </div>
+
+                        <div class="field">
+                            <label>Fecha de nacimiento <span class="req">*</span></label>
+                            <input type="date" name="fecha_nacimiento" required>
+                        </div>
+
+                        <div class="field">
+                            <label>Nacionalidad <span class="req">*</span></label>
+                            <input type="text" name="nacionalidad" required>
+                        </div>
+
+                        <div class="field">
+                            <label>Ciudad de nacimiento <span class="req">*</span></label>
+                            <input type="text" name="ciudad_nacimiento" required>
+                        </div>
+
+                        <div class="field">
+                            <label>País de nacimiento <span class="req">*</span></label>
+                            <input type="text" name="pais_nacimiento" required>
+                        </div>
+
+                        <div class="field full">
+                            <label>Lengua materna <span class="req">*</span></label>
+                            <input type="text" name="lengua_materna" required>
+                        </div>
+                    </div>
+
+                    <!-- Contacto -->
+                    <h3 class="form-section-title"><span class="num">3</span>Contacto del tutor legal</h3>
+                    <p class="form-section-desc">Información para notificaciones oficiales</p>
+
+                    <div class="grid">
+                        <div class="field">
+                            <label>Teléfono celular <span class="req">*</span></label>
+                            <input type="tel" name="telefono" required pattern="[0-9 +()\-]{8,}">
+                        </div>
+
+                        <div class="field">
+                            <label>Correo electrónico <span class="req">*</span></label>
+                            <input type="email" name="correo" required>
+                        </div>
+
+                        <div class="field full">
+                            <label>Dirección <span class="req">*</span></label>
+                            <input type="text" name="direccion" required>
+                        </div>
+
+                        <div class="field">
+                            <label>Ciudad <span class="req">*</span></label>
+                            <input type="text" name="ciudad" required>
+                        </div>
+
+                        <div class="field">
+                            <label>Estado <span class="req">*</span></label>
+                            <input type="text" name="estado" required>
+                        </div>
+                    </div>
+
+                    <!-- Estudios -->
+                    <h3 class="form-section-title"><span class="num">4</span>Estudios y motivación</h3>
+                    <p class="form-section-desc">Información académica del candidato</p>
+
+                    <div class="grid">
+                        <div class="field full">
+                            <label>¿Dónde estudia / estudió francés? <span class="req">*</span></label>
+                            <input type="text" name="estudio_frances" required>
+                        </div>
+
+                        <div class="field full">
+                            <label>Motivo por el cual presenta el examen <span class="req">*</span></label>
+                            <div class="radio-stack">
+                                <div class="radio-pill">
+                                    <input type="radio" id="mot-est" name="motivo" value="Estudios" required>
+                                    <label for="mot-est">Estudios</label>
+                                </div>
+                                <div class="radio-pill">
+                                    <input type="radio" id="mot-mov" name="motivo" value="Movilidad a algún país francófono">
+                                    <label for="mot-mov">Movilidad</label>
+                                </div>
+                                <div class="radio-pill">
+                                    <input type="radio" id="mot-per" name="motivo" value="Personal">
+                                    <label for="mot-per">Personal</label>
+                                </div>
+                                <div class="radio-pill">
+                                    <input type="radio" id="mot-otro" name="motivo" value="Otro">
+                                    <label for="mot-otro">Otro</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nivel -->
+                    <h3 class="form-section-title"><span class="num">5</span>Nivel del examen</h3>
+                    <p class="form-section-desc">Selecciona el nivel al que deseas inscribirte</p>
+
+                    <div class="nivel-selector">
+                        <div class="nivel-pill">
+                            <input type="radio" id="niv-a1" name="nivel" value="A1 — $1,445.00 MXN" required>
+                            <label for="niv-a1">
+                                <span class="code">A1</span>
+                                <span class="price">$1,445.00</span>
+                            </label>
+                        </div>
+                        <div class="nivel-pill">
+                            <input type="radio" id="niv-a2" name="nivel" value="A2 — $1,575.00 MXN">
+                            <label for="niv-a2">
+                                <span class="code">A2</span>
+                                <span class="price">$1,575.00</span>
+                            </label>
+                        </div>
+                        <div class="nivel-pill">
+                            <input type="radio" id="niv-b1" name="nivel" value="B1 — $1,800.00 MXN">
+                            <label for="niv-b1">
+                                <span class="code">B1</span>
+                                <span class="price">$1,800.00</span>
+                            </label>
+                        </div>
+                        <div class="nivel-pill">
+                            <input type="radio" id="niv-b2" name="nivel" value="B2 — $2,500.00 MXN">
+                            <label for="niv-b2">
+                                <span class="code">B2</span>
+                                <span class="price">$2,500.00</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Adaptación -->
+                    <h3 class="form-section-title"><span class="num">6</span>Adaptación del examen</h3>
+                    <p class="form-section-desc">¿Necesita alguna adaptación de su examen?</p>
+
+                    <div class="radio-row">
+                        <div class="radio-pill">
+                            <input type="radio" id="adapt-si" name="adaptacion" value="Sí" required>
+                            <label for="adapt-si">Sí</label>
+                        </div>
+                        <div class="radio-pill">
+                            <input type="radio" id="adapt-no" name="adaptacion" value="No">
+                            <label for="adapt-no">No</label>
+                        </div>
+                    </div>
+                    <p style="font-size:.82rem;color:var(--gris);margin-top:14px;line-height:1.6;font-weight:300">
+                        Para que el centro de examen pueda adaptar las pruebas a su caso, es obligatorio
+                        entregar, durante el período de inscripción, un certificado de un organismo médico
+                        oficial expedido en los últimos 2 años, especificando las adaptaciones recomendadas
+                        para la realización de un examen de lengua extranjera.
+                    </p>
+
+                    <!-- Aceptación -->
+                    <div class="accept-box">
+                        <input type="checkbox" id="acepto" name="acepto" required>
+                        <label for="acepto">
+                            Estoy enterado(a) de los formatos, fechas y horarios de los exámenes,
+                            <strong>acepto el reglamento</strong> en su totalidad y declaro que los datos
+                            proporcionados son correctos y verídicos.
+                        </label>
+                    </div>
+
+                    <!-- Submit -->
+                    <div class="form-submit">
+                        <button type="submit" class="btn-submit" id="submitBtn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+                                <path d="M22 2L11 13"/>
+                                <path d="M22 2l-7 20-4-9-9-4 20-7z"/>
+                            </svg>
+                            <span class="btn-label">Enviar inscripción</span>
+                        </button>
+                        <br>
+                        <button type="button" class="btn-back" onclick="goToInfo()">← Volver a la página principal</button>
+                    </div>
+                </form>
+
+                <div class="whatsapp-card">
+                    <p><strong>Para realizar el pago con el profesor Román Fuentes:</strong></p>
+                    <a href="https://wa.me/524731219937" target="_blank" rel="noopener">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.6.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.4-2.3-1.4-.8-.7-1.4-1.6-1.6-1.9-.2-.3 0-.4.1-.6.1-.1.3-.3.4-.5.1-.1.2-.3.3-.5.1-.2 0-.3 0-.5-.1-.1-.6-1.5-.9-2-.2-.5-.5-.5-.6-.5h-.6c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2 0 1.3 1 2.6 1.1 2.7.1.2 2 3.1 4.8 4.2 1.7.7 2.3.7 3.1.6.5-.1 1.7-.7 1.9-1.3.2-.7.2-1.2.2-1.3-.1-.1-.3-.2-.6-.3zM12 2C6.5 2 2 6.5 2 12c0 1.7.4 3.4 1.3 4.9L2 22l5.3-1.4c1.4.8 3.1 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18.3c-1.5 0-2.9-.4-4.2-1.1l-.3-.2-3.1.8.8-3-.2-.3c-.8-1.3-1.2-2.8-1.2-4.4 0-4.6 3.7-8.3 8.3-8.3s8.3 3.7 8.3 8.3-3.8 8.2-8.4 8.2z"/>
+                        </svg>
+                        Ir a WhatsApp
+                    </a>
+                </div>
+
             </div>
         </div>
     </div>
+</section>
 
-    <script>
-        /* [LÓGICA CORE: SPA, THREE.JS Y REGEX] */
-        const $ = id => document.getElementById(id);
-        let activeScreen = 'screen-welcome';
+<!-- =============== PANTALLA 5: VIDEO POST-FORM =============== -->
+<section id="postFormVideo" class="screen video-screen">
+    <video id="postVideo" playsinline preload="auto">
+        <source src="5.mp4" type="video/mp4">
+    </video>
+    <div class="video-controls">
+        <button class="btn-video" onclick="skipPostVideo()">Continuar →</button>
+    </div>
+</section>
 
-        // Navegación
-        function goTo(target, progress) {
-            $(activeScreen).style.opacity = '0';
-            setTimeout(() => {
-                $(activeScreen).classList.remove('active');
-                $(target).classList.add('active');
-                setTimeout(() => $(target).style.opacity = '1', 50);
-                activeScreen = target;
-                if(progress) $("progress-bar").style.width = progress + "%";
-                window.scrollTo(0,0);
-            }, 700);
-        }
+<!-- =============== PANTALLA 6: PREGUNTA VOLVER =============== -->
+<section id="askReturn" class="screen">
+    <div class="ask-screen">
+        <div class="ask-card">
+            <div class="ask-icon">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                    <polyline points="22 4 12 14.01 9 11.01"/>
+                </svg>
+            </div>
+            <h2>¡Inscripción enviada!</h2>
+            <p>Tu solicitud ha sido recibida correctamente. ¿Deseas volver a la página principal?</p>
+            <div class="ask-buttons">
+                <button class="btn-yes" onclick="goToFinal(true)">Sí</button>
+                <button class="btn-no" onclick="goToFinal(false)">No</button>
+            </div>
+        </div>
+    </div>
+</section>
 
-        // Multimedia
-        $("btn-start").onclick = () => { $("bg-music").play().catch(e => {}); goTo('screen-info', 30); };
-        $("btn-to-form").onclick = () => goTo('screen-form', 60);
+<!-- =============== PANTALLA 7: AGRADECIMIENTO + VIDEO FINAL =============== -->
+<section id="thanks" class="screen video-screen">
+    <video id="thanksVideo" playsinline preload="auto">
+        <source src="6.mp4" type="video/mp4">
+    </video>
+    <div class="thanks-overlay" id="thanksOverlay">
+        <h2>Merci beaucoup !</h2>
+        <p>Gracias por tu tiempo y por confiar en la Alianza Francesa de San Cristóbal y el Colegio La Salle. Te deseamos el mayor de los éxitos en tu examen DELF Junior 2026.</p>
+        <div class="thanks-flag">
+            <span></span><span></span><span></span>
+        </div>
+    </div>
+</section>
 
-        // Motor de Validación Estricta (Regex)
-        const regexLetras = /^[a-zA-ZÀ-ÿ\u00f1\u00d1\s]+$/;
-        const regexCorreo = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        const regexTelefono = /^[0-9]{10}$/;
-
-        const validationRules = {
-            'f-nombres': { regex: regexLetras },
-            'f-apPaterno': { regex: regexLetras },
-            'f-apMaterno': { regex: regexLetras, optional: true },
-            'f-correo': { regex: regexCorreo },
-            'f-telefono': { regex: regexTelefono },
-            'f-nivel': { required: true }
-        };
-
-        const validateField = (id) => {
-            const el = $(id); const rule = validationRules[id]; const group = el.closest('.form-group');
-            const val = el.value.trim();
-            let isValid = true;
-
-            if (el.hasAttribute('required') && val === '') isValid = false;
-            else if (val !== '') {
-                if (rule.regex && !rule.regex.test(val)) isValid = false;
-            }
-
-            if(isValid) { group.classList.remove('has-error'); group.classList.add('is-valid'); } 
-            else { group.classList.remove('is-valid'); group.classList.add('has-error'); }
-            
-            return isValid;
-        };
-
-        Object.keys(validationRules).forEach(id => {
-            if($(id)) {
-                $(id).addEventListener('blur', () => validateField(id));
-                $(id).addEventListener('input', () => { if($(id).closest('.form-group').classList.contains('has-error')) validateField(id); });
-            }
+<script>
+/* ============== VANTA.JS NET BACKGROUND ============== */
+let vantaEffect = null;
+function initVanta(){
+    if(vantaEffect || typeof VANTA === 'undefined') return;
+    try{
+        vantaEffect = VANTA.NET({
+            el:'#vanta-bg',
+            mouseControls:true,
+            touchControls:true,
+            gyroControls:false,
+            minHeight:200,
+            minWidth:200,
+            scale:1,
+            scaleMobile:1,
+            color:0xC8211E,
+            backgroundColor:0xf5f0eb,
+            points:11,
+            maxDistance:22,
+            spacing:18
         });
+    }catch(e){
+        console.warn('Vanta no disponible:', e);
+    }
+}
+window.addEventListener('load', initVanta);
 
-        // Envío e Integración
-        $("master-form").onsubmit = async (e) => {
-            e.preventDefault();
-            let formIsValid = true;
-            Object.keys(validationRules).forEach(id => { if(!validateField(id)) formIsValid = false; });
+/* ============== NAVEGACIÓN ENTRE PANTALLAS ============== */
+function showScreen(id){
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active','fade-out'));
+    const target = document.getElementById(id);
+    if(target){
+        target.classList.add('active');
+        window.scrollTo({top:0,behavior:'auto'});
+    }
+}
 
-            if(!formIsValid) return alert("Por favor, corrija los campos marcados en rojo. Asegúrese de que el teléfono tenga exactamente 10 dígitos y los nombres solo contengan letras.");
+function fadeOutAndShow(currentId, nextId){
+    const cur = document.getElementById(currentId);
+    if(!cur){ showScreen(nextId); return; }
+    cur.classList.add('fade-out');
+    setTimeout(()=>{ showScreen(nextId); }, 750);
+}
 
-            const folio = 'DELF-' + Math.floor(Math.random()*90000+10000);
-            const data = {
-                Folio: folio,
-                Sede: "San Cristóbal de Las Casas",
-                Candidato: `${$("f-nombres").value} ${$("f-apPaterno").value} ${$("f-apMaterno").value}`.trim(),
-                Correo: $("f-correo").value, Telefono: $("f-telefono").value, Nivel: $("f-nivel").value,
-                Fecha: new Date().toLocaleString()
-            };
+/* ============== VIDEO 1: WELCOME ============== */
+const welcomeVideo = document.getElementById('welcomeVideo');
+welcomeVideo.muted = true;
+welcomeVideo.play().catch(()=>{});
+welcomeVideo.addEventListener('ended', goToInfo);
 
-            try {
-                await fetch('https://formsubmit.co/ajax/direccionsancristobal@alianzafr.edu.mx', {
-                    method: 'POST', headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({...data, _subject: `INSCRIPCIÓN VALIDAD: ${data.Candidato}`})
-                });
-            } catch(e) { console.warn("Modo Hub Local"); }
+function toggleMute(videoId, btn){
+    const v = document.getElementById(videoId);
+    v.muted = !v.muted;
+    const lbl = btn.querySelector('.mute-label');
+    if(lbl) lbl.textContent = v.muted ? 'Activar sonido' : 'Silenciar';
+}
 
-            $("receipt-box").innerHTML = `<h3>FOLIO: ${folio}</h3><p><strong>Candidato:</strong> ${data.Candidato}</p><p><strong>Sede:</strong> ${data.Sede}</p><p><strong>Nivel:</strong> ${data.Nivel}</p>`;
-            sessionStorage.setItem('final_data', JSON.stringify(data));
-            goTo('screen-receipt', 100);
+function goToInfo(){
+    fadeOutAndShow('welcome','info');
+}
+
+/* ============== VIDEO 2: TRANSICIÓN AL FORMULARIO ============== */
+function goToFormVideo(){
+    showScreen('formVideo');
+    const v = document.getElementById('formTransitionVideo');
+    v.muted = false;
+    v.currentTime = 0;
+    v.play().catch(()=>{ v.muted = true; v.play().catch(()=>{}); });
+    v.onended = ()=>{ fadeOutAndShow('formVideo','formPage'); };
+}
+function skipFormVideo(){
+    const v = document.getElementById('formTransitionVideo');
+    try{ v.pause(); }catch(e){}
+    fadeOutAndShow('formVideo','formPage');
+}
+
+/* ============== REGLAMENTO ACORDEÓN ============== */
+function toggleRegla(el){
+    el.classList.toggle('open');
+    const content = el.nextElementSibling;
+    if(content) content.classList.toggle('open');
+}
+
+/* ============== ENVÍO DEL FORMULARIO ============== */
+const form = document.getElementById('inscripcionForm');
+const DESTINATARIO = 'DIRECCIONSANCRISTOBAL@ALIANZAFR.EDU.FR';
+
+form.addEventListener('submit', async function(e){
+    e.preventDefault();
+    if(!form.reportValidity()) return;
+
+    const submitBtn = document.getElementById('submitBtn');
+    const label = submitBtn.querySelector('.btn-label');
+    submitBtn.disabled = true;
+    label.innerHTML = 'Enviando<span class="loading-dots"></span>';
+
+    const data = new FormData(form);
+    const c1 = (data.get('candidato_parte1')||'').trim();
+    const c2 = (data.get('candidato_parte2')||'').trim();
+    const candidato = (c1||c2) ? (c1+'-'+c2) : '';
+
+    const payload = {
+        _subject: 'Nueva inscripción DELF Junior 2026 — '+(data.get('apellidos')||'')+' '+(data.get('nombres')||''),
+        _template: 'table',
+        _captcha: 'false',
+        'Número de candidato': candidato || '(no proporcionado)',
+        'Tratamiento': data.get('tratamiento') || '',
+        'Apellidos': data.get('apellidos') || '',
+        'Nombres': data.get('nombres') || '',
+        'Fecha de nacimiento': data.get('fecha_nacimiento') || '',
+        'Ciudad de nacimiento': data.get('ciudad_nacimiento') || '',
+        'País de nacimiento': data.get('pais_nacimiento') || '',
+        'Nacionalidad': data.get('nacionalidad') || '',
+        'Lengua materna': data.get('lengua_materna') || '',
+        'Teléfono': data.get('telefono') || '',
+        'Correo electrónico': data.get('correo') || '',
+        'Dirección': data.get('direccion') || '',
+        'Ciudad': data.get('ciudad') || '',
+        'Estado': data.get('estado') || '',
+        'Dónde estudia / estudió francés': data.get('estudio_frances') || '',
+        'Motivo': data.get('motivo') || '',
+        'Nivel seleccionado': data.get('nivel') || '',
+        '¿Necesita adaptación?': data.get('adaptacion') || '',
+        'Acepta el reglamento': data.get('acepto') ? 'Sí' : 'No'
+    };
+
+    try{
+        const res = await fetch('https://formsubmit.co/ajax/'+DESTINATARIO, {
+            method:'POST',
+            headers:{'Content-Type':'application/json','Accept':'application/json'},
+            body: JSON.stringify(payload)
+        });
+        if(!res.ok) throw new Error('Respuesta no OK');
+    }catch(err){
+        console.warn('Envío directo falló, usando mailto como respaldo', err);
+        const cuerpo = Object.entries(payload)
+            .filter(([k])=>!k.startsWith('_'))
+            .map(([k,v])=>k+': '+v)
+            .join('\n');
+        try{
+            window.location.href = 'mailto:'+DESTINATARIO+'?subject='+encodeURIComponent(payload._subject)+'&body='+encodeURIComponent(cuerpo);
+        }catch(e){}
+    }
+
+    /* Continuar al siguiente paso del flujo */
+    submitBtn.disabled = false;
+    label.textContent = 'Enviar inscripción';
+    showScreen('postFormVideo');
+    const v = document.getElementById('postVideo');
+    v.muted = false;
+    v.currentTime = 0;
+    v.play().catch(()=>{ v.muted = true; v.play().catch(()=>{}); });
+    v.onended = ()=>{ fadeOutAndShow('postFormVideo','askReturn'); };
+});
+
+function skipPostVideo(){
+    const v = document.getElementById('postVideo');
+    try{ v.pause(); }catch(e){}
+    fadeOutAndShow('postFormVideo','askReturn');
+}
+
+/* ============== PREGUNTA FINAL Y AGRADECIMIENTO ============== */
+function goToFinal(volverInicio){
+    showScreen('thanks');
+    const v = document.getElementById('thanksVideo');
+    v.muted = false;
+    v.currentTime = 0;
+    v.play().catch(()=>{ v.muted = true; v.play().catch(()=>{}); });
+
+    if(volverInicio){
+        v.onended = ()=>{
+            form.reset();
+            fadeOutAndShow('thanks','info');
         };
+    } else {
+        v.onended = ()=>{ /* permanecer */ };
+    }
+}
+</script>
 
-        // Hub Local JSON
-        $("btn-download-json").onclick = () => {
-            const data = sessionStorage.getItem('final_data');
-            const blob = new Blob([data], {type: 'application/json'});
-            const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-            a.download = `Expediente_${JSON.parse(data).Folio}.json`; a.click();
-        };
-
-        // Motor 3D Three.js
-        (() => {
-            const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({canvas: $("canvas-bg"), alpha: true, antialias: true});
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            const group = new THREE.Group();
-            for(let i=0; i<50; i++){
-                const mesh = new THREE.Mesh(new THREE.IcosahedronGeometry(0.5, 0), new THREE.MeshPhongMaterial({color: i%2?0x8B0000:0x003189, wireframe: true}));
-                mesh.position.set((Math.random()-0.5)*40, (Math.random()-0.5)*40, (Math.random()-0.5)*30);
-                group.add(mesh);
-            }
-            scene.add(group); scene.add(new THREE.AmbientLight(0xffffff, 0.8)); camera.position.z = 15;
-            const animate = () => { requestAnimationFrame(animate); group.rotation.y += 0.001; renderer.render(scene, camera); };
-            animate();
-        })();
-    </script>
 </body>
 </html>

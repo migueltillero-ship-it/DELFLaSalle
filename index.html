@@ -1141,8 +1141,145 @@ form .full{grid-column:1 / -1}
 .footer strong{color:var(--af-dark);font-weight:700}
 .footer p+p{margin-top:6px}
 
-/* Responsive */
-@media (max-width:768px){
+/* ============== GALERÍA INSTITUCIONAL ============== */
+.gallery-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:14px;
+    margin-top:26px;
+}
+.gallery-item{
+    border-radius:10px;
+    overflow:hidden;
+    height:160px;
+    box-shadow:var(--sombra-sm);
+    cursor:pointer;
+    background:var(--af-bg);
+    border:1px solid var(--card-border);
+    position:relative;
+    transition:all .35s var(--expo,cubic-bezier(.16,1,.3,1));
+}
+.gallery-item:hover{
+    transform:translateY(-3px);
+    box-shadow:var(--sombra-md);
+    border-color:var(--af-red);
+}
+.gallery-item img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transition:transform .6s cubic-bezier(.16,1,.3,1);
+    display:block;
+}
+.gallery-item:hover img{transform:scale(1.08)}
+
+/* ============== LIGHTBOX ============== */
+.lightbox{
+    position:fixed;
+    inset:0;
+    z-index:9999;
+    background:rgba(10,10,20,.94);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    opacity:0;
+    visibility:hidden;
+    transition:opacity .35s ease,visibility .35s ease;
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    padding:30px;
+}
+.lightbox.active{opacity:1;visibility:visible}
+.lightbox img{
+    max-width:90vw;
+    max-height:88vh;
+    border-radius:8px;
+    box-shadow:0 30px 80px rgba(0,0,0,.6);
+    transform:scale(.92);
+    transition:transform .4s cubic-bezier(.16,1,.3,1);
+}
+.lightbox.active img{transform:scale(1)}
+.lightbox-close{
+    position:absolute;
+    top:22px;right:30px;
+    color:#fff;
+    font-size:2.6rem;
+    line-height:1;
+    cursor:pointer;
+    transition:all .25s;
+    background:rgba(255,255,255,.08);
+    width:48px;height:48px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    border:1px solid rgba(255,255,255,.25);
+    user-select:none;
+}
+.lightbox-close:hover{background:var(--af-red);border-color:var(--af-red);transform:scale(1.05)}
+
+/* ============== FOOTER INSTITUCIONAL FIJO ============== */
+.footer-info{
+    text-align:center;
+    font-family:'Inter',sans-serif;
+    font-size:.78rem;
+    color:#fff;
+    position:fixed;
+    bottom:0;left:0;right:0;
+    padding:10px 16px;
+    z-index:50;
+    text-shadow:0 1px 3px rgba(0,0,0,.7);
+    background:linear-gradient(180deg,transparent,rgba(0,0,0,.55));
+    pointer-events:none;
+    font-weight:500;
+    letter-spacing:.02em;
+}
+.footer-info strong{font-weight:700;color:#fff}
+
+/* ============== BOTÓN DE MÚSICA AMBIENTAL ============== */
+.music-btn{
+    position:fixed;
+    bottom:18px;
+    left:18px;
+    z-index:60;
+    width:46px;height:46px;
+    border-radius:50%;
+    background:var(--card-bg);
+    border:1px solid var(--af-line);
+    color:var(--af-red);
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:var(--sombra-md);
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+    transition:all .3s;
+}
+.music-btn:hover{transform:scale(1.08)}
+.music-btn svg{width:18px;height:18px}
+.music-btn .wave{display:none}
+.music-btn.playing .icon-mute{display:none}
+.music-btn.playing .wave{display:block;animation:pulse 1.5s ease infinite}
+.music-btn:not(.playing) .wave{display:none}
+@keyframes pulse{
+    0%,100%{transform:scale(1);opacity:1}
+    50%{transform:scale(.85);opacity:.7}
+}
+
+/* ============== ERROR DE VALIDACIÓN ESTRICTA ============== */
+.field input.has-error,
+.field select.has-error{
+    border-color:var(--af-red)!important;
+    background:#FFF5F5!important;
+    box-shadow:0 0 0 3px rgba(200,33,30,.12)!important;
+}
+.field-error-msg{
+    display:none;
+    font-size:.78rem;
+    color:var(--af-red);
+    font-weight:600;
+    margin-top:4px;
+}
+.field.has-error .field-error-msg{display:block}
+
+
     body{font-size:16px}
     .content-section{padding:34px 22px;border-radius:10px}
     .form-body{padding:24px 20px}
@@ -1174,6 +1311,25 @@ form .full{grid-column:1 / -1}
 <body>
 
 <div id="vanta-bg"></div>
+
+<!-- =============== ELEMENTOS GLOBALES =============== -->
+<audio id="bg-music" loop preload="none">
+    <source src="Arrival_at_the_Terminal (1).mp3" type="audio/mpeg">
+</audio>
+
+<button id="music-toggle" class="music-btn" onclick="toggleMusic()" aria-label="Música ambiental" title="Música ambiental">
+    <svg class="icon-mute" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+    <svg class="wave" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 18V12a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
+</button>
+
+<div id="lightbox" class="lightbox" onclick="closeLightbox(event)">
+    <span class="lightbox-close" onclick="closeLightbox(event)" role="button" aria-label="Cerrar">&times;</span>
+    <img id="lightbox-img" src="" alt="">
+</div>
+
+<div class="footer-info">
+    <strong>Alliance Française de San Cristóbal de Las Casas</strong> · Av. La Almolonga 80 · Asistencia técnica: 967 172 1870
+</div>
 
 <!-- =============== PANTALLA 1: VIDEO BIENVENIDA =============== -->
 <section id="welcome" class="screen video-screen active">
@@ -1379,6 +1535,14 @@ form .full{grid-column:1 / -1}
                     Esta histórica colaboración consolida a San Cristóbal de Las Casas como un punto de
                     referencia en la enseñanza del francés a nivel juvenil en el sureste de México.
                 </p>
+            </div>
+
+            <div class="content-section" style="margin-top:24px">
+                <span class="section-tag">Galería institucional</span>
+                <h2>Momentos en imágenes</h2>
+                <p>Fotografías de eventos, ceremonias de entrega de diplomas y actividades académicas
+                con el Colegio La Salle. Haz clic en cualquier imagen para ampliarla.</p>
+                <div class="gallery-grid" id="galeria"></div>
             </div>
 
             <div class="chapter-nav">
@@ -1926,6 +2090,105 @@ function initVanta(){
 }
 window.addEventListener('load', initVanta);
 
+/* ============== GALERÍA INSTITUCIONAL ============== */
+const PHOTOS_INSTITUCIONALES = [
+    'IMG_20241023_071530.jpg',
+    'IMG_20251204_124832368_HDR.jpg',
+    'IMG_20251204_124849353.jpg',
+    'IMG_20251204_124852202.jpg',
+    'IMG_20251204_125050500_HDR.jpg',
+    'IMG_20251204_125059995_HDR.jpg',
+    'IMG-20250609-WA0004.jpg',
+    'IMG-20250609-WA0009.jpg',
+    'IMG-20250609-WA0010.jpg',
+    'IMG-20250609-WA0011.jpg',
+    'IMG-20250609-WA0016.jpg',
+    'IMG-20250609-WA0019.jpg',
+    'IMG-20250609-WA0024.jpg',
+    'IMG-20250609-WA0040.jpg',
+    'IMG-20250609-WA0054.jpg',
+    'IMG-20251119-WA0158.jpg',
+    'IMG-20260309-WA0002.jpg',
+    'IMG-20251204-WA0033.jpg',
+    'IMG-20251204-WA0057.jpg',
+    'IMG-20251204-WA0062.jpg',
+    'IMG_20251204_123438.jpg',
+    'IMG_20251204_124949487_HDR.jpg',
+    'IMG_20251204_125231254_HDR.jpg',
+    'IMG-20241023-WA0017.jpg',
+    'IMG-20241023-WA0018.jpg',
+    'IMG-20241023-WA0019.jpg',
+    'IMG-20241028-WA0050.jpg',
+    'IMG-20241028-WA0056.jpg',
+    'IMG-20241028-WA0058.jpg'
+];
+
+const PLACEHOLDER_SVG = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect width='200' height='200' fill='%23e8e0d4'/%3E%3Cg transform='translate(100 100)' fill='%23a89878'%3E%3Ccircle cx='0' cy='-12' r='6'/%3E%3Crect x='-22' y='0' width='44' height='28' rx='4'/%3E%3C/g%3E%3Ctext x='100' y='160' font-family='system-ui' font-size='11' fill='%237a7060' text-anchor='middle'%3EFoto institucional%3C/text%3E%3C/svg%3E";
+
+function renderGaleria(){
+    const root = document.getElementById('galeria');
+    if(!root || root.dataset.rendered) return;
+    root.dataset.rendered = '1';
+    const frag = document.createDocumentFragment();
+    PHOTOS_INSTITUCIONALES.forEach(file=>{
+        const item = document.createElement('div');
+        item.className = 'gallery-item';
+        item.addEventListener('click', ()=>openLightbox(file));
+        const img = document.createElement('img');
+        img.alt = 'Evento Alliance Française';
+        img.loading = 'lazy';
+        img.src = file;
+        img.addEventListener('error', ()=>{ img.src = PLACEHOLDER_SVG; });
+        item.appendChild(img);
+        frag.appendChild(item);
+    });
+    root.appendChild(frag);
+}
+window.addEventListener('load', renderGaleria);
+
+/* ============== LIGHTBOX ============== */
+function openLightbox(filename){
+    const lb = document.getElementById('lightbox');
+    const img = document.getElementById('lightbox-img');
+    img.onerror = ()=>{ img.src = PLACEHOLDER_SVG; };
+    img.src = filename;
+    lb.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+function closeLightbox(e){
+    if(e && e.target && e.target.id === 'lightbox-img') return;
+    const lb = document.getElementById('lightbox');
+    lb.classList.remove('active');
+    document.body.style.overflow = '';
+    setTimeout(()=>{ document.getElementById('lightbox-img').src = ''; }, 400);
+}
+document.addEventListener('keydown', e=>{
+    if(e.key === 'Escape'){
+        const lb = document.getElementById('lightbox');
+        if(lb.classList.contains('active')) closeLightbox();
+    }
+});
+
+/* ============== MÚSICA AMBIENTAL ============== */
+function toggleMusic(){
+    const audio = document.getElementById('bg-music');
+    const btn = document.getElementById('music-toggle');
+    if(!audio) return;
+    if(audio.paused){
+        audio.volume = 0.35;
+        audio.play().then(()=>{
+            btn.classList.add('playing');
+            btn.title = 'Pausar música';
+        }).catch(err=>{
+            console.warn('No se pudo reproducir la música:', err);
+        });
+    } else {
+        audio.pause();
+        btn.classList.remove('playing');
+        btn.title = 'Reproducir música';
+    }
+}
+
 /* ============== NAVEGACIÓN ENTRE PANTALLAS ============== */
 function showScreen(id){
     document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active','fade-out'));
@@ -2015,6 +2278,85 @@ function toggleRegla(el){
     if(content) content.classList.toggle('open');
 }
 
+/* ============== VALIDACIÓN ESTRICTA (REGEX) ============== */
+const REGEX_LETRAS = /^[a-zA-ZÀ-ÿñÑ\s.''\-]+$/;
+const REGEX_CORREO = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const REGEX_TELEFONO = /^[0-9 +()\-]{8,20}$/;
+const REGEX_NUMERO = /^\d+$/;
+
+const REGLAS_ESTRICTAS = {
+    apellidos: {regex:REGEX_LETRAS, msg:'Solo letras y espacios.'},
+    nombres: {regex:REGEX_LETRAS, msg:'Solo letras y espacios.'},
+    nacionalidad: {regex:REGEX_LETRAS, msg:'Solo letras.'},
+    lengua_materna: {regex:REGEX_LETRAS, msg:'Solo letras.'},
+    ciudad_nacimiento: {regex:REGEX_LETRAS, msg:'Solo letras.'},
+    pais_nacimiento: {regex:REGEX_LETRAS, msg:'Solo letras.'},
+    ciudad: {regex:REGEX_LETRAS, msg:'Solo letras.'},
+    estado: {regex:REGEX_LETRAS, msg:'Solo letras.'},
+    correo: {regex:REGEX_CORREO, msg:'Formato de correo inválido.'},
+    telefono: {regex:REGEX_TELEFONO, msg:'8 a 20 dígitos. Solo números, espacios, +, () y -.'},
+    candidato_parte1: {regex:REGEX_NUMERO, optional:true, msg:'Debe contener 6 dígitos.'},
+    candidato_parte2: {regex:REGEX_NUMERO, optional:true, msg:'Debe contener 6 dígitos.'}
+};
+
+function getFieldDiv(input){
+    let n = input;
+    while(n && !n.classList.contains('field')) n = n.parentElement;
+    return n;
+}
+function ensureErrorMsg(fieldDiv, msg){
+    let span = fieldDiv.querySelector('.field-error-msg');
+    if(!span){
+        span = document.createElement('span');
+        span.className = 'field-error-msg';
+        fieldDiv.appendChild(span);
+    }
+    span.textContent = msg;
+}
+function validarCampo(input){
+    const regla = REGLAS_ESTRICTAS[input.name];
+    if(!regla) return true;
+    const val = (input.value || '').trim();
+    const fieldDiv = getFieldDiv(input);
+    if(!fieldDiv) return true;
+    let ok = true;
+    if(val === ''){
+        ok = !!regla.optional || !input.hasAttribute('required');
+    } else {
+        ok = regla.regex.test(val);
+    }
+    if(ok){
+        input.classList.remove('has-error');
+        fieldDiv.classList.remove('has-error');
+    } else {
+        input.classList.add('has-error');
+        fieldDiv.classList.add('has-error');
+        ensureErrorMsg(fieldDiv, regla.msg);
+    }
+    return ok;
+}
+
+/* Auto-mayúsculas y validación en vivo */
+(function setupLiveValidation(){
+    const f = document.getElementById('inscripcionForm');
+    if(!f) return;
+    Object.keys(REGLAS_ESTRICTAS).forEach(name=>{
+        const input = f.querySelector(`[name="${name}"]`);
+        if(!input) return;
+        input.addEventListener('blur', ()=>validarCampo(input));
+        input.addEventListener('input', ()=>{
+            if(input.type === 'text' || input.type === 'tel'){
+                if(input.style.textTransform !== 'none' && name !== 'correo'){
+                    const cursor = input.selectionStart;
+                    input.value = input.value.toUpperCase();
+                    if(cursor !== null) input.setSelectionRange(cursor, cursor);
+                }
+            }
+            if(getFieldDiv(input)?.classList.contains('has-error')) validarCampo(input);
+        });
+    });
+})();
+
 /* ============== ENVÍO DEL FORMULARIO ============== */
 const form = document.getElementById('inscripcionForm');
 const DESTINATARIO = 'DIRECCIONSANCRISTOBAL@ALIANZAFR.EDU.FR';
@@ -2022,6 +2364,18 @@ const DESTINATARIO = 'DIRECCIONSANCRISTOBAL@ALIANZAFR.EDU.FR';
 form.addEventListener('submit', async function(e){
     e.preventDefault();
     if(!form.reportValidity()) return;
+
+    /* Validación estricta antes del envío */
+    let formValido = true;
+    Object.keys(REGLAS_ESTRICTAS).forEach(name=>{
+        const input = form.querySelector(`[name="${name}"]`);
+        if(input && !validarCampo(input)) formValido = false;
+    });
+    if(!formValido){
+        const primerError = form.querySelector('.field.has-error input, .field.has-error select');
+        if(primerError) primerError.scrollIntoView({behavior:'smooth',block:'center'});
+        return;
+    }
 
     const submitBtn = document.getElementById('submitBtn');
     const label = submitBtn.querySelector('.btn-label');

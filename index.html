@@ -1234,6 +1234,34 @@ form .full{grid-column:1 / -1}
 }
 .footer-info strong{font-weight:700;color:#fff}
 
+/* ============== BOTÓN DE PANTALLA COMPLETA ============== */
+.fs-btn{
+    position:fixed;
+    top:18px;
+    right:18px;
+    z-index:60;
+    width:46px;height:46px;
+    border-radius:50%;
+    background:var(--card-bg);
+    border:1px solid var(--af-line);
+    color:var(--af-red);
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:var(--sombra-md);
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+    transition:all .3s;
+}
+.fs-btn:hover{transform:scale(1.08)}
+.fs-btn svg{width:18px;height:18px}
+.fs-btn .icon-exit{display:none}
+.fs-btn.active .icon-enter{display:none}
+.fs-btn.active .icon-exit{display:block}
+
+/* Cuando estamos en pantalla completa real del navegador */
+:fullscreen .footer-info{padding-bottom:14px}
+:-webkit-full-screen .footer-info{padding-bottom:14px}
+
 /* ============== BOTÓN DE MÚSICA AMBIENTAL ============== */
 .music-btn{
     position:fixed;
@@ -1322,6 +1350,11 @@ form .full{grid-column:1 / -1}
     <svg class="wave" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 18V12a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
 </button>
 
+<button id="fs-toggle" class="fs-btn" onclick="toggleFullscreen()" aria-label="Pantalla completa" title="Pantalla completa">
+    <svg class="icon-enter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
+    <svg class="icon-exit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v3a2 2 0 0 1-2 2H3M21 8h-3a2 2 0 0 1-2-2V3M3 16h3a2 2 0 0 1 2 2v3M16 21v-3a2 2 0 0 1 2-2h3"/></svg>
+</button>
+
 <div id="lightbox" class="lightbox" onclick="closeLightbox(event)">
     <span class="lightbox-close" onclick="closeLightbox(event)" role="button" aria-label="Cerrar">&times;</span>
     <img id="lightbox-img" src="" alt="">
@@ -1333,7 +1366,7 @@ form .full{grid-column:1 / -1}
 
 <!-- =============== PANTALLA 1: VIDEO BIENVENIDA =============== -->
 <section id="welcome" class="screen video-screen active">
-    <video id="welcomeVideo" playsinline preload="auto">
+    <video id="welcomeVideo" playsinline preload="auto" autoplay muted>
         <source src="1.mp4" type="video/mp4">
     </video>
     <div class="video-controls">
@@ -1348,7 +1381,7 @@ form .full{grid-column:1 / -1}
 
 <!-- =============== PANTALLA SHARED: TRANSICIÓN ENTRE SECCIONES =============== -->
 <section id="transition" class="screen video-screen">
-    <video id="transitionVideo" playsinline preload="auto">
+    <video id="transitionVideo" playsinline preload="auto" autoplay muted>
         <source src="4.mp4" type="video/mp4">
     </video>
     <div class="video-controls">
@@ -1755,7 +1788,7 @@ form .full{grid-column:1 / -1}
 
 <!-- =============== PANTALLA: VIDEO TRANSICIÓN AL FORM =============== -->
 <section id="formVideo" class="screen video-screen">
-    <video id="formTransitionVideo" playsinline preload="auto">
+    <video id="formTransitionVideo" playsinline preload="auto" autoplay muted>
         <source src="4.mp4" type="video/mp4">
     </video>
     <div class="video-controls">
@@ -2021,7 +2054,7 @@ form .full{grid-column:1 / -1}
 
 <!-- =============== PANTALLA: VIDEO POST-FORM =============== -->
 <section id="postFormVideo" class="screen video-screen">
-    <video id="postVideo" playsinline preload="auto">
+    <video id="postVideo" playsinline preload="auto" autoplay muted>
         <source src="5.mp4" type="video/mp4">
     </video>
     <div class="video-controls">
@@ -2051,7 +2084,7 @@ form .full{grid-column:1 / -1}
 
 <!-- =============== PANTALLA: AGRADECIMIENTO + VIDEO FINAL =============== -->
 <section id="thanks" class="screen video-screen">
-    <video id="thanksVideo" playsinline preload="auto">
+    <video id="thanksVideo" playsinline preload="auto" autoplay muted>
         <source src="6.mp4" type="video/mp4">
     </video>
     <div class="thanks-overlay" id="thanksOverlay">
@@ -2169,6 +2202,45 @@ document.addEventListener('keydown', e=>{
     }
 });
 
+/* ============== PANTALLA COMPLETA REAL (Fullscreen API) ============== */
+function isFullscreen(){
+    return !!(document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement);
+}
+function enterFullscreen(){
+    const el = document.documentElement;
+    const req = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
+    if(req) return req.call(el).catch(err=>console.warn('Fullscreen denegado:', err));
+}
+function exitFs(){
+    const exit = document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen;
+    if(exit && isFullscreen()) return exit.call(document).catch(()=>{});
+}
+function toggleFullscreen(){
+    if(isFullscreen()) exitFs();
+    else enterFullscreen();
+}
+['fullscreenchange','webkitfullscreenchange','msfullscreenchange'].forEach(ev=>{
+    document.addEventListener(ev, ()=>{
+        const btn = document.getElementById('fs-toggle');
+        if(btn) btn.classList.toggle('active', isFullscreen());
+    });
+});
+
+/* ============== PLAY ROBUSTO Y AUTO-AVANCE ============== */
+function playVideoSafe(videoEl, onEnded){
+    if(!videoEl) return;
+    try{ videoEl.currentTime = 0; }catch(e){}
+    videoEl.muted = false;
+    if(onEnded){
+        videoEl.onended = onEnded;
+    }
+    const tryPlay = ()=>videoEl.play();
+    tryPlay().catch(()=>{
+        videoEl.muted = true;
+        tryPlay().catch(err=>console.warn('No se pudo reproducir el video:', err));
+    });
+}
+
 /* ============== MÚSICA AMBIENTAL ============== */
 function toggleMusic(){
     const audio = document.getElementById('bg-music');
@@ -2233,15 +2305,11 @@ let pendingChapterTarget = null;
 function goToChapterWithVideo(num){
     pendingChapterTarget = 'chapter'+num;
     showScreen('transition');
-    const v = document.getElementById('transitionVideo');
-    v.muted = false;
-    v.currentTime = 0;
-    v.play().catch(()=>{ v.muted = true; v.play().catch(()=>{}); });
-    v.onended = ()=>{
+    playVideoSafe(document.getElementById('transitionVideo'), ()=>{
         const target = pendingChapterTarget;
         pendingChapterTarget = null;
         fadeOutAndShow('transition', target);
-    };
+    });
 }
 
 function skipTransition(){
@@ -2259,11 +2327,8 @@ function skipTransition(){
 /* ============== TRANSICIÓN AL FORMULARIO ============== */
 function goToFormVideo(){
     showScreen('formVideo');
-    const v = document.getElementById('formTransitionVideo');
-    v.muted = false;
-    v.currentTime = 0;
-    v.play().catch(()=>{ v.muted = true; v.play().catch(()=>{}); });
-    v.onended = ()=>{ fadeOutAndShow('formVideo','formPage'); };
+    playVideoSafe(document.getElementById('formTransitionVideo'),
+        ()=>fadeOutAndShow('formVideo','formPage'));
 }
 function skipFormVideo(){
     const v = document.getElementById('formTransitionVideo');
@@ -2433,11 +2498,8 @@ form.addEventListener('submit', async function(e){
     submitBtn.disabled = false;
     label.textContent = 'Enviar inscripción';
     showScreen('postFormVideo');
-    const v = document.getElementById('postVideo');
-    v.muted = false;
-    v.currentTime = 0;
-    v.play().catch(()=>{ v.muted = true; v.play().catch(()=>{}); });
-    v.onended = ()=>{ fadeOutAndShow('postFormVideo','askReturn'); };
+    playVideoSafe(document.getElementById('postVideo'),
+        ()=>fadeOutAndShow('postFormVideo','askReturn'));
 });
 
 function skipPostVideo(){
@@ -2449,19 +2511,12 @@ function skipPostVideo(){
 /* ============== PREGUNTA FINAL Y AGRADECIMIENTO ============== */
 function goToFinal(volverInicio){
     showScreen('thanks');
-    const v = document.getElementById('thanksVideo');
-    v.muted = false;
-    v.currentTime = 0;
-    v.play().catch(()=>{ v.muted = true; v.play().catch(()=>{}); });
-
-    if(volverInicio){
-        v.onended = ()=>{
+    playVideoSafe(document.getElementById('thanksVideo'), ()=>{
+        if(volverInicio){
             form.reset();
             fadeOutAndShow('thanks','chapter1');
-        };
-    } else {
-        v.onended = ()=>{ /* permanecer */ };
-    }
+        }
+    });
 }
 </script>
 

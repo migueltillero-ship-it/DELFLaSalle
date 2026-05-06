@@ -1357,7 +1357,8 @@ form .full{grid-column:1 / -1}
 
 <div id="lightbox" class="lightbox" onclick="closeLightbox(event)">
     <span class="lightbox-close" onclick="closeLightbox(event)" role="button" aria-label="Cerrar">&times;</span>
-    <img id="lightbox-img" src="" alt="">
+    <img id="lightbox-img" src="" alt="" style="display:none">
+    <video id="lightbox-video" controls playsinline style="display:none;max-width:90vw;max-height:88vh;border-radius:8px;box-shadow:0 30px 80px rgba(0,0,0,.6);background:#000"></video>
 </div>
 
 <div class="footer-info">
@@ -2124,76 +2125,120 @@ function initVanta(){
 window.addEventListener('load', initVanta);
 
 /* ============== GALERÍA INSTITUCIONAL ============== */
+/* Lista oficial de fotos. Sólo se renderizarán las que realmente existen. */
 const PHOTOS_INSTITUCIONALES = [
-    'IMG_20241023_071530.jpg',
-    'IMG_20251204_124832368_HDR.jpg',
-    'IMG_20251204_124849353.jpg',
-    'IMG_20251204_124852202.jpg',
-    'IMG_20251204_125050500_HDR.jpg',
-    'IMG_20251204_125059995_HDR.jpg',
-    'IMG-20250609-WA0004.jpg',
-    'IMG-20250609-WA0009.jpg',
-    'IMG-20250609-WA0010.jpg',
-    'IMG-20250609-WA0011.jpg',
-    'IMG-20250609-WA0016.jpg',
-    'IMG-20250609-WA0019.jpg',
-    'IMG-20250609-WA0024.jpg',
-    'IMG-20250609-WA0040.jpg',
-    'IMG-20250609-WA0054.jpg',
-    'IMG-20251119-WA0158.jpg',
-    'IMG-20260309-WA0002.jpg',
-    'IMG-20251204-WA0033.jpg',
-    'IMG-20251204-WA0057.jpg',
-    'IMG-20251204-WA0062.jpg',
-    'IMG_20251204_123438.jpg',
-    'IMG_20251204_124949487_HDR.jpg',
-    'IMG_20251204_125231254_HDR.jpg',
-    'IMG-20241023-WA0017.jpg',
-    'IMG-20241023-WA0018.jpg',
-    'IMG-20241023-WA0019.jpg',
-    'IMG-20241028-WA0050.jpg',
-    'IMG-20241028-WA0056.jpg',
-    'IMG-20241028-WA0058.jpg'
+    'IMG_20241023_071530.jpg','IMG_20251204_124832368_HDR.jpg','IMG_20251204_124849353.jpg',
+    'IMG_20251204_124852202.jpg','IMG_20251204_125050500_HDR.jpg','IMG_20251204_125059995_HDR.jpg',
+    'IMG-20250609-WA0004.jpg','IMG-20250609-WA0009.jpg','IMG-20250609-WA0010.jpg',
+    'IMG-20250609-WA0011.jpg','IMG-20250609-WA0016.jpg','IMG-20250609-WA0019.jpg',
+    'IMG-20250609-WA0024.jpg','IMG-20250609-WA0040.jpg','IMG-20250609-WA0054.jpg',
+    'IMG-20251119-WA0158.jpg','IMG-20260309-WA0002.jpg','IMG-20251204-WA0033.jpg',
+    'IMG-20251204-WA0057.jpg','IMG-20251204-WA0062.jpg','IMG_20251204_123438.jpg',
+    'IMG_20251204_124949487_HDR.jpg','IMG_20251204_125231254_HDR.jpg',
+    'IMG-20241023-WA0017.jpg','IMG-20241023-WA0018.jpg','IMG-20241023-WA0019.jpg',
+    'IMG-20241028-WA0050.jpg','IMG-20241028-WA0056.jpg','IMG-20241028-WA0058.jpg'
 ];
+const VIDEOS_FALLBACK = ['1.mp4','4.mp4','5.mp4','6.mp4'];
 
-const PLACEHOLDER_SVG = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect width='200' height='200' fill='%23e8e0d4'/%3E%3Cg transform='translate(100 100)' fill='%23a89878'%3E%3Ccircle cx='0' cy='-12' r='6'/%3E%3Crect x='-22' y='0' width='44' height='28' rx='4'/%3E%3C/g%3E%3Ctext x='100' y='160' font-family='system-ui' font-size='11' fill='%237a7060' text-anchor='middle'%3EFoto institucional%3C/text%3E%3C/svg%3E";
+function checkImage(url){
+    return new Promise(resolve=>{
+        const img = new Image();
+        img.onload = ()=>resolve(img.naturalWidth > 1);
+        img.onerror = ()=>resolve(false);
+        img.src = url;
+    });
+}
 
-function renderGaleria(){
+async function renderGaleria(){
     const root = document.getElementById('galeria');
     if(!root || root.dataset.rendered) return;
     root.dataset.rendered = '1';
-    const frag = document.createDocumentFragment();
-    PHOTOS_INSTITUCIONALES.forEach(file=>{
+    const section = root.closest('.content-section');
+
+    /* Filtrar sólo las fotos que realmente existen en el repo */
+    const checks = await Promise.all(PHOTOS_INSTITUCIONALES.map(async f=>({f, ok:await checkImage(f)})));
+    const existing = checks.filter(c=>c.ok).map(c=>c.f);
+
+    if(existing.length > 0){
+        existing.forEach(file=>{
+            const item = document.createElement('div');
+            item.className = 'gallery-item';
+            item.addEventListener('click', ()=>openLightbox(file,'image'));
+            const img = document.createElement('img');
+            img.src = file;
+            img.alt = 'Evento Alliance Française';
+            img.loading = 'lazy';
+            item.appendChild(img);
+            root.appendChild(item);
+        });
+        return;
+    }
+
+    /* Sin fotos: usar los videos del proceso como galería en vivo */
+    if(section){
+        const h2 = section.querySelector('h2');
+        const p = section.querySelector('p');
+        if(h2) h2.textContent = 'Videos del proceso DELF Junior';
+        if(p) p.textContent = 'Mientras se preparan las fotografías oficiales del Colegio La Salle, te dejamos un avance de los videos institucionales del proceso de inscripción. Haz clic en cualquiera para verlo en grande.';
+    }
+    VIDEOS_FALLBACK.forEach(file=>{
         const item = document.createElement('div');
         item.className = 'gallery-item';
-        item.addEventListener('click', ()=>openLightbox(file));
-        const img = document.createElement('img');
-        img.alt = 'Evento Alliance Française';
-        img.loading = 'lazy';
-        img.src = file;
-        img.addEventListener('error', ()=>{ img.src = PLACEHOLDER_SVG; });
-        item.appendChild(img);
-        frag.appendChild(item);
+        item.addEventListener('click', ()=>openLightbox(file,'video'));
+        const v = document.createElement('video');
+        v.src = file;
+        v.muted = true;
+        v.loop = true;
+        v.autoplay = true;
+        v.playsInline = true;
+        v.preload = 'metadata';
+        v.setAttribute('playsinline','');
+        v.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block';
+        v.addEventListener('error', ()=>item.remove());
+        item.appendChild(v);
+        const badge = document.createElement('span');
+        badge.style.cssText = 'position:absolute;top:8px;right:8px;background:rgba(200,33,30,.92);color:#fff;font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:50px;font-family:Inter,sans-serif;pointer-events:none';
+        badge.textContent = '▶ Video';
+        item.appendChild(badge);
+        root.appendChild(item);
     });
-    root.appendChild(frag);
 }
 window.addEventListener('load', renderGaleria);
 
-/* ============== LIGHTBOX ============== */
-function openLightbox(filename){
+/* ============== LIGHTBOX (imagen o video) ============== */
+function openLightbox(filename, type){
     const lb = document.getElementById('lightbox');
     const img = document.getElementById('lightbox-img');
-    img.onerror = ()=>{ img.src = PLACEHOLDER_SVG; };
-    img.src = filename;
+    const vid = document.getElementById('lightbox-video');
+    /* Detectar tipo si no se especifica */
+    if(!type) type = /\.(mp4|webm|mov)$/i.test(filename) ? 'video' : 'image';
+    if(type === 'video'){
+        img.style.display = 'none';
+        vid.style.display = 'block';
+        vid.src = filename;
+        vid.load();
+        vid.play().catch(()=>{});
+    } else {
+        vid.style.display = 'none';
+        vid.pause();
+        vid.removeAttribute('src');
+        img.style.display = 'block';
+        img.src = filename;
+    }
     lb.classList.add('active');
     document.body.style.overflow = 'hidden';
 }
 function closeLightbox(e){
-    if(e && e.target && e.target.id === 'lightbox-img') return;
+    if(e && e.target && (e.target.id === 'lightbox-img' || e.target.id === 'lightbox-video')) return;
     const lb = document.getElementById('lightbox');
     lb.classList.remove('active');
     document.body.style.overflow = '';
-    setTimeout(()=>{ document.getElementById('lightbox-img').src = ''; }, 400);
+    setTimeout(()=>{
+        const img = document.getElementById('lightbox-img');
+        const vid = document.getElementById('lightbox-video');
+        if(img){ img.src = ''; img.style.display = 'none'; }
+        if(vid){ vid.pause(); vid.removeAttribute('src'); vid.style.display = 'none'; }
+    }, 400);
 }
 document.addEventListener('keydown', e=>{
     if(e.key === 'Escape'){
@@ -2229,37 +2274,84 @@ function toggleFullscreen(){
 /* ============== PLAY ROBUSTO Y AUTO-AVANCE ============== */
 function playVideoSafe(videoEl, onEnded){
     if(!videoEl) return;
-    try{ videoEl.currentTime = 0; }catch(e){}
-    videoEl.muted = false;
+    /* Limpiar handlers previos */
+    videoEl.onended = null;
+    let advanced = false;
+    let safetyTimer = null;
+    const advance = ()=>{
+        if(advanced) return;
+        advanced = true;
+        if(safetyTimer) clearTimeout(safetyTimer);
+        videoEl.onended = null;
+        if(onEnded) onEnded();
+    };
     if(onEnded){
-        videoEl.onended = onEnded;
+        videoEl.onended = advance;
+        /* Salvavidas: si el video no dispara 'ended' en 15s (red lenta o
+           archivo cacheado al final), avanza igual. */
+        safetyTimer = setTimeout(advance, 15000);
     }
+    /* Resetear y cargar para evitar quedarse pegado al final */
+    try{ videoEl.pause(); videoEl.currentTime = 0; }catch(e){}
+    try{ videoEl.load(); }catch(e){}
+    videoEl.muted = false;
     const tryPlay = ()=>videoEl.play();
     tryPlay().catch(()=>{
         videoEl.muted = true;
-        tryPlay().catch(err=>console.warn('No se pudo reproducir el video:', err));
+        tryPlay().catch(err=>{
+            console.warn('No se pudo reproducir el video:', err);
+            /* Si play falla por completo, también avanza vía salvavidas */
+        });
     });
 }
 
 /* ============== MÚSICA AMBIENTAL ============== */
+function setMusicState(playing){
+    const btn = document.getElementById('music-toggle');
+    if(!btn) return;
+    btn.classList.toggle('playing', playing);
+    btn.title = playing ? 'Pausar música' : 'Reproducir música';
+}
 function toggleMusic(){
     const audio = document.getElementById('bg-music');
-    const btn = document.getElementById('music-toggle');
     if(!audio) return;
     if(audio.paused){
-        audio.volume = 0.35;
-        audio.play().then(()=>{
-            btn.classList.add('playing');
-            btn.title = 'Pausar música';
-        }).catch(err=>{
-            console.warn('No se pudo reproducir la música:', err);
-        });
+        audio.volume = 0.3;
+        audio.play().then(()=>setMusicState(true)).catch(err=>console.warn('No se pudo reproducir la música:', err));
     } else {
         audio.pause();
-        btn.classList.remove('playing');
-        btn.title = 'Reproducir música';
+        setMusicState(false);
     }
 }
+
+/* Auto-iniciar música al primer gesto del usuario (políticas de autoplay) */
+let musicAutoStarted = false;
+function tryAutoStartMusic(){
+    if(musicAutoStarted) return;
+    const audio = document.getElementById('bg-music');
+    if(!audio) return;
+    musicAutoStarted = true;
+    audio.volume = 0.3;
+    audio.play().then(()=>setMusicState(true)).catch(()=>{
+        /* Si falla, el usuario aún puede pulsar el botón manualmente */
+        musicAutoStarted = false;
+    });
+}
+
+/* Ocultar botón de música si el archivo MP3 falla en cargar */
+(function setupAudio(){
+    const audio = document.getElementById('bg-music');
+    if(!audio) return;
+    audio.addEventListener('error', ()=>{
+        const btn = document.getElementById('music-toggle');
+        if(btn) btn.style.display = 'none';
+        console.warn('Audio no disponible: ocultando botón de música.');
+    });
+    /* Pre-flight: verificar accesibilidad del archivo */
+    audio.addEventListener('loadedmetadata', ()=>{
+        console.info('Música ambiental lista, duración:', audio.duration, 's');
+    });
+})();
 
 /* ============== NAVEGACIÓN ENTRE PANTALLAS ============== */
 function showScreen(id){
@@ -2293,6 +2385,7 @@ function toggleMute(videoId, btn){
 
 /* ============== NAVEGACIÓN POR CAPÍTULOS ============== */
 function goToChapter(num){
+    tryAutoStartMusic();
     fadeOutAndShow(getActiveScreenId(), 'chapter'+num);
 }
 
@@ -2303,6 +2396,7 @@ function getActiveScreenId(){
 
 let pendingChapterTarget = null;
 function goToChapterWithVideo(num){
+    tryAutoStartMusic();
     pendingChapterTarget = 'chapter'+num;
     showScreen('transition');
     playVideoSafe(document.getElementById('transitionVideo'), ()=>{

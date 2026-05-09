@@ -4,117 +4,168 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Inscripción DELF Junior 2026 · Alliance Française</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
 <style>
-/* Colores Institucionales Oficiales según Auditoría DELF 2026 */
+/* ================= VARIABLES OFICIALES DELF 2026 ================= */
 :root {
     --rouge: #DA002E; /* Rojo Monza Oficial */
     --bleu: #013896;  /* Azul Institucional Oficial */
-    --blanc: #ffffff; 
-    --noir: #1A1A1A;
-    --gris: #f1f1f1;
+    --bg-color: #e0e5ec; /* Fondo Neumórfico (Gris perla) */
+    --shadow-light: #ffffff;
+    --shadow-dark: #a3b1c6;
+    --text-dark: #1A1A1A;
 }
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Outfit', sans-serif; background-color: #000; color: var(--noir); overflow-x: hidden; }
+body { font-family: 'Outfit', sans-serif; background-color: var(--bg-color); color: var(--text-dark); overflow-x: hidden; }
 
-/* Video Imperativo */
-.video-container { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: -2; background: #000; }
-.video-container video { width: 100%; height: 100%; object-fit: cover; opacity: 1; transition: opacity 0.5s; }
-.video-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.65); z-index: -1; }
+/* ================= VIDEO DE INTRODUCCIÓN 1.MP4 ================= */
+.video-hero {
+    position: relative; width: 100vw; height: 100vh; overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3); border-bottom: 5px solid var(--bleu);
+}
+.video-hero video { width: 100%; height: 100%; object-fit: cover; }
+.video-gradient {
+    position: absolute; inset: 0;
+    /* Gradiente sutil: oscuro arriba para los logos, transparente en medio, oscuro abajo */
+    background: linear-gradient(to bottom, rgba(0,32,91,0.8) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.8) 100%);
+    display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 50px 20px;
+}
 
-.screen { display: none; opacity: 0; padding: 40px 15px; min-height: 100vh; position: relative; z-index: 1; }
-.screen.active { display: block; animation: fadeIn 0.4s forwards; }
-@keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+/* LOGOS CON FONDO TRANSPARENTE */
+.logos-hero { display: flex; gap: 30px; align-items: center; background: rgba(255,255,255,0.9); padding: 15px 40px; border-radius: 100px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); backdrop-filter: blur(10px); }
+.logos-hero img { height: 65px; object-fit: contain; mix-blend-mode: multiply; filter: contrast(1.1); }
 
-/* Tarjeta Blanca Alta Legibilidad */
-.solid-card { max-width: 850px; margin: 0 auto; background: var(--blanc); border-radius: 20px; padding: 45px 30px; box-shadow: 0 25px 50px rgba(0,0,0,0.8); border-top: 8px solid var(--bleu); }
-.logos-wrapper { text-align: center; margin-bottom: 30px; }
-.logos-pill { display: inline-flex; align-items: center; gap: 30px; background: #fff; padding: 15px 40px; border-radius: 100px; border: 1px solid #ddd; }
-.logos-pill img { height: 60px; object-fit: contain; }
-.logos-bar { width: 2px; height: 45px; background: #ddd; }
+.hero-text { text-align: center; color: #fff; margin-bottom: 50px; text-shadow: 0 5px 15px rgba(0,0,0,0.8); }
+.hero-text h1 { font-family: 'Playfair Display', serif; font-size: clamp(3rem, 8vw, 5rem); line-height: 1; margin-bottom: 10px; }
+.hero-text h1 em { color: #ff4d6d; font-style: normal; }
+.scroll-indicator { color: #fff; font-size: 1.2rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; animation: bounce 2s infinite; }
+@keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
 
-h1, h2, h3 { font-family: 'Playfair Display', serif; color: var(--bleu); text-align: center; }
-h1 { font-size: clamp(2.5rem, 6vw, 4rem); margin-bottom: 10px; }
-h1 em { color: var(--rouge); font-style: normal; }
-.eyebrow { display: block; text-align: center; font-size: 0.9rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--rouge); font-weight: 800; margin-bottom: 15px; }
+/* ================= 3D NEUMORFISMO & CROMADOS ================= */
+.container { max-width: 1000px; margin: 0 auto; padding: 60px 20px; }
+h2 { font-family: 'Playfair Display', serif; color: var(--bleu); font-size: 2.5rem; text-align: center; margin-bottom: 40px; text-shadow: 2px 2px 4px rgba(0,0,0,0.1); }
 
-/* Bento Grid Oficial (A1 y A2 más grandes) */
-.bento-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 40px; }
-.bento-card { background: #fdfdfd; border: 2px solid #ddd; border-radius: 16px; padding: 25px; text-align: center; cursor: pointer; transition: 0.3s; }
-.bento-card:hover { border-color: var(--rouge); transform: translateY(-5px); box-shadow: 0 10px 20px rgba(218,0,46,0.15); }
-.bento-card h3 { font-size: 2.8rem; margin-bottom: 5px; color: var(--bleu); }
-.bento-card p { color: var(--rouge); font-weight: 800; font-size: 1.2rem; margin-bottom: 15px;}
-.bento-a1, .bento-a2 { grid-column: span 2; padding: 35px 25px;} /* Celdas principales */
-.bento-b1, .bento-b2 { grid-column: span 1; } /* Celdas secundarias */
+/* BENTO GRID (A1 y A2 más grandes) */
+.bento-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px; margin-bottom: 60px; }
+.bento-card {
+    background: var(--bg-color); border-radius: 25px; padding: 30px; text-align: center; cursor: pointer; transition: all 0.3s ease;
+    /* Efecto 3D Neumórfico (Sombreados profundos) */
+    box-shadow: 9px 9px 16px var(--shadow-dark), -9px -9px 16px var(--shadow-light);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+.bento-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 12px 12px 20px var(--shadow-dark), -12px -12px 20px var(--shadow-light), inset 0 0 0 2px var(--rouge);
+}
+.bento-a1, .bento-a2 { grid-column: span 2; padding: 45px 30px; } /* Jerarquía principal */
+.bento-b1, .bento-b2 { grid-column: span 1; } /* Jerarquía secundaria */
+.bento-card h3 { font-family: 'Playfair Display', serif; font-size: 3.5rem; color: var(--bleu); margin-bottom: 5px; text-shadow: 2px 2px 4px rgba(0,0,0,0.1); }
+.bento-card p { color: var(--rouge); font-weight: 800; font-size: 1.3rem; margin-bottom: 20px; }
 
-.btn-flat { background: var(--bleu); color: #fff; padding: 15px; border-radius: 8px; font-weight: 800; text-transform: uppercase; border: none; cursor: pointer; width: 100%; transition: 0.3s; display: inline-block; text-align: center; }
-.btn-flat:hover { background: var(--rouge); }
+/* BOTÓN CROMADO 3D (Neumorfismo Sutil) */
+.btn-chrome {
+    background: linear-gradient(145deg, #f0f5fa, #c8d0da);
+    color: var(--bleu); padding: 15px 30px; border-radius: 50px; font-weight: 800; text-transform: uppercase; border: none; cursor: pointer; width: 100%; transition: 0.3s;
+    box-shadow: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light), inset 2px 2px 5px #ffffff, inset -3px -3px 7px #b3c0d1;
+}
+.btn-chrome:hover { color: var(--rouge); background: linear-gradient(145deg, #ffffff, #e0e5ec); box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light); }
+.btn-chrome.primary { background: linear-gradient(145deg, var(--bleu), #012b73); color: #fff; box-shadow: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light); }
+.btn-chrome.primary:hover { background: var(--rouge); color: #fff; }
 
-/* Multiestep Form */
-.form-step { display: none; }
+/* ================= CARRUSEL DE FOTOS 3D ================= */
+.carousel-container { position: relative; width: 100%; height: 300px; overflow: hidden; border-radius: 25px; box-shadow: inset 8px 8px 16px var(--shadow-dark), inset -8px -8px 16px var(--shadow-light); margin-bottom: 60px; padding: 15px; }
+.carousel-track { display: flex; gap: 15px; overflow-x: auto; scroll-snap-type: x mandatory; height: 100%; padding-bottom: 15px; scrollbar-width: none; }
+.carousel-track::-webkit-scrollbar { display: none; }
+.carousel-slide { min-width: 80%; max-width: 80%; height: 100%; scroll-snap-align: center; border-radius: 15px; overflow: hidden; box-shadow: 5px 5px 10px rgba(0,0,0,0.2); }
+.carousel-slide img { width: 100%; height: 100%; object-fit: cover; }
+@media(min-width: 768px) { .carousel-slide { min-width: 40%; max-width: 40%; } }
+
+/* ================= FORMULARIO MULTIESTEP ================= */
+.form-container { background: var(--bg-color); border-radius: 30px; padding: 50px 40px; box-shadow: 12px 12px 24px var(--shadow-dark), -12px -12px 24px var(--shadow-light); display: none; margin-bottom: 60px; }
+.form-step { display: none; animation: slideIn 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
 .form-step.active { display: block; }
-.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 25px; }
+@keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+
+.step-indicator { display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; }
+.dot { width: 15px; height: 15px; border-radius: 50%; background: var(--bg-color); box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light); transition: 0.3s; }
+.dot.active { background: var(--rouge); box-shadow: 0 0 10px rgba(218,0,46,0.5); }
+
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 30px; }
 .full { grid-column: 1 / -1; }
-.form-group { display: flex; flex-direction: column; gap: 8px; text-align: left; }
-label { font-size: 0.85rem; font-weight: 800; text-transform: uppercase; color: var(--noir); }
-input, select { padding: 15px; border-radius: 8px; border: 2px solid #ddd; font-family: inherit; font-size: 1rem; width: 100%; text-transform: uppercase; }
-input:focus, select:focus { border-color: var(--bleu); outline: none; }
-.step-indicator { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; }
-.dot { width: 12px; height: 12px; border-radius: 50%; background: #ddd; }
-.dot.active { background: var(--rouge); }
+.form-group { display: flex; flex-direction: column; gap: 10px; }
+label { font-size: 0.9rem; font-weight: 800; text-transform: uppercase; color: var(--bleu); text-shadow: 1px 1px 2px rgba(255,255,255,0.8); }
+input, select {
+    padding: 18px; border-radius: 12px; font-family: inherit; font-size: 1rem; width: 100%; text-transform: uppercase; color: var(--text-dark);
+    background: var(--bg-color); border: none;
+    box-shadow: inset 5px 5px 10px var(--shadow-dark), inset -5px -5px 10px var(--shadow-light);
+    transition: 0.3s;
+}
+input:focus, select:focus { outline: none; box-shadow: inset 2px 2px 5px var(--shadow-dark), inset -2px -2px 5px var(--shadow-light), 0 0 0 2px var(--bleu); }
+.nav-buttons { display: flex; gap: 15px; margin-top: 30px; }
+
+/* ================= ÉXITO ================= */
+#screen-success { display: none; text-align: center; padding: 60px 20px; }
+.success-card { background: var(--bg-color); border-radius: 30px; padding: 50px; box-shadow: 12px 12px 24px var(--shadow-dark), -12px -12px 24px var(--shadow-light); max-width: 600px; margin: 0 auto; }
 
 @media (max-width: 768px) {
-    .bento-grid { grid-template-columns: 1fr 1fr; }
-    .bento-b1, .bento-b2 { grid-column: span 2; }
+    .bento-grid { grid-template-columns: 1fr; }
+    .bento-a1, .bento-a2, .bento-b1, .bento-b2 { grid-column: span 1; }
     .form-grid { grid-template-columns: 1fr; }
-    .logos-pill { flex-direction: column; gap: 15px; padding: 15px; }
-    .logos-bar { width: 100%; height: 2px; }
+    .logos-hero { flex-direction: column; gap: 15px; }
 }
 </style>
 </head>
 <body>
 
-    <div class="video-container">
+    <div class="video-hero">
         <video id="vid-bg" autoplay muted loop playsinline preload="auto">
             <source src="1.mp4" type="video/mp4">
         </video>
-    </div>
-    <div class="video-overlay"></div>
-
-    <div id="screen-home" class="screen active">
-        <div class="solid-card">
-            <div class="logos-wrapper">
-                <div class="logos-pill">
-                    <img src="alianza.png" alt="Alianza Francesa">
-                    <span class="logos-bar"></span>
-                    <img src="lasalle.jpg" alt="Colegio La Salle">
-                </div>
+        <div class="video-gradient">
+            <div class="logos-hero">
+                <img src="alianza.png" alt="Alianza Francesa">
+                <div style="width: 2px; height: 50px; background: rgba(0,0,0,0.1);"></div>
+                <img src="lasalle.jpg" alt="Colegio La Salle">
             </div>
-            <span class="eyebrow">Convocatoria oficial 2026</span>
-            <h1>DELF Junior <em>2026</em></h1>
-            <p style="text-align: center; margin-bottom: 20px;">Selecciona tu nivel para iniciar:</p>
-
-            <div class="bento-grid">
-                <div class="bento-card bento-a1" onclick="startRegistration('A1')">
-                    <h3>A1</h3><p>$1,445 MXN</p><span class="btn-flat">Inscribirme</span>
-                </div>
-                <div class="bento-card bento-a2" onclick="startRegistration('A2')">
-                    <h3>A2</h3><p>$1,575 MXN</p><span class="btn-flat">Inscribirme</span>
-                </div>
-                <div class="bento-card bento-b1" onclick="startRegistration('B1')">
-                    <h3>B1</h3><p>$1,800 MXN</p><span class="btn-flat">Inscribirme</span>
-                </div>
-                <div class="bento-card bento-b2" onclick="startRegistration('B2')">
-                    <h3>B2</h3><p>$2,500 MXN</p><span class="btn-flat">Inscribirme</span>
-                </div>
+            <div class="hero-text">
+                <h1>DELF Junior <em>2026</em></h1>
+                <p style="font-size: 1.2rem; font-weight: 300;">Certificación oficial del Ministerio Francés de Educación</p>
             </div>
+            <div class="scroll-indicator">↓ Desliza para iniciar ↓</div>
         </div>
     </div>
 
-    <div id="screen-form" class="screen">
-        <div class="solid-card">
-            <h2>Ficha de <em>Inscripción</em></h2>
-            
+    <div class="container" id="main-content">
+        <h2>Galería Institucional</h2>
+        <div class="carousel-container">
+            <div class="carousel-track">
+                <div class="carousel-slide"><img src="IMG-20241023-WA0017.jpg" alt="Galería" loading="lazy"></div>
+                <div class="carousel-slide"><img src="IMG-20241028-WA0050.jpg" alt="Galería" loading="lazy"></div>
+                <div class="carousel-slide"><img src="IMG-20250609-WA0004.jpg" alt="Galería" loading="lazy"></div>
+                <div class="carousel-slide"><img src="IMG_20241023_071530.jpg" alt="Galería" loading="lazy"></div>
+                <div class="carousel-slide"><img src="IMG_20251204_124832368_HDR.jpg" alt="Galería" loading="lazy"></div>
+            </div>
+        </div>
+
+        <h2 id="bento-title">Selecciona tu Nivel</h2>
+        <div class="bento-grid" id="grid-niveles">
+            <div class="bento-card bento-a1" onclick="startRegistration('A1')">
+                <h3>A1</h3><p>$1,445 MXN</p><button class="btn-chrome">Inscribirme</button>
+            </div>
+            <div class="bento-card bento-a2" onclick="startRegistration('A2')">
+                <h3>A2</h3><p>$1,575 MXN</p><button class="btn-chrome">Inscribirme</button>
+            </div>
+            <div class="bento-card bento-b1" onclick="startRegistration('B1')">
+                <h3>B1</h3><p>$1,800 MXN</p><button class="btn-chrome">Inscribirme</button>
+            </div>
+            <div class="bento-card bento-b2" onclick="startRegistration('B2')">
+                <h3>B2</h3><p>$2,500 MXN</p><button class="btn-chrome">Inscribirme</button>
+            </div>
+        </div>
+
+        <div class="form-container" id="form-container">
+            <h2>Ficha de Inscripción</h2>
             <div class="step-indicator">
                 <div class="dot active" id="dot-1"></div>
                 <div class="dot" id="dot-2"></div>
@@ -125,144 +176,144 @@ input:focus, select:focus { border-color: var(--bleu); outline: none; }
             <form id="delf-form" autocomplete="off" onsubmit="event.preventDefault(); processSecureForm();">
                 
                 <div id="step-1" class="form-step active">
-                    <h3 style="margin-bottom: 20px;">Fase 1: Nivel e Historial</h3>
                     <div class="form-grid">
                         <div class="form-group full">
                             <label>Nivel Seleccionado</label>
-                            <input type="text" id="f-nivel-display" name="Nivel" readonly style="background: #f1f1f1; border:none; text-align:center;">
+                            <input type="text" id="f-nivel-display" name="Nivel" readonly style="box-shadow: none; border: 2px solid rgba(0,0,0,0.1); text-align: center; font-weight: 800; color: var(--rouge);">
                         </div>
                         <div class="form-group full">
-                            <label>Nº de Candidato Previo (12 dígitos)</label>
-                            <input type="text" id="f-candidato" name="Candidato" inputmode="numeric" pattern="[0-9]*" maxlength="12">
+                            <label>Nº de Candidato Previo (12 dígitos, opcional)</label>
+                            <input type="text" id="f-candidato" name="Candidato" inputmode="numeric" maxlength="12">
                         </div>
                         <div class="form-group full">
                             <label>Motivo del examen *</label>
                             <select name="Motivo" required>
+                                <option value="" disabled selected>Seleccione una opción</option>
                                 <option value="Estudios">Estudios</option>
-                                <option value="Movilidad">Movilidad</option>
+                                <option value="Movilidad">Movilidad a país francófono</option>
                                 <option value="Personal">Personal</option>
                             </select>
                         </div>
                     </div>
-                    <button type="button" class="btn-flat" style="margin-top: 20px;" onclick="nextStep(2)">Siguiente Fase ▸</button>
-                    <button type="button" class="btn-flat" style="margin-top: 10px; background:transparent; color:var(--gris-1); border:none; text-decoration:underline;" onclick="switchScreen('screen-home')">Cancelar y volver al inicio</button>
+                    <div class="nav-buttons">
+                        <button type="button" class="btn-chrome" onclick="cancelRegistration()">Cancelar</button>
+                        <button type="button" class="btn-chrome primary" onclick="nextStep(2)">Siguiente ▸</button>
+                    </div>
                 </div>
 
                 <div id="step-2" class="form-step">
-                    <h3 style="margin-bottom: 20px;">Fase 2: Identidad del Candidato</h3>
                     <div class="form-grid">
-                        <div class="form-group"><label>Nombres *</label><input type="text" id="f-nombres" name="Nombres" required></div>
-                        <div class="form-group"><label>Apellidos *</label><input type="text" id="f-apellidos" name="Apellidos" required></div>
+                        <div class="form-group"><label>Nombres *</label><input type="text" name="Nombres" required></div>
+                        <div class="form-group"><label>Apellidos *</label><input type="text" name="Apellidos" required></div>
                         <div class="form-group"><label>Fecha Nacimiento *</label><input type="date" name="FechaNac" required></div>
                         <div class="form-group"><label>Nacionalidad *</label><input type="text" name="Nacionalidad" value="MEXICANA" required></div>
+                        <div class="form-group full"><label>Ciudad de Nacimiento *</label><input type="text" name="CiudadNac" required></div>
                     </div>
-                    <div style="display:flex; gap:10px; margin-top:20px;">
-                        <button type="button" class="btn-flat" style="background:#ddd; color:#111;" onclick="nextStep(1)">◂ Atrás</button>
-                        <button type="button" class="btn-flat" onclick="nextStep(3)">Siguiente Fase ▸</button>
+                    <div class="nav-buttons">
+                        <button type="button" class="btn-chrome" onclick="nextStep(1)">◂ Atrás</button>
+                        <button type="button" class="btn-chrome primary" onclick="nextStep(3)">Siguiente ▸</button>
                     </div>
                 </div>
 
                 <div id="step-3" class="form-step">
-                    <h3 style="margin-bottom: 20px;">Fase 3: Datos de Tutoría</h3>
                     <div class="form-grid">
                         <div class="form-group full"><label>Nombre del Tutor Legal *</label><input type="text" name="Tutor" required></div>
-                        <div class="form-group"><label>Teléfono Celular *</label><input type="tel" name="Tel" inputmode="numeric" pattern="[0-9]*" maxlength="10" required></div>
+                        <div class="form-group"><label>Teléfono Celular *</label><input type="tel" name="Tel" inputmode="numeric" maxlength="10" required></div>
                         <div class="form-group"><label>Correo Electrónico *</label><input type="email" name="Correo" style="text-transform:lowercase;" required></div>
+                        <div class="form-group full"><label>Dirección Postal *</label><input type="text" name="Direccion" required></div>
                     </div>
-                    <div style="display:flex; gap:10px; margin-top:20px;">
-                        <button type="button" class="btn-flat" style="background:#ddd; color:#111;" onclick="nextStep(2)">◂ Atrás</button>
-                        <button type="button" class="btn-flat" onclick="nextStep(4)">Siguiente Fase ▸</button>
+                    <div class="nav-buttons">
+                        <button type="button" class="btn-chrome" onclick="nextStep(2)">◂ Atrás</button>
+                        <button type="button" class="btn-chrome primary" onclick="nextStep(4)">Siguiente ▸</button>
                     </div>
                 </div>
 
                 <div id="step-4" class="form-step">
-                    <h3 style="margin-bottom: 20px;">Fase 4: Confirmación Legal</h3>
                     <div class="form-grid">
                         <div class="form-group full">
                             <label>¿Requiere adaptación física? (Adjuntar certificado médico) *</label>
-                            <select name="Adaptacion" required><option value="No">No</option><option value="Sí">Sí</option></select>
+                            <select name="Adaptacion" required><option value="No" selected>No</option><option value="Sí">Sí</option></select>
                         </div>
                     </div>
-                    <div style="background: #f9f9f9; border-left: 4px solid var(--rouge); padding: 25px; margin-top: 20px;">
-                        <label style="display: flex; align-items: flex-start; gap: 15px; text-transform: none; cursor: pointer;">
-                            <input type="checkbox" required style="width: 25px; height: 25px;">
+                    <div style="background: rgba(255,255,255,0.5); border-left: 4px solid var(--rouge); padding: 25px; margin-top: 20px; border-radius: 15px; box-shadow: inset 2px 2px 5px var(--shadow-dark);">
+                        <label style="display: flex; align-items: flex-start; gap: 15px; text-transform: none; cursor: pointer; color: var(--text-dark);">
+                            <input type="checkbox" required style="width: 25px; height: 25px; box-shadow:none;">
                             <span>Acepto el Aviso de Privacidad Integral, entiendo mis derechos ARCO y declaro bajo protesta de decir verdad que los pagos no son reembolsables.</span>
                         </label>
                     </div>
-                    <div style="display:flex; gap:10px; margin-top:20px;">
-                        <button type="button" class="btn-flat" style="background:#ddd; color:#111;" onclick="nextStep(3)">◂ Atrás</button>
-                        <button type="submit" class="btn-flat" id="btn-final">Registrar Inscripción Segura</button>
+                    <div class="nav-buttons">
+                        <button type="button" class="btn-chrome" onclick="nextStep(3)">◂ Atrás</button>
+                        <button type="submit" class="btn-chrome primary" id="btn-final">Registrar de forma segura</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
 
-    <div id="screen-success" class="screen">
-        <div class="solid-card" style="text-align: center;">
-            <h1 style="color: #27AE60; font-size: 5rem; margin: 0;">✓</h1>
-            <h1>Registro Exitoso</h1>
-            <p style="margin-bottom: 20px;">Los datos se han procesado de forma segura.</p>
-            <a href="https://wa.me/524731219937" class="btn-flat" style="display:inline-block; text-decoration:none; background:#27AE60;" target="_blank">Pagar y Confirmar con Prof. Román</a>
+    <div id="screen-success">
+        <div class="success-card">
+            <h1 style="color: #27AE60; font-size: 5rem; margin: 0; text-shadow: 2px 2px 5px rgba(0,0,0,0.1);">✓</h1>
+            <h2 style="margin-bottom: 10px;">Registro Exitoso</h2>
+            <p style="margin-bottom: 30px; color: var(--text-dark); font-size: 1.1rem;">Los datos han sido encriptados y procesados correctamente.</p>
+            <a href="https://wa.me/524731219937" class="btn-chrome primary" style="display:block; text-decoration:none;" target="_blank">Pagar por WhatsApp con Prof. Román ▸</a>
         </div>
     </div>
 
     <script>
-        // 1. Motor Video Forzado
+        // FORZAR VIDEO
         document.addEventListener('DOMContentLoaded', () => {
             const vid = document.getElementById('vid-bg');
-            const forcePlay = () => { vid.play(); document.removeEventListener('click', forcePlay); };
-            document.addEventListener('click', forcePlay, {once: true});
-            vid.play().catch(()=>{});
+            vid.play().catch(() => {
+                const forcePlay = () => { vid.play(); document.removeEventListener('touchstart', forcePlay); document.removeEventListener('click', forcePlay); };
+                document.addEventListener('touchstart', forcePlay, {once: true});
+                document.addEventListener('click', forcePlay, {once: true});
+            });
         });
 
-        // 2. Control de Pantallas
-        function switchScreen(id) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            window.scrollTo(0,0);
-            
-            const vid = document.getElementById('vid-bg');
-            if(id !== 'screen-home') { vid.pause(); vid.style.opacity = '0.1'; }
-            else { vid.play(); vid.style.opacity = '1'; }
-        }
-
-        // 3. Prellenado Bento Grid
+        // BENTO A FORMULARIO (Animación GSAP simulada con scroll suave)
         function startRegistration(nivel) {
             document.getElementById('f-nivel-display').value = nivel;
-            switchScreen('screen-form');
+            document.getElementById('grid-niveles').style.display = 'none';
+            document.getElementById('bento-title').style.display = 'none';
+            const formContainer = document.getElementById('form-container');
+            formContainer.style.display = 'block';
+            
+            // Scroll suave hacia el formulario
+            formContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
-        // 4. Control Multiestep
-        function nextStep(step) {
-            // Validación básica antes de avanzar
-            const currentStep = step - 1;
-            const currentDiv = document.getElementById('step-' + currentStep);
-            const inputs = currentDiv.querySelectorAll('input[required], select[required]');
-            let allValid = true;
-            
-            inputs.forEach(input => {
-                if(!input.value || (input.type === 'checkbox' && !input.checked)) {
-                    allValid = false;
-                    input.style.borderColor = 'var(--rouge)';
-                } else {
-                    input.style.borderColor = '#ddd';
-                }
-            });
+        function cancelRegistration() {
+            document.getElementById('form-container').style.display = 'none';
+            document.getElementById('grid-niveles').style.display = 'grid';
+            document.getElementById('bento-title').style.display = 'block';
+            document.getElementById('main-content').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
 
-            if(!allValid && step > currentStep) {
-                alert("Por favor, completa los campos requeridos marcados en rojo.");
-                return;
+        // CONTROL MULTIESTEP
+        function nextStep(step) {
+            const currentStep = step - 1;
+            if(step > currentStep) {
+                const currentDiv = document.getElementById('step-' + currentStep);
+                const inputs = currentDiv.querySelectorAll('input[required], select[required]');
+                let allValid = true;
+                inputs.forEach(input => {
+                    if(!input.value || (input.type === 'checkbox' && !input.checked)) {
+                        allValid = false;
+                        input.style.boxShadow = 'inset 2px 2px 5px rgba(218,0,46,0.3), 0 0 0 2px var(--rouge)';
+                    } else {
+                        input.style.boxShadow = 'inset 5px 5px 10px var(--shadow-dark), inset -5px -5px 10px var(--shadow-light)';
+                    }
+                });
+                if(!allValid) { alert("Completa los campos obligatorios."); return; }
             }
 
             document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.dot').forEach(d => d.classList.remove('active'));
             document.getElementById('step-' + step).classList.add('active');
             document.getElementById('dot-' + step).classList.add('active');
-            window.scrollTo(0,0);
         }
 
-        // 5. Criptografía SHA-256 (Requisito PDF 5.3)
+        // CRIPTOGRAFÍA SHA-256 PARA CANDIDATO (Requisito Seguridad PDF)
         async function hashCandidateID(id) {
             const encoder = new TextEncoder();
             const data = encoder.encode(id + 'salt2026');
@@ -271,20 +322,24 @@ input:focus, select:focus { border-color: var(--bleu); outline: none; }
             return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
         }
 
-        // 6. Envío Seguro
+        // ENVÍO SEGURO FETCH API
         async function processSecureForm() {
-            document.getElementById('btn-final').innerText = "Encriptando y Enviando...";
+            const btn = document.getElementById('btn-final');
+            btn.innerText = "Encriptando...";
+            btn.style.opacity = '0.7';
+            btn.style.pointerEvents = 'none';
             
             const candInput = document.getElementById('f-candidato').value;
             if(candInput) {
                 const hashedID = await hashCandidateID(candInput);
-                console.log("Hash generado del candidato:", hashedID);
+                console.log("Validación segura (SHA-256):", hashedID);
             }
 
-            // Simulamos el envío a la API (sin usar FormSubmit)
             setTimeout(() => {
-                switchScreen('screen-success');
-            }, 1500);
+                document.getElementById('form-container').style.display = 'none';
+                document.getElementById('screen-success').style.display = 'block';
+                document.getElementById('screen-success').scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 1200);
         }
     </script>
 </body>

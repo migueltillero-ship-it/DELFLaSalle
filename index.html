@@ -7,6 +7,32 @@
 <meta name="format-detection" content="telephone=no">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; media-src 'self' blob:; script-src 'self' 'unsafe-inline'; form-action https://formsubmit.co; base-uri 'self'; frame-ancestors 'none';">
 <title>Inscripción DELF Junior 2026 · Alliance Française</title>
+<meta name="description" content="Inscripción oficial al DELF Junior 2026. Sede: Colegio La Salle San Cristóbal de las Casas. Niveles A1, A2, B1 y B2 reconocidos internacionalmente por France Éducation international.">
+<meta name="keywords" content="DELF Junior 2026, Alianza Francesa, Colegio La Salle, San Cristóbal de las Casas, certificación francés, A1, A2, B1, B2, France Éducation international">
+<meta name="author" content="Alianza Francesa de San Cristóbal de las Casas">
+
+<!-- Open Graph (preview en WhatsApp, Facebook, Telegram, LinkedIn) -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_MX">
+<meta property="og:url" content="https://migueltillero-ship-it.github.io/DELFLaSalle/">
+<meta property="og:title" content="Inscripción DELF Junior 2026 · Alianza Francesa × La Salle">
+<meta property="og:description" content="Certifica tu francés a nivel internacional. Inscripciones abiertas A1–B2. Sede oficial: Colegio La Salle San Cristóbal de las Casas.">
+<meta property="og:image" content="https://migueltillero-ship-it.github.io/DELFLaSalle/22.png">
+<meta property="og:image:width" content="1536">
+<meta property="og:image:height" content="1024">
+<meta property="og:image:alt" content="DELF Junior 2026 — Alianza Francesa de San Cristóbal de las Casas">
+<meta property="og:site_name" content="DELF La Salle 2026">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Inscripción DELF Junior 2026">
+<meta name="twitter:description" content="Certifica tu francés. Niveles A1–B2. Sede: Colegio La Salle San Cristóbal de las Casas.">
+<meta name="twitter:image" content="https://migueltillero-ship-it.github.io/DELFLaSalle/22.png">
+
+<!-- Iconos -->
+<link rel="icon" type="image/jpeg" href="23.jpg">
+<link rel="apple-touch-icon" href="23.jpg">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
@@ -108,6 +134,105 @@ h2 { font-family: 'Playfair Display', serif; color: var(--bleu); font-size: 2.8r
 }
 .carousel-slide img { width: 100%; height: 100%; object-fit: cover; }
 @media(min-width: 768px) { .carousel-slide { min-width: 40%; } }
+
+/* ================= AVISO DE PRIVACIDAD MODAL ================= */
+.modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,.78);
+    display: none; align-items: center; justify-content: center;
+    z-index: 9999; padding: 20px; backdrop-filter: blur(4px);
+}
+.modal-overlay.open { display: flex; }
+.modal-box {
+    background: var(--bg-3d); border-radius: 24px; max-width: 760px; width: 100%;
+    max-height: 88vh; overflow-y: auto; padding: 40px 36px;
+    box-shadow: 0 30px 80px rgba(0,0,0,.6); position: relative;
+}
+.modal-box h2 { font-size: 2rem; margin-bottom: 8px; text-align: left; color: var(--bleu); }
+.modal-box h3 { color: var(--bleu); font-size: 1rem; margin: 22px 0 6px; font-family: 'Outfit', sans-serif; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; }
+.modal-box p, .modal-box li { color: var(--text-dark); line-height: 1.55; font-size: .94rem; margin-bottom: 8px; font-weight: 400; }
+.modal-box ul { padding-left: 22px; margin-bottom: 10px; }
+.modal-close {
+    position: absolute; top: 14px; right: 18px; background: none; border: none;
+    font-size: 2rem; font-weight: 700; color: var(--bleu); cursor: pointer; line-height: 1; padding: 6px 10px;
+}
+.modal-close:hover { color: var(--rouge); }
+.legal-box .privacy-link {
+    color: var(--bleu); text-decoration: underline; font-weight: 800;
+    cursor: pointer; background: none; border: none; padding: 0; font: inherit;
+}
+.legal-box .privacy-link:hover { color: var(--rouge); }
+
+/* ================= WHATSAPP FLOATING BUTTON ================= */
+.wa-fab {
+    position: fixed; left: 20px; bottom: 20px; z-index: 998;
+    background: #25D366; color: #fff; width: 60px; height: 60px;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 8px 20px rgba(37,211,102,.5), 0 4px 10px rgba(0,0,0,.3);
+    text-decoration: none; transition: transform .25s, box-shadow .25s; border: 2px solid #fff;
+}
+.wa-fab:hover { transform: scale(1.08); box-shadow: 0 12px 28px rgba(37,211,102,.6); }
+.wa-fab svg { width: 32px; height: 32px; fill: currentColor; }
+@media (max-width: 768px) { .wa-fab { width: 54px; height: 54px; left: 16px; bottom: 16px; } .wa-fab svg { width: 28px; height: 28px; } }
+
+/* ================= CONTADOR DE INSCRITOS Y BANNER ================= */
+.constancia-counter {
+    display: inline-block; margin: 0 auto 18px;
+    background: rgba(39,174,96,.13); color: #1b7a43;
+    padding: 7px 18px; border-radius: 50px; font-weight: 700;
+    font-size: .82rem; letter-spacing: 1.5px; text-transform: uppercase;
+}
+.constancia-counter strong { color: #27AE60; font-size: 1.05rem; }
+
+.recovery-banner {
+    background: linear-gradient(180deg, #FFF6E0 0%, #FFEBC2 100%);
+    border-left: 5px solid #E67E22; padding: 16px 20px; border-radius: 14px;
+    margin: 0 auto 30px; max-width: 700px; display: none; font-size: .95rem; color: #6E4416;
+    box-shadow: 6px 6px 14px var(--shadow-dark), -6px -6px 14px var(--shadow-light);
+}
+.recovery-banner.show { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; justify-content: center; }
+.recovery-banner button {
+    background: var(--bleu); color: #fff; border: none; padding: 8px 16px;
+    border-radius: 50px; font-weight: 700; cursor: pointer; font-size: .82rem;
+    text-transform: uppercase; letter-spacing: .5px;
+}
+.recovery-banner button.dismiss { background: #999; }
+.recovery-banner button:hover { transform: translateY(-1px); }
+
+/* ================= BUSCADOR DE CONSTANCIA ================= */
+.constancia-card {
+    background: var(--bg-3d); border-radius: 30px; padding: 50px 40px; margin-bottom: 60px;
+    box-shadow: 12px 12px 24px var(--shadow-dark), -12px -12px 24px var(--shadow-light);
+    border-left: 6px solid #27AE60; text-align: center;
+}
+.constancia-card h2 { color: var(--bleu); font-size: 2.2rem; margin-bottom: 8px; }
+.constancia-card h2 em { color: #27AE60; font-style: italic; }
+.constancia-hint { color: var(--text-dark); font-weight: 500; margin-bottom: 28px; max-width: 580px; margin-left: auto; margin-right: auto; line-height: 1.5; }
+.constancia-form { display: flex; flex-direction: column; gap: 16px; max-width: 580px; margin: 0 auto; }
+.constancia-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.constancia-card input {
+    padding: 18px; border-radius: 14px; font-family: inherit; font-size: 1rem; width: 100%; color: var(--text-dark);
+    background: var(--bg-3d); border: none; font-weight: 600; text-transform: none;
+    box-shadow: inset 6px 6px 12px var(--shadow-dark), inset -6px -6px 12px var(--shadow-light);
+    transition: 0.3s; min-height: 44px;
+}
+.constancia-card input:focus { outline: none; box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light), 0 0 0 3px var(--bleu); }
+.constancia-result { margin-top: 24px; min-height: 24px; }
+.constancia-result .matches { display: flex; flex-direction: column; gap: 12px; max-width: 620px; margin: 0 auto; }
+.constancia-result .match-item {
+    background: rgba(39,174,96,0.08); border-left: 4px solid #27AE60; border-radius: 12px;
+    padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; gap: 14px;
+    flex-wrap: wrap; text-align: left;
+}
+.constancia-result .match-name { font-weight: 700; color: var(--bleu); font-size: 1rem; }
+.constancia-result .match-action {
+    background: #27AE60; color: #fff; padding: 11px 22px; border-radius: 50px; text-decoration: none;
+    font-weight: 800; font-size: 0.88rem; letter-spacing: 0.04em; text-transform: uppercase;
+    box-shadow: 0 6px 14px rgba(39,174,96,0.35); transition: 0.25s; white-space: nowrap;
+}
+.constancia-result .match-action:hover { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(39,174,96,0.45); background: #219653; }
+.constancia-result .empty-msg { color: var(--rouge); font-weight: 700; padding: 14px; }
+.constancia-result .info-msg { color: var(--text-dark); font-weight: 500; padding: 8px; }
+@media (max-width: 600px) { .constancia-row { grid-template-columns: 1fr; } }
 
 /* ================= FORMULARIO WIZARD 3D ================= */
 .form-container { 
@@ -231,10 +356,31 @@ input:focus, select:focus { outline: none; box-shadow: inset 3px 3px 6px var(--s
     </div>
 
     <div class="container" id="main-content">
+        <div class="recovery-banner" id="recovery-banner" role="status">
+            <span>💾 Encontramos un formulario que dejaste a medias.</span>
+            <button type="button" id="recovery-restore">Recuperar mis datos</button>
+            <button type="button" id="recovery-dismiss" class="dismiss">Descartar</button>
+        </div>
+
         <h2>Galería Institucional</h2>
         <div class="carousel-wrapper">
             <div class="carousel-track" id="carousel-track" aria-live="polite"></div>
         </div>
+
+        <!-- ===== BÚSQUEDA DE CONSTANCIA DE INSCRIPCIÓN ===== -->
+        <section class="constancia-card" id="constancia-section" aria-labelledby="constancia-title">
+            <h2 id="constancia-title">¿Ya estás <em>inscrito</em>?</h2>
+            <div class="constancia-counter">📋 <strong id="counter-inscritos">0</strong> alumnos ya inscritos</div>
+            <p class="constancia-hint">Si ya completaste tu inscripción, escribe tu nombre y apellido para descargar tu constancia oficial.</p>
+            <div class="constancia-form">
+                <div class="constancia-row">
+                    <input type="text" id="cb-nombre" placeholder="Nombre(s)" autocomplete="given-name" maxlength="60">
+                    <input type="text" id="cb-apellido" placeholder="Apellidos" autocomplete="family-name" maxlength="80">
+                </div>
+                <button type="button" class="btn-chrome primary" id="cb-buscar">Buscar mi constancia</button>
+            </div>
+            <div class="constancia-result" id="cb-result" role="status" aria-live="polite"></div>
+        </section>
 
         <h2 id="bento-title">Selecciona tu Nivel</h2>
         <div class="bento-grid" id="grid-niveles">
@@ -266,7 +412,9 @@ input:focus, select:focus { outline: none; box-shadow: inset 3px 3px 6px var(--s
                 <input type="hidden" name="_template" value="table">
                 <input type="hidden" name="_next" value="https://migueltillero-ship-it.github.io/DELFLaSalle/?success=1">
                 <input type="hidden" name="_autoresponse" value="Hemos recibido tu inscripción al DELF Junior 2026. Pronto recibirás la confirmación oficial junto con la convocatoria al examen.">
-                
+                <!-- Honeypot anti-spam: los bots llenan este campo, FormSubmit descarta el envío -->
+                <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true">
+
                 <div id="step-1" class="form-step active">
                     <div class="form-notice">Confirma tu nivel e indica el motivo de la certificación.</div>
                     <div class="form-grid">
@@ -348,7 +496,7 @@ input:focus, select:focus { outline: none; box-shadow: inset 3px 3px 6px var(--s
                         </label>
                         <label>
                             <input type="checkbox" name="Acepta_Aviso_Privacidad" required>
-                            <span>Acepto el Aviso de Privacidad y la transferencia de mis datos a France Éducation international para la emisión del diploma.</span>
+                            <span>Acepto el <button type="button" class="privacy-link" onclick="openPrivacy()">Aviso de Privacidad</button> y la transferencia de mis datos a France Éducation international para la emisión del diploma.</span>
                         </label>
                         <label>
                             <input type="checkbox" name="Acepta_No_Reembolso" required>
@@ -618,10 +766,289 @@ input:focus, select:focus { outline: none; box-shadow: inset 3px 3px 6px var(--s
         }
         soundBtn.addEventListener('click',function(){ setSound(!soundOn); });
 
+        // ===== BUSCADOR DE CONSTANCIA DE INSCRIPCIÓN =====
+        // Folder de Google Drive con todas las constancias (fallback cuando no hay link directo).
+        var DRIVE_FOLDER_URL = 'https://drive.google.com/drive/folders/1OhB_3CgdMSDsyhxRrUWsqvTCAAPvF1Ne?usp=sharing';
+        // Cada entrada: nombres, apellidos, drive (URL directa al PDF en formato uc?export=download&id=ID).
+        // Para obtener URL directa: en Drive, "Compartir" → "Cualquiera con el enlace" → copiar enlace.
+        // Convierte https://drive.google.com/file/d/FILE_ID/view → https://drive.google.com/uc?export=download&id=FILE_ID
+        // Si drive está vacío, el botón abre la carpeta completa para que el alumno encuentre su PDF.
+        var CONSTANCIAS = [
+            { nombres: 'Luis Emilio',       apellidos: 'GÓMEZ MEDINA',         drive: '' },
+            { nombres: 'Emiliano De Jesús', apellidos: 'GUZMÁN AGUILAR',       drive: '' },
+            { nombres: 'Dasha Camila',      apellidos: 'MONTOYA RUÍZ',         drive: '' },
+            { nombres: 'Santiago',          apellidos: 'SALGADO SERVÍN',       drive: '' },
+            { nombres: 'Juan Mariano',      apellidos: 'MARTÍNEZ VELASCO',     drive: '' },
+            { nombres: 'Xiomara Skarlett',  apellidos: 'TORREZ GONZÁLEZ',      drive: '' },
+            { nombres: 'Jorge Hugo',        apellidos: 'REYEZ VÁZQUEZ',        drive: '' },
+            { nombres: 'María Fernanda',    apellidos: 'HERNÁNDEZ QUEZADA',    drive: '' },
+            { nombres: 'Juno Ximena',       apellidos: 'OCAMPO LÓPEZ',         drive: '' },
+            { nombres: 'Sara',              apellidos: 'CANCINO SUÁREZ',       drive: '' },
+            { nombres: 'Silvana',           apellidos: 'MORALES SUÁREZ',       drive: '' },
+            { nombres: 'Jeftzy Shaile',     apellidos: 'VÁZQUEZ GARCÍA',       drive: '' },
+            { nombres: 'Sofía',             apellidos: 'ALFONZO GARCÍA',       drive: '' },
+            { nombres: 'Erick Santiago',    apellidos: 'DÍAZ RAMOS',           drive: '' },
+            { nombres: 'Carolina',          apellidos: 'CONTRERAS CHACÓN',     drive: '' },
+            { nombres: 'Cristóbal',         apellidos: 'SANCHEZ FLORES',       drive: '' },
+            { nombres: 'Ángela Sofía',      apellidos: 'TOVILLA DOMINGUEZ',    drive: '' },
+            { nombres: 'Andrea Miranda',    apellidos: 'SANTIAGO URBINA',      drive: '' },
+            { nombres: 'Luis Fernando',     apellidos: 'AGUILAR SUAREZ',       drive: '' },
+            { nombres: 'Ana Paula',         apellidos: 'RUIZ ROQUE',           drive: '' },
+            { nombres: 'Samuel',            apellidos: 'CANCINO HERNANDEZ',    drive: '' }
+        ];
+
+        function normalize(s){
+            return (s||'').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().replace(/\s+/g,' ');
+        }
+        function buscarConstancias(nombres, apellidos){
+            var n=normalize(nombres);
+            var a=normalize(apellidos);
+            if(!n || !a) return [];
+            return CONSTANCIAS.filter(function(c){
+                var cn=normalize(c.nombres);
+                var ca=normalize(c.apellidos);
+                // Match flexible: cualquiera de los nombres tipeados aparece, y cualquiera de los apellidos también
+                return (cn.indexOf(n)!==-1 || n.indexOf(cn)!==-1) && (ca.indexOf(a)!==-1 || a.indexOf(ca)!==-1);
+            });
+        }
+
+        function escapeHTML(s){ return (s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+
+        function renderConstanciaResult(matches, nombres, apellidos){
+            var el=document.getElementById('cb-result');
+            if(!nombres.trim() || !apellidos.trim()){
+                el.innerHTML='<p class="info-msg">Completa nombre y apellido para buscar.</p>';
+                return;
+            }
+            if(!matches.length){
+                el.innerHTML='<p class="empty-msg">No encontramos tu nombre. Verifica la ortografía o contacta al Prof. Román por WhatsApp.</p>';
+                return;
+            }
+            var html='<div class="matches">';
+            matches.forEach(function(c){
+                var fullName=escapeHTML(c.nombres+' '+c.apellidos);
+                if(c.drive){
+                    html+='<div class="match-item"><span class="match-name">'+fullName+'</span><a class="match-action" href="'+escapeHTML(c.drive)+'" target="_blank" rel="noopener" download>Descargar PDF ↓</a></div>';
+                }else{
+                    html+='<div class="match-item"><span class="match-name">'+fullName+'</span><a class="match-action" href="'+escapeHTML(DRIVE_FOLDER_URL)+'" target="_blank" rel="noopener">Abrir carpeta Drive ↗</a></div>';
+                }
+            });
+            html+='</div><p class="info-msg" style="margin-top:14px;font-size:.85rem">Busca tu PDF dentro de la carpeta por tu nombre completo.</p>';
+            el.innerHTML=html;
+        }
+
+        var cbNombre=document.getElementById('cb-nombre');
+        var cbApellido=document.getElementById('cb-apellido');
+        var cbBuscar=document.getElementById('cb-buscar');
+        function ejecutarBusqueda(){
+            var matches=buscarConstancias(cbNombre.value, cbApellido.value);
+            renderConstanciaResult(matches, cbNombre.value, cbApellido.value);
+        }
+        cbBuscar.addEventListener('click', ejecutarBusqueda);
+        // Buscar en vivo si ya hay 3+ caracteres en cada campo
+        function liveSearch(){
+            if(cbNombre.value.trim().length>=3 && cbApellido.value.trim().length>=3){
+                ejecutarBusqueda();
+            }
+        }
+        cbNombre.addEventListener('input', liveSearch);
+        cbApellido.addEventListener('input', liveSearch);
+        // Enter en cualquiera de los dos inputs dispara búsqueda
+        [cbNombre, cbApellido].forEach(function(inp){
+            inp.addEventListener('keydown', function(e){
+                if(e.key==='Enter'){ e.preventDefault(); ejecutarBusqueda(); }
+            });
+        });
+
+        // ===== CONTADOR DE INSCRITOS =====
+        var counterEl=document.getElementById('counter-inscritos');
+        if(counterEl) counterEl.textContent=CONSTANCIAS.length;
+
+        // ===== MODAL AVISO DE PRIVACIDAD =====
+        window.openPrivacy=function(){
+            var m=document.getElementById('modal-privacy');
+            m.classList.add('open');
+            document.body.style.overflow='hidden';
+        };
+        window.closePrivacy=function(){
+            var m=document.getElementById('modal-privacy');
+            m.classList.remove('open');
+            document.body.style.overflow='';
+        };
+        document.getElementById('modal-privacy').addEventListener('click',function(e){
+            if(e.target.id==='modal-privacy') closePrivacy();
+        });
+        document.addEventListener('keydown',function(e){
+            if(e.key==='Escape' && document.getElementById('modal-privacy').classList.contains('open')) closePrivacy();
+        });
+
+        // ===== FUZZY MATCH (Levenshtein) PARA BUSCADOR DE CONSTANCIA =====
+        function levenshtein(a,b){
+            if(!a.length) return b.length;
+            if(!b.length) return a.length;
+            if(a.length<b.length){ var t=a;a=b;b=t; }
+            var prev=new Array(b.length+1);
+            for(var i=0;i<=b.length;i++) prev[i]=i;
+            for(var i2=1;i2<=a.length;i2++){
+                var curr=[i2];
+                for(var j=1;j<=b.length;j++){
+                    curr[j]=Math.min(curr[j-1]+1, prev[j]+1, prev[j-1] + (a.charAt(i2-1)===b.charAt(j-1)?0:1));
+                }
+                prev=curr;
+            }
+            return prev[b.length];
+        }
+        // Reemplaza buscarConstancias añadiendo fallback fuzzy
+        var _originalBuscar=buscarConstancias;
+        buscarConstancias=function(nombres, apellidos){
+            var exact=_originalBuscar(nombres, apellidos);
+            if(exact.length) return exact;
+            // Fuzzy fallback: distancia Levenshtein ≤ 2 en cualquiera de los dos campos
+            var n=normalize(nombres), a=normalize(apellidos);
+            if(!n || !a) return [];
+            return CONSTANCIAS.filter(function(c){
+                var cn=normalize(c.nombres), ca=normalize(c.apellidos);
+                return levenshtein(cn,n)<=2 && levenshtein(ca,a)<=2;
+            });
+        };
+
+        // ===== LOCALSTORAGE: GUARDAR Y RECUPERAR FORMULARIO =====
+        var DRAFT_KEY='delf2026_form_draft';
+        var DRAFT_TS_KEY='delf2026_form_draft_ts';
+        var DRAFT_MAX_AGE=7*24*60*60*1000; // 7 días
+
+        function saveFormDraft(){
+            try{
+                var form=document.getElementById('delf-form');
+                if(!form) return;
+                var data={};
+                var fields=form.querySelectorAll('input[name]:not([type=hidden]):not([type=checkbox]):not([type=file]), select[name], textarea[name]');
+                fields.forEach(function(el){
+                    if(el.value && el.value.trim()) data[el.name]=el.value;
+                });
+                if(Object.keys(data).length>=2){
+                    localStorage.setItem(DRAFT_KEY, JSON.stringify(data));
+                    localStorage.setItem(DRAFT_TS_KEY, Date.now().toString());
+                }
+            }catch(e){}
+        }
+        function loadFormDraft(){
+            try{
+                var raw=localStorage.getItem(DRAFT_KEY);
+                if(!raw) return null;
+                var ts=parseInt(localStorage.getItem(DRAFT_TS_KEY)||'0',10);
+                if(Date.now()-ts>DRAFT_MAX_AGE){ clearFormDraft(); return null; }
+                return JSON.parse(raw);
+            }catch(e){ return null; }
+        }
+        function clearFormDraft(){
+            try{
+                localStorage.removeItem(DRAFT_KEY);
+                localStorage.removeItem(DRAFT_TS_KEY);
+            }catch(e){}
+        }
+        function applyFormDraft(data){
+            var form=document.getElementById('delf-form');
+            Object.keys(data).forEach(function(name){
+                var el=form.querySelector('[name="'+name+'"]');
+                if(el && el.type!=='hidden' && el.type!=='file' && el.type!=='checkbox') el.value=data[name];
+            });
+        }
+
+        var _saveTimer=null;
+        document.getElementById('delf-form').addEventListener('input',function(){
+            if(_saveTimer) clearTimeout(_saveTimer);
+            _saveTimer=setTimeout(saveFormDraft, 700);
+        });
+        // Limpiar draft cuando el formulario se envía exitosamente
+        document.getElementById('delf-form').addEventListener('submit',function(e){
+            if(e.defaultPrevented) return; // el handler de validación bloqueó el envío
+            setTimeout(clearFormDraft, 0);
+        });
+
+        // Banner de recuperación al cargar la página
+        (function checkDraft(){
+            var draft=loadFormDraft();
+            if(!draft) return;
+            var banner=document.getElementById('recovery-banner');
+            if(!banner) return;
+            banner.classList.add('show');
+            document.getElementById('recovery-restore').addEventListener('click',function(){
+                applyFormDraft(draft);
+                banner.classList.remove('show');
+                if(draft.Nivel_Inscripcion && typeof window.startRegistration==='function'){
+                    window.startRegistration(draft.Nivel_Inscripcion);
+                }
+            });
+            document.getElementById('recovery-dismiss').addEventListener('click',function(){
+                clearFormDraft();
+                banner.classList.remove('show');
+            });
+        })();
+
         // ===== ARRANQUE =====
         buildCarousel();
         tryPlay();
     })();
     </script>
+
+    <!-- ===== WHATSAPP FAB ===== -->
+    <a class="wa-fab" href="https://wa.me/524731219937" target="_blank" rel="noopener" aria-label="Contactar al Prof. Román por WhatsApp" title="WhatsApp Prof. Román">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 0C7.16 0 0 7.16 0 16c0 2.82.74 5.46 2.04 7.76L0 32l8.46-2.22A15.92 15.92 0 0 0 16 32c8.84 0 16-7.16 16-16S24.84 0 16 0zm0 29.36c-2.46 0-4.74-.65-6.74-1.78l-.48-.28-5.02 1.32 1.34-4.9-.31-.5A13.32 13.32 0 0 1 2.64 16C2.64 8.62 8.62 2.64 16 2.64S29.36 8.62 29.36 16 23.38 29.36 16 29.36zm7.36-9.96c-.4-.2-2.38-1.18-2.74-1.32-.36-.14-.62-.2-.88.2-.26.4-1 1.32-1.22 1.58-.22.26-.46.3-.86.1-.4-.2-1.7-.62-3.24-1.98-1.2-1.06-2-2.36-2.24-2.76-.22-.4-.02-.6.18-.8.18-.18.4-.46.6-.7.2-.24.26-.4.4-.66.14-.26.06-.5-.02-.7-.08-.2-.88-2.12-1.2-2.9-.32-.78-.64-.66-.88-.68l-.74-.02c-.26 0-.66.1-1 .5-.36.4-1.34 1.32-1.34 3.22 0 1.9 1.38 3.74 1.56 4 .18.26 2.72 4.16 6.6 5.84.92.4 1.64.62 2.2.8.92.3 1.76.26 2.42.16.74-.12 2.38-.98 2.7-1.92.32-.94.32-1.74.22-1.92-.1-.18-.36-.28-.76-.46z"/></svg>
+    </a>
+
+    <!-- ===== AVISO DE PRIVACIDAD (LFPDPPP México) ===== -->
+    <div id="modal-privacy" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="privacy-title">
+        <div class="modal-box">
+            <button type="button" class="modal-close" aria-label="Cerrar" onclick="closePrivacy()">×</button>
+            <h2 id="privacy-title">Aviso de Privacidad</h2>
+            <p>De conformidad con la <strong>Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP)</strong> y su Reglamento, se emite el presente Aviso de Privacidad.</p>
+
+            <h3>1. Identidad del Responsable</h3>
+            <p><strong>Alianza Francesa de San Cristóbal de las Casas</strong>, con domicilio en San Cristóbal de las Casas, Chiapas, México, en colaboración con el <strong>Colegio La Salle</strong> como sede del examen DELF Junior 2026, es la responsable del tratamiento de los datos personales que usted proporcione a través de este formulario.</p>
+
+            <h3>2. Datos personales recabados</h3>
+            <p>Para la inscripción al examen DELF Junior 2026 se recaban los siguientes datos del candidato (menor de edad) y de su padre, madre o tutor legal:</p>
+            <ul>
+                <li>Datos de identificación del candidato: nombres, apellidos, fecha y ciudad de nacimiento, nacionalidad, lengua materna.</li>
+                <li>Datos de contacto del tutor: nombre completo, teléfono celular, correo electrónico, dirección postal.</li>
+                <li>Información académica: nivel seleccionado, número previo de candidato (si aplica), motivo del examen.</li>
+                <li>Datos sensibles (únicamente si aplican): información sobre adaptaciones físicas requeridas el día del examen.</li>
+            </ul>
+
+            <h3>3. Finalidades del tratamiento</h3>
+            <p><strong>Finalidades primarias</strong> (necesarias para la prestación del servicio):</p>
+            <ul>
+                <li>Procesar la inscripción al examen DELF Junior 2026.</li>
+                <li>Emitir convocatorias, citatorios y resultados oficiales.</li>
+                <li>Generar la constancia de inscripción y el diploma DELF expedido por France Éducation international.</li>
+                <li>Contactar al tutor para cualquier asunto relativo al examen.</li>
+            </ul>
+            <p>No se tratarán los datos para finalidades secundarias distintas a las descritas.</p>
+
+            <h3>4. Transferencias de datos</h3>
+            <p>Los datos serán transferidos a <strong>France Éducation international (FEi)</strong>, organismo francés certificador del DELF, con sede en Sèvres, Francia, con el único fin de emitir el diploma oficial. Esta transferencia es <strong>necesaria</strong> conforme a la fracción IV del artículo 37 de la LFPDPPP. No se realizarán otras transferencias a terceros sin el consentimiento expreso del titular o del tutor.</p>
+
+            <h3>5. Consentimiento del titular menor de edad</h3>
+            <p>Por tratarse de datos personales de menores de edad, el consentimiento al presente Aviso lo otorga el padre, madre o tutor legal del candidato, quien al marcar la casilla correspondiente en el formulario de inscripción manifiesta haber leído y aceptado los términos aquí descritos.</p>
+
+            <h3>6. Derechos ARCO</h3>
+            <p>Usted tiene derecho a <strong>Acceder, Rectificar, Cancelar u Oponerse</strong> al tratamiento de sus datos personales (derechos ARCO). Para ejercerlos, envíe una solicitud por escrito al correo <strong>DIRECCIONSANCRISTOBAL@ALIANZAFR.EDU.FR</strong> indicando: (i) nombre y firma del titular o del tutor, (ii) copia de identificación oficial, (iii) descripción clara del derecho que desea ejercer y los datos a los que se refiere.</p>
+
+            <h3>7. Limitación del uso y divulgación</h3>
+            <p>Puede solicitar la limitación del uso o divulgación de sus datos enviando un correo al mismo destinatario indicado en el apartado anterior.</p>
+
+            <h3>8. Medidas de seguridad</h3>
+            <p>Los datos se transmiten mediante conexión cifrada (HTTPS) y se almacenan únicamente en los sistemas internos de la Alianza Francesa y de France Éducation international. No se realizan copias en servidores de terceros con fines comerciales.</p>
+
+            <h3>9. Conservación de los datos</h3>
+            <p>Los datos se conservan durante el periodo necesario para emitir el diploma y atender cualquier solicitud oficial posterior, con un máximo de 5 años conforme a la normativa de FEi.</p>
+
+            <h3>10. Cambios al Aviso de Privacidad</h3>
+            <p>Cualquier modificación al presente Aviso se publicará en esta misma página y entrará en vigor a partir de su publicación.</p>
+
+            <p style="margin-top: 20px; font-style: italic; font-size: .85rem; color: var(--shadow-dark);">Última actualización: mayo 2026.</p>
+        </div>
+    </div>
 </body>
 </html>

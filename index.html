@@ -109,6 +109,43 @@ h2 { font-family: 'Playfair Display', serif; color: var(--bleu); font-size: 2.8r
 .carousel-slide img { width: 100%; height: 100%; object-fit: cover; }
 @media(min-width: 768px) { .carousel-slide { min-width: 40%; } }
 
+/* ================= BUSCADOR DE CONSTANCIA ================= */
+.constancia-card {
+    background: var(--bg-3d); border-radius: 30px; padding: 50px 40px; margin-bottom: 60px;
+    box-shadow: 12px 12px 24px var(--shadow-dark), -12px -12px 24px var(--shadow-light);
+    border-left: 6px solid #27AE60; text-align: center;
+}
+.constancia-card h2 { color: var(--bleu); font-size: 2.2rem; margin-bottom: 8px; }
+.constancia-card h2 em { color: #27AE60; font-style: italic; }
+.constancia-hint { color: var(--text-dark); font-weight: 500; margin-bottom: 28px; max-width: 580px; margin-left: auto; margin-right: auto; line-height: 1.5; }
+.constancia-form { display: flex; flex-direction: column; gap: 16px; max-width: 580px; margin: 0 auto; }
+.constancia-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.constancia-card input {
+    padding: 18px; border-radius: 14px; font-family: inherit; font-size: 1rem; width: 100%; color: var(--text-dark);
+    background: var(--bg-3d); border: none; font-weight: 600; text-transform: none;
+    box-shadow: inset 6px 6px 12px var(--shadow-dark), inset -6px -6px 12px var(--shadow-light);
+    transition: 0.3s; min-height: 44px;
+}
+.constancia-card input:focus { outline: none; box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light), 0 0 0 3px var(--bleu); }
+.constancia-result { margin-top: 24px; min-height: 24px; }
+.constancia-result .matches { display: flex; flex-direction: column; gap: 12px; max-width: 620px; margin: 0 auto; }
+.constancia-result .match-item {
+    background: rgba(39,174,96,0.08); border-left: 4px solid #27AE60; border-radius: 12px;
+    padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; gap: 14px;
+    flex-wrap: wrap; text-align: left;
+}
+.constancia-result .match-name { font-weight: 700; color: var(--bleu); font-size: 1rem; }
+.constancia-result .match-action {
+    background: #27AE60; color: #fff; padding: 11px 22px; border-radius: 50px; text-decoration: none;
+    font-weight: 800; font-size: 0.88rem; letter-spacing: 0.04em; text-transform: uppercase;
+    box-shadow: 0 6px 14px rgba(39,174,96,0.35); transition: 0.25s; white-space: nowrap;
+}
+.constancia-result .match-action:hover { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(39,174,96,0.45); background: #219653; }
+.constancia-result .match-action.disabled { background: #999; box-shadow: none; cursor: not-allowed; pointer-events: none; }
+.constancia-result .empty-msg { color: var(--rouge); font-weight: 700; padding: 14px; }
+.constancia-result .info-msg { color: var(--text-dark); font-weight: 500; padding: 8px; }
+@media (max-width: 600px) { .constancia-row { grid-template-columns: 1fr; } }
+
 /* ================= FORMULARIO WIZARD 3D ================= */
 .form-container { 
     background: var(--bg-3d); border-radius: 40px; padding: 60px 50px; 
@@ -235,6 +272,20 @@ input:focus, select:focus { outline: none; box-shadow: inset 3px 3px 6px var(--s
         <div class="carousel-wrapper">
             <div class="carousel-track" id="carousel-track" aria-live="polite"></div>
         </div>
+
+        <!-- ===== BÚSQUEDA DE CONSTANCIA DE INSCRIPCIÓN ===== -->
+        <section class="constancia-card" id="constancia-section" aria-labelledby="constancia-title">
+            <h2 id="constancia-title">¿Ya estás <em>inscrito</em>?</h2>
+            <p class="constancia-hint">Si ya completaste tu inscripción, escribe tu nombre y apellido para descargar tu constancia oficial.</p>
+            <div class="constancia-form">
+                <div class="constancia-row">
+                    <input type="text" id="cb-nombre" placeholder="Nombre(s)" autocomplete="given-name" maxlength="60">
+                    <input type="text" id="cb-apellido" placeholder="Apellidos" autocomplete="family-name" maxlength="80">
+                </div>
+                <button type="button" class="btn-chrome primary" id="cb-buscar">Buscar mi constancia</button>
+            </div>
+            <div class="constancia-result" id="cb-result" role="status" aria-live="polite"></div>
+        </section>
 
         <h2 id="bento-title">Selecciona tu Nivel</h2>
         <div class="bento-grid" id="grid-niveles">
@@ -617,6 +668,97 @@ input:focus, select:focus { outline: none; box-shadow: inset 3px 3px 6px var(--s
             }
         }
         soundBtn.addEventListener('click',function(){ setSound(!soundOn); });
+
+        // ===== BUSCADOR DE CONSTANCIA DE INSCRIPCIÓN =====
+        // Cada entrada: nombres, apellidos, drive (URL de Google Drive en formato directo).
+        // Para obtener URL directa: en Drive, "Compartir" → "Cualquiera con el enlace" → copiar enlace.
+        // Convierte https://drive.google.com/file/d/FILE_ID/view → https://drive.google.com/uc?export=download&id=FILE_ID
+        var CONSTANCIAS = [
+            { nombres: 'Luis Emilio',       apellidos: 'GÓMEZ MEDINA',         drive: '' },
+            { nombres: 'Emiliano De Jesús', apellidos: 'GUZMÁN AGUILAR',       drive: '' },
+            { nombres: 'Dasha Camila',      apellidos: 'MONTOYA RUÍZ',         drive: '' },
+            { nombres: 'Santiago',          apellidos: 'SALGADO SERVÍN',       drive: '' },
+            { nombres: 'Juan Mariano',      apellidos: 'MARTÍNEZ VELASCO',     drive: '' },
+            { nombres: 'Xiomara Skarlett',  apellidos: 'TORREZ GONZÁLEZ',      drive: '' },
+            { nombres: 'Jorge Hugo',        apellidos: 'REYEZ VÁZQUEZ',        drive: '' },
+            { nombres: 'María Fernanda',    apellidos: 'HERNÁNDEZ QUEZADA',    drive: '' },
+            { nombres: 'Juno Ximena',       apellidos: 'OCAMPO LÓPEZ',         drive: '' },
+            { nombres: 'Sara',              apellidos: 'CANCINO SUÁREZ',       drive: '' },
+            { nombres: 'Silvana',           apellidos: 'MORALES SUÁREZ',       drive: '' },
+            { nombres: 'Jeftzy Shaile',     apellidos: 'VÁZQUEZ GARCÍA',       drive: '' },
+            { nombres: 'Sofía',             apellidos: 'ALFONZO GARCÍA',       drive: '' },
+            { nombres: 'Erick Santiago',    apellidos: 'DÍAZ RAMOS',           drive: '' },
+            { nombres: 'Carolina',          apellidos: 'CONTRERAS CHACÓN',     drive: '' },
+            { nombres: 'Cristóbal',         apellidos: 'SANCHEZ FLORES',       drive: '' },
+            { nombres: 'Ángela Sofía',      apellidos: 'TOVILLA DOMINGUEZ',    drive: '' },
+            { nombres: 'Andrea Miranda',    apellidos: 'SANTIAGO URBINA',      drive: '' },
+            { nombres: 'Luis Fernando',     apellidos: 'AGUILAR SUAREZ',       drive: '' },
+            { nombres: 'Ana Paula',         apellidos: 'RUIZ ROQUE',           drive: '' },
+            { nombres: 'Samuel',            apellidos: 'CANCINO HERNANDEZ',    drive: '' }
+        ];
+
+        function normalize(s){
+            return (s||'').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().replace(/\s+/g,' ');
+        }
+        function buscarConstancias(nombres, apellidos){
+            var n=normalize(nombres);
+            var a=normalize(apellidos);
+            if(!n || !a) return [];
+            return CONSTANCIAS.filter(function(c){
+                var cn=normalize(c.nombres);
+                var ca=normalize(c.apellidos);
+                // Match flexible: cualquiera de los nombres tipeados aparece, y cualquiera de los apellidos también
+                return (cn.indexOf(n)!==-1 || n.indexOf(cn)!==-1) && (ca.indexOf(a)!==-1 || a.indexOf(ca)!==-1);
+            });
+        }
+
+        function escapeHTML(s){ return (s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+
+        function renderConstanciaResult(matches, nombres, apellidos){
+            var el=document.getElementById('cb-result');
+            if(!nombres.trim() || !apellidos.trim()){
+                el.innerHTML='<p class="info-msg">Completa nombre y apellido para buscar.</p>';
+                return;
+            }
+            if(!matches.length){
+                el.innerHTML='<p class="empty-msg">No encontramos tu nombre. Verifica la ortografía o contacta al Prof. Román por WhatsApp.</p>';
+                return;
+            }
+            var html='<div class="matches">';
+            matches.forEach(function(c){
+                var fullName=escapeHTML(c.nombres+' '+c.apellidos);
+                if(c.drive){
+                    html+='<div class="match-item"><span class="match-name">'+fullName+'</span><a class="match-action" href="'+escapeHTML(c.drive)+'" target="_blank" rel="noopener" download>Descargar PDF ↓</a></div>';
+                }else{
+                    html+='<div class="match-item"><span class="match-name">'+fullName+'</span><span class="match-action disabled" title="Enlace pendiente">Pendiente</span></div>';
+                }
+            });
+            html+='</div><p class="info-msg" style="margin-top:14px;font-size:.85rem">Si tu enlace dice &quot;Pendiente&quot;, contacta al Prof. Román.</p>';
+            el.innerHTML=html;
+        }
+
+        var cbNombre=document.getElementById('cb-nombre');
+        var cbApellido=document.getElementById('cb-apellido');
+        var cbBuscar=document.getElementById('cb-buscar');
+        function ejecutarBusqueda(){
+            var matches=buscarConstancias(cbNombre.value, cbApellido.value);
+            renderConstanciaResult(matches, cbNombre.value, cbApellido.value);
+        }
+        cbBuscar.addEventListener('click', ejecutarBusqueda);
+        // Buscar en vivo si ya hay 3+ caracteres en cada campo
+        function liveSearch(){
+            if(cbNombre.value.trim().length>=3 && cbApellido.value.trim().length>=3){
+                ejecutarBusqueda();
+            }
+        }
+        cbNombre.addEventListener('input', liveSearch);
+        cbApellido.addEventListener('input', liveSearch);
+        // Enter en cualquiera de los dos inputs dispara búsqueda
+        [cbNombre, cbApellido].forEach(function(inp){
+            inp.addEventListener('keydown', function(e){
+                if(e.key==='Enter'){ e.preventDefault(); ejecutarBusqueda(); }
+            });
+        });
 
         // ===== ARRANQUE =====
         buildCarousel();

@@ -3,7 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#013896">
+<meta name="format-detection" content="telephone=no">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; media-src 'self' blob:; script-src 'self' 'unsafe-inline'; form-action https://formsubmit.co; base-uri 'self'; frame-ancestors 'none';">
 <title>Inscripción DELF Junior 2026 · Alliance Française</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
 <style>
 /* ================= VARIABLES Y FONDOS 3D ================= */
@@ -159,13 +164,56 @@ input:focus, select:focus { outline: none; box-shadow: inset 3px 3px 6px var(--s
     .form-grid { grid-template-columns: 1fr; }
     .logos-hero { flex-direction: column; gap: 15px; padding: 20px; }
     .nav-buttons { flex-direction: column-reverse; }
+    #sound-toggle { bottom: 20px; right: 20px; width: 52px; height: 52px; }
+}
+
+/* ================= BOTÓN DE SONIDO FLOTANTE ================= */
+#sound-toggle {
+    position: fixed; bottom: 28px; right: 28px; z-index: 9999;
+    width: 56px; height: 56px; border-radius: 50%;
+    background: var(--bg-3d); color: var(--bleu); border: none; cursor: pointer;
+    box-shadow: 6px 6px 14px var(--shadow-dark), -6px -6px 14px var(--shadow-light), 0 4px 12px rgba(0,0,0,.2);
+    display: flex; align-items: center; justify-content: center;
+    transition: transform .25s, box-shadow .25s, background .3s;
+    -webkit-tap-highlight-color: transparent;
+}
+#sound-toggle:hover { transform: translateY(-3px); box-shadow: 8px 8px 18px var(--shadow-dark), -8px -8px 18px var(--shadow-light), 0 8px 18px rgba(0,0,0,.3); }
+#sound-toggle:active { transform: translateY(0); }
+#sound-toggle.is-on { background: var(--rouge); color: #fff; box-shadow: 0 0 0 4px rgba(218,0,46,.18), 6px 6px 14px var(--shadow-dark), -6px -6px 14px var(--shadow-light); }
+#sound-toggle.is-on::after {
+    content: ""; position: absolute; inset: -6px; border-radius: 50%;
+    border: 2px solid var(--rouge); opacity: .35;
+    animation: ring 1.6s ease-out infinite;
+}
+@keyframes ring {
+    0% { transform: scale(0.95); opacity: .5; }
+    100% { transform: scale(1.4); opacity: 0; }
 }
 </style>
 </head>
 <body>
 
+    <!-- Audio de fondo (no autoplay - requiere interacción del usuario) -->
+    <audio id="bg-music" loop preload="none">
+        <source src="Arrival_at_the_Terminal%20(1).mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Botón flotante de sonido -->
+    <button id="sound-toggle" type="button" aria-label="Activar sonido" title="Activar sonido">
+        <svg id="ico-mute" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <line x1="22" y1="9" x2="16" y2="15"></line>
+            <line x1="16" y1="9" x2="22" y2="15"></line>
+        </svg>
+        <svg id="ico-unmute" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+        </svg>
+    </button>
+
     <div class="video-hero" id="hero-section">
-        <video id="vid-bg" autoplay muted loop playsinline preload="auto">
+        <video id="vid-bg" autoplay muted loop playsinline preload="metadata" disablepictureinpicture disableremoteplayback>
             <source src="1.mp4" type="video/mp4">
         </video>
         <div class="video-overlay">
@@ -185,14 +233,7 @@ input:focus, select:focus { outline: none; box-shadow: inset 3px 3px 6px var(--s
     <div class="container" id="main-content">
         <h2>Galería Institucional</h2>
         <div class="carousel-wrapper">
-            <div class="carousel-track">
-                <div class="carousel-slide"><img src="IMG-20241023-WA0017.jpg" alt="Galería" loading="lazy"></div>
-                <div class="carousel-slide"><img src="IMG-20241028-WA0050.jpg" alt="Galería" loading="lazy"></div>
-                <div class="carousel-slide"><img src="IMG-20250609-WA0004.jpg" alt="Galería" loading="lazy"></div>
-                <div class="carousel-slide"><img src="IMG_20241023_071530.jpg" alt="Galería" loading="lazy"></div>
-                <div class="carousel-slide"><img src="IMG_20251204_124832368_HDR.jpg" alt="Galería" loading="lazy"></div>
-                <div class="carousel-slide"><img src="IMG_20251204_125050500_HDR.jpg" alt="Galería" loading="lazy"></div>
-            </div>
+            <div class="carousel-track" id="carousel-track" aria-live="polite"></div>
         </div>
 
         <h2 id="bento-title">Selecciona tu Nivel</h2>
@@ -224,6 +265,7 @@ input:focus, select:focus { outline: none; box-shadow: inset 3px 3px 6px var(--s
                 <input type="hidden" name="_subject" value="Nueva Inscripción DELF Junior 2026">
                 <input type="hidden" name="_template" value="table">
                 <input type="hidden" name="_next" value="https://migueltillero-ship-it.github.io/DELFLaSalle/?success=1">
+                <input type="hidden" name="_autoresponse" value="Hemos recibido tu inscripción al DELF Junior 2026. Pronto recibirás la confirmación oficial junto con la convocatoria al examen.">
                 
                 <div id="step-1" class="form-step active">
                     <div class="form-notice">Confirma tu nivel e indica el motivo de la certificación.</div>
@@ -234,7 +276,7 @@ input:focus, select:focus { outline: none; box-shadow: inset 3px 3px 6px var(--s
                         </div>
                         <div class="form-group full">
                             <label>Nº de Candidato Previo <small style="color:var(--shadow-dark)">(12 dígitos, opcional si ya presentó examen)</small></label>
-                            <input type="text" name="Numero_Candidato" inputmode="numeric" maxlength="12">
+                            <input type="text" name="Numero_Candidato" inputmode="numeric" pattern="\d{12}" maxlength="12" autocomplete="off">
                         </div>
                         <div class="form-group full">
                             <label>Motivo del examen *</label>
@@ -257,12 +299,12 @@ input:focus, select:focus { outline: none; box-shadow: inset 3px 3px 6px var(--s
                     <div class="form-notice">Datos del candidato. <strong>Deberán coincidir exactamente con su acta de nacimiento.</strong></div>
                     <div class="form-grid">
                         <div class="form-group"><label>Tratamiento *</label><select name="Tratamiento" required><option value="Sra.">Sra.</option><option value="Sr.">Sr.</option></select></div>
-                        <div class="form-group"><label>Nombres *</label><input type="text" name="Nombres" required></div>
-                        <div class="form-group"><label>Apellidos *</label><input type="text" name="Apellidos" required></div>
-                        <div class="form-group"><label>Fecha Nacimiento *</label><input type="date" name="Fecha_Nacimiento" required></div>
-                        <div class="form-group"><label>Ciudad de Nacimiento *</label><input type="text" name="Ciudad_Nacimiento" required></div>
-                        <div class="form-group"><label>Nacionalidad *</label><input type="text" name="Nacionalidad" value="MEXICANA" required></div>
-                        <div class="form-group full"><label>Lengua Materna *</label><input type="text" name="Lengua_Materna" value="ESPAÑOL" required></div>
+                        <div class="form-group"><label>Nombres *</label><input type="text" name="Nombres" required autocomplete="given-name" maxlength="60"></div>
+                        <div class="form-group"><label>Apellidos *</label><input type="text" name="Apellidos" required autocomplete="family-name" maxlength="80"></div>
+                        <div class="form-group"><label>Fecha Nacimiento *</label><input type="date" name="Fecha_Nacimiento" required autocomplete="bday"></div>
+                        <div class="form-group"><label>Ciudad de Nacimiento *</label><input type="text" name="Ciudad_Nacimiento" required autocomplete="off" maxlength="60"></div>
+                        <div class="form-group"><label>Nacionalidad *</label><input type="text" name="Nacionalidad" value="MEXICANA" required autocomplete="off" maxlength="40"></div>
+                        <div class="form-group full"><label>Lengua Materna *</label><input type="text" name="Lengua_Materna" value="ESPAÑOL" required autocomplete="off" maxlength="40"></div>
                     </div>
                     <div class="nav-buttons">
                         <button type="button" class="btn-chrome" onclick="nextStep(1)">◂ Atrás</button>
@@ -274,12 +316,12 @@ input:focus, select:focus { outline: none; box-shadow: inset 3px 3px 6px var(--s
                     <div class="form-notice">Información del padre, madre o tutor legal responsable del candidato.</div>
                     <div class="form-grid">
                         <div class="form-group"><label>Tratamiento Tutor *</label><select name="Tutor_Tratamiento" required><option value="Sra.">Sra.</option><option value="Sr.">Sr.</option></select></div>
-                        <div class="form-group"><label>Nombre del Tutor Legal *</label><input type="text" name="Tutor_Nombre" required></div>
-                        <div class="form-group"><label>Teléfono Celular Tutor *</label><input type="tel" name="Telefono" inputmode="numeric" maxlength="10" required></div>
-                        <div class="form-group"><label>Correo Electrónico Tutor *</label><input type="email" name="Correo" style="text-transform:lowercase;" required></div>
-                        <div class="form-group full"><label>Dirección Completa *</label><input type="text" name="Direccion" required></div>
-                        <div class="form-group"><label>Ciudad *</label><input type="text" name="Ciudad" value="SAN CRISTÓBAL DE LAS CASAS" required></div>
-                        <div class="form-group"><label>Estado *</label><input type="text" name="Estado" value="CHIAPAS" required></div>
+                        <div class="form-group"><label>Nombre del Tutor Legal *</label><input type="text" name="Tutor_Nombre" required autocomplete="off" maxlength="120"></div>
+                        <div class="form-group"><label>Teléfono Celular Tutor *</label><input type="tel" name="Telefono" inputmode="numeric" pattern="\d{10}" maxlength="10" required autocomplete="tel-national"></div>
+                        <div class="form-group"><label>Correo Electrónico Tutor *</label><input type="email" name="Correo" style="text-transform:lowercase;" required autocomplete="email" maxlength="80"></div>
+                        <div class="form-group full"><label>Dirección Completa *</label><input type="text" name="Direccion" required autocomplete="street-address" maxlength="120"></div>
+                        <div class="form-group"><label>Ciudad *</label><input type="text" name="Ciudad" value="SAN CRISTÓBAL DE LAS CASAS" required autocomplete="address-level2" maxlength="60"></div>
+                        <div class="form-group"><label>Estado *</label><input type="text" name="Estado" value="CHIAPAS" required autocomplete="address-level1" maxlength="40"></div>
                     </div>
                     <div class="nav-buttons">
                         <button type="button" class="btn-chrome" onclick="nextStep(2)">◂ Atrás</button>
@@ -333,95 +375,253 @@ input:focus, select:focus { outline: none; box-shadow: inset 3px 3px 6px var(--s
     </div>
 
     <script>
-        // FORZAR VIDEO (Motor Anti-bloqueo Móvil)
-        document.addEventListener('DOMContentLoaded', () => {
-            const vid = document.getElementById('vid-bg');
-            const forcePlay = () => { vid.play(); document.removeEventListener('touchstart', forcePlay); document.removeEventListener('click', forcePlay); };
-            document.addEventListener('touchstart', forcePlay, {once: true, passive: true});
-            document.addEventListener('click', forcePlay, {once: true});
-            vid.play().catch(()=>{});
-        });
+    (function(){
+        'use strict';
 
-        // BENTO A FORMULARIO CON SCROLL SUAVE
-        function startRegistration(nivel) {
-            const precios = {
-                'A1': 'NIVEL A1 · $1,445 MXN', 'A2': 'NIVEL A2 · $1,575 MXN',
-                'B1': 'NIVEL B1 · $1,800 MXN', 'B2': 'NIVEL B2 · $2,500 MXN'
-            };
-            document.getElementById('f-nivel-display').value = precios[nivel];
-            document.getElementById('grid-niveles').style.display = 'none';
-            document.getElementById('bento-title').style.display = 'none';
-            
-            const formContainer = document.getElementById('form-container');
-            formContainer.style.display = 'block';
-            
-            // Pausar video para ahorrar batería y memoria
-            document.getElementById('vid-bg').pause();
-            
-            formContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // ===== CARRUSEL: 3 FIJAS + 26 ALEATORIAS (29 totales) =====
+        var FIXED_FIRST = [
+            'IMG_20251204_123438.jpg',
+            'IMG_20251204_124852202.jpg',
+            'IMG_20251204_125050500_HDR.jpg'
+        ];
+        var ALL_PHOTOS = [
+            'IMG-20241023-WA0017.jpg','IMG-20241023-WA0018.jpg','IMG-20241023-WA0019.jpg',
+            'IMG-20241028-WA0050.jpg','IMG-20241028-WA0056.jpg','IMG-20241028-WA0058.jpg',
+            'IMG-20250609-WA0004.jpg','IMG-20250609-WA0009.jpg','IMG-20250609-WA0010.jpg',
+            'IMG-20250609-WA0011.jpg','IMG-20250609-WA0016.jpg','IMG-20250609-WA0019.jpg',
+            'IMG-20250609-WA0024.jpg','IMG-20250609-WA0040.jpg','IMG-20250609-WA0054.jpg',
+            'IMG-20251119-WA0158.jpg','IMG-20251204-WA0033.jpg','IMG-20251204-WA0057.jpg',
+            'IMG-20251204-WA0062.jpg','IMG-20260309-WA0002.jpg','IMG_20241023_071530.jpg',
+            'IMG_20251204_123438.jpg','IMG_20251204_124832368_HDR.jpg','IMG_20251204_124849353.jpg',
+            'IMG_20251204_124852202.jpg','IMG_20251204_124949487_HDR.jpg','IMG_20251204_125050500_HDR.jpg',
+            'IMG_20251204_125059995_HDR.jpg','IMG_20251204_125231254_HDR.jpg'
+        ];
+        function buildCarousel(){
+            var rest=[];
+            for(var i=0;i<ALL_PHOTOS.length;i++){
+                if(FIXED_FIRST.indexOf(ALL_PHOTOS[i])===-1) rest.push(ALL_PHOTOS[i]);
+            }
+            // Fisher–Yates shuffle
+            for(var j=rest.length-1;j>0;j--){
+                var k=Math.floor(Math.random()*(j+1));
+                var t=rest[j]; rest[j]=rest[k]; rest[k]=t;
+            }
+            var order=FIXED_FIRST.concat(rest);
+            var track=document.getElementById('carousel-track');
+            if(!track) return;
+            var html='';
+            for(var n=0;n<order.length;n++){
+                var lazy=n<3?'eager':'lazy';
+                html+='<div class="carousel-slide"><img src="'+order[n]+'" alt="Galería DELF Junior" loading="'+lazy+'" decoding="async"></div>';
+            }
+            track.innerHTML=html;
         }
 
-        function cancelRegistration() {
-            document.getElementById('form-container').style.display = 'none';
-            document.getElementById('grid-niveles').style.display = 'grid';
-            document.getElementById('bento-title').style.display = 'block';
-            document.getElementById('vid-bg').play(); // Reactivar video
-            document.getElementById('main-content').scrollIntoView({ behavior: 'smooth', block: 'start' });
-            // Reset wizard
-            nextStep(1);
+        // ===== VIDEO ANTI-BLOQUEO =====
+        var vid=document.getElementById('vid-bg');
+        function tryPlay(){
+            var p=vid.play();
+            if(p&&typeof p.then==='function'){
+                p.catch(function(){
+                    var force=function(){
+                        vid.play().catch(function(){});
+                        document.removeEventListener('touchstart',force);
+                        document.removeEventListener('click',force);
+                    };
+                    document.addEventListener('touchstart',force,{once:true,passive:true});
+                    document.addEventListener('click',force,{once:true});
+                });
+            }
         }
 
-        // MOSTRAR AVISO MÉDICO
-        document.getElementById('f-adaptacion').addEventListener('change', function() {
-            document.getElementById('aviso-medico').style.display = (this.value === 'Sí') ? 'block' : 'none';
-        });
-
-        // CONTROL MULTIESTEP Y VALIDACIÓN EN VIVO
-        function nextStep(step) {
-            const currentStep = step - 1;
-            if(step > currentStep) { // Si va hacia adelante, validar
-                const currentDiv = document.getElementById('step-' + currentStep);
-                if (currentDiv) {
-                    const inputs = currentDiv.querySelectorAll('input[required], select[required]');
-                    let allValid = true;
-                    inputs.forEach(input => {
-                        if(!input.value || (input.type === 'checkbox' && !input.checked)) {
-                            allValid = false;
-                            input.style.boxShadow = 'inset 2px 2px 5px rgba(218,0,46,0.3), 0 0 0 2px var(--rouge)';
-                        } else {
-                            input.style.boxShadow = 'inset 6px 6px 12px var(--shadow-dark), inset -6px -6px 12px var(--shadow-light)';
-                        }
-                    });
-                    if(!allValid) { alert("Completa los campos requeridos."); return; }
+        // ===== AHORRO DE BATERÍA: PAUSAR AL OCULTAR PESTAÑA =====
+        document.addEventListener('visibilitychange',function(){
+            if(document.hidden){
+                vid.pause();
+                if(typeof bgMusic!=='undefined' && bgMusic) bgMusic.pause();
+            }else{
+                if(document.getElementById('form-container').style.display!=='block') tryPlay();
+                if(typeof soundOn!=='undefined' && soundOn && bgMusic){
+                    var pm=bgMusic.play();
+                    if(pm&&typeof pm.then==='function') pm.catch(function(){});
                 }
             }
-
-            document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.dot').forEach(d => d.classList.remove('active'));
-            document.getElementById('step-' + step).classList.add('active');
-            document.getElementById('dot-' + step).classList.add('active');
-        }
-
-        // LIMPIEZA Y MAYÚSCULAS AL ENVIAR (Para no arruinar el teclado predictivo)
-        document.getElementById('delf-form').addEventListener('submit', function(e) {
-            // Convertir inputs de texto a mayúsculas
-            this.querySelectorAll('input[type="text"]').forEach(input => {
-                input.value = input.value.toUpperCase();
-            });
-
-            const btn = document.getElementById('btn-final');
-            btn.innerText = "Procesando Envío...";
-            btn.style.opacity = '0.7';
-            btn.style.pointerEvents = 'none';
         });
 
-        // DETECCIÓN DE PANTALLA DE ÉXITO (Redirección de Formsubmit)
-        if(window.location.search.includes('success=1')){
-            document.getElementById('hero-section').style.display = 'none';
-            document.getElementById('main-content').style.display = 'none';
-            document.getElementById('screen-success').style.display = 'block';
+        // ===== SELECCIÓN DE NIVEL =====
+        var PRECIOS={
+            A1:'NIVEL A1 · $1,445 MXN',
+            A2:'NIVEL A2 · $1,575 MXN',
+            B1:'NIVEL B1 · $1,800 MXN',
+            B2:'NIVEL B2 · $2,500 MXN'
+        };
+        window.startRegistration=function(nivel){
+            if(!PRECIOS[nivel]) return;
+            document.getElementById('f-nivel-display').value=PRECIOS[nivel];
+            document.getElementById('grid-niveles').style.display='none';
+            document.getElementById('bento-title').style.display='none';
+            var fc=document.getElementById('form-container');
+            fc.style.display='block';
+            vid.pause();
+            fc.scrollIntoView({behavior:'smooth',block:'start'});
+        };
+        window.cancelRegistration=function(){
+            document.getElementById('form-container').style.display='none';
+            document.getElementById('grid-niveles').style.display='grid';
+            document.getElementById('bento-title').style.display='block';
+            tryPlay();
+            document.getElementById('main-content').scrollIntoView({behavior:'smooth',block:'start'});
+            nextStep(1);
+        };
+
+        // ===== AVISO MÉDICO CONDICIONAL =====
+        document.getElementById('f-adaptacion').addEventListener('change',function(){
+            document.getElementById('aviso-medico').style.display=(this.value==='Sí')?'block':'none';
+        });
+
+        // ===== WIZARD CON VALIDACIÓN POR PASO =====
+        var RX_LETRAS=/^[A-Za-zÀ-ÖØ-öø-ÿ\s'-]+$/;
+        var RX_TEL=/^\d{10}$/;
+        var RX_CAND=/^\d{12}$/;
+        var RX_CORREO=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        function markError(input,bad){
+            if(bad){
+                input.style.boxShadow='inset 2px 2px 5px rgba(218,0,46,0.3), 0 0 0 2px var(--rouge)';
+            }else{
+                input.style.boxShadow='';
+            }
+        }
+        function validateInput(input){
+            var v=(input.value||'').trim();
+            var name=input.name||'';
+            var required=input.hasAttribute('required');
+            if(input.type==='checkbox'){ return !required||input.checked; }
+            if(required&&v==='') return false;
+            if(v===''&&!required) return true;
+            if(name==='Telefono') return RX_TEL.test(v);
+            if(name==='Numero_Candidato') return RX_CAND.test(v);
+            if(name==='Correo') return RX_CORREO.test(v);
+            if(['Nombres','Apellidos','Ciudad_Nacimiento','Nacionalidad','Lengua_Materna','Ciudad','Estado'].indexOf(name)!==-1){
+                return RX_LETRAS.test(v);
+            }
+            return true;
+        }
+        window.nextStep=function(step){
+            var currentStep=step-1;
+            if(step>currentStep){
+                var currentDiv=document.getElementById('step-'+currentStep);
+                if(currentDiv){
+                    var inputs=currentDiv.querySelectorAll('input[required], select[required], input:not([disabled])');
+                    var allValid=true, firstBad=null;
+                    inputs.forEach(function(input){
+                        var ok=validateInput(input);
+                        markError(input,!ok);
+                        if(!ok){ allValid=false; if(!firstBad) firstBad=input; }
+                    });
+                    if(!allValid){
+                        if(firstBad){ try{firstBad.focus();}catch(e){} }
+                        return;
+                    }
+                }
+            }
+            document.querySelectorAll('.form-step').forEach(function(s){s.classList.remove('active');});
+            document.querySelectorAll('.dot').forEach(function(d){d.classList.remove('active');});
+            document.getElementById('step-'+step).classList.add('active');
+            document.getElementById('dot-'+step).classList.add('active');
+        };
+
+        // ===== SANITIZACIÓN AL ENVIAR (uppercase + filtro letras/dígitos) =====
+        var UPPER_FIELDS=['Nombres','Apellidos','Ciudad_Nacimiento','Nacionalidad','Lengua_Materna','Tutor_Nombre','Direccion','Ciudad','Estado'];
+        var LETTERS_FIELDS=['Nombres','Apellidos','Ciudad_Nacimiento','Nacionalidad','Lengua_Materna','Ciudad','Estado'];
+        var DIGITS_FIELDS=['Telefono','Numero_Candidato'];
+        document.getElementById('delf-form').addEventListener('submit',function(e){
+            // Validar todos los pasos
+            var allOk=true;
+            for(var s=1;s<=4;s++){
+                var div=document.getElementById('step-'+s);
+                if(!div) continue;
+                var ins=div.querySelectorAll('input[required], select[required]');
+                ins.forEach(function(inp){
+                    var ok=validateInput(inp);
+                    markError(inp,!ok);
+                    if(!ok){ allOk=false; }
+                });
+                if(!allOk){
+                    e.preventDefault();
+                    document.querySelectorAll('.form-step').forEach(function(x){x.classList.remove('active');});
+                    document.querySelectorAll('.dot').forEach(function(x){x.classList.remove('active');});
+                    div.classList.add('active');
+                    document.getElementById('dot-'+s).classList.add('active');
+                    return;
+                }
+            }
+            if(!allOk){ e.preventDefault(); return; }
+            // Sanitizar antes del POST
+            var form=this;
+            UPPER_FIELDS.forEach(function(name){
+                var el=form.querySelector('[name="'+name+'"]');
+                if(!el) return;
+                var v=(el.value||'').trim().toUpperCase().replace(/\s+/g,' ');
+                if(LETTERS_FIELDS.indexOf(name)!==-1){
+                    v=v.replace(/[^A-ZÀ-ÖØ-Þ\s'-]/g,'');
+                }
+                el.value=v;
+            });
+            DIGITS_FIELDS.forEach(function(name){
+                var el=form.querySelector('[name="'+name+'"]');
+                if(el) el.value=(el.value||'').replace(/\D/g,'');
+            });
+            var btn=document.getElementById('btn-final');
+            btn.innerText='Procesando envío…';
+            btn.style.opacity='0.7';
+            btn.style.pointerEvents='none';
+        });
+
+        // ===== ÉXITO POST-REDIRECT =====
+        if(window.location.search.indexOf('success=1')!==-1){
+            document.getElementById('hero-section').style.display='none';
+            document.getElementById('main-content').style.display='none';
+            document.getElementById('screen-success').style.display='block';
             if(history.replaceState) history.replaceState(null,'',window.location.pathname);
         }
+
+        // ===== TOGGLE DE SONIDO (video + música) =====
+        var soundBtn=document.getElementById('sound-toggle');
+        var bgMusic=document.getElementById('bg-music');
+        var icoMute=document.getElementById('ico-mute');
+        var icoUnmute=document.getElementById('ico-unmute');
+        var soundOn=false;
+        function setSound(on){
+            soundOn=on;
+            vid.muted=!on;
+            if(on){
+                soundBtn.classList.add('is-on');
+                soundBtn.setAttribute('aria-label','Silenciar');
+                soundBtn.title='Silenciar';
+                icoMute.style.display='none';
+                icoUnmute.style.display='block';
+                var pm=bgMusic.play();
+                if(pm&&typeof pm.then==='function') pm.catch(function(){});
+                // Si el formulario está activo, no reanudar el video aquí
+                if(document.getElementById('form-container').style.display!=='block'){
+                    tryPlay();
+                }
+            }else{
+                soundBtn.classList.remove('is-on');
+                soundBtn.setAttribute('aria-label','Activar sonido');
+                soundBtn.title='Activar sonido';
+                icoMute.style.display='block';
+                icoUnmute.style.display='none';
+                bgMusic.pause();
+            }
+        }
+        soundBtn.addEventListener('click',function(){ setSound(!soundOn); });
+
+        // ===== ARRANQUE =====
+        buildCarousel();
+        tryPlay();
+    })();
     </script>
 </body>
 </html>

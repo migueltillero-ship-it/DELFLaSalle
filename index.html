@@ -333,27 +333,71 @@ input:focus, select:focus { outline: none; box-shadow: inset 3px 3px 6px var(--s
     #sound-toggle { bottom: 20px; right: 20px; width: 52px; height: 52px; }
 }
 
-/* ================= CTA ACTIVAR AUDIO (1er gesto) ================= */
-#audio-cta {
-    position: fixed; top: 22px; left: 50%; transform: translateX(-50%);
-    background: var(--rouge); color: #fff;
-    padding: 16px 32px; border-radius: 50px; font-weight: 800;
-    font-size: 0.92rem; letter-spacing: 1.5px; text-transform: uppercase;
-    cursor: pointer; z-index: 9999; border: 3px solid #fff;
-    box-shadow: 0 12px 30px rgba(218,0,46,0.55), 0 4px 12px rgba(0,0,0,0.3);
-    animation: ctaPulse 1.6s ease-in-out infinite;
-    transition: opacity 0.4s ease, transform 0.4s ease;
-    font-family: inherit; display: flex; align-items: center; gap: 8px;
-    text-align: center;
+/* ================= SPLASH DE ENTRADA ================= */
+#splash-screen {
+    position: fixed; inset: 0; z-index: 99999;
+    background: linear-gradient(135deg, #013896 0%, #001540 55%, #6a0818 100%);
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; padding: 40px 20px;
+    color: #fff; text-align: center; overflow: hidden;
+    transition: opacity 0.7s ease, visibility 0.7s ease;
 }
-#audio-cta:hover { transform: translateX(-50%) scale(1.06); }
-#audio-cta.hidden { opacity: 0; pointer-events: none; transform: translateX(-50%) translateY(-40px); }
-@keyframes ctaPulse {
-    0%, 100% { box-shadow: 0 12px 30px rgba(218,0,46,0.55), 0 4px 12px rgba(0,0,0,0.3); }
-    50% { box-shadow: 0 12px 44px rgba(218,0,46,0.9), 0 4px 18px rgba(0,0,0,0.45); }
+#splash-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+#splash-screen::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(circle at center, transparent 35%, rgba(0,0,0,.55) 100%);
+    pointer-events: none;
+}
+.splash-logos {
+    position: absolute; top: 40px; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 24px; align-items: center;
+    background: rgba(255,255,255,.95); padding: 12px 28px; border-radius: 80px;
+    box-shadow: 0 14px 30px rgba(0,0,0,.45); z-index: 3;
+}
+.splash-logos img { height: 54px; object-fit: contain; mix-blend-mode: multiply; }
+.splash-content { position: relative; z-index: 2; max-width: 720px; }
+.splash-eyebrow {
+    font-size: .82rem; text-transform: uppercase; letter-spacing: 4px;
+    color: rgba(255,255,255,.88); margin-bottom: 22px; font-weight: 800;
+}
+.splash-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.6rem, 7vw, 5rem); line-height: 1.05;
+    margin-bottom: 18px; text-shadow: 4px 6px 16px rgba(0,0,0,.6);
+}
+.splash-title em { color: #ff4d6d; font-style: italic; font-weight: 700; }
+.splash-subtitle {
+    font-size: clamp(.95rem, 2vw, 1.18rem); margin-bottom: 48px;
+    opacity: .92; font-weight: 500; line-height: 1.5;
+}
+.splash-cta {
+    display: inline-flex; align-items: center; gap: 14px;
+    background: #fff; color: var(--bleu);
+    padding: 22px 56px; border-radius: 60px; cursor: pointer; border: none;
+    font-family: inherit; font-weight: 800; font-size: 1.15rem;
+    text-transform: uppercase; letter-spacing: 2px;
+    box-shadow: 0 18px 50px rgba(0,0,0,.5), inset 0 -3px 0 rgba(0,0,0,.1);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    animation: splashCtaPulse 2.4s ease-in-out infinite;
+}
+.splash-cta:hover { transform: scale(1.06); }
+.splash-cta:active { transform: scale(.98); }
+@keyframes splashCtaPulse {
+    0%, 100% { box-shadow: 0 18px 50px rgba(0,0,0,.5), inset 0 -3px 0 rgba(0,0,0,.1), 0 0 0 0 rgba(255,255,255,.45); }
+    50% { box-shadow: 0 18px 50px rgba(0,0,0,.5), inset 0 -3px 0 rgba(0,0,0,.1), 0 0 0 22px rgba(255,255,255,0); }
+}
+.splash-hint {
+    margin-top: 32px; font-size: .78rem; opacity: .68; letter-spacing: 1.8px;
+    text-transform: uppercase; font-weight: 600;
+}
+.splash-tricolor {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 8px;
+    background: linear-gradient(to right, #003DA5 0% 33%, #fff 33% 66%, #EF4135 66% 100%);
 }
 @media (max-width: 600px) {
-    #audio-cta { padding: 11px 18px; font-size: 0.72rem; top: 12px; letter-spacing: 1px; }
+    .splash-logos { top: 22px; padding: 9px 18px; gap: 14px; }
+    .splash-logos img { height: 40px; }
+    .splash-cta { padding: 18px 38px; font-size: .95rem; letter-spacing: 1.4px; }
 }
 
 /* ================= BOTÓN DE SONIDO FLOTANTE ================= */
@@ -383,9 +427,20 @@ input:focus, select:focus { outline: none; box-shadow: inset 3px 3px 6px var(--s
 <body>
 
     <!-- Audio de fondo (no autoplay - requiere interacción del usuario) -->
-    <button id="audio-cta" type="button" aria-label="Activar audio del video">
-        🔊 Toca para activar el audio
-    </button>
+    <div id="splash-screen" role="dialog" aria-modal="true" aria-labelledby="splash-title">
+        <div class="splash-logos">
+            <img src="alianza.png" alt="Alianza Francesa">
+            <img src="lasalle.jpg" alt="Colegio La Salle">
+        </div>
+        <div class="splash-content">
+            <p class="splash-eyebrow">Portal oficial · Sesión Junio 2026</p>
+            <h1 class="splash-title" id="splash-title">Exámenes DELF<br><em>La Salle</em></h1>
+            <p class="splash-subtitle">Alianza Francesa de San Cristóbal × Colegio La Salle</p>
+            <button class="splash-cta" id="splash-start" type="button">Iniciar →</button>
+            <p class="splash-hint">El audio se activará al iniciar</p>
+        </div>
+        <div class="splash-tricolor"></div>
+    </div>
 
     <audio id="bg-music" loop preload="none">
         <source src="Arrival_at_the_Terminal%20(1).mp3" type="audio/mpeg">
@@ -1138,30 +1193,43 @@ input:focus, select:focus { outline: none; box-shadow: inset 3px 3px 6px var(--s
             btn.href='https://wa.me/?text='+encodeURIComponent(msg);
         })();
 
-        // ===== ACTIVAR AUDIO AL PRIMER GESTO DEL USUARIO =====
+        // ===== SPLASH DE ENTRADA + ACTIVACIÓN DE AUDIO =====
         // Política de los navegadores: el audio no puede arrancar sin interacción.
-        // Solución: al primer click/toque/tecla en CUALQUIER parte de la página,
-        // activamos el sonido del video. Cuando el video termine, su listener
-        // 'ended' arrancará la música automáticamente.
-        (function setupAudioActivation(){
-            var cta=document.getElementById('audio-cta');
-            var activated=false;
-            function activate(){
-                if(activated) return;
-                activated=true;
+        // Solución: splash que el usuario cierra con un click. Ese click rebobina
+        // el video a frame 0 y activa el audio. Cuando el video termina, su
+        // listener 'ended' arranca la música automáticamente.
+        (function setupSplash(){
+            var splash=document.getElementById('splash-screen');
+            if(!splash) return;
+            var startBtn=document.getElementById('splash-start');
+            var dismissed=false;
+            function dismissSplash(){
+                if(dismissed) return;
+                dismissed=true;
+                // Rebobinar el video para que el audio se escuche desde el principio
+                try{ vid.currentTime=0; }catch(e){}
+                // Activar sonido: unmute video + queue música
                 setSound(true);
-                if(cta) cta.classList.add('hidden');
+                // Fade-out del splash
+                splash.classList.add('hidden');
+                // Limpiar del DOM tras la transición
+                setTimeout(function(){ try{ splash.remove(); }catch(e){} }, 800);
             }
-            if(cta){
-                cta.addEventListener('click', function(e){
+            if(startBtn){
+                startBtn.addEventListener('click', function(e){
                     e.stopPropagation();
-                    activate();
+                    dismissSplash();
                 });
             }
-            // Cualquier gesto en la página también activa el audio
-            ['click','touchstart','keydown'].forEach(function(ev){
-                document.addEventListener(ev, activate, {once: true, capture: true, passive: true});
-            });
+            // Cualquier click sobre el splash también lo cierra
+            splash.addEventListener('click', dismissSplash);
+            // Cualquier tecla también lo cierra (accesible con teclado)
+            document.addEventListener('keydown', function onKey(e){
+                if(!dismissed){
+                    dismissSplash();
+                    document.removeEventListener('keydown', onKey);
+                }
+            }, {once: false});
         })();
 
         // ===== ARRANQUE =====

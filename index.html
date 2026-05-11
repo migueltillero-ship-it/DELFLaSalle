@@ -234,6 +234,47 @@ h2 { font-family: 'Playfair Display', serif; color: var(--bleu); font-size: 2.8r
 .constancia-result .info-msg { color: var(--text-dark); font-weight: 500; padding: 8px; }
 @media (max-width: 600px) { .constancia-row { grid-template-columns: 1fr; } }
 
+/* ================= FAQ ACORDEÓN ================= */
+.faq-list { max-width: 820px; margin: 0 auto 60px; display: flex; flex-direction: column; gap: 14px; }
+.faq-item {
+    background: var(--bg-3d); border-radius: 20px; padding: 0; overflow: hidden;
+    box-shadow: 8px 8px 16px var(--shadow-dark), -8px -8px 16px var(--shadow-light);
+    transition: box-shadow 0.3s;
+}
+.faq-item summary {
+    padding: 22px 28px; cursor: pointer; font-weight: 700; color: var(--bleu);
+    list-style: none; position: relative; padding-right: 60px;
+    font-size: 1.05rem; line-height: 1.4; user-select: none;
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after {
+    content: '+'; position: absolute; right: 28px; top: 50%; transform: translateY(-50%);
+    font-size: 2rem; font-weight: 400; color: var(--rouge); transition: transform 0.3s; line-height: 1;
+}
+.faq-item[open] summary::after { content: '−'; }
+.faq-item summary:hover { color: var(--rouge); }
+.faq-item p {
+    padding: 0 28px 22px; color: var(--text-dark); line-height: 1.6;
+    font-size: 0.95rem; font-weight: 500;
+}
+.faq-item[open] {
+    box-shadow: 12px 12px 24px var(--shadow-dark), -12px -12px 24px var(--shadow-light);
+}
+@media (max-width: 600px) {
+    .faq-item summary { padding: 18px 22px; padding-right: 50px; font-size: 1rem; }
+    .faq-item summary::after { right: 22px; }
+    .faq-item p { padding: 0 22px 18px; }
+}
+
+/* ================= BOTÓN COMPARTIR EN SUCCESS ================= */
+#share-button {
+    margin-top: 18px; display: inline-flex; align-items: center; gap: 10px;
+    background: linear-gradient(180deg, #25D366 0%, #128C7E 100%);
+    border-color: #0a5d50; color: #fff; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+#share-button:hover { background: linear-gradient(180deg, #128C7E 0%, #0a5d50 100%); }
+#share-button svg { width: 22px; height: 22px; fill: currentColor; }
+
 /* ================= FORMULARIO WIZARD 3D ================= */
 .form-container { 
     background: var(--bg-3d); border-radius: 40px; padding: 60px 50px; 
@@ -398,6 +439,51 @@ input:focus, select:focus { outline: none; box-shadow: inset 3px 3px 6px var(--s
             </div>
         </div>
 
+        <h2 id="faq-title">Preguntas <em style="color: var(--rouge); font-style: italic;">frecuentes</em></h2>
+        <div class="faq-list" id="faq-list">
+            <details class="faq-item">
+                <summary>¿Qué es el DELF Junior y por qué tomarlo?</summary>
+                <p>El DELF Junior es el diploma oficial de francés expedido por el Ministerio Francés de Educación a través de France Éducation international (FEi). Está dirigido a adolescentes de 12 a 17 años, certifica tu dominio del idioma en niveles A1, A2, B1 y B2, y es <strong>vitalicio</strong>: una vez obtenido, no caduca. Es reconocido internacionalmente para estudios, becas y movilidad académica a países francófonos.</p>
+            </details>
+            <details class="faq-item">
+                <summary>¿Cuándo y dónde es el examen?</summary>
+                <p>La sesión es en <strong>junio de 2026</strong> en las instalaciones del Colegio La Salle, San Cristóbal de las Casas. La fecha exacta y hora se confirman al tutor por correo electrónico una semana antes del examen, junto con la convocatoria oficial.</p>
+            </details>
+            <details class="faq-item">
+                <summary>¿Qué tengo que llevar el día del examen?</summary>
+                <p>Necesitas: <strong>identificación oficial original con fotografía</strong> (no fotocopia, no foto en celular), <strong>pluma negra o azul</strong> (no lápiz, no corrector), y la <strong>convocatoria oficial</strong> que recibirás por correo. No se permite usar celular, audífonos, ni diccionario durante el examen.</p>
+            </details>
+            <details class="faq-item">
+                <summary>¿Qué pasa si llego tarde?</summary>
+                <p>Debes llegar <strong>30 minutos antes</strong> del horario indicado en tu convocatoria. Si llegas después del inicio del examen, no podrás presentar y el pago no será reembolsable bajo ninguna circunstancia. Te recomendamos planear tu llegada con margen.</p>
+            </details>
+            <details class="faq-item">
+                <summary>¿Puedo presentar un nivel más alto del que estudio en la escuela?</summary>
+                <p>Sí. El nivel que presentes depende solo de tu dominio del francés, no del grado escolar. Si tienes dudas sobre qué nivel elegir, contacta al Prof. Román por WhatsApp <strong>antes</strong> de inscribirte. Una vez procesado el pago, los cambios son limitados.</p>
+            </details>
+            <details class="faq-item">
+                <summary>¿Cuándo recibo mi diploma?</summary>
+                <p>El diploma oficial es emitido por France Éducation international en Francia y llega a la Alianza Francesa entre <strong>4 y 6 meses</strong> después del examen. Mientras tanto, al obtener tus resultados recibirás una constancia provisional que tiene la misma validez para trámites urgentes.</p>
+            </details>
+            <details class="faq-item">
+                <summary>¿El pago es reembolsable?</summary>
+                <p>No. Una vez procesada la inscripción, el pago <strong>no es reembolsable ni transferible</strong> bajo ninguna circunstancia. Esta política la establece France Éducation international y aplica para todas las sedes en México y el mundo.</p>
+            </details>
+            <details class="faq-item">
+                <summary>¿Puedo cambiar de nivel después de inscribirme?</summary>
+                <p>El cambio de nivel solo es posible hasta <strong>dos semanas antes</strong> del examen y siempre que haya disponibilidad en el nivel deseado. Si el nuevo nivel cuesta más, deberás pagar la diferencia. Contacta al Prof. Román por WhatsApp para gestionar el cambio.</p>
+            </details>
+            <details class="faq-item">
+                <summary>¿Cómo me preparo para el examen?</summary>
+                <p>La Alianza Francesa ofrece cursos de preparación específica para cada nivel del DELF. También existen recursos gratuitos en línea (TV5Monde, RFI Savoirs, France Éducation international) con ejercicios oficiales tipo examen. Pregunta al Prof. Román por las opciones disponibles en San Cristóbal.</p>
+            </details>
+            <details class="faq-item">
+                <summary>¿Quién es el contacto en caso de dudas o problemas?</summary>
+                <p>El <strong>Prof. Román Tillero</strong> es el responsable académico del DELF en San Cristóbal de las Casas. Puedes contactarlo directamente por WhatsApp usando el botón verde flotante de esta página, o por correo a través de la Alianza Francesa.</p>
+            </details>
+        </div>
+
+
         <div class="form-container" id="form-container">
             <h2 style="font-size: 2.2rem;">Ficha de Inscripción</h2>
             <div class="step-indicator">
@@ -519,6 +605,12 @@ input:focus, select:focus { outline: none; box-shadow: inset 3px 3px 6px var(--s
             <p style="margin-bottom: 40px; color: var(--text-dark); font-size: 1.2rem; font-weight: 600;">Los datos han sido enviados correctamente a la Alianza Francesa y al Colegio La Salle.</p>
             <p style="margin-bottom: 20px;">Continúa por WhatsApp para asegurar tu lugar:</p>
             <a href="https://wa.me/524731219937" class="btn-chrome primary" style="background: linear-gradient(180deg, #27AE60, #1b7a43); border-color:#0f5c2f;" target="_blank">Contactar a Prof. Román ▸</a>
+            <br>
+            <a id="share-button" href="#" class="btn-chrome primary" target="_blank" rel="noopener" aria-label="Compartir mi inscripción por WhatsApp">
+                <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 0C7.16 0 0 7.16 0 16c0 2.82.74 5.46 2.04 7.76L0 32l8.46-2.22A15.92 15.92 0 0 0 16 32c8.84 0 16-7.16 16-16S24.84 0 16 0zm7.36 20.4c-.32.94-1.96 1.8-2.7 1.92-.66.1-1.5.14-2.42-.16-.56-.18-1.28-.4-2.2-.8-3.88-1.68-6.42-5.58-6.6-5.84-.18-.26-1.56-2.1-1.56-4 0-1.9.98-2.82 1.34-3.22.34-.4.74-.5 1-.5l.74.02c.24.02.56-.1.88.68.32.78 1.12 2.7 1.2 2.9.08.2.16.44.02.7-.14.26-.2.42-.4.66-.2.24-.42.52-.6.7-.2.2-.4.4-.18.8.24.4 1.04 1.7 2.24 2.76 1.54 1.36 2.84 1.78 3.24 1.98.4.2.64.16.86-.1.22-.26.96-1.18 1.22-1.58.26-.4.52-.34.88-.2.36.14 2.34 1.12 2.74 1.32.4.2.66.3.76.46.1.18.1.98-.22 1.92z"/></svg>
+                Compartir con mis compañeros
+            </a>
+            <p style="margin-top: 22px; font-size: .85rem; color: var(--text-dark); opacity: .75;">Ayuda a que más alumnos de La Salle se certifiquen contigo.</p>
         </div>
     </div>
 
@@ -1009,6 +1101,14 @@ input:focus, select:focus { outline: none; box-shadow: inset 3px 3px 6px var(--s
                 clearFormDraft();
                 banner.classList.remove('show');
             });
+        })();
+
+        // ===== BOTÓN COMPARTIR EN PANTALLA DE ÉXITO =====
+        (function setupShare(){
+            var btn=document.getElementById('share-button');
+            if(!btn) return;
+            var msg='¡Me acabo de inscribir al DELF Junior 2026 en La Salle San Cristóbal! 🇫🇷 Si tú también quieres certificar tu francés con el diploma oficial del Ministerio Francés, regístrate aquí: https://migueltillero-ship-it.github.io/DELFLaSalle/';
+            btn.href='https://wa.me/?text='+encodeURIComponent(msg);
         })();
 
         // ===== ARRANQUE =====

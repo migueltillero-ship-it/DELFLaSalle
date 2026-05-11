@@ -38,7 +38,8 @@ body.intro-active { overflow: hidden; }
 /* ================= CSS MÓDULO DE VALIDACIÓN (3D) ================= */
 #app-admin .video-hero { position: relative; width: 100vw; height: 100vh; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5); border-bottom: 6px solid var(--rouge); background: #000; }
 #app-admin .video-hero video { width: 100%; height: 100%; object-fit: cover; }
-#app-admin .video-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(1,56,150,0.7) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.9) 100%); display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 50px 20px; opacity: 0; transition: opacity 1.5s ease; }
+#app-admin .video-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(1,56,150,0.7) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.9) 100%); display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 50px 20px; opacity: 0; transition: opacity 1.5s ease; pointer-events: none; }
+#app-admin .video-overlay.active { pointer-events: auto; }
 #app-admin .logos-hero { display: flex; gap: 30px; align-items: center; background: rgba(255,255,255,0.95); padding: 15px 40px; border-radius: 100px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
 #app-admin .logos-hero img { height: 70px; object-fit: contain; mix-blend-mode: multiply; }
 
@@ -111,4 +112,605 @@ body.intro-active { overflow: hidden; }
 #app-alumno .btn-prev, #app-alumno .btn-next { padding: 15px 30px; border: 1px solid var(--af-line); background: #fff; color: var(--af-dark); font-weight: 600; border-radius: 50px; cursor: pointer; transition: all .3s; }
 #app-alumno .btn-next { background: var(--af-red); color: #fff; border-color: var(--af-red); }
 
-#app-alumno .info-grid, #app-alumno .niveles-grid, #app-alumno .contact-grid { display: grid; gap: 18px; margin
+#app-alumno .info-grid, #app-alumno .niveles-grid, #app-alumno .contact-grid { display: grid; gap: 18px; margin-top: 28px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+#app-alumno .info-card, #app-alumno .nivel, #app-alumno .contact-card { padding: 26px 22px; background: #fff; border: 1px solid var(--card-border); border-radius: 10px; transition: all .3s; text-align: center;}
+#app-alumno .info-card:hover, #app-alumno .nivel:hover, #app-alumno .contact-card:hover { transform: translateY(-4px); box-shadow: var(--sombra-md); border-color: var(--af-red); }
+#app-alumno .nivel-code { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 800; color: var(--af-dark); }
+#app-alumno .nivel-price { font-weight: 700; color: var(--af-red); font-size: 1.35rem; }
+
+#app-alumno .form-card { max-width: 920px; margin: 0 auto; background: var(--card-bg); border-radius: 14px; box-shadow: var(--sombra-lg); overflow: hidden; text-align: left; }
+#app-alumno .form-header { background: #fff; padding: 38px 44px 26px; border-bottom: 3px solid; border-image: linear-gradient(90deg, var(--azul-francia) 0%, #fff 50%, var(--af-red) 100%) 1; text-align: center;}
+#app-alumno .form-body { padding: 40px; }
+#app-alumno form .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+#app-alumno form .full { grid-column: 1 / -1; }
+#app-alumno .field { display: flex; flex-direction: column; gap: 7px; }
+#app-alumno .field input[type=text], #app-alumno .field input[type=tel], #app-alumno .field input[type=email], #app-alumno .field input[type=date], #app-alumno .field select { padding: 13px 14px; border: 1.5px solid var(--card-border); border-radius: 8px; font-family: inherit; font-size: .97rem; background: #fff; color: var(--af-dark); outline: none;}
+#app-alumno .field input:focus, #app-alumno .field select:focus { border-color: var(--af-red); box-shadow: 0 0 0 4px rgba(200,33,30,.12); }
+#app-alumno .field input.has-error { border-color: var(--af-red)!important; background: #FFF5F5!important; }
+
+/* Lightbox & Utils */
+.lightbox { position: fixed; inset: 0; z-index: 9999; background: rgba(10,10,20,.94); display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.3s; backdrop-filter: blur(10px); }
+.lightbox.active { opacity: 1; visibility: visible; }
+.fs-btn { position: fixed; top: 18px; right: 18px; z-index: 9990; width: 46px; height: 46px; border-radius: 50%; background: #fff; border: 1px solid var(--af-line); color: var(--af-red); cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+
+@media (max-width: 768px) {
+    #app-admin .stats-bar { grid-template-columns: 1fr; }
+    #app-admin .form-grid { grid-template-columns: 1fr; }
+    #app-admin .logos-hero { flex-direction: column; }
+    #app-alumno form .grid { grid-template-columns: 1fr; }
+    #app-alumno .content-section { padding: 30px 20px; }
+}
+
+@media print { .no-print { display: none !important; } body { background: white; } #app-admin .card-3d { box-shadow: none; border: 1px solid #000; } }
+</style>
+</head>
+<body class="intro-active">
+
+    <audio id="bg-music" loop preload="none">
+        <source src="Arrival_at_the_Terminal (1).mp3" type="audio/mpeg">
+    </audio>
+
+    <button id="audio-btn" class="no-print" aria-label="Control de música">
+        <svg id="icon-play" style="width:24px; display:block;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25v13.5m-7.5-13.5v13.5"/></svg>
+        <svg id="icon-pause" style="width:24px; display:none;" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 010 1.972l-11.54 6.347a1.125 1.125 0 01-1.667-.986V5.653z"/></svg>
+    </button>
+    <button id="fs-toggle" class="fs-btn no-print" onclick="toggleFullscreen()" style="display:none;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"></path></svg>
+    </button>
+
+    <div id="lightbox" class="lightbox" onclick="closeLightbox(event)">
+        <span class="lightbox-close" onclick="closeLightbox(event)" style="position:absolute;top:20px;right:30px;color:#fff;font-size:2rem;cursor:pointer;">×</span>
+        <img id="lightbox-img" src="" alt="" style="display:none; max-width:90vw; max-height:88vh; border-radius:8px;">
+        <video id="lightbox-video" controls playsinline style="display:none; max-width:90vw; max-height:88vh; border-radius:8px;"></video>
+    </div>
+
+    <div id="splash-screen">
+        <h1 style="font-family:'Playfair Display'; font-size:clamp(2rem, 5vw, 4rem); color:var(--bleu); margin-bottom: 40px; text-align: center;">Portal DELF Junior 2026</h1>
+        <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+            <button onclick="startAlumno()" class="btn-chrome primary" style="font-size: 1.2rem; padding: 20px 40px;">👨‍🎓 INSCRIPCIÓN (Candidatos)</button>
+            <button onclick="startAdmin()" class="btn-chrome" style="font-size: 1.2rem; padding: 20px 40px;">🛡️ VALIDACIÓN (Passation)</button>
+        </div>
+    </div>
+
+
+    <div id="app-admin" style="display:none;">
+        <div class="video-hero" id="admin-hero">
+            <video id="admin-vid-bg" playsinline preload="auto">
+                <source src="1.mp4" type="video/mp4">
+            </video>
+            <div class="video-overlay" id="admin-vid-overlay">
+                <div class="logos-hero">
+                    <img src="alianza.png" alt="Alliance Française">
+                    <div style="width: 2px; height: 50px; background: rgba(0,0,0,0.1);"></div>
+                    <img src="lasalle.jpg" alt="Colegio La Salle">
+                </div>
+                <div style="text-align: center; color: white;">
+                    <h1 style="font-family:'Playfair Display'; font-size: clamp(3rem, 8vw, 5rem); text-shadow: 2px 4px 8px #000;">DELF Junior 2026</h1>
+                    <p style="font-size: 1.2rem; font-weight: 500;">Centro de Passation · La Salle</p>
+                </div>
+                <div style="color: white; font-weight: 800; animation: bounce 2s infinite;">↓ DESLIZA HACIA ABAJO ↓</div>
+            </div>
+        </div>
+
+        <div class="container" id="admin-main-content">
+            <div class="stats-bar no-print">
+                <div class="stat-pill"><div class="num" id="stat-total" style="color:var(--bleu);">—</div><div class="lbl">Candidatos</div></div>
+                <div class="stat-pill"><div class="num" id="stat-a2" style="color:var(--rouge);">—</div><div class="lbl">Nivel A2</div></div>
+                <div class="stat-pill"><div class="num" id="stat-b2" style="color:var(--green);">—</div><div class="lbl">Nivel B2</div></div>
+            </div>
+
+            <div class="card-3d">
+                <h2 style="font-family:'Playfair Display'; color:var(--bleu); text-align: center; font-size: 2.5rem; margin-bottom: 10px;">Buscar Candidato</h2>
+                <p style="text-align: center; color: var(--gris-1);">Ingresa nombre y/o apellido para recuperar la ficha oficial</p>
+                
+                <div class="form-grid no-print">
+                    <div>
+                        <label style="font-weight: 800; font-size: 0.8rem; color: var(--bleu);">NOMBRE(S)</label>
+                        <input type="text" id="search-name" placeholder="EJ: SANTIAGO" autocomplete="off">
+                    </div>
+                    <div>
+                        <label style="font-weight: 800; font-size: 0.8rem; color: var(--bleu);">APELLIDO(S)</label>
+                        <input type="text" id="search-surname" placeholder="EJ: SALGADO SERVIN" autocomplete="off">
+                    </div>
+                </div>
+
+                <div id="error-msg" style="display: none; color: white; background: var(--rouge); padding: 15px; border-radius: 10px; text-align: center; font-weight: 600;">
+                    ✗ Candidato no encontrado. Verifique la ortografía.
+                </div>
+
+                <div class="no-print" style="margin-top: 20px; text-align: center;" id="btn-buscar-container">
+                    <button id="btn-buscar" class="btn-chrome primary" onclick="buscarCandidato()" style="width: 100%;">
+                        BUSCAR EN BASE DE DATOS
+                    </button>
+                </div>
+
+                <div id="verification-area" style="display: none; margin-top: 40px; padding-top: 20px;">
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 20px; color: var(--green);">
+                        <h3 style="font-size: 1.5rem;">✓ Registro Localizado</h3>
+                    </div>
+
+                    <div class="ficha">
+                        <div class="ficha-header">
+                            <div class="ficha-icon">👤</div>
+                            <div>
+                                <h3 id="ficha-nombre" style="font-family: 'Playfair Display'; font-size: 1.5rem;">—</h3>
+                                <p style="font-size: 0.85rem; opacity: 0.9;">Candidato DELF Junior 2026</p>
+                            </div>
+                        </div>
+                        <div class="ficha-body">
+                            <div class="ficha-row">
+                                <div class="ficha-row-icon">📚</div>
+                                <div class="ficha-row-content">
+                                    <span class="ficha-row-label">Nivel de Examen</span>
+                                    <span id="ficha-nivel" class="ficha-row-value" style="color:var(--rouge);">—</span>
+                                </div>
+                            </div>
+                            <div class="ficha-row">
+                                <div class="ficha-row-icon">🔢</div>
+                                <div class="ficha-row-content">
+                                    <span class="ficha-row-label">Número de Candidato FEI</span>
+                                    <span id="ficha-numero" class="ficha-row-value">—</span>
+                                </div>
+                            </div>
+                            <div class="ficha-row">
+                                <div class="ficha-row-icon">🏫</div>
+                                <div class="ficha-row-content">
+                                    <span class="ficha-row-label">Sede / Centro</span>
+                                    <span class="ficha-row-value">Colegio La Salle (052825)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ficha-footer">
+                            <span style="color: var(--green); font-weight: 800;">✓ INSCRIPCIÓN VALIDADA</span> · Alliance Française de France
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 15px; margin-top: 30px;" class="no-print" id="action-buttons">
+                        <a href="#" id="btn-pdf" target="_blank" class="btn-chrome" style="flex: 1; background: var(--rouge); color: white; border: none;">📄 PDF OFICIAL</a>
+                        <button class="btn-chrome" style="flex: 1;" onclick="window.print()">🖨️ IMPRIMIR</button>
+                        <button class="btn-chrome" style="flex: 1; background: var(--bleu); color: white;" onclick="validarEnSistema()">✓ VALIDAR</button>
+                    </div>
+
+                    <div class="no-print" style="text-align: center; margin-top: 20px;">
+                        <button class="btn-ghost btn-chrome" style="font-size: 0.85rem; padding: 10px 20px;" onclick="resetBusqueda()">← NUEVA BÚSQUEDA</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="app-alumno" style="display:none; background: transparent;">
+        <div id="vanta-bg"></div>
+
+        <section id="welcome" class="screen video-screen">
+            <video id="welcomeVideo" playsinline preload="auto" muted>
+                <source src="1.mp4" type="video/mp4">
+            </video>
+            <div class="video-controls">
+                <button class="btn-video" onclick="toggleMuteAlumno('welcomeVideo',this)"><span class="mute-label">Activar sonido</span></button>
+                <button class="btn-video primary" onclick="goToChapter(1)">Comenzar →</button>
+            </div>
+        </section>
+
+        <section id="transition" class="screen video-screen">
+            <video id="transitionVideo" playsinline preload="auto" muted>
+                <source src="4.mp4" type="video/mp4">
+            </video>
+            <div class="video-controls">
+                <button class="btn-video primary" onclick="skipTransition()">Continuar →</button>
+            </div>
+        </section>
+
+        <section id="chapter1" class="screen">
+            <header class="hero">
+                <div class="hero-logos"><img src="alianza.png" alt="Alianza Francesa"><div class="hero-divider"></div><img src="lasalle.jpg" alt="Colegio La Salle"></div>
+                <span class="section-tag" style="background:#fff; padding:5px 15px; border-radius:50px;">Ministerio Francés de Educación</span>
+                <h1 style="font-size: 4rem;">DELF Junior <span style="color:var(--af-red)">2026</span></h1>
+                <p class="hero-sub">Certificación oficial de francés del Ministerio Francés de Educación.</p>
+            </header>
+            <div class="container" style="max-width: 1080px;">
+                <div class="content-section">
+                    <span class="section-tag">¿Qué es el DELF Junior?</span>
+                    <h2 style="font-size: 2.2rem;">Una certificación con validez mundial</h2>
+                    <p>El <strong>DELF</strong> es la certificación oficial que acredita el dominio del idioma francés. Es un diploma <strong>internacional, vitalicio y reconocido en más de 170 países</strong>.</p>
+                    <div class="info-grid">
+                        <div class="info-card"><h4>Reconocimiento mundial</h4><p>Validez internacional permanente.</p></div>
+                        <div class="info-card"><h4>Cuatro niveles MCER</h4><p>A1, A2, B1 y B2.</p></div>
+                        <div class="info-card"><h4>Cuatro competencias</h4><p>Oral y escrita.</p></div>
+                        <div class="info-card"><h4>Diploma vitalicio</h4><p>Sin caducidad.</p></div>
+                    </div>
+                </div>
+                <div class="chapter-nav">
+                    <button class="btn-next" onclick="goToChapterWithVideo(2)" style="margin-left:auto;">Siguiente →</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="chapter2" class="screen">
+            <div class="chapter">
+                <div class="container" style="max-width: 1080px;">
+                    <div class="content-section">
+                        <span class="section-tag">Niveles</span>
+                        <h2 style="font-size: 2.2rem;">Elige tu nivel</h2>
+                        <div class="niveles-grid">
+                            <div class="nivel"><div class="nivel-code">A1</div><div class="nivel-price">$1,445 MXN</div></div>
+                            <div class="nivel"><div class="nivel-code">A2</div><div class="nivel-price">$1,575 MXN</div></div>
+                            <div class="nivel"><div class="nivel-code">B1</div><div class="nivel-price">$1,800 MXN</div></div>
+                            <div class="nivel"><div class="nivel-code">B2</div><div class="nivel-price">$2,500 MXN</div></div>
+                        </div>
+                    </div>
+                    <div class="chapter-nav">
+                        <button class="btn-prev" onclick="goToChapter(1)">← Anterior</button>
+                        <button class="btn-next" onclick="goToChapterWithVideo(3)">Siguiente →</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="chapter3" class="screen">
+            <div class="chapter">
+                <div class="container" style="max-width: 1080px;">
+                    <div class="content-section">
+                        <span class="section-tag">Galería Institucional</span>
+                        <h2 style="font-size: 2.2rem;">Colegio La Salle & Alianza Francesa</h2>
+                        <p>Haz clic en cualquier imagen o video para verlo en pantalla completa.</p>
+                        <div class="info-grid" id="galeria-alumno"></div>
+                    </div>
+                    <div class="chapter-nav">
+                        <button class="btn-prev" onclick="goToChapter(2)">← Anterior</button>
+                        <button class="btn-next" onclick="goToChapterWithVideo(4)">Siguiente →</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="chapter4" class="screen">
+            <div class="chapter">
+                <div class="container" style="max-width: 1080px;">
+                    <div class="content-section">
+                        <span class="section-tag">Soporte</span>
+                        <h2 style="font-size: 2.2rem;">Contactos Institucionales</h2>
+                        <div class="contact-grid">
+                            <div class="contact-card"><h4>Dirección</h4><p><a href="mailto:DIRECCIONSANCRISTOBAL@ALIANZAFR.EDU.FR">Correo Oficial</a></p></div>
+                            <div class="contact-card"><h4>Pagos</h4><p><a href="https://wa.me/524731219937" target="_blank">WhatsApp Prof. Román</a></p></div>
+                            <div class="contact-card"><h4>Sede</h4><p>Colegio La Salle, SCLC</p></div>
+                        </div>
+                    </div>
+                    <div class="chapter-nav">
+                        <button class="btn-prev" onclick="goToChapter(3)">← Anterior</button>
+                        <button class="btn-next" onclick="goToChapterWithVideo(5)">Siguiente →</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="chapter5" class="screen">
+            <div class="chapter">
+                <div class="container" style="max-width: 1080px;">
+                    <div class="content-section" style="text-align: center;">
+                        <h2 style="font-size: 2.2rem;">¿Listo para inscribirte?</h2>
+                        <p>Ten a la mano tus datos oficiales y procede al formulario seguro.</p>
+                        <br>
+                        <button class="btn-chrome primary" onclick="goToFormVideo()" style="padding: 20px 40px;">LLENAR FICHA DE INSCRIPCIÓN</button>
+                    </div>
+                    <div class="chapter-nav">
+                        <button class="btn-prev" onclick="goToChapter(4)">← Anterior</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="formVideo" class="screen video-screen">
+            <video id="formTransitionVideo" playsinline preload="auto" muted>
+                <source src="4.mp4" type="video/mp4">
+            </video>
+            <div class="video-controls"><button class="btn-video primary" onclick="skipFormVideo()">Continuar al formulario →</button></div>
+        </section>
+
+        <section id="formPage" class="screen">
+            <div style="padding: 60px 16px;">
+                <div class="form-card">
+                    <div class="form-header">
+                        <h2>Formulario de Inscripción DELF</h2>
+                    </div>
+                    <div class="form-body">
+                        <form id="inscripcionForm" novalidate>
+                            <div class="grid">
+                                <div class="field full"><label>Tratamiento *</label><select name="tratamiento" required><option value="SRA.">Sra.</option><option value="SR.">Sr.</option></select></div>
+                                <div class="field full"><label>Nombres (Según Acta) *</label><input type="text" name="nombres" required></div>
+                                <div class="field full"><label>Apellidos *</label><input type="text" name="apellidos" required></div>
+                                <div class="field"><label>Fecha Nacimiento *</label><input type="date" name="fecha_nacimiento" required></div>
+                                <div class="field"><label>Ciudad Nacimiento *</label><input type="text" name="ciudad_nacimiento" required></div>
+                                <div class="field"><label>Nacionalidad *</label><input type="text" name="nacionalidad" value="MEXICANA" required></div>
+                                <div class="field"><label>Correo *</label><input type="email" name="correo" required></div>
+                                <div class="field"><label>Teléfono *</label><input type="tel" name="telefono" required></div>
+                                <div class="field full"><label>Nivel Seleccionado *</label><select name="nivel" required><option value="A1">A1</option><option value="A2">A2</option><option value="B1">B1</option><option value="B2">B2</option></select></div>
+                            </div>
+                            <div style="margin-top: 30px; text-align: center;">
+                                <button type="submit" class="btn-chrome primary" id="submitBtn">ENVIAR INSCRIPCIÓN SEGURA</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="postFormVideo" class="screen video-screen">
+            <video id="postVideo" playsinline preload="auto" muted><source src="5.mp4" type="video/mp4"></video>
+            <div class="video-controls"><button class="btn-video primary" onclick="skipPostVideo()">Continuar →</button></div>
+        </section>
+
+        <section id="askReturn" class="screen" style="display:flex; justify-content:center; align-items:center;">
+            <div class="content-section" style="text-align:center;">
+                <h2>¡Inscripción enviada!</h2>
+                <button class="btn-chrome primary" onclick="goToFinal(true)">Finalizar</button>
+            </div>
+        </section>
+
+        <section id="thanks" class="screen video-screen">
+            <video id="thanksVideo" playsinline preload="auto" muted><source src="6.mp4" type="video/mp4"></video>
+            <div class="video-overlay" style="opacity:1;">
+                <h2 style="color:#fff; font-size:4rem; margin-top:auto;">Merci beaucoup !</h2>
+                <div style="margin-bottom:auto;"></div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // GLOBAL AUDIO LOGIC
+        let audioActivo = false; // El audio no debe iniciar activado hasta que el video acabe
+        document.getElementById('audio-btn').addEventListener('click', () => {
+            const music = document.getElementById('bg-music');
+            if (audioActivo) {
+                music.pause();
+                document.getElementById('icon-play').style.display = 'block';
+                document.getElementById('icon-pause').style.display = 'none';
+            } else {
+                music.play().catch(() => {});
+                document.getElementById('icon-play').style.display = 'none';
+                document.getElementById('icon-pause').style.display = 'block';
+            }
+            audioActivo = !audioActivo;
+        });
+
+        // FULLSCREEN & LIGHTBOX (GLOBAL)
+        function toggleFullscreen(){
+            if(document.fullscreenElement) document.exitFullscreen();
+            else document.documentElement.requestFullscreen();
+        }
+        function openLightbox(file, type){
+            const lb = document.getElementById('lightbox');
+            const img = document.getElementById('lightbox-img');
+            const vid = document.getElementById('lightbox-video');
+            if(type === 'video'){ img.style.display='none'; vid.style.display='block'; vid.src=file; vid.play(); }
+            else { vid.style.display='none'; vid.pause(); img.style.display='block'; img.src=file; }
+            lb.classList.add('active');
+        }
+        function closeLightbox(e){
+            if(e && (e.target.id==='lightbox-img' || e.target.id==='lightbox-video')) return;
+            document.getElementById('lightbox').classList.remove('active');
+            document.getElementById('lightbox-video').pause();
+        }
+
+        // ================= LÓGICA DE SPLASH A ADMIN =================
+        function startAdmin() {
+            document.getElementById('splash-screen').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('splash-screen').style.display = 'none';
+                document.getElementById('app-admin').style.display = 'block';
+                
+                // 1. REPRODUCIR VIDEO ÚNICA VEZ
+                const vid = document.getElementById('admin-vid-bg');
+                vid.loop = false; // NO repetir video
+                vid.muted = false; // Con audio del video
+                vid.play().catch(()=>{});
+                
+                // 2. CUANDO EL VIDEO TERMINA
+                vid.onended = () => {
+                    document.getElementById('admin-vid-overlay').classList.add('active');
+                    document.getElementById('admin-vid-overlay').style.opacity = '1';
+                    document.getElementById('admin-main-content').style.display = 'block';
+                    
+                    setTimeout(() => {
+                        document.getElementById('admin-main-content').style.opacity = '1';
+                        document.body.classList.remove('intro-active');
+                        initStats(); 
+                        
+                        // 3. INICIAR MÚSICA DE FONDO
+                        const music = document.getElementById('bg-music');
+                        music.volume = 0.3; 
+                        music.play().then(() => {
+                            document.getElementById('audio-btn').classList.add('show');
+                            document.getElementById('icon-play').style.display = 'none';
+                            document.getElementById('icon-pause').style.display = 'block';
+                            audioActivo = true;
+                        }).catch(()=>{});
+                    }, 50);
+                };
+            }, 800);
+        }
+
+        // ================= LÓGICA DE SPLASH A ALUMNO =================
+        function startAlumno() {
+            document.getElementById('splash-screen').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('splash-screen').style.display = 'none';
+                document.getElementById('app-alumno').style.display = 'block';
+                document.body.classList.remove('intro-active');
+                initVanta();
+                document.getElementById('fs-toggle').style.display = 'flex';
+                document.querySelectorAll('#app-alumno .screen').forEach(s=>s.classList.remove('active'));
+                document.getElementById('welcome').classList.add('active');
+                
+                // 1. REPRODUCIR VIDEO ÚNICA VEZ
+                const wv = document.getElementById('welcomeVideo');
+                wv.loop = false; // NO repetir video
+                wv.muted = false; // Con audio del video
+                wv.play().catch(()=>{});
+                
+                // 2. CUANDO EL VIDEO TERMINA
+                wv.onended = () => {
+                    // 3. INICIAR MÚSICA DE FONDO Y PASAR AL CAPÍTULO 1
+                    const music = document.getElementById('bg-music');
+                    music.volume = 0.3;
+                    music.play().then(() => {
+                        document.getElementById('audio-btn').classList.add('show');
+                        document.getElementById('icon-play').style.display = 'none';
+                        document.getElementById('icon-pause').style.display = 'block';
+                        audioActivo = true;
+                    }).catch(()=>{});
+                    
+                    goToChapter(1);
+                };
+            }, 800);
+        }
+
+        // ================= BASE DE DATOS Y LÓGICA DE VALIDACIÓN (ADMIN) =================
+        const bdCandidatos = [
+            { nombre: "SANTIAGO", apellido: "SALGADO SERVIN", nivel: "A2", numero: "052825010152", pdf: "20260509_GAEL_attestation_inscription_SALGADO SERVÍN_Santiago.pdf" },
+            { nombre: "LUIS FERNANDO", apellido: "AGUILAR SUAREZ", nivel: "A2", numero: "052825010132", pdf: "20260507_GAEL_attestation_inscription_AGUILAR SUAREZ_Luis Fernando.pdf" },
+            { nombre: "SOFIA", apellido: "ALFONZO GARCIA", nivel: "A2", numero: "052825010138", pdf: "20260507_GAEL_attestation_inscription_ALFONZO GARCÍA_Sofía.pdf" },
+            { nombre: "SAMUEL", apellido: "CANCINO HERNANDEZ", nivel: "A2", numero: "052825010130", pdf: "20260507_GAEL_attestation_inscription_CANCINO HERNANDEZ_Samuel.pdf" },
+            { nombre: "SARA", apellido: "CANCINO SUAREZ", nivel: "A2", numero: "052825010141", pdf: "20260507_GAEL_attestation_inscription_CANCINO SUÁREZ_Sara.pdf" },
+            { nombre: "CAROLINA", apellido: "CONTRERAS CHACON", nivel: "A2", numero: "052825010136", pdf: "20260507_GAEL_attestation_inscription_CONTRERAS CHACÓN_Carolina.pdf" },
+            { nombre: "ERICK SANTIAGO", apellido: "DIAZ RAMOS", nivel: "A2", numero: "052825010137", pdf: "20260507_GAEL_attestation_inscription_DÍAZ RAMOS_Erick Santiago.pdf" },
+            { nombre: "MARIA FERNANDA", apellido: "HERNANDEZ QUEZADA", nivel: "A2", numero: "052825010146", pdf: "20260507_GAEL_attestation_inscription_HERNÁNDEZ QUEZADA_María Fernanda.pdf" },
+            { nombre: "JUAN MARIANO", apellido: "MARTINEZ VELASCO", nivel: "A2", numero: "052825010150", pdf: "20260509_GAEL_attestation_inscription_MARTÍNEZ VELASCO_Juan Mariano.pdf" },
+            { nombre: "JEFTZY SHAILE", apellido: "VAZQUEZ GARCIA", nivel: "A2", numero: "052825010139", pdf: "20260507_GAEL_attestation_inscription_VÁZQUEZ GARCÍA_Jeftzy Shaile.pdf" },
+            { inputNombre: "JUNO", inputApellido: "OCAMPO", nombre: "JUNO XIMENA", apellido: "OCAMPO LOPEZ", nivel: "A2", numero: "052825010145", pdf: "20260507_GAEL_attestation_inscription_OCAMPO LÓPEZ_Juno Ximena.pdf" },
+            { nombre: "JORGE HUGO", apellido: "REYEZ VAZQUEZ", nivel: "A2", numero: "052825010147", pdf: "20260507_GAEL_attestation_inscription_REYEZ VÁZQUEZ_Jorge Hugo.pdf" },
+            { nombre: "ANA PAULA", apellido: "RUIZ ROQUE", nivel: "A2", numero: "052825010131", pdf: "20260507_GAEL_attestation_inscription_RUIZ ROQUE_Ana Paula.pdf" },
+            { nombre: "CRISTOBAL", apellido: "SANCHEZ FLORES", nivel: "A2", numero: "052825010135", pdf: "20260507_GAEL_attestation_inscription_SANCHEZ FLORES_Cristóbal.pdf" },
+            { nombre: "ANDREA MIRANDA", apellido: "SANTIAGO URBINA", nivel: "A2", numero: "052825010133", pdf: "20260507_GAEL_attestation_inscription_SANTIAGO URBINA_Andrea Miranda.pdf" },
+            { nombre: "XIOMARA SKARLETT", apellido: "TORREZ GONZALEZ", nivel: "A2", numero: "052825010148", pdf: "20260507_GAEL_attestation_inscription_TORREZ GONZÁLEZ_Xiomara Skarlett.pdf" },
+            { nombre: "ANGELA SOFIA", apellido: "TOVILLA DOMINGUEZ", nivel: "A2", numero: "052825010134", pdf: "20260507_GAEL_attestation_inscription_TOVILLA DOMINGUEZ_Ángela Sofía.pdf" },
+            { nombre: "LUIS EMILIO", apellido: "GOMEZ MEDINA", nivel: "B2", numero: "052825010129", pdf: "20260509_GAEL_attestation_inscription_GÓMEZ MEDINA_Luis Emilio-1.pdf" },
+            { nombre: "EMILIANO DE JESUS", apellido: "GUZMAN AGUILAR", nivel: "A2", numero: "052825010154", pdf: "20260509_GAEL_attestation_inscription_GUZMÁN AGUILAR_Emiliano De Jesús.pdf" },
+            { nombre: "DASHA CAMILA", apellido: "MONTOYA RUIZ", nivel: "A2", numero: "052825010153", pdf: "20260509_GAEL_attestation_inscription_MONTOYA RUÍZ_Dasha Camila.pdf" }
+        ];
+
+        function initStats() {
+            document.getElementById('stat-total').textContent = bdCandidatos.length;
+            document.getElementById('stat-a2').textContent = bdCandidatos.filter(c => c.nivel === 'A2').length;
+            document.getElementById('stat-b2').textContent = bdCandidatos.filter(c => c.nivel === 'B2').length;
+        }
+
+        function normalizar(t) { return t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase().trim(); }
+
+        function buscarCandidato() {
+            const rawN = document.getElementById('search-name').value;
+            const rawA = document.getElementById('search-surname').value;
+            if(!rawN.trim() && !rawA.trim()) { alert("Ingresa nombre o apellido para buscar."); return; }
+            const n = normalizar(rawN); const a = normalizar(rawA);
+
+            document.getElementById('btn-buscar').innerHTML = "BUSCANDO...";
+            document.getElementById('error-msg').style.display = 'none';
+            document.getElementById('verification-area').style.display = 'none';
+            
+            setTimeout(() => {
+                document.getElementById('btn-buscar').innerHTML = `BUSCAR EN BASE DE DATOS`;
+                const alumno = bdCandidatos.find(i => {
+                    const dbN = normalizar(i.inputNombre || i.nombre); const dbA = normalizar(i.inputApellido || i.apellido);
+                    return (!n || dbN.includes(n) || n.includes(dbN)) && (!a || dbA.includes(a) || a.includes(dbA));
+                });
+                if(alumno) {
+                    document.getElementById('btn-buscar-container').style.display = 'none';
+                    document.getElementById('verification-area').style.display = 'block';
+                    document.getElementById('ficha-nombre').innerText = `${alumno.nombre} ${alumno.apellido}`;
+                    document.getElementById('ficha-nivel').innerText = `DELF JUNIOR ${alumno.nivel}`;
+                    document.getElementById('ficha-numero').innerText = alumno.numero;
+                    document.getElementById('btn-pdf').href = encodeURI(alumno.pdf);
+                } else document.getElementById('error-msg').style.display = 'block';
+            }, 800);
+        }
+        function resetBusqueda() {
+            document.getElementById('search-name').value = ''; document.getElementById('search-surname').value = '';
+            document.getElementById('verification-area').style.display = 'none';
+            document.getElementById('btn-buscar-container').style.display = 'block';
+        }
+        function validarEnSistema() {
+            alert(`✓ ${document.getElementById('ficha-nombre').innerText}\n\nEl candidato ha sido marcado como validado en el sistema.`);
+        }
+        ['search-name', 'search-surname'].forEach(id => {
+            document.getElementById(id).addEventListener('keydown', e => { if (e.key === 'Enter') buscarCandidato(); });
+        });
+
+        // ================= LÓGICA DE NAVEGACIÓN Y FORMULARIO (ALUMNOS) =================
+        let vantaEffect = null;
+        function initVanta(){
+            if(vantaEffect || typeof VANTA === 'undefined') return;
+            vantaEffect = VANTA.NET({ el:'#vanta-bg', mouseControls:true, color:0xC8211E, backgroundColor:0xf5f0eb, points:9, maxDistance:25 });
+        }
+        function toggleMuteAlumno(vid, btn) {
+            const v = document.getElementById(vid); v.muted = !v.muted;
+            btn.querySelector('.mute-label').textContent = v.muted ? 'Activar sonido' : 'Silenciar';
+        }
+        function fadeOutAndShow(curId, nextId){
+            const cur = document.getElementById(curId);
+            if(cur) cur.classList.add('fade-out');
+            setTimeout(()=>{
+                document.querySelectorAll('#app-alumno .screen').forEach(s=>s.classList.remove('active','fade-out'));
+                document.getElementById(nextId).classList.add('active');
+                window.scrollTo({top:0});
+            }, 600);
+        }
+        function goToChapter(num) { fadeOutAndShow(document.querySelector('#app-alumno .screen.active').id, 'chapter'+num); }
+        
+        let targetChapter = null;
+        function goToChapterWithVideo(num) {
+            targetChapter = 'chapter'+num;
+            fadeOutAndShow(document.querySelector('#app-alumno .screen.active').id, 'transition');
+            const v = document.getElementById('transitionVideo');
+            v.currentTime = 0; v.muted = false; v.play().catch(()=>{});
+            v.onended = skipTransition;
+        }
+        function skipTransition() { document.getElementById('transitionVideo').pause(); fadeOutAndShow('transition', targetChapter || 'chapter1'); }
+        
+        function goToFormVideo() {
+            fadeOutAndShow(document.querySelector('#app-alumno .screen.active').id, 'formVideo');
+            const v = document.getElementById('formTransitionVideo');
+            v.currentTime = 0; v.muted = false; v.play().catch(()=>{});
+            v.onended = skipFormVideo;
+        }
+        function skipFormVideo() { document.getElementById('formTransitionVideo').pause(); fadeOutAndShow('formVideo', 'formPage'); }
+        
+        // Formulario Fetch (Formsubmit)
+        document.getElementById('inscripcionForm').addEventListener('submit', async function(e){
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn'); btn.disabled = true; btn.innerText = "Enviando...";
+            const fd = new FormData(this);
+            const payload = { _subject: 'Inscripción DELF 2026', _template: 'table', _captcha: 'false' };
+            fd.forEach((v,k)=>payload[k]=v);
+            try {
+                await fetch('https://formsubmit.co/ajax/DIRECCIONSANCRISTOBAL@ALIANZAFR.EDU.FR', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload) });
+            } catch(e) {}
+            btn.disabled = false; btn.innerText = "ENVIAR INSCRIPCIÓN SEGURA";
+            fadeOutAndShow('formPage', 'postFormVideo');
+            const pv = document.getElementById('postVideo');
+            pv.currentTime = 0; pv.muted = false; pv.play().catch(()=>{});
+            pv.onended = skipPostVideo;
+        });
+        function skipPostVideo() { document.getElementById('postVideo').pause(); fadeOutAndShow('postFormVideo', 'askReturn'); }
+        
+        function goToFinal(b) {
+            fadeOutAndShow('askReturn', 'thanks');
+            const tv = document.getElementById('thanksVideo');
+            tv.currentTime = 0; tv.muted = false; tv.play().catch(()=>{});
+            tv.onended = () => { if(b) { document.getElementById('inscripcionForm').reset(); fadeOutAndShow('thanks', 'chapter1'); } };
+        }
+
+        // Galería Alumnos
+        window.addEventListener('load', () => {
+            const root = document.getElementById('galeria-alumno');
+            if(!root) return;
+            ['1.mp4','4.mp4'].forEach(f => {
+                const d = document.createElement('div'); d.className = 'info-card'; d.style.padding='0'; d.style.overflow='hidden'; d.style.cursor='pointer';
+                d.onclick = () => openLightbox(f, 'video');
+                d.innerHTML = `<video src="${f}" muted loop autoplay style="width:100%;height:100%;object-fit:cover;"></video>`;
+                root.appendChild(d);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -338,7 +338,7 @@ input:focus, select:focus { outline: none; box-shadow: inset 3px 3px 6px var(--s
     </button>
 
     <div class="video-hero" id="hero-section">
-        <video id="vid-bg" autoplay muted loop playsinline preload="metadata" disablepictureinpicture disableremoteplayback>
+        <video id="vid-bg" autoplay muted playsinline preload="metadata" disablepictureinpicture disableremoteplayback>
             <source src="1.mp4" type="video/mp4">
         </video>
         <div class="video-overlay">
@@ -565,13 +565,16 @@ input:focus, select:focus { outline: none; box-shadow: inset 3px 3px 6px var(--s
             track.innerHTML=html;
         }
 
-        // ===== VIDEO ANTI-BLOQUEO =====
+        // ===== VIDEO ANTI-BLOQUEO + REPRODUCCIÓN ÚNICA =====
         var vid=document.getElementById('vid-bg');
+        var videoEnded=false;
         function tryPlay(){
+            if(videoEnded) return; // No reanudar tras terminar
             var p=vid.play();
             if(p&&typeof p.then==='function'){
                 p.catch(function(){
                     var force=function(){
+                        if(videoEnded) return;
                         vid.play().catch(function(){});
                         document.removeEventListener('touchstart',force);
                         document.removeEventListener('click',force);
@@ -581,15 +584,30 @@ input:focus, select:focus { outline: none; box-shadow: inset 3px 3px 6px var(--s
                 });
             }
         }
+        // Al terminar el video: congelar en último fotograma y arrancar la música si el sonido está activo
+        vid.addEventListener('ended',function(){
+            videoEnded=true;
+            // El video queda detenido automáticamente en su último frame (sin loop).
+            // Forzamos pause por si algún navegador intenta rebobinar.
+            try{ vid.pause(); }catch(e){}
+            // Si el usuario ya activó el sonido, arrancar la música de fondo ahora.
+            if(typeof soundOn!=='undefined' && soundOn && typeof bgMusic!=='undefined' && bgMusic){
+                try{ bgMusic.currentTime=0; }catch(e){}
+                var pm=bgMusic.play();
+                if(pm&&typeof pm.then==='function') pm.catch(function(){});
+            }
+        });
 
         // ===== AHORRO DE BATERÍA: PAUSAR AL OCULTAR PESTAÑA =====
         document.addEventListener('visibilitychange',function(){
             if(document.hidden){
-                vid.pause();
+                if(!videoEnded) vid.pause();
                 if(typeof bgMusic!=='undefined' && bgMusic) bgMusic.pause();
             }else{
-                if(document.getElementById('form-container').style.display!=='block') tryPlay();
-                if(typeof soundOn!=='undefined' && soundOn && bgMusic){
+                // Sólo reanudar el video si aún no ha terminado
+                if(!videoEnded && document.getElementById('form-container').style.display!=='block') tryPlay();
+                // La música sólo debe sonar si el video ya terminó (para no chocar audios)
+                if(typeof soundOn!=='undefined' && soundOn && bgMusic && videoEnded){
                     var pm=bgMusic.play();
                     if(pm&&typeof pm.then==='function') pm.catch(function(){});
                 }
@@ -742,18 +760,24 @@ input:focus, select:focus { outline: none; box-shadow: inset 3px 3px 6px var(--s
         var soundOn=false;
         function setSound(on){
             soundOn=on;
-            vid.muted=!on;
             if(on){
                 soundBtn.classList.add('is-on');
                 soundBtn.setAttribute('aria-label','Silenciar');
                 soundBtn.title='Silenciar';
                 icoMute.style.display='none';
                 icoUnmute.style.display='block';
-                var pm=bgMusic.play();
-                if(pm&&typeof pm.then==='function') pm.catch(function(){});
-                // Si el formulario está activo, no reanudar el video aquí
-                if(document.getElementById('form-container').style.display!=='block'){
-                    tryPlay();
+                if(videoEnded){
+                    // Video terminó: solo música, video permanece silenciado y congelado
+                    vid.muted=true;
+                    var pm=bgMusic.play();
+                    if(pm&&typeof pm.then==='function') pm.catch(function(){});
+                }else{
+                    // Video aún corre: solo audio del video, música pausada (arrancará al terminar)
+                    vid.muted=false;
+                    bgMusic.pause();
+                    if(document.getElementById('form-container').style.display!=='block'){
+                        tryPlay();
+                    }
                 }
             }else{
                 soundBtn.classList.remove('is-on');
@@ -761,6 +785,7 @@ input:focus, select:focus { outline: none; box-shadow: inset 3px 3px 6px var(--s
                 soundBtn.title='Activar sonido';
                 icoMute.style.display='block';
                 icoUnmute.style.display='none';
+                vid.muted=true;
                 bgMusic.pause();
             }
         }

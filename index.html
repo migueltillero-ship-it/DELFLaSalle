@@ -333,6 +333,29 @@ input:focus, select:focus { outline: none; box-shadow: inset 3px 3px 6px var(--s
     #sound-toggle { bottom: 20px; right: 20px; width: 52px; height: 52px; }
 }
 
+/* ================= CTA ACTIVAR AUDIO (1er gesto) ================= */
+#audio-cta {
+    position: fixed; top: 22px; left: 50%; transform: translateX(-50%);
+    background: var(--rouge); color: #fff;
+    padding: 16px 32px; border-radius: 50px; font-weight: 800;
+    font-size: 0.92rem; letter-spacing: 1.5px; text-transform: uppercase;
+    cursor: pointer; z-index: 9999; border: 3px solid #fff;
+    box-shadow: 0 12px 30px rgba(218,0,46,0.55), 0 4px 12px rgba(0,0,0,0.3);
+    animation: ctaPulse 1.6s ease-in-out infinite;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    font-family: inherit; display: flex; align-items: center; gap: 8px;
+    text-align: center;
+}
+#audio-cta:hover { transform: translateX(-50%) scale(1.06); }
+#audio-cta.hidden { opacity: 0; pointer-events: none; transform: translateX(-50%) translateY(-40px); }
+@keyframes ctaPulse {
+    0%, 100% { box-shadow: 0 12px 30px rgba(218,0,46,0.55), 0 4px 12px rgba(0,0,0,0.3); }
+    50% { box-shadow: 0 12px 44px rgba(218,0,46,0.9), 0 4px 18px rgba(0,0,0,0.45); }
+}
+@media (max-width: 600px) {
+    #audio-cta { padding: 11px 18px; font-size: 0.72rem; top: 12px; letter-spacing: 1px; }
+}
+
 /* ================= BOTÓN DE SONIDO FLOTANTE ================= */
 #sound-toggle {
     position: fixed; bottom: 28px; right: 28px; z-index: 9999;
@@ -360,6 +383,10 @@ input:focus, select:focus { outline: none; box-shadow: inset 3px 3px 6px var(--s
 <body>
 
     <!-- Audio de fondo (no autoplay - requiere interacción del usuario) -->
+    <button id="audio-cta" type="button" aria-label="Activar audio del video">
+        🔊 Toca para activar el audio
+    </button>
+
     <audio id="bg-music" loop preload="none">
         <source src="Arrival_at_the_Terminal%20(1).mp3" type="audio/mpeg">
     </audio>
@@ -1109,6 +1136,32 @@ input:focus, select:focus { outline: none; box-shadow: inset 3px 3px 6px var(--s
             if(!btn) return;
             var msg='¡Me acabo de inscribir al DELF Junior 2026 en La Salle San Cristóbal! 🇫🇷 Si tú también quieres certificar tu francés con el diploma oficial del Ministerio Francés, regístrate aquí: https://migueltillero-ship-it.github.io/DELFLaSalle/';
             btn.href='https://wa.me/?text='+encodeURIComponent(msg);
+        })();
+
+        // ===== ACTIVAR AUDIO AL PRIMER GESTO DEL USUARIO =====
+        // Política de los navegadores: el audio no puede arrancar sin interacción.
+        // Solución: al primer click/toque/tecla en CUALQUIER parte de la página,
+        // activamos el sonido del video. Cuando el video termine, su listener
+        // 'ended' arrancará la música automáticamente.
+        (function setupAudioActivation(){
+            var cta=document.getElementById('audio-cta');
+            var activated=false;
+            function activate(){
+                if(activated) return;
+                activated=true;
+                setSound(true);
+                if(cta) cta.classList.add('hidden');
+            }
+            if(cta){
+                cta.addEventListener('click', function(e){
+                    e.stopPropagation();
+                    activate();
+                });
+            }
+            // Cualquier gesto en la página también activa el audio
+            ['click','touchstart','keydown'].forEach(function(ev){
+                document.addEventListener(ev, activate, {once: true, capture: true, passive: true});
+            });
         })();
 
         // ===== ARRANQUE =====

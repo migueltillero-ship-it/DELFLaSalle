@@ -5,23 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#013896">
 <meta name="format-detection" content="telephone=no">
-
 <title>Portal DELF Junior 2026 · Alliance Française & Colegio La Salle</title>
 <meta name="description" content="Inscripción oficial al DELF Junior 2026. Sede: Colegio La Salle San Cristóbal de las Casas. Niveles A1, A2, B1, B2.">
 <meta name="keywords" content="DELF Junior 2026, Alianza Francesa, Colegio La Salle, San Cristóbal de las Casas, certificación francés">
 <meta name="author" content="Alianza Francesa de San Cristóbal de las Casas">
-
-<meta property="og:type" content="website">
-<meta property="og:locale" content="es_MX">
-<meta property="og:url" content="https://migueltillero-ship-it.github.io/DELFLaSalle/">
-<meta property="og:title" content="Inscripción DELF Junior 2026 - Alianza Francesa & La Salle">
-<meta property="og:description" content="Certifica tu francés a nivel internacional. Inscripciones abiertas.">
-<meta property="og:site_name" content="DELF La Salle 2026">
-
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Inscripción DELF Junior 2026">
-<meta name="twitter:description" content="Certifica tu francés. Niveles A1-B2. Sede: Colegio La Salle San Cristóbal de las Casas.">
-
 <link rel="preconnect" href="https://fonts.googleapis.com/">
 <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -37,12 +24,10 @@
     --af-red-dark: #8a1715; --af-gold: #A8843E; --azul-francia: #002654;
     --af-muted: #5b5b5b; --af-dark: #1a1a1a; --green: #1a8a4a; --bg-3d: #e0e5ec;
     --shadow-light: #ffffff; --shadow-dark: #a3b1c6;
-
     --neumo-main: 20px 20px 40px #bec3c9, -20px -20px 40px #ffffff;
     --neumo-inner: inset 6px 6px 12px #bec3c9, inset -6px -6px 12px #ffffff;
     --neumo-pill: 6px 6px 12px #bec3c9, -6px -6px 12px #ffffff;
     --neumo-pill-hover: 8px 8px 16px #bec3c9, -8px -8px 16px #ffffff;
-
     --base-font-size: 18px; --line-height-body: 1.75;
 }
 
@@ -56,29 +41,25 @@ h1, h2, h3, h4 { font-family: 'Playfair Display', serif; color: var(--af-dark); 
 a { color: var(--bleu-passation); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
-/* Animaciones */
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
 .fade-out { animation: fadeOut 0.6s forwards !important; }
 @keyframes scaleIn { from { transform: scale(.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(.85); opacity: .7; } }
+.loading-dots::after { content: ""; display: inline-block; width: 14px; text-align: left; animation: dots 1.4s infinite; }
+@keyframes dots { 0%, 20% { content: ""; } 40% { content: "."; } 60% { content: ".."; } 80%, 100% { content: "..."; } }
 
 /* ═══════════════════════════════════════════════
    CONTROLES FLOTANTES
 ═══════════════════════════════════════════════ */
-.music-btn, .fs-btn, .wa-fab, #back-to-top { 
-    position: fixed; z-index: 9980; width: 55px; height: 55px; border-radius: 50%; 
-    background: var(--bg-3d); border: 1px solid #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: var(--neumo-pill); transition: all .3s; 
-}
+.music-btn, .fs-btn, .wa-fab, #back-to-top { position: fixed; z-index: 9980; width: 55px; height: 55px; border-radius: 50%; background: var(--bg-3d); border: 1px solid #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: var(--neumo-pill); transition: all .3s; }
 .music-btn { bottom: 25px; right: 95px; color: var(--bleu-passation); } 
 .fs-btn { top: 25px; right: 25px; color: var(--bleu-passation); }
 .wa-fab { bottom: 25px; left: 25px; color: #25D366; text-decoration: none; }
 #back-to-top { bottom: 95px; right: 25px; color: var(--bleu-passation); opacity: 0; pointer-events: none; transform: translateY(20px); }
 #back-to-top.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
-
 .music-btn:hover, .fs-btn:hover, #back-to-top:hover { transform: scale(1.1); box-shadow: var(--neumo-inner); color: var(--rouge-passation); }
 .wa-fab:hover { transform: scale(1.1); box-shadow: var(--neumo-inner); color: #128C7E; }
-
 .music-btn svg, .fs-btn svg, .wa-fab svg, #back-to-top svg { width: 22px; height: 22px; fill: currentColor; }
 .music-btn .wave { display: none; } .music-btn.playing .icon-mute { display: none; } .music-btn.playing .wave { display: block; animation: pulse 1.5s ease infinite; }
 .fs-btn.active .icon-enter { display: none; } .fs-btn.active .icon-exit { display: block; }
@@ -169,8 +150,6 @@ a:hover { text-decoration: underline; }
 .hero h1 { font-size: clamp(3rem, 7vw, 5.5rem); font-weight: 800; margin-bottom: 20px; letter-spacing: -0.02em; color: var(--bleu-passation); }
 .hero h1 span { color: var(--rouge-passation); font-style: italic; font-weight: 700; }
 .hero-sub { font-size: 1.2rem; max-width: 750px; margin: 0 auto 30px; background: var(--bg-3d); padding: 25px 35px; border-radius: 15px; border: 1px solid #fff; box-shadow: var(--neumo-pill); color: var(--af-muted); font-weight: 500; }
-.date-badge { display: inline-flex; align-items: center; gap: 14px; background: var(--bg-3d); color: var(--af-dark); padding: 16px 35px; border-radius: 50px; font-weight: 700; font-size: 1.05rem; box-shadow: var(--neumo-inner); border: 1px solid #fff; margin-top: 14px; }
-.date-badge svg { width: 22px; height: 22px; color: var(--af-red); }
 
 .container-ch { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
 .chapter-header { max-width: 900px; margin: 0 auto 40px; text-align: center; }
@@ -182,8 +161,8 @@ a:hover { text-decoration: underline; }
 .content-section { background: var(--bg-3d); border: 1px solid #fff; border-radius: 30px; padding: 60px; margin: 0 auto 30px; box-shadow: var(--neumo-main); max-width: 1000px; }
 .section-tag { display: inline-flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; color: var(--bleu-passation); margin-bottom: 20px; }
 .section-tag::before { content: ""; width: 32px; height: 3px; background: var(--bleu-passation); border-radius: 2px; }
-.content-section h2 { font-size: 2.8rem; margin-bottom: 25px; font-weight: 800; }
-.content-section p { margin-bottom: 20px; font-size: 1.2rem; color: var(--af-muted); }
+.content-section h2 { font-size: 2.5rem; margin-bottom: 25px; font-weight: 800; }
+.content-section p { margin-bottom: 20px; font-size: 1.15rem; color: var(--af-muted); }
 .content-section p strong { color: var(--af-dark); font-weight: 700; }
 
 .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 25px; margin-top: 35px; }
@@ -221,6 +200,8 @@ a:hover { text-decoration: underline; }
 .regla-inner h4:first-child { margin-top: 0; }
 .regla-inner ul { padding-left: 20px; margin-bottom: 15px; }
 .regla-inner li { margin-bottom: 10px; color: var(--af-muted); font-size: 1.05rem; line-height: 1.6; }
+
+.pd-box { background: #e8f4fd; border-left: 5px solid var(--bleu-passation); padding: 20px; border-radius: 12px; font-size: 1.05rem; color: var(--af-dark); margin: 25px 0; font-weight: 500; box-shadow: var(--neumo-inner);}
 
 .chapter-nav { max-width: 900px; margin: 50px auto 0; display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; }
 .btn-prev, .btn-next { padding: 18px 40px; border: 1px solid #fff; background: var(--bg-3d); color: var(--af-dark); font-family: 'Inter', sans-serif; font-weight: 700; font-size: 1.05rem; border-radius: 50px; cursor: pointer; transition: all .3s; box-shadow: var(--neumo-pill); }
@@ -272,21 +253,6 @@ form .full { grid-column: 1 / -1; }
 .field.has-error input, .field.has-error select { box-shadow: inset 3px 3px 6px rgba(200,33,30,.1), 0 0 0 2px var(--af-red) !important; }
 .field-error-msg { display: none; font-size: .85rem; color: var(--af-red); font-weight: 700; margin-top: 6px; padding-left: 5px; }
 .field.has-error .field-error-msg { display: block; }
-
-@media (max-width: 768px) {
-    #app-admin .stats-bar { grid-template-columns: 1fr; }
-    #app-admin .form-grid { grid-template-columns: 1fr; }
-    #app-admin .logos-hero { flex-direction: column; padding: 20px; }
-    form .grid { grid-template-columns: 1fr; }
-    .content-section { padding: 40px 25px; }
-    .form-body { padding: 30px 20px; }
-    .form-header { padding: 30px 25px 20px; }
-    .candidato-input { grid-template-columns: 1fr; }
-    .chapter { padding: 40px 16px; }
-    .hero-logos img { height: 70px; }
-    .contact-card.bank-details-box { grid-column: 1 / -1; }
-}
-@media print { .no-print { display: none !important; } body { background: white; } #app-admin .card-3d { box-shadow: none; border: 1px solid #000; } }
 </style>
 </head>
 <body class="intro-active">
@@ -346,7 +312,6 @@ form .full { grid-column: 1 / -1; }
             <li>Generar la constancia de inscripción y el diploma DELF expedido por France Éducation international.</li>
             <li>Contactar al tutor para cualquier asunto relativo al examen.</li>
         </ul>
-        <p>No se tratarán los datos para finalidades secundarias distintas a las descritas.</p>
 
         <h3>4. Transferencias de datos</h3>
         <p>Los datos serán transferidos a <strong>France Éducation international (FEI)</strong>, organismo francés certificador del DELF, con sede en París, Francia, con el fin exclusivo de emitir los diplomas oficiales.</p>
@@ -357,22 +322,13 @@ form .full { grid-column: 1 / -1; }
         <h3>6. Derechos ARCO</h3>
         <p>Usted tiene derecho a <strong>Acceder, Rectificar, Cancelar u Oponerse</strong> al tratamiento de sus datos personales (derechos ARCO). Para ejercerlos, envíe una solicitud a: <a href="mailto:DIRECCIONSANCRISTOBAL@ALIANZAFR.EDU.FR">DIRECCIONSANCRISTOBAL@ALIANZAFR.EDU.FR</a>.</p>
 
-        <h3>7. Limitación del uso y divulgación</h3>
-        <p>Puede solicitar la limitación del uso o divulgación de sus datos enviando un correo al mismo destinatario indicado en el apartado anterior.</p>
-
-        <h3>8. Medidas de seguridad</h3>
-        <p>Los datos se transmiten mediante conexión cifrada (HTTPS) y se almacenan únicamente en los sistemas internos de la Alianza Francesa bajo acceso estrictamente restringido (RBAC).</p>
-
-        <h3>9. Conservación de los datos</h3>
-        <p>Los datos se conservan durante el periodo necesario para emitir el diploma y atender cualquier solicitud oficial posterior, conforme a la normativa francesa de archivos públicos.</p>
-
-        <h3>10. Cambios al Aviso de Privacidad</h3>
-        <p>Cualquier modificación al presente Aviso se publicará en esta misma página y entrará en vigor a partir de su publicación.</p>
+        <h3>7. Medidas de seguridad y Conservación</h3>
+        <p>Los datos se transmiten mediante conexión cifrada (HTTPS) y se almacenan únicamente en los sistemas internos de la Alianza Francesa bajo acceso estrictamente restringido (RBAC). Se conservan durante el periodo necesario para emitir el diploma y atender cualquier solicitud oficial posterior.</p>
     </div>
 </div>
 
 <div id="splash-screen">
-    <h1 style="font-family:'Playfair Display'; font-size:clamp(2.5rem, 6vw, 5rem); color:var(--bleu-passation); margin-bottom: 50px; text-align: center; font-weight: 800; text-shadow: 2px 2px 5px rgba(0,0,0,0.05);">Portal DELF Junior 2026</h1>
+    <h1 style="font-family:'Playfair Display'; font-size:clamp(2.5rem, 6vw, 5.5rem); color:var(--bleu-passation); margin-bottom: 50px; text-align: center; font-weight: 800; text-shadow: 2px 2px 5px rgba(0,0,0,0.05);">Portal DELF Junior 2026</h1>
     <div style="display: flex; gap: 25px; justify-content: center; flex-wrap: wrap;">
         <button onclick="startAlumno()" class="btn-chrome primary" style="font-size: 1.15rem; padding: 22px 45px;">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 14l9-5-9-5-9 5 9 5z"></path><path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path><path d="M12 14v7"></path></svg>
@@ -459,26 +415,77 @@ form .full { grid-column: 1 / -1; }
             <div class="hero-logos"><img src="alianza.png" alt="AF"><div class="hero-divider"></div><img src="lasalle.jpg" alt="La Salle"></div>
             <span class="hero-eyebrow">Ministerio Francés de Educación</span>
             <h1>DELF Junior <span>2026</span></h1>
-            <p class="hero-sub">Certificación oficial de francés del Ministerio Francés de Educación.</p>
+            <p class="hero-sub">Certificación oficial de francés del Ministerio Francés de Educación.<br>Alianza Francesa de San Cristóbal y Colegio La Salle.</p>
         </header>
         <div class="container-ch">
-            <div class="chapter-header"><span class="chapter-progress">Capítulo 1 de 6</span><h2 class="chapter-title">Acerca del <em>examen</em></h2></div>
+            <div class="chapter-header"><span class="chapter-progress">Capítulo 1 de 7</span><h2 class="chapter-title">Acerca del <em>examen</em></h2></div>
             <div class="content-section">
                 <span class="section-tag">DELF Junior</span>
                 <h2>Certificación con validez mundial</h2>
-                <p>El <strong>DELF</strong> es un diploma internacional, vitalicio y reconocido en más de 170 países.</p>
+                <p>El <strong>DELF</strong> es un diploma internacional, vitalicio y reconocido en más de 170 países. Evalúa el dominio del francés mediante cuatro competencias fundamentales estructuradas bajo el Marco Común Europeo de Referencia (MCER).</p>
                 <div class="info-grid">
-                    <div class="info-card"><h4>Reconocimiento</h4><p>Vitalicio, expedido por Francia.</p></div>
-                    <div class="info-card"><h4>Niveles</h4><p>A1, A2, B1 y B2.</p></div>
+                    <div class="info-card">
+                        <div class="info-card-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg></div>
+                        <h4>Comprensión Oral (CO)</h4>
+                        <p style="font-size: 0.95rem;">Cuestionarios basados en la escucha de grabaciones auténticas.</p>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-card-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg></div>
+                        <h4>Comprensión Escrita (CE)</h4>
+                        <p style="font-size: 0.95rem;">Lectura crítica y resolución de preguntas sobre documentos.</p>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-card-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg></div>
+                        <h4>Producción Escrita (PE)</h4>
+                        <p style="font-size: 0.95rem;">Redacción estructurada de cartas, textos o ensayos breves.</p>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-card-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
+                        <h4>Producción Oral (PO)</h4>
+                        <p style="font-size: 0.95rem;">Intercambio y entrevista interactiva frente a un jurado oficial.</p>
+                    </div>
                 </div>
             </div>
-            <div class="chapter-nav"><span class="btn-spacer"></span><div class="chapter-dots"><span class="active"></span><span></span><span></span><span></span><span></span><span></span></div><button class="btn-next" onclick="goToChapterWithVideo(2)">Siguiente →</button></div>
+            <div class="chapter-nav"><span class="btn-spacer"></span><div class="chapter-dots"><span class="active"></span><span></span><span></span><span></span><span></span><span></span><span></span></div><button class="btn-next" onclick="goToChapterWithVideo(2)">Siguiente →</button></div>
         </div>
     </section>
 
     <section id="chapter2" class="screen">
         <div class="chapter">
-            <div class="chapter-header"><span class="chapter-progress">Capítulo 2 de 6</span><h2 class="chapter-title">Elige tu <em>nivel</em></h2></div>
+            <div class="chapter-header"><span class="chapter-progress">Capítulo 2 de 7</span><h2 class="chapter-title">Fechas y <em>Preparación</em></h2></div>
+            <div class="container-ch">
+                <div class="content-section">
+                    <span class="section-tag">Calendario 2026</span>
+                    <h2>Prepárate para el éxito</h2>
+                    <p style="font-size: 1.25rem;">Las pruebas oficiales se llevarán a cabo en las instalaciones del Colegio La Salle con <strong>fecha definitiva entre el 2 y el 7 de junio de 2026.</strong></p>
+                    
+                    <div class="pd-box" style="margin-top: 30px; background: #e8f4fd; border-left: 5px solid var(--bleu-passation); padding: 25px; border-radius: 12px; box-shadow: var(--neumo-inner);">
+                        <strong style="color: var(--bleu-passation); font-size: 1.15rem;">✓ Beneficio Exclusivo:</strong>
+                        <p style="margin-top: 10px; font-size: 1.05rem;">Una semana antes de la fecha del examen, la Dirección de la Alianza Francesa ofrecerá <strong>2 sesiones gratuitas de preparación</strong> en los locales de la Alianza para aquellos candidatos inscritos que deseen familiarizarse con las pruebas. (El horario será a convenir con los participantes).</p>
+                    </div>
+
+                    <h3 style="margin-top: 40px; margin-bottom: 20px; font-family:'Outfit';">Recursos Oficiales de Práctica En Línea:</h3>
+                    <div class="contact-grid" style="margin-top: 0;">
+                        <div class="contact-card">
+                            <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect><line x1="7" y1="2" x2="7" y2="22"></line><line x1="17" y1="2" x2="17" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="7" x2="7" y2="7"></line><line x1="2" y1="17" x2="7" y2="17"></line><line x1="17" y1="17" x2="22" y2="17"></line><line x1="17" y1="7" x2="22" y2="7"></line></svg></div>
+                            <h4>TV5 Monde</h4>
+                            <p class="value" style="font-size: 1rem;"><a href="https://apprendre.tv5monde.com/es/exercices/delf" target="_blank" rel="noopener">Ir al simulador DELF →</a></p>
+                        </div>
+                        <div class="contact-card">
+                            <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path><path d="M2 12h20"></path></svg></div>
+                            <h4>France Éducation</h4>
+                            <p class="value" style="font-size: 1rem;"><a href="https://www.france-education-international.fr/diplome/delf-junior-scolaire" target="_blank" rel="noopener">Ver ejemplos de pruebas →</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="chapter-nav"><button class="btn-prev" onclick="goToChapter(1)">← Anterior</button><div class="chapter-dots"><span></span><span class="active"></span><span></span><span></span><span></span><span></span><span></span></div><button class="btn-next" onclick="goToChapterWithVideo(3)">Siguiente →</button></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="chapter3" class="screen">
+        <div class="chapter">
+            <div class="chapter-header"><span class="chapter-progress">Capítulo 3 de 7</span><h2 class="chapter-title">Elige tu <em>nivel</em></h2></div>
             <div class="container-ch">
                 <div class="content-section">
                     <div class="niveles-grid">
@@ -488,32 +495,32 @@ form .full { grid-column: 1 / -1; }
                         <div class="nivel"><div class="nivel-code">B2</div><div class="nivel-price">$2,500 <small>MXN</small></div></div>
                     </div>
                 </div>
-                <div class="chapter-nav"><button class="btn-prev" onclick="goToChapter(1)">← Anterior</button><div class="chapter-dots"><span></span><span class="active"></span><span></span><span></span><span></span><span></span></div><button class="btn-next" onclick="goToChapterWithVideo(3)">Siguiente →</button></div>
-            </div>
-        </div>
-    </section>
-
-    <section id="chapter3" class="screen">
-        <div class="chapter">
-            <div class="chapter-header"><span class="chapter-progress">Capítulo 3 de 6</span><h2 class="chapter-title">Alianza con <em>historia</em></h2></div>
-            <div class="container-ch">
-                <div class="content-section" style="background: linear-gradient(135deg,rgba(20,20,20,.9),rgba(1,56,150,.85)); color: #fff;">
-                    <h2 style="color: #fff;">Colegio La Salle & Alianza Francesa</h2>
-                    <p style="color: rgba(255,255,255,0.9);">Colaboración comprometida con la difusión de la lengua francesa en Chiapas.</p>
-                </div>
-                <div class="content-section" style="margin-top:30px">
-                    <span class="section-tag">Galería institucional (Aleatoria)</span>
-                    <h2>Videos del proceso</h2>
-                    <div class="gallery-grid" id="galeria"></div>
-                </div>
-                <div class="chapter-nav"><button class="btn-prev" onclick="goToChapter(2)">← Anterior</button><div class="chapter-dots"><span></span><span></span><span class="active"></span><span></span><span></span><span></span></div><button class="btn-next" onclick="goToChapterWithVideo(4)">Siguiente →</button></div>
+                <div class="chapter-nav"><button class="btn-prev" onclick="goToChapter(2)">← Anterior</button><div class="chapter-dots"><span></span><span></span><span class="active"></span><span></span><span></span><span></span><span></span></div><button class="btn-next" onclick="goToChapterWithVideo(4)">Siguiente →</button></div>
             </div>
         </div>
     </section>
 
     <section id="chapter4" class="screen">
         <div class="chapter">
-            <div class="chapter-header"><span class="chapter-progress">Capítulo 4 de 6</span><h2 class="chapter-title">Atención y <em>Contactos</em></h2></div>
+            <div class="chapter-header"><span class="chapter-progress">Capítulo 4 de 7</span><h2 class="chapter-title">Alianza con <em>historia</em></h2></div>
+            <div class="container-ch">
+                <div class="content-section" style="background: linear-gradient(135deg,rgba(20,20,20,.9),rgba(1,56,150,.85)); color: #fff;">
+                    <h2 style="color: #fff;">Colegio La Salle & Alianza Francesa</h2>
+                    <p style="color: rgba(255,255,255,0.9);">Desde hace varios años mantenemos una colaboración comprometida con la difusión de la lengua francesa en Chiapas.</p>
+                </div>
+                <div class="content-section" style="margin-top:30px">
+                    <span class="section-tag">Galería institucional (Aleatoria)</span>
+                    <h2>Videos del proceso</h2>
+                    <div class="gallery-grid" id="galeria"></div>
+                </div>
+                <div class="chapter-nav"><button class="btn-prev" onclick="goToChapter(3)">← Anterior</button><div class="chapter-dots"><span></span><span></span><span></span><span class="active"></span><span></span><span></span><span></span></div><button class="btn-next" onclick="goToChapterWithVideo(5)">Siguiente →</button></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="chapter5" class="screen">
+        <div class="chapter">
+            <div class="chapter-header"><span class="chapter-progress">Capítulo 5 de 7</span><h2 class="chapter-title">Atención y <em>Contactos</em></h2></div>
             <div class="container-ch">
                 <div class="content-section">
                     <div class="contact-grid">
@@ -521,37 +528,40 @@ form .full { grid-column: 1 / -1; }
                         <div class="contact-card"><h4>Asistencia Pagos</h4><p class="value"><a href="https://wa.me/524731219937" target="_blank">WhatsApp Prof. Román</a></p></div>
                     </div>
                 </div>
-                <div class="chapter-nav"><button class="btn-prev" onclick="goToChapter(3)">← Anterior</button><div class="chapter-dots"><span></span><span></span><span></span><span class="active"></span><span></span><span></span></div><button class="btn-next" onclick="goToChapterWithVideo(5)">Siguiente →</button></div>
-            </div>
-        </div>
-    </section>
-
-    <section id="chapter5" class="screen">
-        <div class="chapter">
-            <div class="chapter-header"><span class="chapter-progress">Capítulo 5 de 6</span><h2 class="chapter-title"><em>Reglamento</em> oficial</h2></div>
-            <div class="container-ch">
-                <div class="content-section">
-                    <div class="regla-toggle" onclick="toggleRegla(this)"><h3>Día del examen</h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
-                    <div class="regla-content"><div class="regla-inner"><ul><li>Llevar identificación original, llegar 30 min antes, usar pluma azul/negra.</li><li>Prohibido el uso de lápiz o dispositivos electrónicos.</li></ul></div></div>
-                    
-                    <div class="regla-toggle" onclick="toggleRegla(this)"><h3>Aviso de Privacidad (ARCO)</h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
-                    <div class="regla-content"><div class="regla-inner"><ul><li>El consentimiento para menores lo otorga el tutor legal.</li><li>Los datos se transmiten cifrados a France Éducation International.</li></ul></div></div>
-                </div>
-                <div class="chapter-nav"><button class="btn-prev" onclick="goToChapter(4)">← Anterior</button><div class="chapter-dots"><span></span><span></span><span></span><span></span><span class="active"></span><span></span></div><button class="btn-next" onclick="goToChapterWithVideo(6)">Siguiente →</button></div>
+                <div class="chapter-nav"><button class="btn-prev" onclick="goToChapter(4)">← Anterior</button><div class="chapter-dots"><span></span><span></span><span></span><span></span><span class="active"></span><span></span><span></span></div><button class="btn-next" onclick="goToChapterWithVideo(6)">Siguiente →</button></div>
             </div>
         </div>
     </section>
 
     <section id="chapter6" class="screen">
         <div class="chapter">
-            <div class="chapter-header"><span class="chapter-progress">Capítulo 6 de 6</span><h2 class="chapter-title">Inscripción <em>formal</em></h2></div>
+            <div class="chapter-header"><span class="chapter-progress">Capítulo 6 de 7</span><h2 class="chapter-title"><em>Reglamento</em> oficial</h2></div>
+            <div class="container-ch">
+                <div class="content-section">
+                    <div class="regla-toggle" onclick="toggleRegla(this)"><h3>Día del examen</h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
+                    <div class="regla-content"><div class="regla-inner"><ul><li>Llevar identificación original, llegar 30 min antes, usar pluma azul o negra.</li><li>Prohibido terminantemente el uso de lápiz o dispositivos electrónicos en sala.</li></ul></div></div>
+                    
+                    <div class="regla-toggle" onclick="toggleRegla(this)"><h3>Resultados y Diplomas</h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
+                    <div class="regla-content"><div class="regla-inner"><ul><li>No se entregarán resultados por correo ni por teléfono. El candidato debe presentarse personalmente en el centro de examen con su identificación oficial.</li><li>La puntuación mínima para aprobar es de 50/100, con un mínimo de 5/25 en cada competencia.</li></ul></div></div>
+
+                    <div class="regla-toggle" onclick="toggleRegla(this)"><h3>Aviso de Privacidad (ARCO)</h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
+                    <div class="regla-content"><div class="regla-inner"><ul><li>El consentimiento para tratamiento de datos de menores lo otorga incondicionalmente el tutor legal al inscribirse.</li><li>Los datos se transmiten cifrados exclusivamente a los sistemas del gobierno francés (France Éducation International).</li></ul></div></div>
+                </div>
+                <div class="chapter-nav"><button class="btn-prev" onclick="goToChapter(5)">← Anterior</button><div class="chapter-dots"><span></span><span></span><span></span><span></span><span></span><span class="active"></span><span></span></div><button class="btn-next" onclick="goToChapterWithVideo(7)">Siguiente →</button></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="chapter7" class="screen">
+        <div class="chapter">
+            <div class="chapter-header"><span class="chapter-progress">Capítulo 7 de 7</span><h2 class="chapter-title">Inscripción <em>formal</em></h2></div>
             <div class="container-ch">
                 <div class="content-section" style="text-align: center; padding: 80px 40px;">
                     <h2 style="font-size: 2.5rem;">¿Todo listo para tu inscripción?</h2>
-                    <p style="font-size: 1.2rem; max-width: 600px; margin: 0 auto 40px;">Asegúrate de tener a la mano tus datos oficiales (acta de nacimiento, CURP) para rellenar la ficha correctamente.</p>
+                    <p style="font-size: 1.2rem; max-width: 600px; margin: 0 auto 40px;">Asegúrate de tener a la mano tus datos oficiales y comprobante de pago para rellenar la ficha correctamente.</p>
                     <button class="btn-primary" onclick="goToFormVideo()" style="padding: 22px 50px; font-size: 1.15rem;">Llenar ficha de inscripción</button>
                 </div>
-                <div class="chapter-nav"><button class="btn-prev" onclick="goToChapter(5)">← Anterior</button><div class="chapter-dots"><span></span><span></span><span></span><span></span><span></span><span class="active"></span></div><span class="btn-spacer"></span></div>
+                <div class="chapter-nav"><button class="btn-prev" onclick="goToChapter(6)">← Anterior</button><div class="chapter-dots"><span></span><span></span><span></span><span></span><span></span><span></span><span class="active"></span></div><span class="btn-spacer"></span></div>
             </div>
         </div>
     </section>
@@ -643,7 +653,6 @@ form .full { grid-column: 1 / -1; }
 
     <section id="postFormVideo" class="screen video-screen">
         <video id="postVideo" playsinline preload="auto" muted><source src="5.mp4" type="video/mp4"></video>
-        <div class="video-controls"><button class="btn-video primary" onclick="skipPostVideo()">Continuar →</button></div>
     </section>
 
     <section id="askReturn" class="screen">
@@ -775,7 +784,7 @@ function closeLightbox(e){
 }
 
 /* ─────────────────────────────────────────────────────────────
-   MÓDULO ADMIN: BÚSQUEDA INTELIGENTE (LEVENSHTEIN) Y 24 BD
+   MÓDULO ADMIN: BÚSQUEDA INTELIGENTE Y BD
 ───────────────────────────────────────────────────────────── */
 const bdCandidatos = [
     { nombre: "SANTIAGO", apellido: "SALGADO SERVIN", nivel: "A2", numero: "052825010152", pdf: "20260509_GAEL_attestation_inscription_SALGADO SERVÍN_Santiago.pdf" },
@@ -812,7 +821,6 @@ function initStats() {
 
 function normalizar(t) { return t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase().trim(); }
 
-// Algoritmo de Levenshtein para coincidencias difusas
 function levenshtein(a, b) {
     if(a.length === 0) return b.length; if(b.length === 0) return a.length;
     var matrix = [];
@@ -860,7 +868,6 @@ function buscarCandidato() {
         }
     }, 800);
 }
-
 function resetBusqueda() {
     document.getElementById('search-name').value = ''; document.getElementById('search-surname').value = '';
     document.getElementById('verification-area').style.display = 'none';
@@ -868,7 +875,7 @@ function resetBusqueda() {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   MÓDULO ALUMNO: NAVEGACIÓN CINEMATOGRÁFICA Y FISHER-YATES
+   MÓDULO ALUMNO: NAVEGACIÓN Y VIDEOS CINEMATOGRÁFICOS
 ───────────────────────────────────────────────────────────── */
 function playVideoSafe(videoEl, onEnded){
     if(!videoEl) return;
@@ -884,7 +891,8 @@ function playVideoSafe(videoEl, onEnded){
     };
     if(onEnded){
         videoEl.onended = advance;
-        safetyTimer = setTimeout(advance, 15000);
+        // Solo para el video inicial o final aplicamos safety. Para los de 2 segs no hace falta si no tienen controles.
+        safetyTimer = setTimeout(advance, 10000); 
     }
     try{ videoEl.pause(); videoEl.currentTime = 0; }catch(e){}
     try{ videoEl.load(); }catch(e){}
@@ -948,7 +956,6 @@ window.addEventListener('load', () => {
 /* ─────────────────────────────────────────────────────────────
    DRAG & DROP, PERSISTENCIA (LOCALSTORAGE) Y FORMULARIO
 ───────────────────────────────────────────────────────────── */
-// Persistencia
 const formFields = document.querySelectorAll('#inscripcionForm input:not([type="file"]), #inscripcionForm select');
 formFields.forEach(f => f.addEventListener('input', () => {
     const data = {};
@@ -979,7 +986,6 @@ function clearDraft() {
     document.getElementById('inscripcionForm').reset();
 }
 
-// Drag & Drop Comprobante
 const dropZone = document.getElementById('drop-zone');
 const fileInput = document.getElementById('file-upload');
 const dropText = document.getElementById('drop-text');
@@ -1018,7 +1024,6 @@ function handleFile(file) {
     dropText.innerHTML = `<span style="color:var(--green)">✓ ${(file.size/1024/1024).toFixed(2)} MB - ${file.name} listo.</span>`;
 }
 
-// Envío
 const form = document.getElementById('inscripcionForm');
 if(form) {
     form.addEventListener('submit', async function(e){
@@ -1027,7 +1032,7 @@ if(form) {
         submitBtn.disabled = true; submitBtn.innerText = 'Enviando y encriptando...';
 
         try{
-            // Simulación de envío a FormSubmit (se omite para no romper el test)
+            // Simulación de envío a FormSubmit
             setTimeout(()=>{
                 clearDraft();
                 submitBtn.disabled = false; submitBtn.innerText = 'Enviar inscripción segura';
@@ -1038,7 +1043,6 @@ if(form) {
     });
 }
 
-function skipPostVideo(){ document.getElementById('postVideo').pause(); fadeOutAndShow('postFormVideo','askReturn'); }
 function goToFinal(volverInicio){
     showScreen('thanks');
     playVideoSafe(document.getElementById('thanksVideo'), ()=>{

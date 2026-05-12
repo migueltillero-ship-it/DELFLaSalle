@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#013896">
 <meta name="format-detection" content="telephone=no">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; media-src 'self' blob:; script-src 'self' 'unsafe-inline'; form-action https://formsubmit.co; base-uri 'self'; frame-ancestors 'none';">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; media-src 'self' blob:; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; form-action https://formsubmit.co; base-uri 'self'; frame-ancestors 'none';">
 <title>Inscripción DELF Junior 2026 · Alliance Française</title>
 <meta name="description" content="Inscripción oficial al DELF Junior 2026. Sede: Colegio La Salle San Cristóbal de las Casas. Niveles A1, A2, B1 y B2 reconocidos internacionalmente por France Éducation international.">
 <meta name="keywords" content="DELF Junior 2026, Alianza Francesa, Colegio La Salle, San Cristóbal de las Casas, certificación francés, A1, A2, B1, B2, France Éducation international">
@@ -429,13 +429,20 @@ input:focus, select:focus { outline: none; box-shadow: inset 3px 3px 6px var(--s
     #sound-toggle { bottom: 20px; right: 20px; width: 52px; height: 52px; }
 }
 
-/* ================= SPLASH MINIMAL ================= */
+/* ================= SPLASH MINIMAL + VANTA.NET BG ================= */
 #splash-screen {
     position: fixed; inset: 0; z-index: 99999;
-    background: #0a0a0a;
+    background: #f5f0eb; /* fondo crema (se ve mientras Vanta carga) */
     display: flex; align-items: center; justify-content: center;
     transition: opacity 0.8s ease, visibility 0.8s ease;
+    overflow: hidden;
 }
+#vanta-bg {
+    position: absolute; inset: 0; z-index: 1;
+    pointer-events: auto;
+}
+#vanta-bg canvas { display: block; }
+.splash-cta { position: relative; z-index: 2; } /* el botón siempre encima del canvas */
 #splash-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 .splash-cta {
     background: #fff; color: #0a0a0a;
@@ -492,11 +499,16 @@ body.state-cinema #sound-toggle { opacity: 0; pointer-events: none; }
     100% { transform: scale(1.4); opacity: 0; }
 }
 </style>
+
+<!-- Vanta.NET background del splash (Three.js + Vanta) -->
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/vanta/0.5.24/vanta.net.min.js"></script>
 </head>
 <body>
 
     <!-- Audio de fondo (no autoplay - requiere interacción del usuario) -->
     <div id="splash-screen" role="dialog" aria-modal="true" aria-label="Inicio">
+        <div id="vanta-bg" aria-hidden="true"></div>
         <button class="splash-cta" id="splash-start" type="button" autofocus>Inicio</button>
     </div>
 
@@ -555,6 +567,7 @@ body.state-cinema #sound-toggle { opacity: 0; pointer-events: none; }
             <p>El <strong>DELF (Diplôme d'Études en Langue Française)</strong> fue creado en 1985 por el Ministerio Francés de Educación como diploma oficial para certificar el francés como lengua extranjera. Desde entonces, millones de candidatos en más de 170 países lo han obtenido.</p>
             <p>La <strong>Alianza Francesa</strong> lleva más de 60 años promoviendo el idioma y la cultura francesa en México. La sede de <strong>San Cristóbal de las Casas</strong> es centro examinador acreditado por France Éducation international (FEi) y, desde hace varios años, trabaja en colaboración con el <strong>Colegio La Salle</strong> como sede oficial del examen DELF Junior en Chiapas.</p>
             <p>Cada año, decenas de alumnos chiapanecos obtienen su certificación oficial, abriendo puertas a programas universitarios francófonos, becas internacionales y movilidad académica a Francia, Canadá, Bélgica, Suiza y otros países de habla francesa.</p>
+            <p>La entrega de diplomas se realiza con la presencia distinguida de <strong>Clémence Mayoral</strong>, representante institucional, en una ceremonia que reconoce el esfuerzo y la dedicación de cada candidato. Los estudiantes con las mejores calificaciones reciben además <strong>menciones honoríficas</strong> que celebran su excelencia académica.</p>
         </div>
 
         <!-- 3. NATURALEZA DE LAS PRUEBAS -->
@@ -1368,9 +1381,31 @@ body.state-cinema #sound-toggle { opacity: 0; pointer-events: none; }
             if(!splash) return;
             var startBtn=document.getElementById('splash-start');
             var dismissed=false;
+            var vantaEffect=null;
+
+            // Inicializar fondo Vanta.NET (red animada de puntos rojos)
+            function initVanta(){
+                if(vantaEffect || typeof VANTA==='undefined') return;
+                try{
+                    vantaEffect=VANTA.NET({
+                        el:'#vanta-bg',
+                        mouseControls:true, touchControls:true, gyroControls:false,
+                        minHeight:200, minWidth:200, scale:1, scaleMobile:1,
+                        color:0xC8211E,         // rojo La Salle/Alianza
+                        backgroundColor:0xf5f0eb, // crema institucional
+                        points:9, maxDistance:25, spacing:22
+                    });
+                }catch(e){ /* Vanta no disponible (CDN bloqueado): fallback al fondo crema sólido */ }
+            }
+            // Esperar a que Vanta cargue (scripts con defer)
+            if(typeof VANTA!=='undefined') initVanta();
+            else window.addEventListener('load', initVanta);
+
             function dismissSplash(){
                 if(dismissed) return;
                 dismissed=true;
+                // Liberar memoria del Vanta antes de quitar el splash
+                if(vantaEffect){ try{ vantaEffect.destroy(); }catch(e){} vantaEffect=null; }
                 // Transición de estados: splash → cinema
                 document.body.classList.remove('state-splash');
                 document.body.classList.add('state-cinema');

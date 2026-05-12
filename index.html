@@ -472,9 +472,60 @@ body.state-welcome .video-overlay { opacity: 1; }
 /* Durante splash y cinema: bloquear scroll */
 body.state-splash, body.state-cinema { overflow: hidden; }
 /* Sound-toggle oculto hasta que el video termine (no tiene sentido tocarlo durante cinema) */
-body.state-splash #sound-toggle,
-body.state-cinema #sound-toggle { opacity: 0; pointer-events: none; }
-#sound-toggle { transition: opacity 0.6s ease; }
+body.state-splash #sound-toggle, body.state-splash #fs-toggle,
+body.state-cinema #sound-toggle, body.state-cinema #fs-toggle { opacity: 0; pointer-events: none; }
+#sound-toggle, #fs-toggle { transition: opacity 0.6s ease; }
+
+/* ================= LIGHTBOX GALERÍA ================= */
+.lightbox {
+    position: fixed; inset: 0; z-index: 9999;
+    background: rgba(10,10,20,.94);
+    display: flex; justify-content: center; align-items: center;
+    opacity: 0; visibility: hidden;
+    transition: opacity .35s ease, visibility .35s ease;
+    backdrop-filter: blur(10px);
+    padding: 30px; cursor: zoom-out;
+}
+.lightbox.active { opacity: 1; visibility: visible; }
+.lightbox img {
+    max-width: 92vw; max-height: 88vh;
+    border-radius: 12px;
+    box-shadow: 0 30px 80px rgba(0,0,0,.6);
+    transform: scale(.92);
+    transition: transform .4s ease;
+    cursor: default;
+}
+.lightbox.active img { transform: scale(1); }
+.lightbox-close {
+    position: absolute; top: 18px; right: 24px;
+    width: 48px; height: 48px; border-radius: 50%;
+    background: rgba(255,255,255,.12); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem; line-height: 1; cursor: pointer;
+    border: 2px solid rgba(255,255,255,.3);
+    transition: background .2s ease, transform .2s ease;
+    user-select: none;
+}
+.lightbox-close:hover { background: rgba(255,255,255,.25); transform: scale(1.08); }
+/* Galería: indicador de zoom al pasar el cursor por una foto */
+.carousel-slide { cursor: zoom-in; }
+.carousel-slide:hover img { transform: scale(1.03); transition: transform .4s ease; }
+
+/* ================= BOTÓN PANTALLA COMPLETA ================= */
+#fs-toggle {
+    position: fixed; top: 28px; right: 28px; z-index: 9998;
+    width: 52px; height: 52px; border-radius: 50%;
+    background: var(--bg-3d); color: var(--bleu); border: none; cursor: pointer;
+    box-shadow: 6px 6px 14px var(--shadow-dark), -6px -6px 14px var(--shadow-light), 0 4px 12px rgba(0,0,0,.2);
+    display: flex; align-items: center; justify-content: center;
+    transition: transform .25s ease, color .25s ease;
+}
+#fs-toggle:hover { transform: scale(1.08); color: var(--rouge); }
+#fs-toggle svg { width: 22px; height: 22px; }
+#fs-toggle .ico-exit { display: none; }
+#fs-toggle.active .ico-enter { display: none; }
+#fs-toggle.active .ico-exit { display: block; }
+@media (max-width: 768px) { #fs-toggle { top: 20px; right: 20px; width: 46px; height: 46px; } }
 
 /* ================= BOTÓN DE SONIDO FLOTANTE ================= */
 #sound-toggle {
@@ -515,6 +566,22 @@ body.state-cinema #sound-toggle { opacity: 0; pointer-events: none; }
     <audio id="bg-music" loop preload="none">
         <source src="Arrival_at_the_Terminal%20(1).mp3" type="audio/mpeg">
     </audio>
+
+    <!-- Botón pantalla completa -->
+    <button id="fs-toggle" type="button" aria-label="Pantalla completa" title="Pantalla completa">
+        <svg class="ico-enter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/>
+        </svg>
+        <svg class="ico-exit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 3v3a2 2 0 0 1-2 2H3M21 8h-3a2 2 0 0 1-2-2V3M3 16h3a2 2 0 0 1 2 2v3M16 21v-3a2 2 0 0 1 2-2h3"/>
+        </svg>
+    </button>
+
+    <!-- Lightbox para galería -->
+    <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Imagen ampliada">
+        <span class="lightbox-close" role="button" aria-label="Cerrar">×</span>
+        <img id="lightbox-img" src="" alt="Foto institucional ampliada">
+    </div>
 
     <!-- Botón flotante de sonido -->
     <button id="sound-toggle" type="button" aria-label="Activar sonido" title="Activar sonido">
@@ -907,7 +974,7 @@ body.state-cinema #sound-toggle { opacity: 0; pointer-events: none; }
             var html='';
             for(var n=0;n<order.length;n++){
                 var lazy=n<3?'eager':'lazy';
-                html+='<div class="carousel-slide"><img src="'+order[n]+'" alt="Galería DELF Junior" loading="'+lazy+'" decoding="async"></div>';
+                html+='<div class="carousel-slide" data-src="'+order[n]+'"><img src="'+order[n]+'" alt="Galería DELF Junior" loading="'+lazy+'" decoding="async"></div>';
             }
             track.innerHTML=html;
         }
@@ -1430,6 +1497,59 @@ body.state-cinema #sound-toggle { opacity: 0; pointer-events: none; }
                     document.removeEventListener('keydown', onKey);
                 }
             }, {once: false});
+        })();
+
+        // ===== LIGHTBOX DE GALERÍA =====
+        (function setupLightbox(){
+            var lb=document.getElementById('lightbox');
+            var img=document.getElementById('lightbox-img');
+            var closeBtn=document.querySelector('.lightbox-close');
+            if(!lb||!img) return;
+            function openLightbox(src){
+                img.src=src;
+                lb.classList.add('active');
+                document.body.style.overflow='hidden';
+            }
+            function closeLightbox(){
+                lb.classList.remove('active');
+                document.body.style.overflow='';
+                setTimeout(function(){ img.src=''; }, 400);
+            }
+            // Delegación de clics sobre los slides del carrusel
+            var track=document.getElementById('carousel-track');
+            if(track){
+                track.addEventListener('click', function(e){
+                    var slide=e.target.closest('.carousel-slide');
+                    if(slide && slide.dataset.src) openLightbox(slide.dataset.src);
+                });
+            }
+            // Cerrar: click fuera de la imagen, click en X, tecla ESC
+            lb.addEventListener('click', function(e){
+                if(e.target===lb || e.target===closeBtn) closeLightbox();
+            });
+            document.addEventListener('keydown', function(e){
+                if(e.key==='Escape' && lb.classList.contains('active')) closeLightbox();
+            });
+        })();
+
+        // ===== BOTÓN PANTALLA COMPLETA =====
+        (function setupFullscreen(){
+            var btn=document.getElementById('fs-toggle');
+            if(!btn) return;
+            function isFs(){ return !!(document.fullscreenElement||document.webkitFullscreenElement||document.msFullscreenElement); }
+            function enterFs(){
+                var el=document.documentElement;
+                var req=el.requestFullscreen||el.webkitRequestFullscreen||el.msRequestFullscreen;
+                if(req) req.call(el).catch(function(){});
+            }
+            function exitFs(){
+                var ex=document.exitFullscreen||document.webkitExitFullscreen||document.msExitFullscreen;
+                if(ex&&isFs()) ex.call(document).catch(function(){});
+            }
+            btn.addEventListener('click', function(){ if(isFs()) exitFs(); else enterFs(); });
+            ['fullscreenchange','webkitfullscreenchange','msfullscreenchange'].forEach(function(ev){
+                document.addEventListener(ev, function(){ btn.classList.toggle('active', isFs()); });
+            });
         })();
 
         // ===== ARRANQUE =====

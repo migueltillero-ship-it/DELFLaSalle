@@ -550,6 +550,50 @@ body.state-splash #back-to-top, body.state-cinema #back-to-top { display: none; 
     box-shadow: 0 0 8px rgba(218,0,46,.4);
 }
 
+/* ================= INPUT DE ARCHIVO (COMPROBANTE DE PAGO) ================= */
+.file-upload {
+    background: var(--bg-3d); border-radius: 18px; padding: 26px;
+    box-shadow: inset 6px 6px 12px var(--shadow-dark), inset -6px -6px 12px var(--shadow-light);
+    border-left: 6px solid #27AE60;
+    margin-bottom: 25px;
+    transition: box-shadow 0.3s ease;
+}
+.file-upload-label { display: block; cursor: pointer; }
+.file-upload .file-title {
+    display: block; font-size: .95rem; font-weight: 800;
+    text-transform: uppercase; color: var(--bleu);
+    text-shadow: 1px 1px 1px #fff; margin-bottom: 8px;
+    letter-spacing: 0.5px;
+}
+.file-upload .file-hint { display: block; font-size: .82rem; color: var(--text-dark); opacity: .75; margin-bottom: 14px; font-weight: 500; }
+.file-upload .file-dropzone {
+    background: rgba(39,174,96,0.08);
+    border: 2px dashed rgba(39,174,96,0.4);
+    border-radius: 14px;
+    padding: 22px 18px;
+    text-align: center;
+    transition: background 0.25s ease, border-color 0.25s ease;
+}
+.file-upload-label:hover .file-dropzone { background: rgba(39,174,96,0.14); border-color: rgba(39,174,96,0.6); }
+.file-upload .file-dropzone .file-cta { font-weight: 700; color: #1b7a43; font-size: 1rem; display: inline-flex; align-items: center; gap: 8px; }
+.file-upload .file-dropzone .file-cta svg { width: 22px; height: 22px; }
+.file-upload .file-dropzone small { display: block; margin-top: 6px; font-size: .78rem; color: var(--shadow-dark); }
+.file-upload input[type="file"] { position: absolute; opacity: 0; pointer-events: none; width: 1px; height: 1px; }
+.file-upload .file-feedback {
+    display: none; margin-top: 14px; padding: 12px 16px;
+    border-radius: 10px; font-size: .88rem; font-weight: 600;
+    align-items: center; gap: 10px;
+}
+.file-upload .file-feedback.show { display: flex; }
+.file-upload .file-feedback.ok { background: rgba(39,174,96,0.18); color: #1b7a43; }
+.file-upload .file-feedback.err { background: rgba(218,0,46,0.15); color: var(--rouge); }
+.file-upload .file-feedback .file-name { flex: 1; word-break: break-all; }
+.file-upload .file-feedback .file-remove {
+    background: none; border: none; color: inherit; font-size: 1.3rem;
+    cursor: pointer; padding: 2px 6px; line-height: 1; opacity: .7;
+}
+.file-upload .file-feedback .file-remove:hover { opacity: 1; }
+
 /* ================= INSTRUCCIONES ESTUDIANTES + PADRES ================= */
 .instrucciones-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; max-width: 1000px; margin: 0 auto 30px; }
 .instrucciones-card {
@@ -985,7 +1029,7 @@ body.state-splash #back-to-top, body.state-cinema #back-to-top { display: none; 
                 <div class="form-progress-fill" id="form-progress-fill"></div>
             </div>
 
-            <form id="delf-form" action="https://formsubmit.co/DIRECCIONSANCRISTOBAL@ALIANZAFR.EDU.FR" method="POST" autocomplete="off">
+            <form id="delf-form" action="https://formsubmit.co/DIRECCIONSANCRISTOBAL@ALIANZAFR.EDU.FR" method="POST" enctype="multipart/form-data" autocomplete="off">
                 <input type="hidden" name="_subject" value="Nueva Inscripción DELF Junior 2026">
                 <input type="hidden" name="_template" value="table">
                 <input type="hidden" name="_next" value="https://migueltillero-ship-it.github.io/DELFLaSalle/?success=1">
@@ -1065,6 +1109,25 @@ body.state-splash #back-to-top, body.state-cinema #back-to-top { display: none; 
                     
                     <div class="form-notice" id="aviso-medico" style="display: none; background: rgba(218,0,46,0.1);">
                         ⚠ <strong>Atención:</strong> Deberás enviar un certificado médico oficial (antigüedad máxima 2 años) a la Alianza Francesa inmediatamente después de tu registro.
+                    </div>
+
+                    <div class="file-upload">
+                        <label class="file-upload-label" for="comprobante">
+                            <span class="file-title">💳 Comprobante de pago (opcional, recomendado)</span>
+                            <span class="file-hint">Adjunta el comprobante de tu pago (PDF, JPG o PNG · máx 5 MB). Si no lo adjuntas aquí, deberás enviarlo después por WhatsApp a Miguel Tillero.</span>
+                            <div class="file-dropzone">
+                                <span class="file-cta">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                                    Seleccionar archivo
+                                </span>
+                                <small>PDF · JPG · PNG — hasta 5 MB</small>
+                            </div>
+                            <input type="file" name="Comprobante_Pago" id="comprobante" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png">
+                        </label>
+                        <div class="file-feedback" id="file-feedback" role="status" aria-live="polite">
+                            <span class="file-name" id="file-name"></span>
+                            <button type="button" class="file-remove" id="file-remove" aria-label="Quitar archivo">×</button>
+                        </div>
                     </div>
 
                     <div class="legal-box">
@@ -1891,6 +1954,48 @@ body.state-splash #back-to-top, body.state-cinema #back-to-top { display: none; 
                 btn.classList.add('btn-submit-loading');
                 btn.style.paddingRight='52px'; // espacio para el spinner
             });
+        })();
+
+        // ===== VALIDACIÓN COMPROBANTE DE PAGO (tipo + tamaño) =====
+        (function setupFileUpload(){
+            var input=document.getElementById('comprobante');
+            var feedback=document.getElementById('file-feedback');
+            var nameEl=document.getElementById('file-name');
+            var removeBtn=document.getElementById('file-remove');
+            if(!input||!feedback||!nameEl||!removeBtn) return;
+            var MAX_BYTES=5*1024*1024; // 5 MB
+            var ALLOWED=['application/pdf','image/jpeg','image/jpg','image/png'];
+            function fmtSize(bytes){
+                if(bytes<1024) return bytes+' B';
+                if(bytes<1024*1024) return (bytes/1024).toFixed(1)+' KB';
+                return (bytes/(1024*1024)).toFixed(2)+' MB';
+            }
+            function showFeedback(text, isOk){
+                feedback.classList.remove('ok','err');
+                feedback.classList.add('show', isOk?'ok':'err');
+                nameEl.textContent=text;
+            }
+            function clearInput(){
+                input.value='';
+                feedback.classList.remove('show','ok','err');
+                nameEl.textContent='';
+            }
+            input.addEventListener('change', function(){
+                var file=input.files&&input.files[0];
+                if(!file){ feedback.classList.remove('show'); return; }
+                if(ALLOWED.indexOf(file.type)===-1){
+                    showFeedback('✗ Formato no permitido: usa PDF, JPG o PNG', false);
+                    input.value='';
+                    return;
+                }
+                if(file.size>MAX_BYTES){
+                    showFeedback('✗ El archivo pesa '+fmtSize(file.size)+'. Máximo permitido: 5 MB', false);
+                    input.value='';
+                    return;
+                }
+                showFeedback('✓ '+file.name+' ('+fmtSize(file.size)+')', true);
+            });
+            removeBtn.addEventListener('click', clearInput);
         })();
 
         // ===== ARRANQUE =====

@@ -476,6 +476,60 @@ body.state-splash #sound-toggle, body.state-splash #fs-toggle,
 body.state-cinema #sound-toggle, body.state-cinema #fs-toggle { opacity: 0; pointer-events: none; }
 #sound-toggle, #fs-toggle { transition: opacity 0.6s ease; }
 
+/* ================= CORTINA DE TRANSICIÓN BENTO→FORM ================= */
+#form-curtain {
+    position: fixed; inset: 0; z-index: 99998;
+    background: linear-gradient(135deg, var(--bleu) 0%, #001540 45%, var(--rouge) 100%);
+    transform: scaleX(0); transform-origin: left center;
+    transition: transform 0.6s cubic-bezier(0.76, 0, 0.24, 1);
+    pointer-events: none;
+    display: flex; align-items: center; justify-content: center;
+}
+#form-curtain.entering { transform: scaleX(1); transform-origin: left center; pointer-events: auto; }
+#form-curtain.leaving { transform: scaleX(0); transform-origin: right center; pointer-events: auto; }
+.curtain-content {
+    color: #fff; text-align: center; opacity: 0;
+    transition: opacity 0.35s ease 0.25s;
+    font-family: 'Playfair Display', serif;
+    transform: scale(0.92);
+}
+#form-curtain.entering .curtain-content { opacity: 1; transform: scale(1); transition: opacity 0.35s ease 0.25s, transform 0.45s ease 0.2s; }
+.curtain-content h3 {
+    font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: 12px;
+    text-shadow: 4px 4px 14px rgba(0,0,0,.5);
+}
+.curtain-content h3 em { color: #ff4d6d; font-style: italic; }
+.curtain-content p {
+    font-size: 1.05rem; font-weight: 600; letter-spacing: 2px;
+    text-transform: uppercase; opacity: 0.85;
+    font-family: 'Outfit', sans-serif;
+}
+.curtain-tricolor {
+    position: absolute; bottom: 0; left: 0; right: 0; height: 8px;
+    background: linear-gradient(to right, #003DA5 0% 33%, #fff 33% 66%, #EF4135 66% 100%);
+}
+
+/* ================= ANIMACIONES SCROLL FADE-IN ================= */
+.fade-in-on-scroll {
+    opacity: 0; transform: translateY(28px);
+    transition: opacity 0.85s ease, transform 0.85s ease;
+    will-change: opacity, transform;
+}
+.fade-in-on-scroll.visible { opacity: 1; transform: translateY(0); }
+@media (prefers-reduced-motion: reduce) {
+    .fade-in-on-scroll { opacity: 1; transform: none; transition: none; }
+}
+
+/* ================= LOADING SPINNER FORM SUBMIT ================= */
+.btn-submit-loading { position: relative; pointer-events: none; opacity: .85; }
+.btn-submit-loading::after {
+    content: ''; position: absolute; right: 22px; top: 50%; margin-top: -10px;
+    width: 20px; height: 20px; border: 3px solid rgba(255,255,255,.3);
+    border-top-color: #fff; border-radius: 50%;
+    animation: btnSpin 0.75s linear infinite;
+}
+@keyframes btnSpin { to { transform: rotate(360deg); } }
+
 /* ================= LIGHTBOX GALERÍA ================= */
 .lightbox {
     position: fixed; inset: 0; z-index: 9999;
@@ -1040,23 +1094,46 @@ body.state-cinema #sound-toggle, body.state-cinema #fs-toggle { opacity: 0; poin
             B1:'NIVEL B1 · $1,800 MXN',
             B2:'NIVEL B2 · $2,500 MXN'
         };
+        // Cortina de transición tricolor con dos fases (entra → swap DOM → sale)
+        function runCurtain(nivel, onSwap){
+            var curtain=document.getElementById('form-curtain');
+            if(!curtain){ onSwap(); return; }
+            var titleEl=document.getElementById('curtain-title');
+            if(titleEl && nivel) titleEl.innerHTML='Bienvenido al <em>DELF '+nivel+'</em>';
+            curtain.classList.remove('leaving');
+            curtain.classList.add('entering');
+            // Fase 1: cortina entró → cambiar DOM oculto detrás
+            setTimeout(function(){
+                onSwap();
+                // Fase 2: cortina sale por el otro lado
+                curtain.classList.remove('entering');
+                curtain.classList.add('leaving');
+            }, 650);
+            // Limpieza tras la salida
+            setTimeout(function(){ curtain.classList.remove('leaving'); }, 1300);
+        }
+
         window.startRegistration=function(nivel){
             if(!PRECIOS[nivel]) return;
-            document.getElementById('f-nivel-display').value=PRECIOS[nivel];
-            document.getElementById('grid-niveles').style.display='none';
-            document.getElementById('bento-title').style.display='none';
-            var fc=document.getElementById('form-container');
-            fc.style.display='block';
-            vid.pause();
-            fc.scrollIntoView({behavior:'smooth',block:'start'});
+            runCurtain(nivel, function(){
+                document.getElementById('f-nivel-display').value=PRECIOS[nivel];
+                document.getElementById('grid-niveles').style.display='none';
+                document.getElementById('bento-title').style.display='none';
+                var fc=document.getElementById('form-container');
+                fc.style.display='block';
+                vid.pause();
+                fc.scrollIntoView({behavior:'auto',block:'start'});
+            });
         };
         window.cancelRegistration=function(){
-            document.getElementById('form-container').style.display='none';
-            document.getElementById('grid-niveles').style.display='grid';
-            document.getElementById('bento-title').style.display='block';
-            tryPlay();
-            document.getElementById('main-content').scrollIntoView({behavior:'smooth',block:'start'});
-            nextStep(1);
+            runCurtain(null, function(){
+                document.getElementById('form-container').style.display='none';
+                document.getElementById('grid-niveles').style.display='grid';
+                document.getElementById('bento-title').style.display='block';
+                tryPlay();
+                document.getElementById('main-content').scrollIntoView({behavior:'auto',block:'start'});
+                nextStep(1);
+            });
         };
 
         // ===== AVISO MÉDICO CONDICIONAL =====
@@ -1552,11 +1629,66 @@ body.state-cinema #sound-toggle, body.state-cinema #fs-toggle { opacity: 0; poin
             });
         })();
 
+        // ===== ANIMACIONES FADE-IN AL HACER SCROLL =====
+        (function setupScrollAnimations(){
+            var selectors=[
+                '#main-content > h2',
+                '.info-card',
+                '.pruebas-grid',
+                '.pruebas-nota',
+                '.reglamento-list',
+                '.faq-list',
+                '.bento-grid',
+                '.constancia-card',
+                '.contacto-grid',
+                '.gracias-card',
+                '.carousel-wrapper'
+            ];
+            var elements=document.querySelectorAll(selectors.join(','));
+            // Aplicar la clase base a todos
+            elements.forEach(function(el){ el.classList.add('fade-in-on-scroll'); });
+            // Fallback: navegadores sin IntersectionObserver muestran todo inmediatamente
+            if(!('IntersectionObserver' in window)){
+                elements.forEach(function(el){ el.classList.add('visible'); });
+                return;
+            }
+            var observer=new IntersectionObserver(function(entries){
+                entries.forEach(function(entry){
+                    if(entry.isIntersecting){
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+            elements.forEach(function(el){ observer.observe(el); });
+        })();
+
+        // ===== LOADING STATE AL ENVIAR EL FORMULARIO =====
+        (function setupSubmitLoading(){
+            var form=document.getElementById('delf-form');
+            var btn=document.getElementById('btn-final');
+            if(!form||!btn) return;
+            form.addEventListener('submit', function(e){
+                if(e.defaultPrevented) return; // validación bloqueó el envío
+                btn.classList.add('btn-submit-loading');
+                btn.style.paddingRight='52px'; // espacio para el spinner
+            });
+        })();
+
         // ===== ARRANQUE =====
         // Sólo construimos el carrusel; el video lo arrancará el splash al cerrarse.
         buildCarousel();
     })();
     </script>
+
+    <!-- ===== CORTINA DE TRANSICIÓN ===== -->
+    <div id="form-curtain" aria-hidden="true">
+        <div class="curtain-content">
+            <h3 id="curtain-title">Bienvenido al <em>DELF</em></h3>
+            <p>Iniciando ficha de inscripción</p>
+        </div>
+        <div class="curtain-tricolor"></div>
+    </div>
 
     <!-- ===== WHATSAPP FAB ===== -->
     <a class="wa-fab" href="https://wa.me/524731219337" target="_blank" rel="noopener" aria-label="Contactar al Prof. Román por WhatsApp" title="WhatsApp Prof. Román">

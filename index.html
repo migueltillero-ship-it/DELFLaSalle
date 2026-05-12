@@ -550,6 +550,129 @@ body.state-splash #back-to-top, body.state-cinema #back-to-top { display: none; 
     box-shadow: 0 0 8px rgba(218,0,46,.4);
 }
 
+/* ================= INPUT DE ARCHIVO (COMPROBANTE DE PAGO) ================= */
+.file-upload {
+    background: var(--bg-3d); border-radius: 18px; padding: 26px;
+    box-shadow: inset 6px 6px 12px var(--shadow-dark), inset -6px -6px 12px var(--shadow-light);
+    border-left: 6px solid #27AE60;
+    margin-bottom: 25px;
+    transition: box-shadow 0.3s ease;
+}
+.file-upload-label { display: block; cursor: pointer; }
+.file-upload .file-title {
+    display: block; font-size: .95rem; font-weight: 800;
+    text-transform: uppercase; color: var(--bleu);
+    text-shadow: 1px 1px 1px #fff; margin-bottom: 8px;
+    letter-spacing: 0.5px;
+}
+.file-upload .file-hint { display: block; font-size: .82rem; color: var(--text-dark); opacity: .75; margin-bottom: 14px; font-weight: 500; }
+.file-upload .file-dropzone {
+    background: rgba(39,174,96,0.08);
+    border: 2px dashed rgba(39,174,96,0.4);
+    border-radius: 14px;
+    padding: 22px 18px;
+    text-align: center;
+    transition: background 0.25s ease, border-color 0.25s ease;
+}
+.file-upload-label:hover .file-dropzone { background: rgba(39,174,96,0.14); border-color: rgba(39,174,96,0.6); }
+.file-upload .file-dropzone .file-cta { font-weight: 700; color: #1b7a43; font-size: 1rem; display: inline-flex; align-items: center; gap: 8px; }
+.file-upload .file-dropzone .file-cta svg { width: 22px; height: 22px; }
+.file-upload .file-dropzone small { display: block; margin-top: 6px; font-size: .78rem; color: var(--shadow-dark); }
+.file-upload input[type="file"] { position: absolute; opacity: 0; pointer-events: none; width: 1px; height: 1px; }
+.file-upload .file-feedback {
+    display: none; margin-top: 14px; padding: 12px 16px;
+    border-radius: 10px; font-size: .88rem; font-weight: 600;
+    align-items: center; gap: 10px;
+}
+.file-upload .file-feedback.show { display: flex; }
+.file-upload .file-feedback.ok { background: rgba(39,174,96,0.18); color: #1b7a43; }
+.file-upload .file-feedback.err { background: rgba(218,0,46,0.15); color: var(--rouge); }
+.file-upload .file-feedback .file-name { flex: 1; word-break: break-all; }
+.file-upload .file-feedback .file-remove {
+    background: none; border: none; color: inherit; font-size: 1.3rem;
+    cursor: pointer; padding: 2px 6px; line-height: 1; opacity: .7;
+}
+.file-upload .file-feedback .file-remove:hover { opacity: 1; }
+
+/* ================= INSTRUCCIONES ESTUDIANTES + PADRES ================= */
+.instrucciones-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; max-width: 1000px; margin: 0 auto 30px; }
+.instrucciones-card {
+    background: var(--bg-3d); border-radius: 24px; padding: 36px 32px;
+    box-shadow: 10px 10px 20px var(--shadow-dark), -10px -10px 20px var(--shadow-light);
+    position: relative;
+}
+.instrucciones-card.estudiantes { border-top: 6px solid var(--bleu); }
+.instrucciones-card.padres { border-top: 6px solid var(--rouge); }
+.instrucciones-card .ico-grande {
+    width: 64px; height: 64px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem; margin: 0 auto 18px; color: #fff;
+    box-shadow: 6px 6px 14px var(--shadow-dark);
+}
+.instrucciones-card.estudiantes .ico-grande { background: var(--bleu); }
+.instrucciones-card.padres .ico-grande { background: var(--rouge); }
+.instrucciones-card h3 {
+    text-align: center; font-family: 'Playfair Display', serif;
+    font-size: 1.6rem; color: var(--text-dark); margin-bottom: 24px;
+}
+.instrucciones-card.estudiantes h3 em { color: var(--bleu); font-style: italic; }
+.instrucciones-card.padres h3 em { color: var(--rouge); font-style: italic; }
+.instrucciones-list { list-style: none; padding: 0; counter-reset: paso; }
+.instrucciones-list li {
+    position: relative; padding: 14px 0 14px 50px;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    line-height: 1.55; font-weight: 500; color: var(--text-dark);
+    counter-increment: paso;
+}
+.instrucciones-list li:last-child { border-bottom: none; }
+.instrucciones-list li::before {
+    content: counter(paso); position: absolute; left: 0; top: 12px;
+    width: 32px; height: 32px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: .92rem; color: #fff;
+    box-shadow: inset 0 -2px 4px rgba(0,0,0,.18);
+}
+.instrucciones-card.estudiantes .instrucciones-list li::before { background: var(--bleu); }
+.instrucciones-card.padres .instrucciones-list li::before { background: var(--rouge); }
+.instrucciones-list strong { color: var(--bleu); }
+.instrucciones-card.padres .instrucciones-list strong { color: var(--rouge); }
+@media (max-width: 768px) { .instrucciones-grid { grid-template-columns: 1fr; } }
+
+/* ================= TARJETA DE COMPARTIR CON PADRES ================= */
+.share-padres-card {
+    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+    color: #fff; border-radius: 22px; padding: 28px 32px;
+    max-width: 880px; margin: 0 auto 60px;
+    box-shadow: 0 14px 32px rgba(37,211,102,.35);
+    display: flex; align-items: center; justify-content: space-between; gap: 24px;
+    flex-wrap: wrap;
+}
+.share-padres-card .share-text { flex: 1; min-width: 240px; }
+.share-padres-card h3 { color: #fff; font-size: 1.35rem; margin-bottom: 6px; font-family: 'Outfit', sans-serif; }
+.share-padres-card p { opacity: .92; font-size: .95rem; line-height: 1.5; margin: 0; }
+.share-padres-card .share-btn {
+    background: #fff; color: #128C7E; padding: 14px 26px; border-radius: 50px;
+    font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px;
+    font-size: .88rem; text-decoration: none; white-space: nowrap;
+    box-shadow: 0 6px 18px rgba(0,0,0,.25);
+    transition: transform .25s ease, box-shadow .25s ease;
+    display: inline-flex; align-items: center; gap: 8px;
+}
+.share-padres-card .share-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(0,0,0,.35); }
+.share-padres-card .share-btn svg { width: 18px; height: 18px; fill: currentColor; }
+
+/* ================= BADGE DE FECHAS TENTATIVAS ================= */
+.fechas-badge {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: rgba(218,0,46,.1); color: var(--rouge);
+    padding: 12px 22px; border-radius: 50px;
+    font-weight: 800; font-size: .9rem; letter-spacing: 1.2px;
+    text-transform: uppercase; margin: 0 auto 30px;
+    border: 2px solid rgba(218,0,46,.25);
+}
+.fechas-badge svg { width: 18px; height: 18px; }
+.fechas-badge-wrap { text-align: center; margin-bottom: 30px; }
+
 /* ================= LOADING SPINNER FORM SUBMIT ================= */
 .btn-submit-loading { position: relative; pointer-events: none; opacity: .85; }
 .btn-submit-loading::after {
@@ -780,7 +903,59 @@ body.state-splash #back-to-top, body.state-cinema #back-to-top { display: none; 
             <li>El pago <strong>no es reembolsable ni transferible</strong> bajo ninguna circunstancia.</li>
         </ul>
 
-        <!-- 6. PREGUNTAS FRECUENTES -->
+        <!-- 6. INSTRUCCIONES ESTUDIANTES + PADRES -->
+        <h2 id="instrucciones-title">Instrucciones <em style="color: var(--rouge); font-style: italic;">claras</em></h2>
+        <div class="fechas-badge-wrap">
+            <div class="fechas-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                Pruebas tentativas · entre el 8 y el 12 de junio 2026
+            </div>
+        </div>
+        <div class="instrucciones-grid">
+            <div class="instrucciones-card estudiantes">
+                <div class="ico-grande">🎓</div>
+                <h3>Para <em>estudiantes</em></h3>
+                <ol class="instrucciones-list">
+                    <li><strong>Elige tu nivel</strong> con honestidad: A1, A2, B1 o B2 según tu dominio actual del francés.</li>
+                    <li>Inscríbete completando el formulario con datos exactos (deben coincidir con tu acta de nacimiento).</li>
+                    <li><strong>Prepárate</strong> con recursos oficiales: TV5Monde, RFI Savoirs, France Éducation international, ABC DELF Junior.</li>
+                    <li>Llega <strong>30 minutos antes</strong> del horario de tu convocatoria oficial.</li>
+                    <li>Trae <strong>identificación oficial original con fotografía</strong> y <strong>pluma negra o azul</strong> (no lápiz).</li>
+                    <li>Deja en casa o apagados: celular, audífonos, smartwatches y diccionarios.</li>
+                    <li>Mantén la calma, lee bien las consignas y sigue las indicaciones del examinador.</li>
+                </ol>
+            </div>
+            <div class="instrucciones-card padres">
+                <div class="ico-grande">👨‍👩‍👧</div>
+                <h3>Para <em>padres y tutores</em></h3>
+                <ol class="instrucciones-list">
+                    <li>Verifica que los datos del formulario coincidan <strong>exactamente</strong> con el acta de nacimiento de tu hijo/a.</li>
+                    <li>Realiza el <strong>pago oportuno</strong>; sin pago no hay inscripción confirmada.</li>
+                    <li>Conserva el <strong>comprobante de pago</strong> y compártelo con Miguel Tillero por WhatsApp.</li>
+                    <li>Revisa tu correo electrónico una semana antes del examen para recibir la <strong>convocatoria oficial</strong>.</li>
+                    <li>Si tu hijo/a requiere <strong>adaptación</strong> por motivos médicos, indícalo en el formulario y envía el certificado.</li>
+                    <li>Acompaña a tu hijo/a el día del examen, asegurando llegada puntual y materiales correctos.</li>
+                    <li>Reconoce que el pago <strong>no es reembolsable</strong>. Para cualquier duda, contacta al Prof. Román Fuentes.</li>
+                </ol>
+            </div>
+        </div>
+        <div class="share-padres-card">
+            <div class="share-text">
+                <h3>¿Necesitas que tus padres conozcan el DELF?</h3>
+                <p>Comparte esta página con ellos por WhatsApp con un mensaje listo.</p>
+            </div>
+            <a class="share-btn" id="share-padres-btn" href="#" target="_blank" rel="noopener" aria-label="Compartir con mis padres por WhatsApp">
+                <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 0C7.16 0 0 7.16 0 16c0 2.82.74 5.46 2.04 7.76L0 32l8.46-2.22A15.92 15.92 0 0 0 16 32c8.84 0 16-7.16 16-16S24.84 0 16 0z"/></svg>
+                Compartir con padres
+            </a>
+        </div>
+
+        <!-- 7. PREGUNTAS FRECUENTES -->
         <h2 id="faq-title">Preguntas <em style="color: var(--rouge); font-style: italic;">frecuentes</em></h2>
         <div class="faq-list" id="faq-list">
             <details class="faq-item">
@@ -789,7 +964,7 @@ body.state-splash #back-to-top, body.state-cinema #back-to-top { display: none; 
             </details>
             <details class="faq-item">
                 <summary>¿Cuándo y dónde es el examen?</summary>
-                <p>La <strong>sesión 2026</strong> se realizará en las instalaciones del <strong>Colegio La Salle</strong>, San Cristóbal de las Casas. La <strong>fecha exacta y la hora están por confirmar</strong> y se comunicarán al tutor por correo electrónico junto con la convocatoria oficial, una vez sean publicadas por France Éducation international.</p>
+                <p>La <strong>sesión 2026</strong> se realizará en las instalaciones del <strong>Colegio La Salle</strong>, San Cristóbal de las Casas. Las pruebas están <strong>tentativamente programadas entre el 8 y el 12 de junio de 2026</strong>; la fecha y hora exactas se confirmarán al tutor por correo electrónico una semana antes, junto con la convocatoria oficial publicada por France Éducation international.</p>
             </details>
             <details class="faq-item">
                 <summary>¿Qué tengo que llevar el día del examen?</summary>
@@ -825,7 +1000,7 @@ body.state-splash #back-to-top, body.state-cinema #back-to-top { display: none; 
             </details>
         </div>
 
-        <!-- 7. SELECCIÓN DE NIVEL (BENTO) -->
+        <!-- 8. SELECCIÓN DE NIVEL (BENTO) -->
         <h2 id="bento-title">Selecciona tu Nivel</h2>
         <div class="bento-grid" id="grid-niveles">
             <div class="bento-card bento-a1" onclick="startRegistration('A1')">
@@ -854,7 +1029,7 @@ body.state-splash #back-to-top, body.state-cinema #back-to-top { display: none; 
                 <div class="form-progress-fill" id="form-progress-fill"></div>
             </div>
 
-            <form id="delf-form" action="https://formsubmit.co/DIRECCIONSANCRISTOBAL@ALIANZAFR.EDU.FR" method="POST" autocomplete="off">
+            <form id="delf-form" action="https://formsubmit.co/DIRECCIONSANCRISTOBAL@ALIANZAFR.EDU.FR" method="POST" enctype="multipart/form-data" autocomplete="off">
                 <input type="hidden" name="_subject" value="Nueva Inscripción DELF Junior 2026">
                 <input type="hidden" name="_template" value="table">
                 <input type="hidden" name="_next" value="https://migueltillero-ship-it.github.io/DELFLaSalle/?success=1">
@@ -936,6 +1111,25 @@ body.state-splash #back-to-top, body.state-cinema #back-to-top { display: none; 
                         ⚠ <strong>Atención:</strong> Deberás enviar un certificado médico oficial (antigüedad máxima 2 años) a la Alianza Francesa inmediatamente después de tu registro.
                     </div>
 
+                    <div class="file-upload">
+                        <label class="file-upload-label" for="comprobante">
+                            <span class="file-title">💳 Comprobante de pago (opcional, recomendado)</span>
+                            <span class="file-hint">Adjunta el comprobante de tu pago (PDF, JPG o PNG · máx 5 MB). Si no lo adjuntas aquí, deberás enviarlo después por WhatsApp a Miguel Tillero.</span>
+                            <div class="file-dropzone">
+                                <span class="file-cta">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                                    Seleccionar archivo
+                                </span>
+                                <small>PDF · JPG · PNG — hasta 5 MB</small>
+                            </div>
+                            <input type="file" name="Comprobante_Pago" id="comprobante" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png">
+                        </label>
+                        <div class="file-feedback" id="file-feedback" role="status" aria-live="polite">
+                            <span class="file-name" id="file-name"></span>
+                            <button type="button" class="file-remove" id="file-remove" aria-label="Quitar archivo">×</button>
+                        </div>
+                    </div>
+
                     <div class="legal-box">
                         <label>
                             <input type="checkbox" name="Acepta_Reglamento" required>
@@ -958,7 +1152,7 @@ body.state-splash #back-to-top, body.state-cinema #back-to-top { display: none; 
             </form>
         </div>
 
-        <!-- 8. CONSTANCIA DE INSCRIPCIÓN -->
+        <!-- 9. CONSTANCIA DE INSCRIPCIÓN -->
         <section class="constancia-card" id="constancia-section" aria-labelledby="constancia-title">
             <h2 id="constancia-title">¿Ya estás <em>inscrito</em>?</h2>
             <div class="constancia-counter">📋 <strong id="counter-inscritos">0</strong> alumnos ya inscritos</div>
@@ -973,7 +1167,7 @@ body.state-splash #back-to-top, body.state-cinema #back-to-top { display: none; 
             <div class="constancia-result" id="cb-result" role="status" aria-live="polite"></div>
         </section>
 
-        <!-- 9. CONTACTO PARA INSCRIPCIÓN Y PAGO -->
+        <!-- 10. CONTACTO PARA INSCRIPCIÓN Y PAGO -->
         <h2 id="contacto-title">Contacto e <em style="color: var(--rouge); font-style: italic;">inscripción</em></h2>
         <div class="contacto-grid">
             <div class="contacto-card">
@@ -981,7 +1175,7 @@ body.state-splash #back-to-top, body.state-cinema #back-to-top { display: none; 
                 <div class="contacto-nombre">Prof. Román Fuentes</div>
                 <div class="contacto-funcion">Dudas sobre niveles, preparación y logística</div>
                 <div class="contacto-tel">+52 473 121 9337</div>
-                <a class="contacto-btn" href="https://wa.me/524731219337" target="_blank" rel="noopener">
+                <a class="contacto-btn" href="https://wa.me/524731219337?text=Buenas%20tardes%20Prof.%20Rom%C3%A1n%2C%20soy%20padre%2Ftutor%20de%20un%20alumno%20interesado%20en%20presentar%20el%20DELF%20Junior%202026%20en%20La%20Salle.%20%C2%BFPodr%C3%ADa%20brindarme%20m%C3%A1s%20informaci%C3%B3n%3F" target="_blank" rel="noopener">
                     <svg width="18" height="18" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16 0C7.16 0 0 7.16 0 16c0 2.82.74 5.46 2.04 7.76L0 32l8.46-2.22A15.92 15.92 0 0 0 16 32c8.84 0 16-7.16 16-16S24.84 0 16 0z"/></svg>
                     WhatsApp
                 </a>
@@ -991,14 +1185,14 @@ body.state-splash #back-to-top, body.state-cinema #back-to-top { display: none; 
                 <div class="contacto-nombre">Miguel Tillero</div>
                 <div class="contacto-funcion">Comprobante de pago y facturación</div>
                 <div class="contacto-tel">+52 967 342 4456</div>
-                <a class="contacto-btn" href="https://wa.me/529673424456" target="_blank" rel="noopener">
+                <a class="contacto-btn" href="https://wa.me/529673424456?text=Buenas%20tardes%20Miguel%2C%20le%20comparto%20mi%20comprobante%20de%20pago%20del%20DELF%20Junior%202026.%20Nombre%20del%20alumno%3A%20%5B___%5D%2C%20Nivel%3A%20%5B___%5D." target="_blank" rel="noopener">
                     <svg width="18" height="18" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M16 0C7.16 0 0 7.16 0 16c0 2.82.74 5.46 2.04 7.76L0 32l8.46-2.22A15.92 15.92 0 0 0 16 32c8.84 0 16-7.16 16-16S24.84 0 16 0z"/></svg>
                     WhatsApp
                 </a>
             </div>
         </div>
 
-        <!-- 10. AGRADECIMIENTO -->
+        <!-- 11. AGRADECIMIENTO -->
         <div class="gracias-card">
             <h2>Gracias por elegir el <em>DELF</em></h2>
             <p>Bienvenido a la familia certificada DELF de San Cristóbal de las Casas. Tu decisión de certificar tu francés es un paso valioso hacia tu futuro académico y profesional.</p>
@@ -1587,10 +1781,19 @@ body.state-splash #back-to-top, body.state-cinema #back-to-top { display: none; 
 
         // ===== BOTÓN COMPARTIR EN PANTALLA DE ÉXITO =====
         (function setupShare(){
+            var SITE_URL='https://migueltillero-ship-it.github.io/DELFLaSalle/';
+            // Botón en pantalla de éxito (compartir con compañeros)
             var btn=document.getElementById('share-button');
-            if(!btn) return;
-            var msg='¡Me acabo de inscribir al DELF Junior 2026 en La Salle San Cristóbal! 🇫🇷 Si tú también quieres certificar tu francés con el diploma oficial del Ministerio Francés, regístrate aquí: https://migueltillero-ship-it.github.io/DELFLaSalle/';
-            btn.href='https://wa.me/?text='+encodeURIComponent(msg);
+            if(btn){
+                var msg='¡Me acabo de inscribir al DELF Junior 2026 en La Salle San Cristóbal! 🇫🇷 Si tú también quieres certificar tu francés con el diploma oficial del Ministerio Francés, regístrate aquí: '+SITE_URL;
+                btn.href='https://wa.me/?text='+encodeURIComponent(msg);
+            }
+            // Botón "Compartir con padres" en sección Instrucciones
+            var padresBtn=document.getElementById('share-padres-btn');
+            if(padresBtn){
+                var msgPadres='Hola, te comparto el portal oficial del DELF Junior 2026 — la certificación de francés del Ministerio Francés de Educación. Las inscripciones están abiertas en el Colegio La Salle San Cristóbal y las pruebas serán tentativamente entre el 8 y el 12 de junio de 2026. Aquí puedes ver las instrucciones, niveles, precios y el formulario: '+SITE_URL;
+                padresBtn.href='https://wa.me/?text='+encodeURIComponent(msgPadres);
+            }
         })();
 
         // ===== SPLASH DE ENTRADA + ACTIVACIÓN DE AUDIO =====
@@ -1751,6 +1954,48 @@ body.state-splash #back-to-top, body.state-cinema #back-to-top { display: none; 
                 btn.classList.add('btn-submit-loading');
                 btn.style.paddingRight='52px'; // espacio para el spinner
             });
+        })();
+
+        // ===== VALIDACIÓN COMPROBANTE DE PAGO (tipo + tamaño) =====
+        (function setupFileUpload(){
+            var input=document.getElementById('comprobante');
+            var feedback=document.getElementById('file-feedback');
+            var nameEl=document.getElementById('file-name');
+            var removeBtn=document.getElementById('file-remove');
+            if(!input||!feedback||!nameEl||!removeBtn) return;
+            var MAX_BYTES=5*1024*1024; // 5 MB
+            var ALLOWED=['application/pdf','image/jpeg','image/jpg','image/png'];
+            function fmtSize(bytes){
+                if(bytes<1024) return bytes+' B';
+                if(bytes<1024*1024) return (bytes/1024).toFixed(1)+' KB';
+                return (bytes/(1024*1024)).toFixed(2)+' MB';
+            }
+            function showFeedback(text, isOk){
+                feedback.classList.remove('ok','err');
+                feedback.classList.add('show', isOk?'ok':'err');
+                nameEl.textContent=text;
+            }
+            function clearInput(){
+                input.value='';
+                feedback.classList.remove('show','ok','err');
+                nameEl.textContent='';
+            }
+            input.addEventListener('change', function(){
+                var file=input.files&&input.files[0];
+                if(!file){ feedback.classList.remove('show'); return; }
+                if(ALLOWED.indexOf(file.type)===-1){
+                    showFeedback('✗ Formato no permitido: usa PDF, JPG o PNG', false);
+                    input.value='';
+                    return;
+                }
+                if(file.size>MAX_BYTES){
+                    showFeedback('✗ El archivo pesa '+fmtSize(file.size)+'. Máximo permitido: 5 MB', false);
+                    input.value='';
+                    return;
+                }
+                showFeedback('✓ '+file.name+' ('+fmtSize(file.size)+')', true);
+            });
+            removeBtn.addEventListener('click', clearInput);
         })();
 
         // ===== ARRANQUE =====

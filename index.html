@@ -520,6 +520,36 @@ body.state-cinema #sound-toggle, body.state-cinema #fs-toggle { opacity: 0; poin
     .fade-in-on-scroll { opacity: 1; transform: none; transition: none; }
 }
 
+/* ================= BOTÓN VOLVER ARRIBA ================= */
+#back-to-top {
+    position: fixed; right: 28px; bottom: 92px; z-index: 9997;
+    width: 48px; height: 48px; border-radius: 50%;
+    background: var(--bleu); color: #fff; border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 8px 20px rgba(1,56,150,.4), 0 4px 10px rgba(0,0,0,.2);
+    opacity: 0; pointer-events: none; transform: translateY(20px);
+    transition: opacity .35s ease, transform .35s ease, background .25s ease;
+}
+#back-to-top.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+#back-to-top:hover { background: var(--rouge); transform: translateY(-3px); }
+#back-to-top svg { width: 20px; height: 20px; }
+body.state-splash #back-to-top, body.state-cinema #back-to-top { display: none; }
+@media (max-width: 768px) { #back-to-top { right: 20px; bottom: 84px; width: 42px; height: 42px; } }
+
+/* ================= BARRA DE PROGRESO DEL FORM ================= */
+.form-progress-bar {
+    max-width: 380px; margin: -10px auto 35px;
+    height: 6px; background: var(--bg-3d); border-radius: 50px; overflow: hidden;
+    box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light);
+}
+.form-progress-fill {
+    height: 100%; width: 25%;
+    background: linear-gradient(to right, var(--bleu), var(--rouge));
+    border-radius: 50px;
+    transition: width .55s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 8px rgba(218,0,46,.4);
+}
+
 /* ================= LOADING SPINNER FORM SUBMIT ================= */
 .btn-submit-loading { position: relative; pointer-events: none; opacity: .85; }
 .btn-submit-loading::after {
@@ -819,6 +849,9 @@ body.state-cinema #sound-toggle, body.state-cinema #fs-toggle { opacity: 0; poin
                 <div class="dot" id="dot-2"></div>
                 <div class="dot" id="dot-3"></div>
                 <div class="dot" id="dot-4"></div>
+            </div>
+            <div class="form-progress-bar" aria-hidden="true">
+                <div class="form-progress-fill" id="form-progress-fill"></div>
             </div>
 
             <form id="delf-form" action="https://formsubmit.co/DIRECCIONSANCRISTOBAL@ALIANZAFR.EDU.FR" method="POST" autocomplete="off">
@@ -1191,6 +1224,9 @@ body.state-cinema #sound-toggle, body.state-cinema #fs-toggle { opacity: 0; poin
             document.querySelectorAll('.dot').forEach(function(d){d.classList.remove('active');});
             document.getElementById('step-'+step).classList.add('active');
             document.getElementById('dot-'+step).classList.add('active');
+            // Barra de progreso visual: 25%, 50%, 75%, 100%
+            var fill=document.getElementById('form-progress-fill');
+            if(fill) fill.style.width=(step*25)+'%';
         };
 
         // ===== SANITIZACIÓN AL ENVIAR (uppercase + filtro letras/dígitos) =====
@@ -1381,9 +1417,51 @@ body.state-cinema #sound-toggle, body.state-cinema #fs-toggle { opacity: 0; poin
             });
         });
 
-        // ===== CONTADOR DE INSCRITOS =====
-        var counterEl=document.getElementById('counter-inscritos');
-        if(counterEl) counterEl.textContent=CONSTANCIAS.length;
+        // ===== CONTADOR DE INSCRITOS ANIMADO (0 → N al entrar al viewport) =====
+        (function setupAnimatedCounter(){
+            var counterEl=document.getElementById('counter-inscritos');
+            if(!counterEl) return;
+            var target=CONSTANCIAS.length;
+            counterEl.textContent='0';
+            var animated=false;
+            function animate(){
+                if(animated) return;
+                animated=true;
+                var start=Date.now(), duration=1100;
+                function tick(){
+                    var elapsed=Date.now()-start;
+                    var progress=Math.min(elapsed/duration, 1);
+                    // Easing cuadrático (out)
+                    var eased=1-Math.pow(1-progress, 2);
+                    counterEl.textContent=Math.floor(eased*target).toString();
+                    if(progress<1) requestAnimationFrame(tick);
+                    else counterEl.textContent=target.toString();
+                }
+                requestAnimationFrame(tick);
+            }
+            if('IntersectionObserver' in window){
+                var obs=new IntersectionObserver(function(entries){
+                    entries.forEach(function(en){ if(en.isIntersecting){ animate(); obs.disconnect(); } });
+                }, { threshold: 0.5 });
+                obs.observe(counterEl);
+            } else {
+                animate();
+            }
+        })();
+
+        // ===== BOTÓN VOLVER ARRIBA =====
+        (function setupBackToTop(){
+            var btn=document.getElementById('back-to-top');
+            if(!btn) return;
+            function update(){
+                if(window.scrollY>500) btn.classList.add('visible');
+                else btn.classList.remove('visible');
+            }
+            window.addEventListener('scroll', update, {passive:true});
+            btn.addEventListener('click', function(){
+                window.scrollTo({top:0, behavior:'smooth'});
+            });
+        })();
 
         // ===== MODAL AVISO DE PRIVACIDAD =====
         window.openPrivacy=function(){
@@ -1689,6 +1767,13 @@ body.state-cinema #sound-toggle, body.state-cinema #fs-toggle { opacity: 0; poin
         </div>
         <div class="curtain-tricolor"></div>
     </div>
+
+    <!-- ===== BOTÓN VOLVER ARRIBA ===== -->
+    <button id="back-to-top" type="button" aria-label="Volver al inicio" title="Volver arriba">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+    </button>
 
     <!-- ===== WHATSAPP FAB ===== -->
     <a class="wa-fab" href="https://wa.me/524731219337" target="_blank" rel="noopener" aria-label="Contactar al Prof. Román por WhatsApp" title="WhatsApp Prof. Román">

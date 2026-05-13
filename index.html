@@ -600,7 +600,7 @@ form .full { grid-column: 1 / -1; }
 <div id="app-alumno" style="display:none;">
 
     <section id="welcome" class="screen video-screen">
-        <video id="welcomeVideo" playsinline preload="auto" muted><source src="1.mp4" type="video/mp4"></video>
+        <video id="welcomeVideo" playsinline preload="auto"><source src="1.mp4" type="video/mp4"></video>
         <div class="video-controls"><button class="btn-video" onclick="skipWelcomeVideo()">Saltar intro →</button></div>
     </section>
 
@@ -1149,13 +1149,38 @@ let isAudioActive = false;
 function activateMusicAndUI() {
     if(musicBtn) musicBtn.style.display = 'flex';
     if(fsBtn) fsBtn.style.display = 'flex';
-    if(!isAudioActive && audioBg) {
-        audioBg.volume = 0.25;
-        audioBg.play().then(() => {
-            musicBtn.classList.add('playing');
-            isAudioActive = true;
-        }).catch(()=>{});
-    }
+}
+
+/* Fade-in suave de la música de fondo (se llama cuando el intro termina) */
+function fadeInBgMusic(targetVol){
+    if(!audioBg) return;
+    if(window.__introAudioPlaying) return; // intro aún sonando
+    const target = (typeof targetVol === 'number') ? targetVol : 0.25;
+    try { audioBg.volume = 0; } catch(e) {}
+    audioBg.play().then(()=>{
+        if(musicBtn) musicBtn.classList.add('playing');
+        isAudioActive = true;
+        let v = 0;
+        const step = () => {
+            v = Math.min(target, v + 0.02);
+            try { audioBg.volume = v; } catch(e){}
+            if(v < target) setTimeout(step, 80);
+        };
+        step();
+    }).catch(()=>{});
+}
+
+/* Fade-out de la música de fondo (al iniciar un video con audio propio) */
+function fadeOutBgMusic(){
+    if(!audioBg || audioBg.paused) return;
+    let v = audioBg.volume;
+    const step = () => {
+        v = Math.max(0, v - 0.04);
+        try { audioBg.volume = v; } catch(e){}
+        if(v > 0) setTimeout(step, 60);
+        else { try { audioBg.pause(); } catch(e){} if(musicBtn) musicBtn.classList.remove('playing'); isAudioActive = false; }
+    };
+    step();
 }
 
 function toggleMusic(){
@@ -1278,8 +1303,10 @@ function playVideoSafe(videoEl, onEnded){
 
 function skipWelcomeVideo(){
     const v = document.getElementById('welcomeVideo');
-    if(v){ try{ v.pause(); }catch(e){} }
+    if(v){ try{ v.pause(); v.muted = true; }catch(e){} }
+    window.__introAudioPlaying = false;
     fadeOutAndShow('welcome', 'transition');
+    fadeInBgMusic(0.25);
     const t = document.getElementById('transitionVideo');
     if(t){ t.muted = true; t.currentTime = 0; t.play().catch(()=>{}); t.onended = () => fadeOutAndShow('transition','chapter1'); }
 }
@@ -1354,13 +1381,39 @@ function startAlumno(){
         showScreen('welcome');
         const v = document.getElementById('welcomeVideo');
         if(v){
-            v.muted = true; v.currentTime = 0;
-            v.play().catch(()=>{});
+            window.__introAudioPlaying = true;
+            v.muted = false; v.volume = 1.0; v.currentTime = 0;
+            // Asegura que la música de fondo no compita con el audio del intro
+            fadeOutBgMusic();
+            const tryPlay = v.play();
+            if(tryPlay && tryPlay.catch){
+                tryPlay.catch(()=>{
+                    // Si el navegador bloquea el audio, lo intentamos en silencio
+                    try{ v.muted = true; v.play().catch(()=>{}); }catch(e){}
+                });
+            }
             let done = false;
-            const goNext = ()=>{ if(done) return; done=true; v.onended=null; fadeOutAndShow('welcome','transition'); const tt = document.getElementById('transitionVideo'); if(tt){ tt.muted=true; tt.currentTime=0; tt.play().catch(()=>{}); tt.onended = ()=> fadeOutAndShow('transition','chapter1'); setTimeout(()=>{ if(document.getElementById('transition').classList.contains('active')) fadeOutAndShow('transition','chapter1'); }, 3500); } };
+            const goNext = ()=>{
+                if(done) return; done=true; v.onended=null;
+                // Fade out de audio del intro
+                let av = v.volume || 0;
+                const fadeAudio = () => {
+                    av = Math.max(0, av - 0.08);
+                    try{ v.volume = av; }catch(e){}
+                    if(av > 0) setTimeout(fadeAudio, 60);
+                    else { try{ v.pause(); v.muted = true; }catch(e){} }
+                };
+                fadeAudio();
+                window.__introAudioPlaying = false;
+                fadeOutAndShow('welcome','transition');
+                // El audio de fondo entra cuando el intro se desvanece
+                setTimeout(()=> fadeInBgMusic(0.25), 350);
+                const tt = document.getElementById('transitionVideo');
+                if(tt){ tt.muted=true; tt.currentTime=0; tt.play().catch(()=>{}); tt.onended = ()=> fadeOutAndShow('transition','chapter1'); setTimeout(()=>{ if(document.getElementById('transition').classList.contains('active')) fadeOutAndShow('transition','chapter1'); }, 3500); }
+            };
             v.onended = goNext;
-            // safety: max 7s for welcome
-            setTimeout(goNext, 7000);
+            // safety: si el video no carga, máximo 12s
+            setTimeout(goNext, 12000);
         }
         activateMusicAndUI();
     }, 550);
@@ -1376,6 +1429,7 @@ function startAdmin(){
         if(vid){ vid.muted = true; vid.play().catch(()=>{}); }
         renderStats();
         activateMusicAndUI();
+        fadeInBgMusic(0.25);
     }, 550);
 }
 

@@ -5,10 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#013896">
 <meta name="format-detection" content="telephone=no">
+
 <title>Portal DELF Junior 2026 · Alliance Française & Colegio La Salle</title>
 <meta name="description" content="Inscripción oficial al DELF Junior 2026. Sede: Colegio La Salle San Cristóbal de las Casas. Niveles A1, A2, B1, B2.">
 <meta name="keywords" content="DELF Junior 2026, Alianza Francesa, Colegio La Salle, San Cristóbal de las Casas, certificación francés">
 <meta name="author" content="Alianza Francesa de San Cristóbal de las Casas">
+
 <link rel="preconnect" href="https://fonts.googleapis.com/">
 <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -24,10 +26,12 @@
     --af-red-dark: #8a1715; --af-gold: #A8843E; --azul-francia: #002654;
     --af-muted: #5b5b5b; --af-dark: #1a1a1a; --green: #1a8a4a; --bg-3d: #e0e5ec;
     --shadow-light: #ffffff; --shadow-dark: #a3b1c6;
+
     --neumo-main: 20px 20px 40px #bec3c9, -20px -20px 40px #ffffff;
     --neumo-inner: inset 6px 6px 12px #bec3c9, inset -6px -6px 12px #ffffff;
     --neumo-pill: 6px 6px 12px #bec3c9, -6px -6px 12px #ffffff;
     --neumo-pill-hover: 8px 8px 16px #bec3c9, -8px -8px 16px #ffffff;
+
     --base-font-size: 18px; --line-height-body: 1.75;
 }
 
@@ -41,6 +45,7 @@ h1, h2, h3, h4 { font-family: 'Playfair Display', serif; color: var(--af-dark); 
 a { color: var(--bleu-passation); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
+/* Animaciones */
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
 .fade-out { animation: fadeOut 0.6s forwards !important; }
@@ -52,20 +57,25 @@ a:hover { text-decoration: underline; }
 /* ═══════════════════════════════════════════════
    CONTROLES FLOTANTES
 ═══════════════════════════════════════════════ */
-.music-btn, .fs-btn, .wa-fab, #back-to-top { position: fixed; z-index: 9980; width: 55px; height: 55px; border-radius: 50%; background: var(--bg-3d); border: 1px solid #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: var(--neumo-pill); transition: all .3s; }
+.music-btn, .fs-btn, .wa-fab, #back-to-top { 
+    position: fixed; z-index: 9980; width: 55px; height: 55px; border-radius: 50%; 
+    background: var(--bg-3d); border: 1px solid #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: var(--neumo-pill); transition: all .3s; 
+}
 .music-btn { bottom: 25px; right: 95px; color: var(--bleu-passation); } 
 .fs-btn { top: 25px; right: 25px; color: var(--bleu-passation); }
 .wa-fab { bottom: 25px; left: 25px; color: #25D366; text-decoration: none; }
 #back-to-top { bottom: 95px; right: 25px; color: var(--bleu-passation); opacity: 0; pointer-events: none; transform: translateY(20px); }
 #back-to-top.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+
 .music-btn:hover, .fs-btn:hover, #back-to-top:hover { transform: scale(1.1); box-shadow: var(--neumo-inner); color: var(--rouge-passation); }
 .wa-fab:hover { transform: scale(1.1); box-shadow: var(--neumo-inner); color: #128C7E; }
+
 .music-btn svg, .fs-btn svg, .wa-fab svg, #back-to-top svg { width: 22px; height: 22px; fill: currentColor; }
 .music-btn .wave { display: none; } .music-btn.playing .icon-mute { display: none; } .music-btn.playing .wave { display: block; animation: pulse 1.5s ease infinite; }
 .fs-btn.active .icon-enter { display: none; } .fs-btn.active .icon-exit { display: block; }
 
 /* ═══════════════════════════════════════════════
-   MODAL AVISO DE PRIVACIDAD
+   MODAL AVISO DE PRIVACIDAD Y LIGHTBOX
 ═══════════════════════════════════════════════ */
 .modal-overlay { position: fixed; inset: 0; background: rgba(224,229,236,0.8); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 10000; padding: 20px; }
 .modal-overlay.open { display: flex; animation: fadeIn 0.4s ease; }
@@ -77,7 +87,6 @@ a:hover { text-decoration: underline; }
 .modal-box p, .modal-box li { font-size: 1.05rem; color: var(--af-muted); margin-bottom: 10px; line-height: 1.6; }
 .modal-box ul { padding-left: 20px; margin-bottom: 15px; }
 
-/* Lightbox de galería */
 .lightbox { position: fixed; inset: 0; z-index: 9999; background: rgba(10,10,20,.94); display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: all .35s ease; backdrop-filter: blur(10px); padding: 40px; }
 .lightbox.active { opacity: 1; visibility: visible; }
 .lightbox-video-container { max-width: 90vw; max-height: 88vh; border-radius: 20px; background: #000; position: relative; animation: scaleIn .4s ease; border: 3px solid #fff; }
@@ -107,7 +116,7 @@ a:hover { text-decoration: underline; }
 .btn-video.primary { background: var(--af-red); border-color: var(--af-red); } .btn-video.primary:hover { background: #fff; color: var(--af-red); }
 
 /* ═══════════════════════════════════════════════
-   MÓDULO ADMIN (PASSATION 3D)
+   MÓDULO ADMIN (PASSATION)
 ═══════════════════════════════════════════════ */
 .video-hero { position: relative; width: 100vw; height: 100vh; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5); border-bottom: 6px solid var(--rouge-passation); background: #000; }
 .video-hero video { width: 100%; height: 100%; object-fit: cover; }
@@ -140,7 +149,7 @@ a:hover { text-decoration: underline; }
 .ficha-footer { background: transparent; padding: 20px 30px; font-size: 0.9rem; color: var(--green); border-top: 1px solid rgba(255,255,255,0.5); font-weight: 800; display: flex; align-items: center; gap: 8px;}
 
 /* ═══════════════════════════════════════════════
-   MÓDULO ALUMNOS (CANDIDATOS) - 3D NEUMÓRFICO
+   MÓDULO ALUMNOS (CANDIDATOS) - COMPONENTES 3D
 ═══════════════════════════════════════════════ */
 .hero { padding: 80px 24px 60px; text-align: center; position: relative; }
 .hero-logos { display: flex; justify-content: center; align-items: center; gap: 35px; margin-bottom: 35px; flex-wrap: wrap; }
@@ -162,7 +171,7 @@ a:hover { text-decoration: underline; }
 .section-tag { display: inline-flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; color: var(--bleu-passation); margin-bottom: 20px; }
 .section-tag::before { content: ""; width: 32px; height: 3px; background: var(--bleu-passation); border-radius: 2px; }
 .content-section h2 { font-size: 2.5rem; margin-bottom: 25px; font-weight: 800; }
-.content-section p { margin-bottom: 20px; font-size: 1.15rem; color: var(--af-muted); }
+.content-section p { margin-bottom: 20px; font-size: 1.15rem; color: var(--af-muted); line-height: 1.6; }
 .content-section p strong { color: var(--af-dark); font-weight: 700; }
 
 .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 25px; margin-top: 35px; }
@@ -200,8 +209,6 @@ a:hover { text-decoration: underline; }
 .regla-inner h4:first-child { margin-top: 0; }
 .regla-inner ul { padding-left: 20px; margin-bottom: 15px; }
 .regla-inner li { margin-bottom: 10px; color: var(--af-muted); font-size: 1.05rem; line-height: 1.6; }
-
-.pd-box { background: #e8f4fd; border-left: 5px solid var(--bleu-passation); padding: 20px; border-radius: 12px; font-size: 1.05rem; color: var(--af-dark); margin: 25px 0; font-weight: 500; box-shadow: var(--neumo-inner);}
 
 .chapter-nav { max-width: 900px; margin: 50px auto 0; display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; }
 .btn-prev, .btn-next { padding: 18px 40px; border: 1px solid #fff; background: var(--bg-3d); color: var(--af-dark); font-family: 'Inter', sans-serif; font-weight: 700; font-size: 1.05rem; border-radius: 50px; cursor: pointer; transition: all .3s; box-shadow: var(--neumo-pill); }
@@ -253,21 +260,34 @@ form .full { grid-column: 1 / -1; }
 .field.has-error input, .field.has-error select { box-shadow: inset 3px 3px 6px rgba(200,33,30,.1), 0 0 0 2px var(--af-red) !important; }
 .field-error-msg { display: none; font-size: .85rem; color: var(--af-red); font-weight: 700; margin-top: 6px; padding-left: 5px; }
 .field.has-error .field-error-msg { display: block; }
+
+@media (max-width: 768px) {
+    #app-admin .stats-bar { grid-template-columns: 1fr; }
+    #app-admin .form-grid { grid-template-columns: 1fr; }
+    #app-admin .logos-hero { flex-direction: column; padding: 20px; }
+    form .grid { grid-template-columns: 1fr; }
+    .content-section { padding: 40px 25px; }
+    .form-body { padding: 30px 20px; }
+    .form-header { padding: 30px 25px 20px; }
+    .candidato-input { grid-template-columns: 1fr; }
+    .chapter { padding: 40px 16px; }
+    .hero-logos img { height: 70px; }
+    .contact-card.bank-details-box { grid-column: 1 / -1; }
+}
+@media print { .no-print { display: none !important; } body { background: white; } #app-admin .card-3d { box-shadow: none; border: 1px solid #000; } }
 </style>
 </head>
 <body class="intro-active">
 
 <div id="vanta-bg"></div>
 
-<audio id="bg-music" loop preload="none">
-    <source src="Arrival_at_the_Terminal (1).mp3" type="audio/mpeg">
-</audio>
+<audio id="bg-music" loop preload="none"><source src="Arrival_at_the_Terminal (1).mp3" type="audio/mpeg"></audio>
 
-<button id="music-toggle" class="music-btn no-print" onclick="toggleMusic()" style="display:none;">
+<button id="music-toggle" class="music-btn no-print" onclick="toggleMusic()" style="display:none;" aria-label="Música">
     <svg class="icon-mute" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
     <svg class="wave" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 18V12a9 9 0 0 1 18 0v6"></path><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path></svg>
 </button>
-<button id="fs-toggle" class="fs-btn no-print" onclick="toggleFullscreen()" style="display:none;">
+<button id="fs-toggle" class="fs-btn no-print" onclick="toggleFullscreen()" style="display:none;" aria-label="Pantalla completa">
     <svg class="icon-enter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"></path></svg>
     <svg class="icon-exit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v3a2 2 0 0 1-2 2H3M21 8h-3a2 2 0 0 1-2-2V3M3 16h3a2 2 0 0 1 2 2v3M16 21v-3a2 2 0 0 1 2-2h3"></path></svg>
 </button>
@@ -280,7 +300,7 @@ form .full { grid-column: 1 / -1; }
 
 <div id="lightbox" class="lightbox" onclick="closeLightbox(event)">
     <div class="lightbox-video-container" onclick="event.stopPropagation()">
-        <span class="lightbox-close" onclick="closeLightbox()" role="button" aria-label="Cerrar">×</span>
+        <span class="lightbox-close" onclick="closeLightbox()" role="button">×</span>
         <img id="lightbox-img" src="" alt="" style="display:none">
         <video id="lightbox-video" controls playsinline style="display:none;max-width:90vw;max-height:88vh;border-radius:18px;background:#000"></video>
     </div>
@@ -293,42 +313,40 @@ form .full { grid-column: 1 / -1; }
         <p>De conformidad con la <strong>Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP)</strong> del marco jurídico mexicano.</p>
         
         <h3>1. Identidad del Responsable</h3>
-        <p><strong>Alianza Francesa de San Cristóbal de las Casas</strong>, con domicilio en San Cristóbal de las Casas, Chiapas, México es la entidad responsable del tratamiento de los datos personales.</p>
+        <p><strong>Alianza Francesa de San Cristóbal de las Casas</strong> es la entidad responsable del tratamiento de los datos personales.</p>
         
         <h3>2. Datos personales recabados</h3>
-        <p>Para la inscripción al examen DELF Junior 2026 se recaban los siguientes datos del candidato (menor de edad) y de su padre, madre o tutor:</p>
+        <p>Para la inscripción al examen DELF Junior 2026 se recaban los siguientes datos del candidato (menor de edad) y de su tutor:</p>
         <ul>
-            <li>Datos de identificación del candidato: nombres, apellidos, fecha y ciudad de nacimiento, nacionalidad, lengua materna.</li>
-            <li>Datos de contacto del tutor: nombre completo, teléfono celular, correo electrónico, dirección postal.</li>
-            <li>Información académica: nivel seleccionado, número previo de candidato (si aplica), motivo del examen.</li>
-            <li>Datos sensibles (únicamente si aplican): información sobre adaptaciones físicas requeridas el día del examen.</li>
+            <li>Identificación: nombres, apellidos, fecha y ciudad de nacimiento, nacionalidad, lengua materna.</li>
+            <li>Contacto del tutor: nombre completo, teléfono celular, correo electrónico, dirección postal.</li>
+            <li>Académica: nivel seleccionado, número previo de candidato (si aplica), motivo del examen.</li>
+            <li>Datos sensibles: información sobre adaptaciones físicas requeridas el día del examen.</li>
         </ul>
 
         <h3>3. Finalidades del tratamiento</h3>
-        <p><strong>Finalidades primarias</strong> (necesarias para la prestación del servicio):</p>
         <ul>
             <li>Procesar la inscripción al examen DELF Junior 2026.</li>
             <li>Emitir convocatorias, citatorios y resultados oficiales.</li>
-            <li>Generar la constancia de inscripción y el diploma DELF expedido por France Éducation international.</li>
-            <li>Contactar al tutor para cualquier asunto relativo al examen.</li>
+            <li>Generar la constancia y el diploma DELF (France Éducation international).</li>
         </ul>
 
         <h3>4. Transferencias de datos</h3>
         <p>Los datos serán transferidos a <strong>France Éducation international (FEI)</strong>, organismo francés certificador del DELF, con sede en París, Francia, con el fin exclusivo de emitir los diplomas oficiales.</p>
 
         <h3>5. Consentimiento del titular menor de edad</h3>
-        <p>Por tratarse de datos personales de menores de edad, el consentimiento al presente Aviso lo otorga el padre, madre o tutor legal al momento de aceptar estos términos en la plataforma.</p>
+        <p>El consentimiento al presente Aviso lo otorga el padre, madre o tutor legal al momento de aceptar estos términos en la plataforma.</p>
 
         <h3>6. Derechos ARCO</h3>
-        <p>Usted tiene derecho a <strong>Acceder, Rectificar, Cancelar u Oponerse</strong> al tratamiento de sus datos personales (derechos ARCO). Para ejercerlos, envíe una solicitud a: <a href="mailto:DIRECCIONSANCRISTOBAL@ALIANZAFR.EDU.FR">DIRECCIONSANCRISTOBAL@ALIANZAFR.EDU.FR</a>.</p>
+        <p>Usted tiene derecho a <strong>Acceder, Rectificar, Cancelar u Oponerse</strong> al tratamiento de sus datos personales. Para ejercerlos, envíe una solicitud a: DIRECCIONSANCRISTOBAL@ALIANZAFR.EDU.FR.</p>
 
         <h3>7. Medidas de seguridad y Conservación</h3>
-        <p>Los datos se transmiten mediante conexión cifrada (HTTPS) y se almacenan únicamente en los sistemas internos de la Alianza Francesa bajo acceso estrictamente restringido (RBAC). Se conservan durante el periodo necesario para emitir el diploma y atender cualquier solicitud oficial posterior.</p>
+        <p>Los datos se transmiten mediante conexión cifrada (HTTPS) y se almacenan únicamente en los sistemas internos de la Alianza Francesa bajo acceso estrictamente restringido (RBAC). Se conservan durante el periodo necesario para emitir el diploma.</p>
     </div>
 </div>
 
 <div id="splash-screen">
-    <h1 style="font-family:'Playfair Display'; font-size:clamp(2.5rem, 6vw, 5.5rem); color:var(--bleu-passation); margin-bottom: 50px; text-align: center; font-weight: 800; text-shadow: 2px 2px 5px rgba(0,0,0,0.05);">Portal DELF Junior 2026</h1>
+    <h1 style="font-family:'Playfair Display'; font-size:clamp(2.5rem, 6vw, 5rem); color:var(--bleu-passation); margin-bottom: 50px; text-align: center; font-weight: 800; text-shadow: 2px 2px 5px rgba(0,0,0,0.05);">Portal DELF Junior 2026</h1>
     <div style="display: flex; gap: 25px; justify-content: center; flex-wrap: wrap;">
         <button onclick="startAlumno()" class="btn-chrome primary" style="font-size: 1.15rem; padding: 22px 45px;">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 14l9-5-9-5-9 5 9 5z"></path><path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path><path d="M12 14v7"></path></svg>
@@ -457,9 +475,19 @@ form .full { grid-column: 1 / -1; }
                 <div class="content-section">
                     <span class="section-tag">Calendario 2026</span>
                     <h2>Prepárate para el éxito</h2>
-                    <p style="font-size: 1.25rem;">Las pruebas oficiales se llevarán a cabo en las instalaciones del Colegio La Salle con <strong>fecha definitiva entre el 2 y el 7 de junio de 2026.</strong></p>
+                    <p style="font-size: 1.25rem;">Las pruebas oficiales se llevarán a cabo en las instalaciones del Colegio La Salle.</p>
+                    <div style="display: flex; gap: 20px; justify-content: center; margin: 25px 0; flex-wrap: wrap;">
+                        <div style="background: var(--bg-3d); padding: 20px 30px; border-radius: 15px; box-shadow: var(--neumo-inner); border-left: 5px solid var(--bleu-passation); flex: 1; min-width: 250px;">
+                            <h4 style="color: var(--bleu-passation); margin-bottom: 5px; font-size: 1.1rem;">Pruebas Colectivas</h4>
+                            <p style="font-size: 1.4rem; font-weight: 800; color: var(--af-dark); margin: 0;">2 de junio de 2026</p>
+                        </div>
+                        <div style="background: var(--bg-3d); padding: 20px 30px; border-radius: 15px; box-shadow: var(--neumo-inner); border-left: 5px solid var(--rouge-passation); flex: 1; min-width: 250px;">
+                            <h4 style="color: var(--rouge-passation); margin-bottom: 5px; font-size: 1.1rem;">Pruebas Orales</h4>
+                            <p style="font-size: 1.4rem; font-weight: 800; color: var(--af-dark); margin: 0;">4 de junio de 2026</p>
+                        </div>
+                    </div>
                     
-                    <div class="pd-box" style="margin-top: 30px; background: #e8f4fd; border-left: 5px solid var(--bleu-passation); padding: 25px; border-radius: 12px; box-shadow: var(--neumo-inner);">
+                    <div style="margin-top: 30px; background: #e8f4fd; border-left: 5px solid var(--bleu-passation); padding: 25px; border-radius: 12px; box-shadow: var(--neumo-inner);">
                         <strong style="color: var(--bleu-passation); font-size: 1.15rem;">✓ Beneficio Exclusivo:</strong>
                         <p style="margin-top: 10px; font-size: 1.05rem;">Una semana antes de la fecha del examen, la Dirección de la Alianza Francesa ofrecerá <strong>2 sesiones gratuitas de preparación</strong> en los locales de la Alianza para aquellos candidatos inscritos que deseen familiarizarse con las pruebas. (El horario será a convenir con los participantes).</p>
                     </div>
@@ -636,9 +664,9 @@ form .full { grid-column: 1 / -1; }
                             </div>
                         </div>
 
-                        <div class="accept-box">
-                            <input type="checkbox" id="acepto" name="acepto" required>
-                            <label for="acepto">Acepto el reglamento y el <a href="javascript:void(0)" onclick="openPrivacy()">Aviso de Privacidad</a>.</label>
+                        <div class="accept-box" style="background: var(--bg-3d); border: none; border-left: 5px solid var(--bleu-passation); border-radius: 12px; padding: 25px 30px; display: flex; gap: 18px; align-items: flex-start; margin-top: 40px; box-shadow: var(--neumo-inner);">
+                            <input type="checkbox" id="acepto" name="acepto" required style="width: 24px; height: 24px; accent-color: var(--bleu-passation); flex-shrink: 0; cursor: pointer; margin-top: 3px;">
+                            <label for="acepto" style="font-size: 1.05rem; color: var(--af-dark); line-height: 1.6; cursor: pointer; font-weight: 500;">Acepto el reglamento y el <a href="javascript:void(0)" onclick="openPrivacy()" style="text-decoration: underline; font-weight: 800;">Aviso de Privacidad</a>.</label>
                         </div>
 
                         <div class="cta-wrap">
@@ -670,7 +698,12 @@ form .full { grid-column: 1 / -1; }
 
     <section id="thanks" class="screen video-screen">
         <video id="thanksVideo" playsinline preload="auto" muted><source src="6.mp4" type="video/mp4"></video>
-        <div class="thanks-overlay" id="thanksOverlay"><h2>Merci beaucoup !</h2></div>
+        <div class="thanks-overlay" id="thanksOverlay">
+            <h2>Merci beaucoup !</h2>
+            <div style="margin-top: 25px; display: flex; gap: 15px; justify-content: center; z-index: 10; position: relative;">
+                <a class="btn-chrome primary" href="https://wa.me/?text=¡Me%20acabo%20de%20inscribir%20al%20DELF%20Junior%202026%20en%20La%20Salle!%20Inscríbete%20aquí:%20https://migueltillero-ship-it.github.io/DELFLaSalle/" target="_blank" rel="noopener">Compartir con compañeros</a>
+            </div>
+        </div>
     </section>
 </div>
 
@@ -787,30 +820,26 @@ function closeLightbox(e){
    MÓDULO ADMIN: BÚSQUEDA INTELIGENTE Y BD
 ───────────────────────────────────────────────────────────── */
 const bdCandidatos = [
-    { nombre: "SANTIAGO", apellido: "SALGADO SERVIN", nivel: "A2", numero: "052825010152", pdf: "20260509_GAEL_attestation_inscription_SALGADO SERVÍN_Santiago.pdf" },
-    { nombre: "LUIS FERNANDO", apellido: "AGUILAR SUAREZ", nivel: "A2", numero: "052825010132", pdf: "20260507_GAEL_attestation_inscription_AGUILAR SUAREZ_Luis Fernando.pdf" },
-    { nombre: "SOFIA", apellido: "ALFONZO GARCIA", nivel: "A2", numero: "052825010138", pdf: "20260507_GAEL_attestation_inscription_ALFONZO GARCÍA_Sofía.pdf" },
-    { nombre: "SAMUEL", apellido: "CANCINO HERNANDEZ", nivel: "A2", numero: "052825010130", pdf: "20260507_GAEL_attestation_inscription_CANCINO HERNANDEZ_Samuel.pdf" },
-    { nombre: "SARA", apellido: "CANCINO SUAREZ", nivel: "A2", numero: "052825010141", pdf: "20260507_GAEL_attestation_inscription_CANCINO SUÁREZ_Sara.pdf" },
-    { nombre: "CAROLINA", apellido: "CONTRERAS CHACON", nivel: "A2", numero: "052825010136", pdf: "20260507_GAEL_attestation_inscription_CONTRERAS CHACÓN_Carolina.pdf" },
-    { nombre: "ERICK SANTIAGO", apellido: "DIAZ RAMOS", nivel: "A2", numero: "052825010137", pdf: "20260507_GAEL_attestation_inscription_DÍAZ RAMOS_Erick Santiago.pdf" },
-    { nombre: "MARIA FERNANDA", apellido: "HERNANDEZ QUEZADA", nivel: "A2", numero: "052825010146", pdf: "20260507_GAEL_attestation_inscription_HERNÁNDEZ QUEZADA_María Fernanda.pdf" },
-    { nombre: "JUAN MARIANO", apellido: "MARTINEZ VELASCO", nivel: "A2", numero: "052825010150", pdf: "20260509_GAEL_attestation_inscription_MARTÍNEZ VELASCO_Juan Mariano.pdf" },
-    { nombre: "JEFTZY SHAILE", apellido: "VAZQUEZ GARCIA", nivel: "A2", numero: "052825010139", pdf: "20260507_GAEL_attestation_inscription_VÁZQUEZ GARCÍA_Jeftzy Shaile.pdf" },
-    { inputNombre: "JUNO", inputApellido: "OCAMPO", nombre: "JUNO XIMENA", apellido: "OCAMPO LOPEZ", nivel: "A2", numero: "052825010145", pdf: "20260507_GAEL_attestation_inscription_OCAMPO LÓPEZ_Juno Ximena.pdf" },
-    { nombre: "JORGE HUGO", apellido: "REYEZ VAZQUEZ", nivel: "A2", numero: "052825010147", pdf: "20260507_GAEL_attestation_inscription_REYEZ VÁZQUEZ_Jorge Hugo.pdf" },
-    { nombre: "ANA PAULA", apellido: "RUIZ ROQUE", nivel: "A2", numero: "052825010131", pdf: "20260507_GAEL_attestation_inscription_RUIZ ROQUE_Ana Paula.pdf" },
-    { nombre: "CRISTOBAL", apellido: "SANCHEZ FLORES", nivel: "A2", numero: "052825010135", pdf: "20260507_GAEL_attestation_inscription_SANCHEZ FLORES_Cristóbal.pdf" },
-    { nombre: "ANDREA MIRANDA", apellido: "SANTIAGO URBINA", nivel: "A2", numero: "052825010133", pdf: "20260507_GAEL_attestation_inscription_SANTIAGO URBINA_Andrea Miranda.pdf" },
-    { nombre: "XIOMARA SKARLETT", apellido: "TORREZ GONZALEZ", nivel: "A2", numero: "052825010148", pdf: "20260507_GAEL_attestation_inscription_TORREZ GONZÁLEZ_Xiomara Skarlett.pdf" },
-    { nombre: "ANGELA SOFIA", apellido: "TOVILLA DOMINGUEZ", nivel: "A2", numero: "052825010134", pdf: "20260507_GAEL_attestation_inscription_TOVILLA DOMINGUEZ_Ángela Sofía.pdf" },
-    { nombre: "LUIS EMILIO", apellido: "GOMEZ MEDINA", nivel: "B2", numero: "052825010129", pdf: "20260509_GAEL_attestation_inscription_GÓMEZ MEDINA_Luis Emilio-1.pdf" },
-    { nombre: "EMILIANO DE JESUS", apellido: "GUZMAN AGUILAR", nivel: "A2", numero: "052825010154", pdf: "20260509_GAEL_attestation_inscription_GUZMÁN AGUILAR_Emiliano De Jesús.pdf" },
-    { nombre: "DASHA CAMILA", apellido: "MONTOYA RUIZ", nivel: "A2", numero: "052825010153", pdf: "20260509_GAEL_attestation_inscription_MONTOYA RUÍZ_Dasha Camila.pdf" },
-    { nombre: "ANGEL", apellido: "CRUZ SOLIS", nivel: "A2", numero: "PENDIENTE", pdf: "#" },
-    { nombre: "MIRANDA", apellido: "RUIZ RIVERA", nivel: "A2", numero: "PENDIENTE", pdf: "#" },
-    { nombre: "CAMILA", apellido: "SILVA VELASCO", nivel: "A2", numero: "PENDIENTE", pdf: "#" },
-    { nombre: "DANIEL ALEJANDRO", apellido: "ZUNIGA DOMINGUEZ", nivel: "A2", numero: "PENDIENTE", pdf: "#" }
+    { nombre: "SANTIAGO", apellido: "SALGADO SERVIN", nivel: "A2", numero: "052825010152", pdf: "20260509_GAEL_attestation_inscription_SALGADO_SERVÍN_Santiago.pdf" },
+    { nombre: "LUIS FERNANDO", apellido: "AGUILAR SUAREZ", nivel: "A2", numero: "052825010132", pdf: "20260507_GAEL_attestation_inscription_AGUILAR_SUAREZ_Luis_Fernando.pdf" },
+    { nombre: "SOFIA", apellido: "ALFONZO GARCIA", nivel: "A2", numero: "052825010138", pdf: "20260507_GAEL_attestation_inscription_ALFONZO_GARCÍA_Sofía.pdf" },
+    { nombre: "SAMUEL", apellido: "CANCINO HERNANDEZ", nivel: "A2", numero: "052825010130", pdf: "20260507_GAEL_attestation_inscription_CANCINO_HERNANDEZ_Samuel.pdf" },
+    { nombre: "SARA", apellido: "CANCINO SUAREZ", nivel: "A2", numero: "052825010141", pdf: "20260507_GAEL_attestation_inscription_CANCINO_SUÁREZ_Sara.pdf" },
+    { nombre: "CAROLINA", apellido: "CONTRERAS CHACON", nivel: "A2", numero: "052825010136", pdf: "20260507_GAEL_attestation_inscription_CONTRERAS_CHACÓN_Carolina.pdf" },
+    { nombre: "ERICK SANTIAGO", apellido: "DIAZ RAMOS", nivel: "A2", numero: "052825010137", pdf: "20260507_GAEL_attestation_inscription_DÍAZ_RAMOS_Erick_Santiago.pdf" },
+    { nombre: "MARIA FERNANDA", apellido: "HERNANDEZ QUEZADA", nivel: "A2", numero: "052825010146", pdf: "20260507_GAEL_attestation_inscription_HERNÁNDEZ_QUEZADA_María_Fernanda.pdf" },
+    { nombre: "JUAN MARIANO", apellido: "MARTINEZ VELASCO", nivel: "A2", numero: "052825010150", pdf: "20260509_GAEL_attestation_inscription_MARTÍNEZ_VELASCO_Juan_Mariano.pdf" },
+    { nombre: "JEFTZY SHAILE", apellido: "VAZQUEZ GARCIA", nivel: "A2", numero: "052825010139", pdf: "20260507_GAEL_attestation_inscription_VÁZQUEZ_GARCÍA_Jeftzy_Shaile.pdf" },
+    { inputNombre: "JUNO", inputApellido: "OCAMPO", nombre: "JUNO XIMENA", apellido: "OCAMPO LOPEZ", nivel: "A2", numero: "052825010145", pdf: "20260507_GAEL_attestation_inscription_OCAMPO_LÓPEZ_Juno_Ximena.pdf" },
+    { nombre: "JORGE HUGO", apellido: "REYEZ VAZQUEZ", nivel: "A2", numero: "052825010147", pdf: "20260507_GAEL_attestation_inscription_REYEZ_VÁZQUEZ_Jorge_Hugo.pdf" },
+    { nombre: "ANA PAULA", apellido: "RUIZ ROQUE", nivel: "A2", numero: "052825010131", pdf: "20260507_GAEL_attestation_inscription_RUIZ_ROQUE_Ana_Paula.pdf" },
+    { nombre: "CRISTOBAL", apellido: "SANCHEZ FLORES", nivel: "A2", numero: "052825010135", pdf: "20260507_GAEL_attestation_inscription_SANCHEZ_FLORES_Cristóbal.pdf" },
+    { nombre: "ANDREA MIRANDA", apellido: "SANTIAGO URBINA", nivel: "A2", numero: "052825010133", pdf: "20260507_GAEL_attestation_inscription_SANTIAGO_URBINA_Andrea_Miranda.pdf" },
+    { nombre: "XIOMARA SKARLETT", apellido: "TORREZ GONZALEZ", nivel: "A2", numero: "052825010148", pdf: "20260507_GAEL_attestation_inscription_TORREZ_GONZÁLEZ_Xiomara_Skarlett.pdf" },
+    { nombre: "ANGELA SOFIA", apellido: "TOVILLA DOMINGUEZ", nivel: "A2", numero: "052825010134", pdf: "20260507_GAEL_attestation_inscription_TOVILLA_DOMINGUEZ_Ángela_Sofía.pdf" },
+    { nombre: "LUIS EMILIO", apellido: "GOMEZ MEDINA", nivel: "B2", numero: "052825010129", pdf: "20260509_GAEL_attestation_inscription_GÓMEZ_MEDINA_Luis_Emilio.pdf" },
+    { nombre: "EMILIANO DE JESUS", apellido: "GUZMAN AGUILAR", nivel: "A2", numero: "052825010154", pdf: "20260509_GAEL_attestation_inscription_GUZMÁN_AGUILAR_Emiliano_De_Jesús.pdf" },
+    { nombre: "DASHA CAMILA", apellido: "MONTOYA RUIZ", nivel: "A2", numero: "052825010153", pdf: "20260509_GAEL_attestation_inscription_MONTOYA_RUÍZ_Dasha_Camila.pdf" }
 ];
 
 function initStats() {
@@ -875,7 +904,7 @@ function resetBusqueda() {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   MÓDULO ALUMNO: NAVEGACIÓN Y VIDEOS CINEMATOGRÁFICOS
+   MÓDULO ALUMNO: NAVEGACIÓN Y ALGORITMO FISHER-YATES
 ───────────────────────────────────────────────────────────── */
 function playVideoSafe(videoEl, onEnded){
     if(!videoEl) return;
@@ -956,6 +985,7 @@ window.addEventListener('load', () => {
 /* ─────────────────────────────────────────────────────────────
    DRAG & DROP, PERSISTENCIA (LOCALSTORAGE) Y FORMULARIO
 ───────────────────────────────────────────────────────────── */
+// Persistencia
 const formFields = document.querySelectorAll('#inscripcionForm input:not([type="file"]), #inscripcionForm select');
 formFields.forEach(f => f.addEventListener('input', () => {
     const data = {};
@@ -986,6 +1016,7 @@ function clearDraft() {
     document.getElementById('inscripcionForm').reset();
 }
 
+// Drag & Drop Comprobante
 const dropZone = document.getElementById('drop-zone');
 const fileInput = document.getElementById('file-upload');
 const dropText = document.getElementById('drop-text');
@@ -1024,6 +1055,7 @@ function handleFile(file) {
     dropText.innerHTML = `<span style="color:var(--green)">✓ ${(file.size/1024/1024).toFixed(2)} MB - ${file.name} listo.</span>`;
 }
 
+// Envío
 const form = document.getElementById('inscripcionForm');
 if(form) {
     form.addEventListener('submit', async function(e){

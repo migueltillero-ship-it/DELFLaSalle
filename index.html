@@ -8,8 +8,15 @@
 
 <title>Portal DELF Junior 2026 · Alliance Française & Colegio La Salle</title>
 <meta name="description" content="Inscripción oficial al DELF Junior 2026. Sede: Colegio La Salle San Cristóbal de las Casas. Niveles A1, A2, B1, B2.">
-<meta name="keywords" content="DELF Junior 2026, Alianza Francesa, Colegio La Salle, San Cristóbal de las Casas, certificación francés">
+<meta name="keywords" content="DELF Junior 2026, Alianza Francesa, Colegio La Salle, San Cristóbal de las Casas, certificación francés, France Éducation International, MCER">
 <meta name="author" content="Alianza Francesa de San Cristóbal de las Casas">
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_MX">
+<meta property="og:url" content="https://migueltillero-ship-it.github.io/DELFLaSalle/">
+<meta property="og:title" content="Inscripción DELF Junior 2026 - Alianza Francesa & La Salle">
+<meta property="og:description" content="Certifica tu francés a nivel internacional. Inscripciones abiertas.">
+<meta property="og:site_name" content="DELF La Salle 2026">
 
 <link rel="preconnect" href="https://fonts.googleapis.com/">
 <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
@@ -45,14 +52,11 @@ h1, h2, h3, h4 { font-family: 'Playfair Display', serif; color: var(--af-dark); 
 a { color: var(--bleu-passation); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
-/* Animaciones */
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
 .fade-out { animation: fadeOut 0.6s forwards !important; }
 @keyframes scaleIn { from { transform: scale(.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(.85); opacity: .7; } }
-.loading-dots::after { content: ""; display: inline-block; width: 14px; text-align: left; animation: dots 1.4s infinite; }
-@keyframes dots { 0%, 20% { content: ""; } 40% { content: "."; } 60% { content: ".."; } 80%, 100% { content: "..."; } }
 
 /* ═══════════════════════════════════════════════
    CONTROLES FLOTANTES
@@ -75,7 +79,7 @@ a:hover { text-decoration: underline; }
 .fs-btn.active .icon-enter { display: none; } .fs-btn.active .icon-exit { display: block; }
 
 /* ═══════════════════════════════════════════════
-   MODAL AVISO DE PRIVACIDAD Y LIGHTBOX
+   MODAL AVISO DE PRIVACIDAD
 ═══════════════════════════════════════════════ */
 .modal-overlay { position: fixed; inset: 0; background: rgba(224,229,236,0.8); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 10000; padding: 20px; }
 .modal-overlay.open { display: flex; animation: fadeIn 0.4s ease; }
@@ -87,6 +91,7 @@ a:hover { text-decoration: underline; }
 .modal-box p, .modal-box li { font-size: 1.05rem; color: var(--af-muted); margin-bottom: 10px; line-height: 1.6; }
 .modal-box ul { padding-left: 20px; margin-bottom: 15px; }
 
+/* Lightbox de galería */
 .lightbox { position: fixed; inset: 0; z-index: 9999; background: rgba(10,10,20,.94); display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: all .35s ease; backdrop-filter: blur(10px); padding: 40px; }
 .lightbox.active { opacity: 1; visibility: visible; }
 .lightbox-video-container { max-width: 90vw; max-height: 88vh; border-radius: 20px; background: #000; position: relative; animation: scaleIn .4s ease; border: 3px solid #fff; }
@@ -170,9 +175,8 @@ a:hover { text-decoration: underline; }
 .content-section { background: var(--bg-3d); border: 1px solid #fff; border-radius: 30px; padding: 60px; margin: 0 auto 30px; box-shadow: var(--neumo-main); max-width: 1000px; }
 .section-tag { display: inline-flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; color: var(--bleu-passation); margin-bottom: 20px; }
 .section-tag::before { content: ""; width: 32px; height: 3px; background: var(--bleu-passation); border-radius: 2px; }
-.content-section h2 { font-size: 2.5rem; margin-bottom: 25px; font-weight: 800; }
+.content-section h2 { font-size: 2.8rem; margin-bottom: 25px; font-weight: 800; }
 .content-section p { margin-bottom: 20px; font-size: 1.15rem; color: var(--af-muted); line-height: 1.6; }
-.content-section p strong { color: var(--af-dark); font-weight: 700; }
 
 .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 25px; margin-top: 35px; }
 .info-card { padding: 35px 25px; background: var(--bg-3d); border: 1px solid #fff; border-radius: 20px; transition: all .3s; box-shadow: var(--neumo-pill); }
@@ -210,6 +214,8 @@ a:hover { text-decoration: underline; }
 .regla-inner ul { padding-left: 20px; margin-bottom: 15px; }
 .regla-inner li { margin-bottom: 10px; color: var(--af-muted); font-size: 1.05rem; line-height: 1.6; }
 
+.pd-box { background: #e8f4fd; border-left: 5px solid var(--bleu-passation); padding: 20px; border-radius: 12px; font-size: 1.05rem; color: var(--af-dark); margin: 25px 0; font-weight: 500; box-shadow: var(--neumo-inner);}
+
 .chapter-nav { max-width: 900px; margin: 50px auto 0; display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; }
 .btn-prev, .btn-next { padding: 18px 40px; border: 1px solid #fff; background: var(--bg-3d); color: var(--af-dark); font-family: 'Inter', sans-serif; font-weight: 700; font-size: 1.05rem; border-radius: 50px; cursor: pointer; transition: all .3s; box-shadow: var(--neumo-pill); }
 .btn-prev:hover { color: var(--af-red); transform: translateY(-2px); box-shadow: var(--neumo-pill-hover); }
@@ -226,7 +232,7 @@ a:hover { text-decoration: underline; }
 .gallery-item video, .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s; display: block; pointer-events: none; }
 
 /* ═══════════════════════════════════════════════
-   FORMULARIO DE INSCRIPCIÓN (Drag & Drop + Storage)
+   FORMULARIO DE INSCRIPCIÓN (GAEL COMPLIANT)
 ═══════════════════════════════════════════════ */
 .form-page-wrap { padding: 60px 16px; }
 .form-card { max-width: 950px; margin: 0 auto; background: var(--bg-3d); border: 1px solid #fff; border-radius: 30px; box-shadow: var(--neumo-main); overflow: hidden; }
@@ -247,6 +253,20 @@ form .full { grid-column: 1 / -1; }
 .field { display: flex; flex-direction: column; gap: 8px; }
 .field input[type=text], .field input[type=tel], .field input[type=email], .field input[type=date], .field select { padding: 16px 20px; border: none; border-radius: 12px; font-family: inherit; font-size: 1.05rem; transition: all .25s; background: var(--bg-3d); color: var(--af-dark); box-shadow: var(--neumo-inner); }
 .field input:focus, .field select:focus { outline: none; box-shadow: inset 3px 3px 6px #bec3c9, inset -3px -3px 6px #ffffff, 0 0 0 3px rgba(1,56,150,0.15); }
+
+.radio-row { display: flex; gap: 15px; flex-wrap: wrap; margin-top: 5px; }
+.radio-pill { flex: 1; min-width: 100px; position: relative; }
+.radio-pill input { position: absolute; opacity: 0; pointer-events: none; }
+.radio-pill label { display: flex; align-items: center; justify-content: center; padding: 16px 20px; border: 1px solid #fff; border-radius: 12px; cursor: pointer; transition: all .25s; font-weight: 700; font-size: 1rem; background: var(--bg-3d); box-shadow: var(--neumo-pill); text-align: center; line-height: 1.2;}
+.radio-pill input:checked + label { background: var(--bg-3d); color: var(--bleu-passation); box-shadow: var(--neumo-inner); border-color: transparent; }
+
+.nivel-selector { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; margin-top: 15px;}
+.nivel-pill { position: relative; }
+.nivel-pill input { position: absolute; opacity: 0; pointer-events: none; }
+.nivel-pill label { display: block; padding: 30px 20px; border: 1px solid #fff; border-radius: 16px; cursor: pointer; text-align: center; transition: all .3s; background: var(--bg-3d); box-shadow: var(--neumo-pill); }
+.nivel-pill label .code { display: block; font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 800; line-height: 1; color: var(--af-dark); }
+.nivel-pill label .price { display: block; margin-top: 12px; color: var(--af-red); font-weight: 800; font-size: 1.1rem; }
+.nivel-pill input:checked + label { box-shadow: var(--neumo-inner); border-color: transparent; background: transparent; }
 
 .payment-card-neumo { margin-top: 50px; background: var(--bg-3d); border: 1px solid #fff; padding: 40px; border-radius: 20px; box-shadow: var(--neumo-pill); }
 .bank-details-box { background: var(--bg-3d); padding: 30px; border-radius: 15px; box-shadow: var(--neumo-inner); margin-bottom: 25px; border: 1px solid rgba(255,255,255,0.5); }
@@ -269,10 +289,8 @@ form .full { grid-column: 1 / -1; }
     .content-section { padding: 40px 25px; }
     .form-body { padding: 30px 20px; }
     .form-header { padding: 30px 25px 20px; }
-    .candidato-input { grid-template-columns: 1fr; }
     .chapter { padding: 40px 16px; }
     .hero-logos img { height: 70px; }
-    .contact-card.bank-details-box { grid-column: 1 / -1; }
 }
 @media print { .no-print { display: none !important; } body { background: white; } #app-admin .card-3d { box-shadow: none; border: 1px solid #000; } }
 </style>
@@ -280,7 +298,6 @@ form .full { grid-column: 1 / -1; }
 <body class="intro-active">
 
 <div id="vanta-bg"></div>
-
 <audio id="bg-music" loop preload="none"><source src="Arrival_at_the_Terminal (1).mp3" type="audio/mpeg"></audio>
 
 <button id="music-toggle" class="music-btn no-print" onclick="toggleMusic()" style="display:none;" aria-label="Música">
@@ -291,7 +308,7 @@ form .full { grid-column: 1 / -1; }
     <svg class="icon-enter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"></path></svg>
     <svg class="icon-exit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v3a2 2 0 0 1-2 2H3M21 8h-3a2 2 0 0 1-2-2V3M3 16h3a2 2 0 0 1 2 2v3M16 21v-3a2 2 0 0 1 2-2h3"></path></svg>
 </button>
-<button id="back-to-top" type="button" aria-label="Volver arriba">
+<button id="back-to-top" class="no-print" type="button" aria-label="Volver arriba">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="18 15 12 9 6 15"></polyline></svg>
 </button>
 <a class="wa-fab no-print" href="https://wa.me/524731219937" target="_blank" rel="noopener" aria-label="WhatsApp Prof. Román">
@@ -321,27 +338,13 @@ form .full { grid-column: 1 / -1; }
             <li>Identificación: nombres, apellidos, fecha y ciudad de nacimiento, nacionalidad, lengua materna.</li>
             <li>Contacto del tutor: nombre completo, teléfono celular, correo electrónico, dirección postal.</li>
             <li>Académica: nivel seleccionado, número previo de candidato (si aplica), motivo del examen.</li>
-            <li>Datos sensibles: información sobre adaptaciones físicas requeridas el día del examen.</li>
         </ul>
 
-        <h3>3. Finalidades del tratamiento</h3>
-        <ul>
-            <li>Procesar la inscripción al examen DELF Junior 2026.</li>
-            <li>Emitir convocatorias, citatorios y resultados oficiales.</li>
-            <li>Generar la constancia y el diploma DELF (France Éducation international).</li>
-        </ul>
-
-        <h3>4. Transferencias de datos</h3>
+        <h3>3. Transferencias de datos</h3>
         <p>Los datos serán transferidos a <strong>France Éducation international (FEI)</strong>, organismo francés certificador del DELF, con sede en París, Francia, con el fin exclusivo de emitir los diplomas oficiales.</p>
 
-        <h3>5. Consentimiento del titular menor de edad</h3>
-        <p>El consentimiento al presente Aviso lo otorga el padre, madre o tutor legal al momento de aceptar estos términos en la plataforma.</p>
-
-        <h3>6. Derechos ARCO</h3>
+        <h3>4. Derechos ARCO</h3>
         <p>Usted tiene derecho a <strong>Acceder, Rectificar, Cancelar u Oponerse</strong> al tratamiento de sus datos personales. Para ejercerlos, envíe una solicitud a: DIRECCIONSANCRISTOBAL@ALIANZAFR.EDU.FR.</p>
-
-        <h3>7. Medidas de seguridad y Conservación</h3>
-        <p>Los datos se transmiten mediante conexión cifrada (HTTPS) y se almacenan únicamente en los sistemas internos de la Alianza Francesa bajo acceso estrictamente restringido (RBAC). Se conservan durante el periodo necesario para emitir el diploma.</p>
     </div>
 </div>
 
@@ -425,7 +428,7 @@ form .full { grid-column: 1 / -1; }
     </section>
 
     <section id="transition" class="screen video-screen">
-        <video id="transitionVideo" playsinline preload="auto" muted><source src="4.mp4" type="video/mp4"></video>
+        <video id="transitionVideo" playsinline preload="auto" muted><source src="transicion.mp4" type="video/mp4"></video>
     </section>
 
     <section id="chapter1" class="screen">
@@ -436,11 +439,11 @@ form .full { grid-column: 1 / -1; }
             <p class="hero-sub">Certificación oficial de francés del Ministerio Francés de Educación.<br>Alianza Francesa de San Cristóbal y Colegio La Salle.</p>
         </header>
         <div class="container-ch">
-            <div class="chapter-header"><span class="chapter-progress">Capítulo 1 de 7</span><h2 class="chapter-title">Acerca del <em>examen</em></h2></div>
+            <div class="chapter-header"><span class="chapter-progress">Capítulo 1 de 6</span><h2 class="chapter-title">Acerca del <em>examen</em></h2></div>
             <div class="content-section">
                 <span class="section-tag">DELF Junior</span>
                 <h2>Certificación con validez mundial</h2>
-                <p>El <strong>DELF</strong> es un diploma internacional, vitalicio y reconocido en más de 170 países. Evalúa el dominio del francés mediante cuatro competencias fundamentales estructuradas bajo el Marco Común Europeo de Referencia (MCER).</p>
+                <p>El <strong>DELF</strong> (Diplôme d'Études en Langue Française) es un diploma internacional, vitalicio y reconocido en más de 170 países. Evalúa el dominio del francés mediante cuatro competencias fundamentales estructuradas bajo el Marco Común Europeo de Referencia (MCER).</p>
                 <div class="info-grid">
                     <div class="info-card">
                         <div class="info-card-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg></div>
@@ -464,18 +467,19 @@ form .full { grid-column: 1 / -1; }
                     </div>
                 </div>
             </div>
-            <div class="chapter-nav"><span class="btn-spacer"></span><div class="chapter-dots"><span class="active"></span><span></span><span></span><span></span><span></span><span></span><span></span></div><button class="btn-next" onclick="goToChapterWithVideo(2)">Siguiente →</button></div>
+            <div class="chapter-nav"><span class="btn-spacer"></span><div class="chapter-dots"><span class="active"></span><span></span><span></span><span></span><span></span><span></span></div><button class="btn-next" onclick="goToChapterWithVideo(2)">Siguiente →</button></div>
         </div>
     </section>
 
     <section id="chapter2" class="screen">
         <div class="chapter">
-            <div class="chapter-header"><span class="chapter-progress">Capítulo 2 de 7</span><h2 class="chapter-title">Fechas y <em>Preparación</em></h2></div>
+            <div class="chapter-header"><span class="chapter-progress">Capítulo 2 de 6</span><h2 class="chapter-title">Fechas y <em>Preparación</em></h2></div>
             <div class="container-ch">
                 <div class="content-section">
                     <span class="section-tag">Calendario 2026</span>
                     <h2>Prepárate para el éxito</h2>
                     <p style="font-size: 1.25rem;">Las pruebas oficiales se llevarán a cabo en las instalaciones del Colegio La Salle.</p>
+                    
                     <div style="display: flex; gap: 20px; justify-content: center; margin: 25px 0; flex-wrap: wrap;">
                         <div style="background: var(--bg-3d); padding: 20px 30px; border-radius: 15px; box-shadow: var(--neumo-inner); border-left: 5px solid var(--bleu-passation); flex: 1; min-width: 250px;">
                             <h4 style="color: var(--bleu-passation); margin-bottom: 5px; font-size: 1.1rem;">Pruebas Colectivas</h4>
@@ -486,8 +490,8 @@ form .full { grid-column: 1 / -1; }
                             <p style="font-size: 1.4rem; font-weight: 800; color: var(--af-dark); margin: 0;">4 de junio de 2026</p>
                         </div>
                     </div>
-                    
-                    <div style="margin-top: 30px; background: #e8f4fd; border-left: 5px solid var(--bleu-passation); padding: 25px; border-radius: 12px; box-shadow: var(--neumo-inner);">
+
+                    <div class="pd-box" style="margin-top: 30px; background: #e8f4fd; border-left: 5px solid var(--bleu-passation); padding: 25px; border-radius: 12px; box-shadow: var(--neumo-inner);">
                         <strong style="color: var(--bleu-passation); font-size: 1.15rem;">✓ Beneficio Exclusivo:</strong>
                         <p style="margin-top: 10px; font-size: 1.05rem;">Una semana antes de la fecha del examen, la Dirección de la Alianza Francesa ofrecerá <strong>2 sesiones gratuitas de preparación</strong> en los locales de la Alianza para aquellos candidatos inscritos que deseen familiarizarse con las pruebas. (El horario será a convenir con los participantes).</p>
                     </div>
@@ -506,96 +510,87 @@ form .full { grid-column: 1 / -1; }
                         </div>
                     </div>
                 </div>
-                <div class="chapter-nav"><button class="btn-prev" onclick="goToChapter(1)">← Anterior</button><div class="chapter-dots"><span></span><span class="active"></span><span></span><span></span><span></span><span></span><span></span></div><button class="btn-next" onclick="goToChapterWithVideo(3)">Siguiente →</button></div>
+                <div class="chapter-nav"><button class="btn-prev" onclick="goToChapter(1)">← Anterior</button><div class="chapter-dots"><span></span><span class="active"></span><span></span><span></span><span></span><span></span></div><button class="btn-next" onclick="goToChapterWithVideo(3)">Siguiente →</button></div>
             </div>
         </div>
     </section>
 
     <section id="chapter3" class="screen">
         <div class="chapter">
-            <div class="chapter-header"><span class="chapter-progress">Capítulo 3 de 7</span><h2 class="chapter-title">Elige tu <em>nivel</em></h2></div>
+            <div class="chapter-header"><span class="chapter-progress">Capítulo 3 de 6</span><h2 class="chapter-title">Elige tu <em>nivel</em></h2></div>
             <div class="container-ch">
                 <div class="content-section">
+                    <p>Cada nivel corresponde a una competencia lingüística distinta del MCER. Consulta con tu profesor si tienes dudas sobre cuál nivel es el adecuado para ti.</p>
                     <div class="niveles-grid">
-                        <div class="nivel"><div class="nivel-code">A1</div><div class="nivel-price">$1,445 <small>MXN</small></div></div>
-                        <div class="nivel"><div class="nivel-code">A2</div><div class="nivel-price">$1,575 <small>MXN</small></div></div>
-                        <div class="nivel"><div class="nivel-code">B1</div><div class="nivel-price">$1,800 <small>MXN</small></div></div>
-                        <div class="nivel"><div class="nivel-code">B2</div><div class="nivel-price">$2,500 <small>MXN</small></div></div>
+                        <div class="nivel"><div class="nivel-code">A1</div><div class="nivel-name">Introductorio</div><div class="nivel-price">$1,445 <small>MXN</small></div><p style="font-size:0.85rem; color:var(--af-muted); margin-top:10px;">Interacción sencilla sobre temas cotidianos.</p></div>
+                        <div class="nivel"><div class="nivel-code">A2</div><div class="nivel-name">Elemental</div><div class="nivel-price">$1,575 <small>MXN</small></div><p style="font-size:0.85rem; color:var(--af-muted); margin-top:10px;">Comunicación en rutinas de la vida diaria.</p></div>
+                        <div class="nivel"><div class="nivel-code">B1</div><div class="nivel-name">Intermedio</div><div class="nivel-price">$1,800 <small>MXN</small></div><p style="font-size:0.85rem; color:var(--af-muted); margin-top:10px;">Independencia en situaciones de viaje.</p></div>
+                        <div class="nivel"><div class="nivel-code">B2</div><div class="nivel-name">Avanzado</div><div class="nivel-price">$2,500 <small>MXN</small></div><p style="font-size:0.85rem; color:var(--af-muted); margin-top:10px;">Fluidez y espontaneidad en textos complejos.</p></div>
                     </div>
                 </div>
-                <div class="chapter-nav"><button class="btn-prev" onclick="goToChapter(2)">← Anterior</button><div class="chapter-dots"><span></span><span></span><span class="active"></span><span></span><span></span><span></span><span></span></div><button class="btn-next" onclick="goToChapterWithVideo(4)">Siguiente →</button></div>
+                <div class="chapter-nav"><button class="btn-prev" onclick="goToChapter(2)">← Anterior</button><div class="chapter-dots"><span></span><span></span><span class="active"></span><span></span><span></span><span></span></div><button class="btn-next" onclick="goToChapterWithVideo(4)">Siguiente →</button></div>
             </div>
         </div>
     </section>
 
     <section id="chapter4" class="screen">
         <div class="chapter">
-            <div class="chapter-header"><span class="chapter-progress">Capítulo 4 de 7</span><h2 class="chapter-title">Alianza con <em>historia</em></h2></div>
+            <div class="chapter-header"><span class="chapter-progress">Capítulo 4 de 6</span><h2 class="chapter-title">Alianza con <em>historia</em></h2></div>
             <div class="container-ch">
                 <div class="content-section" style="background: linear-gradient(135deg,rgba(20,20,20,.9),rgba(1,56,150,.85)); color: #fff;">
                     <h2 style="color: #fff;">Colegio La Salle & Alianza Francesa</h2>
                     <p style="color: rgba(255,255,255,0.9);">Desde hace varios años mantenemos una colaboración comprometida con la difusión de la lengua francesa en Chiapas.</p>
                 </div>
                 <div class="content-section" style="margin-top:30px">
-                    <span class="section-tag">Galería institucional (Aleatoria)</span>
-                    <h2>Videos del proceso</h2>
+                    <span class="section-tag">Galería institucional</span>
+                    <h2>Nuestra experiencia</h2>
                     <div class="gallery-grid" id="galeria"></div>
                 </div>
-                <div class="chapter-nav"><button class="btn-prev" onclick="goToChapter(3)">← Anterior</button><div class="chapter-dots"><span></span><span></span><span></span><span class="active"></span><span></span><span></span><span></span></div><button class="btn-next" onclick="goToChapterWithVideo(5)">Siguiente →</button></div>
+                <div class="chapter-nav"><button class="btn-prev" onclick="goToChapter(3)">← Anterior</button><div class="chapter-dots"><span></span><span></span><span></span><span class="active"></span><span></span><span></span></div><button class="btn-next" onclick="goToChapterWithVideo(5)">Siguiente →</button></div>
             </div>
         </div>
     </section>
 
     <section id="chapter5" class="screen">
         <div class="chapter">
-            <div class="chapter-header"><span class="chapter-progress">Capítulo 5 de 7</span><h2 class="chapter-title">Atención y <em>Contactos</em></h2></div>
+            <div class="chapter-header"><span class="chapter-progress">Capítulo 5 de 6</span><h2 class="chapter-title"><em>Reglamento</em> oficial</h2></div>
             <div class="container-ch">
                 <div class="content-section">
-                    <div class="contact-grid">
-                        <div class="contact-card"><h4>Dirección General</h4><p class="value">DIRECCIONSANCRISTOBAL@ALIANZAFR.EDU.FR</p></div>
-                        <div class="contact-card"><h4>Asistencia Pagos</h4><p class="value"><a href="https://wa.me/524731219937" target="_blank">WhatsApp Prof. Román</a></p></div>
-                    </div>
+                    <p>El candidato deberá tener conocimiento del presente reglamento y firmar de conformidad antes de inscribirse.</p>
+                    
+                    <div class="regla-toggle" onclick="toggleRegla(this)"><h3>Para inscribirse</h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
+                    <div class="regla-content"><div class="regla-inner"><ul><li>Puede inscribirse al nivel de su elección. Deberá verificar que sus datos sean correctos.</li><li>En caso de reinscripción, facilitar al centro su número FEI previo.</li><li>Ninguna inscripción será aceptada fuera del periodo establecido. <strong>No hay reembolso ni prórroga por ningún motivo.</strong></li><li>Cualquier necesidad de adaptación física debe solicitarse con 2 meses de anticipación con comprobante médico.</li></ul></div></div>
+
+                    <div class="regla-toggle" onclick="toggleRegla(this)"><h3>Día del examen</h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
+                    <div class="regla-content"><div class="regla-inner"><ul><li>Llevar identificación oficial original con foto. Llegar 30 min antes.</li><li>Usar exclusivamente pluma azul o negra. <strong>Prohibido terminantemente el uso de lápiz.</strong></li><li><strong>Prohibido el uso de dispositivos electrónicos</strong> (celulares, relojes inteligentes) en la sala.</li></ul></div></div>
+                    
+                    <div class="regla-toggle" onclick="toggleRegla(this)"><h3>Resultados y Diplomas</h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
+                    <div class="regla-content"><div class="regla-inner"><ul><li>No se entregarán resultados por correo ni por teléfono. El candidato debe presentarse personalmente en el centro de examen.</li><li>La puntuación mínima para aprobar es de 50/100, con un mínimo indispensable de 5/25 en cada competencia.</li></ul></div></div>
+
+                    <div class="regla-toggle" onclick="toggleRegla(this)"><h3>Derechos y Privacidad</h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
+                    <div class="regla-content"><div class="regla-inner"><ul><li>Derecho a ser tratado con dignidad, respeto y evaluado conforme a reglamentos de France Éducation International.</li><li>El consentimiento para tratamiento de datos de menores lo otorga el tutor legal. Ejerce tus derechos ARCO vía email.</li></ul></div></div>
                 </div>
-                <div class="chapter-nav"><button class="btn-prev" onclick="goToChapter(4)">← Anterior</button><div class="chapter-dots"><span></span><span></span><span></span><span></span><span class="active"></span><span></span><span></span></div><button class="btn-next" onclick="goToChapterWithVideo(6)">Siguiente →</button></div>
+                <div class="chapter-nav"><button class="btn-prev" onclick="goToChapter(4)">← Anterior</button><div class="chapter-dots"><span></span><span></span><span></span><span></span><span class="active"></span><span></span></div><button class="btn-next" onclick="goToChapterWithVideo(6)">Siguiente →</button></div>
             </div>
         </div>
     </section>
 
     <section id="chapter6" class="screen">
         <div class="chapter">
-            <div class="chapter-header"><span class="chapter-progress">Capítulo 6 de 7</span><h2 class="chapter-title"><em>Reglamento</em> oficial</h2></div>
-            <div class="container-ch">
-                <div class="content-section">
-                    <div class="regla-toggle" onclick="toggleRegla(this)"><h3>Día del examen</h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
-                    <div class="regla-content"><div class="regla-inner"><ul><li>Llevar identificación original, llegar 30 min antes, usar pluma azul o negra.</li><li>Prohibido terminantemente el uso de lápiz o dispositivos electrónicos en sala.</li></ul></div></div>
-                    
-                    <div class="regla-toggle" onclick="toggleRegla(this)"><h3>Resultados y Diplomas</h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
-                    <div class="regla-content"><div class="regla-inner"><ul><li>No se entregarán resultados por correo ni por teléfono. El candidato debe presentarse personalmente en el centro de examen con su identificación oficial.</li><li>La puntuación mínima para aprobar es de 50/100, con un mínimo de 5/25 en cada competencia.</li></ul></div></div>
-
-                    <div class="regla-toggle" onclick="toggleRegla(this)"><h3>Aviso de Privacidad (ARCO)</h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
-                    <div class="regla-content"><div class="regla-inner"><ul><li>El consentimiento para tratamiento de datos de menores lo otorga incondicionalmente el tutor legal al inscribirse.</li><li>Los datos se transmiten cifrados exclusivamente a los sistemas del gobierno francés (France Éducation International).</li></ul></div></div>
-                </div>
-                <div class="chapter-nav"><button class="btn-prev" onclick="goToChapter(5)">← Anterior</button><div class="chapter-dots"><span></span><span></span><span></span><span></span><span></span><span class="active"></span><span></span></div><button class="btn-next" onclick="goToChapterWithVideo(7)">Siguiente →</button></div>
-            </div>
-        </div>
-    </section>
-
-    <section id="chapter7" class="screen">
-        <div class="chapter">
-            <div class="chapter-header"><span class="chapter-progress">Capítulo 7 de 7</span><h2 class="chapter-title">Inscripción <em>formal</em></h2></div>
+            <div class="chapter-header"><span class="chapter-progress">Capítulo 6 de 6</span><h2 class="chapter-title">Inscripción <em>formal</em></h2></div>
             <div class="container-ch">
                 <div class="content-section" style="text-align: center; padding: 80px 40px;">
                     <h2 style="font-size: 2.5rem;">¿Todo listo para tu inscripción?</h2>
                     <p style="font-size: 1.2rem; max-width: 600px; margin: 0 auto 40px;">Asegúrate de tener a la mano tus datos oficiales y comprobante de pago para rellenar la ficha correctamente.</p>
-                    <button class="btn-primary" onclick="goToFormVideo()" style="padding: 22px 50px; font-size: 1.15rem;">Llenar ficha de inscripción</button>
+                    <button class="btn-primary" onclick="goToFormVideo()" style="padding: 22px 50px; font-size: 1.15rem; background: var(--bleu-passation); color: #fff; border: none; border-radius: 50px; cursor: pointer; box-shadow: 0 10px 25px rgba(1,56,150,.3); transition: all 0.3s;">Llenar ficha de inscripción</button>
                 </div>
-                <div class="chapter-nav"><button class="btn-prev" onclick="goToChapter(6)">← Anterior</button><div class="chapter-dots"><span></span><span></span><span></span><span></span><span></span><span></span><span class="active"></span></div><span class="btn-spacer"></span></div>
+                <div class="chapter-nav"><button class="btn-prev" onclick="goToChapter(5)">← Anterior</button><div class="chapter-dots"><span></span><span></span><span></span><span></span><span></span><span class="active"></span></div><span class="btn-spacer"></span></div>
             </div>
         </div>
     </section>
 
     <section id="formVideo" class="screen video-screen">
-        <video id="formTransitionVideo" playsinline preload="auto" muted><source src="4.mp4" type="video/mp4"></video>
+        <video id="formTransitionVideo" playsinline preload="auto" muted><source src="transicion.mp4" type="video/mp4"></video>
     </section>
 
     <section id="formPage" class="screen">
@@ -618,32 +613,68 @@ form .full { grid-column: 1 / -1; }
                     <form id="inscripcionForm" novalidate>
                         <h3 class="form-section-title"><span class="num">1</span>Datos del Candidato</h3>
                         <div class="grid">
-                            <div class="field full"><label>Tratamiento <span class="req">*</span></label>
+                            <div class="field full">
+                                <label>Tratamiento (Civilité) <span class="req">*</span></label>
                                 <div class="radio-row">
-                                    <div class="radio-pill"><input type="radio" id="tsra" name="tratamiento" value="SRA." required><label for="tsra">Sra.</label></div>
-                                    <div class="radio-pill"><input type="radio" id="tsr" name="tratamiento" value="SR."><label for="tsr">Sr.</label></div>
+                                    <div class="radio-pill"><input type="radio" id="tsra" name="civilite" value="MAD" required><label for="tsra">Sra. (MAD)</label></div>
+                                    <div class="radio-pill"><input type="radio" id="tsr" name="civilite" value="MON"><label for="tsr">Sr. (MON)</label></div>
+                                    <div class="radio-pill"><input type="radio" id="tnod" name="civilite" value="NOD"><label for="tnod">Otro (NOD)</label></div>
                                 </div>
                             </div>
-                            <div class="field full"><label>Apellidos <span class="req">*</span></label><input type="text" name="apellidos" required></div>
-                            <div class="field full"><label>Nombres <span class="req">*</span></label><input type="text" name="nombres" required></div>
-                            <div class="field"><label>Fecha Nacimiento <span class="req">*</span></label><input type="date" name="fecha_nacimiento" required></div>
-                            <div class="field"><label>Ciudad Nacimiento <span class="req">*</span></label><input type="text" name="ciudad_nacimiento" required></div>
-                            <div class="field"><label>Nacionalidad <span class="req">*</span></label><input type="text" name="nacionalidad" required></div>
+                            <div class="field full"><label>Apellidos (Patronyme) <span class="req">*</span></label><input type="text" name="patronyme" required></div>
+                            <div class="field full"><label>Nombres (Prénom) <span class="req">*</span></label><input type="text" name="prenom" required></div>
+                            <div class="field"><label>Fecha Nacimiento <span class="req">*</span></label><input type="date" name="date_naissance" required></div>
+                            <div class="field"><label>Ciudad Nacimiento <span class="req">*</span></label><input type="text" name="ville_naissance" required></div>
+                            
+                            <div class="field">
+                                <label>Nacionalidad <span class="req">*</span></label>
+                                <input type="text" name="nationalite" list="list-nationalite" placeholder="Ej: mexicaine" required>
+                                <datalist id="list-nationalite">
+                                    <option value="mexicaine | 052"></option>
+                                    <option value="française | 000"></option>
+                                    <option value="américaine | 001"></option>
+                                    <option value="canadienne | 010"></option>
+                                </datalist>
+                            </div>
+                            
+                            <div class="field full">
+                                <label>Lengua Materna <span class="req">*</span></label>
+                                <input type="text" name="langue_maternelle" list="list-langues" placeholder="Ej: espagnol" required>
+                                <datalist id="list-langues">
+                                    <option value="espagnol | 120"></option>
+                                    <option value="français | 081"></option>
+                                    <option value="anglais | 059"></option>
+                                    <option value="tzotzil"></option>
+                                    <option value="tzeltal"></option>
+                                </datalist>
+                            </div>
                         </div>
 
-                        <h3 class="form-section-title"><span class="num">2</span>Tutor y Contacto</h3>
+                        <h3 class="form-section-title"><span class="num">2</span>Contacto Tutor</h3>
                         <div class="grid">
-                            <div class="field"><label>Teléfono <span class="req">*</span></label><input type="tel" name="telefono" required pattern="[0-9 +()\-]{8,}"></div>
-                            <div class="field"><label>Correo <span class="req">*</span></label><input type="email" name="correo" required></div>
-                            <div class="field full"><label>Dirección completa <span class="req">*</span></label><input type="text" name="direccion" required></div>
+                            <div class="field"><label>Teléfono <span class="req">*</span></label><input type="tel" name="telephone" required pattern="[0-9 +()\-]{8,}"></div>
+                            <div class="field"><label>Correo <span class="req">*</span></label><input type="email" name="courriel" required></div>
+                            <div class="field full"><label>Dirección completa <span class="req">*</span></label><input type="text" name="adresse" required></div>
                         </div>
 
                         <h3 class="form-section-title"><span class="num">3</span>Certificación DELF</h3>
                         <div class="nivel-selector">
-                            <div class="nivel-pill"><input type="radio" id="na1" name="nivel" value="A1" required><label for="na1"><span class="code">A1</span></label></div>
-                            <div class="nivel-pill"><input type="radio" id="na2" name="nivel" value="A2"><label for="na2"><span class="code">A2</span></label></div>
-                            <div class="nivel-pill"><input type="radio" id="nb1" name="nivel" value="B1"><label for="nb1"><span class="code">B1</span></label></div>
-                            <div class="nivel-pill"><input type="radio" id="nb2" name="nivel" value="B2"><label for="nb2"><span class="code">B2</span></label></div>
+                            <div class="nivel-pill"><input type="radio" id="na1" name="niveau" value="052825 | A1" required><label for="na1"><span class="code">A1</span><span class="price">$1,445</span></label></div>
+                            <div class="nivel-pill"><input type="radio" id="na2" name="niveau" value="052825 | A2"><label for="na2"><span class="code">A2</span><span class="price">$1,575</span></label></div>
+                            <div class="nivel-pill"><input type="radio" id="nb1" name="niveau" value="052825 | B1"><label for="nb1"><span class="code">B1</span><span class="price">$1,800</span></label></div>
+                            <div class="nivel-pill"><input type="radio" id="nb2" name="niveau" value="052825 | B2"><label for="nb2"><span class="code">B2</span><span class="price">$2,500</span></label></div>
+                        </div>
+                        
+                        <div class="field full" style="margin-top:20px;">
+                            <label>Motivo del Examen (Motif inscription) <span class="req">*</span></label>
+                            <select name="motif" required style="width:100%; padding: 16px 20px; background:var(--bg-3d); border:none; border-radius:12px; box-shadow:var(--neumo-inner); font-family:'Outfit'; font-size:1.05rem;">
+                                <option value="" disabled selected>Seleccione un motivo...</option>
+                                <option value="ECOL">Estudios en país de origen (ECOL)</option>
+                                <option value="ETFR">Movilidad estudiantil hacia Francia (ETFR)</option>
+                                <option value="ETAU">Movilidad hacia otros países francófonos (ETAU)</option>
+                                <option value="PERS">Motivación personal (PERS)</option>
+                                <option value="PROF">Necesidades profesionales (PROF)</option>
+                            </select>
                         </div>
 
                         <h3 class="form-section-title"><span class="num">4</span>Comprobante de Pago</h3>
@@ -666,7 +697,7 @@ form .full { grid-column: 1 / -1; }
 
                         <div class="accept-box" style="background: var(--bg-3d); border: none; border-left: 5px solid var(--bleu-passation); border-radius: 12px; padding: 25px 30px; display: flex; gap: 18px; align-items: flex-start; margin-top: 40px; box-shadow: var(--neumo-inner);">
                             <input type="checkbox" id="acepto" name="acepto" required style="width: 24px; height: 24px; accent-color: var(--bleu-passation); flex-shrink: 0; cursor: pointer; margin-top: 3px;">
-                            <label for="acepto" style="font-size: 1.05rem; color: var(--af-dark); line-height: 1.6; cursor: pointer; font-weight: 500;">Acepto el reglamento y el <a href="javascript:void(0)" onclick="openPrivacy()" style="text-decoration: underline; font-weight: 800;">Aviso de Privacidad</a>.</label>
+                            <label for="acepto" style="font-size: 1.05rem; color: var(--af-dark); line-height: 1.6; cursor: pointer; font-weight: 500;">Acepto el reglamento oficial y el <a href="javascript:void(0)" onclick="openPrivacy()" style="text-decoration: underline; font-weight: 800;">Aviso de Privacidad</a>.</label>
                         </div>
 
                         <div class="cta-wrap">
@@ -817,29 +848,38 @@ function closeLightbox(e){
 }
 
 /* ─────────────────────────────────────────────────────────────
-   MÓDULO ADMIN: BÚSQUEDA INTELIGENTE Y BD
+   MÓDULO ADMIN: BÚSQUEDA INTELIGENTE (LEVENSHTEIN) Y BD
 ───────────────────────────────────────────────────────────── */
 const bdCandidatos = [
-    { nombre: "SANTIAGO", apellido: "SALGADO SERVIN", nivel: "A2", numero: "052825010152", pdf: "20260509_GAEL_attestation_inscription_SALGADO_SERVÍN_Santiago.pdf" },
-    { nombre: "LUIS FERNANDO", apellido: "AGUILAR SUAREZ", nivel: "A2", numero: "052825010132", pdf: "20260507_GAEL_attestation_inscription_AGUILAR_SUAREZ_Luis_Fernando.pdf" },
-    { nombre: "SOFIA", apellido: "ALFONZO GARCIA", nivel: "A2", numero: "052825010138", pdf: "20260507_GAEL_attestation_inscription_ALFONZO_GARCÍA_Sofía.pdf" },
-    { nombre: "SAMUEL", apellido: "CANCINO HERNANDEZ", nivel: "A2", numero: "052825010130", pdf: "20260507_GAEL_attestation_inscription_CANCINO_HERNANDEZ_Samuel.pdf" },
-    { nombre: "SARA", apellido: "CANCINO SUAREZ", nivel: "A2", numero: "052825010141", pdf: "20260507_GAEL_attestation_inscription_CANCINO_SUÁREZ_Sara.pdf" },
-    { nombre: "CAROLINA", apellido: "CONTRERAS CHACON", nivel: "A2", numero: "052825010136", pdf: "20260507_GAEL_attestation_inscription_CONTRERAS_CHACÓN_Carolina.pdf" },
-    { nombre: "ERICK SANTIAGO", apellido: "DIAZ RAMOS", nivel: "A2", numero: "052825010137", pdf: "20260507_GAEL_attestation_inscription_DÍAZ_RAMOS_Erick_Santiago.pdf" },
-    { nombre: "MARIA FERNANDA", apellido: "HERNANDEZ QUEZADA", nivel: "A2", numero: "052825010146", pdf: "20260507_GAEL_attestation_inscription_HERNÁNDEZ_QUEZADA_María_Fernanda.pdf" },
-    { nombre: "JUAN MARIANO", apellido: "MARTINEZ VELASCO", nivel: "A2", numero: "052825010150", pdf: "20260509_GAEL_attestation_inscription_MARTÍNEZ_VELASCO_Juan_Mariano.pdf" },
-    { nombre: "JEFTZY SHAILE", apellido: "VAZQUEZ GARCIA", nivel: "A2", numero: "052825010139", pdf: "20260507_GAEL_attestation_inscription_VÁZQUEZ_GARCÍA_Jeftzy_Shaile.pdf" },
-    { inputNombre: "JUNO", inputApellido: "OCAMPO", nombre: "JUNO XIMENA", apellido: "OCAMPO LOPEZ", nivel: "A2", numero: "052825010145", pdf: "20260507_GAEL_attestation_inscription_OCAMPO_LÓPEZ_Juno_Ximena.pdf" },
-    { nombre: "JORGE HUGO", apellido: "REYEZ VAZQUEZ", nivel: "A2", numero: "052825010147", pdf: "20260507_GAEL_attestation_inscription_REYEZ_VÁZQUEZ_Jorge_Hugo.pdf" },
-    { nombre: "ANA PAULA", apellido: "RUIZ ROQUE", nivel: "A2", numero: "052825010131", pdf: "20260507_GAEL_attestation_inscription_RUIZ_ROQUE_Ana_Paula.pdf" },
-    { nombre: "CRISTOBAL", apellido: "SANCHEZ FLORES", nivel: "A2", numero: "052825010135", pdf: "20260507_GAEL_attestation_inscription_SANCHEZ_FLORES_Cristóbal.pdf" },
-    { nombre: "ANDREA MIRANDA", apellido: "SANTIAGO URBINA", nivel: "A2", numero: "052825010133", pdf: "20260507_GAEL_attestation_inscription_SANTIAGO_URBINA_Andrea_Miranda.pdf" },
-    { nombre: "XIOMARA SKARLETT", apellido: "TORREZ GONZALEZ", nivel: "A2", numero: "052825010148", pdf: "20260507_GAEL_attestation_inscription_TORREZ_GONZÁLEZ_Xiomara_Skarlett.pdf" },
-    { nombre: "ANGELA SOFIA", apellido: "TOVILLA DOMINGUEZ", nivel: "A2", numero: "052825010134", pdf: "20260507_GAEL_attestation_inscription_TOVILLA_DOMINGUEZ_Ángela_Sofía.pdf" },
-    { nombre: "LUIS EMILIO", apellido: "GOMEZ MEDINA", nivel: "B2", numero: "052825010129", pdf: "20260509_GAEL_attestation_inscription_GÓMEZ_MEDINA_Luis_Emilio.pdf" },
-    { nombre: "EMILIANO DE JESUS", apellido: "GUZMAN AGUILAR", nivel: "A2", numero: "052825010154", pdf: "20260509_GAEL_attestation_inscription_GUZMÁN_AGUILAR_Emiliano_De_Jesús.pdf" },
-    { nombre: "DASHA CAMILA", apellido: "MONTOYA RUIZ", nivel: "A2", numero: "052825010153", pdf: "20260509_GAEL_attestation_inscription_MONTOYA_RUÍZ_Dasha_Camila.pdf" }
+    { nombre: "SANTIAGO", apellido: "SALGADO SERVIN", nivel: "A2", numero: "052825010152", pdf: "20260512_GAEL_attestation_inscription_SALGADO_SERVÍN_Santiago.pdf" },
+    { nombre: "LUIS FERNANDO", apellido: "AGUILAR SUAREZ", nivel: "A2", numero: "052825010132", pdf: "20260512_GAEL_attestation_inscription_AGUILAR_SUAREZ_Luis_Fernando.pdf" },
+    { nombre: "SOFIA", apellido: "ALFONZO GARCIA", nivel: "A2", numero: "052825010138", pdf: "20260512_GAEL_attestation_inscription_ALFONZO_GARCÍA_Sofía.pdf" },
+    { nombre: "SAMUEL", apellido: "CANCINO HERNANDEZ", nivel: "A2", numero: "052825010130", pdf: "20260512_GAEL_attestation_inscription_CANCINO_HERNANDEZ_Samuel.pdf" },
+    { nombre: "SARA", apellido: "CANCINO SUAREZ", nivel: "A2", numero: "052825010141", pdf: "20260512_GAEL_attestation_inscription_CANCINO_SUÁREZ_Sara.pdf" },
+    { nombre: "CAROLINA", apellido: "CONTRERAS CHACON", nivel: "A2", numero: "052825010136", pdf: "20260512_GAEL_attestation_inscription_CONTRERAS_CHACÓN_Carolina.pdf" },
+    { nombre: "ERICK SANTIAGO", apellido: "DIAZ RAMOS", nivel: "A2", numero: "052825010137", pdf: "20260512_GAEL_attestation_inscription_DÍAZ_RAMOS_Erick_Santiago.pdf" },
+    { nombre: "MARIA FERNANDA", apellido: "HERNANDEZ QUEZADA", nivel: "A2", numero: "052825010146", pdf: "20260512_GAEL_attestation_inscription_HERNÁNDEZ_QUEZADA_María_Fernanda.pdf" },
+    { nombre: "JUAN MARIANO", apellido: "MARTINEZ VELASCO", nivel: "A2", numero: "052825010150", pdf: "20260512_GAEL_attestation_inscription_MARTÍNEZ_VELASCO_Juan_Mariano.pdf" },
+    { nombre: "JEFTZY SHAILE", apellido: "VAZQUEZ GARCIA", nivel: "A2", numero: "052825010139", pdf: "20260512_GAEL_attestation_inscription_VÁZQUEZ_GARCÍA_Jeftzy_Shaile.pdf" },
+    { inputNombre: "JUNO", inputApellido: "OCAMPO", nombre: "JUNO XIMENA", apellido: "OCAMPO LOPEZ", nivel: "A2", numero: "052825010145", pdf: "20260512_GAEL_attestation_inscription_OCAMPO_LÓPEZ_Juno_Ximena.pdf" },
+    { nombre: "JORGE HUGO", apellido: "REYES VAZQUEZ", nivel: "A2", numero: "052825010147", pdf: "20260512_GAEL_attestation_inscription_REYES_VÁZQUEZ_Jorge_Hugo.pdf" },
+    { nombre: "ANA PAULA", apellido: "RUIZ ROQUE", nivel: "A2", numero: "052825010131", pdf: "20260512_GAEL_attestation_inscription_RUIZ_ROQUE_Ana_Paula.pdf" },
+    { nombre: "CRISTOBAL", apellido: "SANCHEZ FLORES", nivel: "A2", numero: "052825010135", pdf: "20260512_GAEL_attestation_inscription_SANCHEZ_FLORES_Cristóbal.pdf" },
+    { nombre: "ANDREA MIRANDA", apellido: "SANTIAGO URBINA", nivel: "A2", numero: "052825010133", pdf: "20260512_GAEL_attestation_inscription_SANTIAGO_URBINA_Andrea_Miranda.pdf" },
+    { nombre: "XIOMARA SKARLETT", apellido: "TORREZ GONZALEZ", nivel: "A2", numero: "052825010148", pdf: "20260512_GAEL_attestation_inscription_TORREZ_GONZÁLEZ_Xiomara_Skarlett.pdf" },
+    { nombre: "ANGELA SOFIA", apellido: "TOVILLA DOMINGUEZ", nivel: "A2", numero: "052825010134", pdf: "20260512_GAEL_attestation_inscription_TOVILLA_DOMINGUEZ_Ángela_Sofía.pdf" },
+    { nombre: "LUIS EMILIO", apellido: "GOMEZ MEDINA", nivel: "B2", numero: "052825010129", pdf: "20260512_GAEL_attestation_inscription_GÓMEZ_MEDINA_Luis_Emilio.pdf" },
+    { nombre: "EMILIANO DE JESUS", apellido: "GUZMAN AGUILAR", nivel: "A2", numero: "052825010154", pdf: "20260512_GAEL_attestation_inscription_GUZMÁN_AGUILAR_Emiliano_De_Jesús.pdf" },
+    { nombre: "DASHA CAMILA", apellido: "MONTOYA RUIZ", nivel: "A2", numero: "052825010153", pdf: "20260512_GAEL_attestation_inscription_MONTOYA_RUÍZ_Dasha_Camila.pdf" },
+    { nombre: "RENATA", apellido: "LOPEZ RENDON", nivel: "A2", numero: "052825010160", pdf: "20260512_GAEL_attestation_inscription_LÓPEZ_RENDÓN_Renata.pdf" },
+    { nombre: "IAN PABLO", apellido: "MORALES RODRIGUEZ", nivel: "A2", numero: "052825010161", pdf: "20260512_GAEL_attestation_inscription_MORALES_RODRÍGUEZ_Ian_Pablo.pdf" },
+    { nombre: "SILVANA", apellido: "MORALES SUAREZ", nivel: "A2", numero: "052825010162", pdf: "20260512_GAEL_attestation_inscription_MORALES_SUÁREZ_Silvana.pdf" },
+    { nombre: "CARLOS RAUL", apellido: "NARVAEZ DIAZ", nivel: "A2", numero: "052825010163", pdf: "20260512_GAEL_attestation_inscription_NARVÁEZ_DÍAZ_Carlos_Raúl.pdf" },
+    { nombre: "KIRA VALENTINA", apellido: "VEZZOLI DIAZ", nivel: "A2", numero: "052825010164", pdf: "20260512_GAEL_attestation_inscription_VEZZOLI_DÍAZ_Kira_Valentina.pdf" },
+    { nombre: "ANGEL", apellido: "CRUZ SOLIS", nivel: "A2", numero: "PENDIENTE", pdf: "#" },
+    { nombre: "MIRANDA", apellido: "RUIZ RIVERA", nivel: "A2", numero: "PENDIENTE", pdf: "#" },
+    { nombre: "CAMILA", apellido: "SILVA VELASCO", nivel: "A2", numero: "PENDIENTE", pdf: "#" },
+    { nombre: "DANIEL ALEJANDRO", apellido: "ZUNIGA DOMINGUEZ", nivel: "A2", numero: "PENDIENTE", pdf: "#" }
 ];
 
 function initStats() {
@@ -904,7 +944,7 @@ function resetBusqueda() {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   MÓDULO ALUMNO: NAVEGACIÓN Y ALGORITMO FISHER-YATES
+   MÓDULO ALUMNO: NAVEGACIÓN Y VIDEOS CINEMATOGRÁFICOS
 ───────────────────────────────────────────────────────────── */
 function playVideoSafe(videoEl, onEnded){
     if(!videoEl) return;
@@ -920,8 +960,7 @@ function playVideoSafe(videoEl, onEnded){
     };
     if(onEnded){
         videoEl.onended = advance;
-        // Solo para el video inicial o final aplicamos safety. Para los de 2 segs no hace falta si no tienen controles.
-        safetyTimer = setTimeout(advance, 10000); 
+        safetyTimer = setTimeout(advance, 15000); 
     }
     try{ videoEl.pause(); videoEl.currentTime = 0; }catch(e){}
     try{ videoEl.load(); }catch(e){}
@@ -957,7 +996,7 @@ function goToFormVideo(){
 
 function toggleRegla(el){ el.classList.toggle('open'); const c = el.nextElementSibling; if(c) c.classList.toggle('open'); }
 
-const VIDEOS_FALLBACK = ['1.mp4','4.mp4','5.mp4','6.mp4'];
+const VIDEOS_FALLBACK = ['1.mp4','5.mp4','6.mp4'];
 function shuffleFisherYates(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -983,9 +1022,8 @@ window.addEventListener('load', () => {
 });
 
 /* ─────────────────────────────────────────────────────────────
-   DRAG & DROP, PERSISTENCIA (LOCALSTORAGE) Y FORMULARIO
+   DRAG & DROP, PERSISTENCIA (LOCALSTORAGE) Y FORMULARIO GAEL
 ───────────────────────────────────────────────────────────── */
-// Persistencia
 const formFields = document.querySelectorAll('#inscripcionForm input:not([type="file"]), #inscripcionForm select');
 formFields.forEach(f => f.addEventListener('input', () => {
     const data = {};
@@ -1016,7 +1054,6 @@ function clearDraft() {
     document.getElementById('inscripcionForm').reset();
 }
 
-// Drag & Drop Comprobante
 const dropZone = document.getElementById('drop-zone');
 const fileInput = document.getElementById('file-upload');
 const dropText = document.getElementById('drop-text');
@@ -1055,7 +1092,6 @@ function handleFile(file) {
     dropText.innerHTML = `<span style="color:var(--green)">✓ ${(file.size/1024/1024).toFixed(2)} MB - ${file.name} listo.</span>`;
 }
 
-// Envío
 const form = document.getElementById('inscripcionForm');
 if(form) {
     form.addEventListener('submit', async function(e){

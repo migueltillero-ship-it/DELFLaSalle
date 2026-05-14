@@ -266,6 +266,55 @@ a:hover { text-decoration: underline; }
 .gallery-item .play-badge svg { width: 22px; height: 22px; margin-left: 3px; }
 
 /* ═══════════════════════════════════════════════
+   MOTTO · DATE-BADGE · FLAG-STRIP (hero) — paleta roja AF
+═══════════════════════════════════════════════ */
+.motto { font-family: 'Playfair Display', Georgia, serif; font-style: italic; font-weight: 600; color: var(--af-red); letter-spacing: .02em; margin-top: 14px; font-size: 1.05rem; }
+.motto::before, .motto::after { content: "·"; color: var(--af-red); margin: 0 10px; opacity: .65; }
+.date-badge { display: inline-flex; align-items: center; gap: 10px; font-family: 'Outfit', sans-serif; font-size: 0.92rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #fff; background: linear-gradient(180deg, var(--af-red) 0%, var(--af-red-dark) 100%); padding: 12px 22px; border-radius: 50px; box-shadow: 0 8px 18px rgba(200,33,30,0.35), inset 0 1px 0 rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.25); margin: 14px 0 18px; }
+.date-badge svg { width: 18px; height: 18px; fill: none; stroke: #fff; stroke-width: 2; }
+.flag-strip { display: flex; height: 5px; width: 220px; margin: 12px auto 6px; border-radius: 50px; overflow: hidden; box-shadow: var(--neumo-inner); }
+.flag-strip span { flex: 1; }
+.flag-strip span:nth-child(1) { background: var(--azul-francia); }
+.flag-strip span:nth-child(2) { background: #fff; }
+.flag-strip span:nth-child(3) { background: var(--af-red); }
+
+/* ═══════════════════════════════════════════════
+   BLOQUE LA SALLE (cita + nombre destacado)
+═══════════════════════════════════════════════ */
+.highlight-name { display: inline-block; color: var(--af-red); font-weight: 800; font-family: 'Playfair Display', serif; font-style: italic; padding: 0 4px; background: linear-gradient(180deg, transparent 60%, rgba(218,0,46,0.12) 60%); }
+.lasalle-quote { font-family: 'Playfair Display', Georgia, serif; font-style: italic; font-size: 1.25rem; color: var(--af-dark); line-height: 1.55; padding: 28px 36px; margin: 28px 0; border-left: 5px solid var(--af-red); background: linear-gradient(135deg, rgba(255,255,255,0.6), rgba(200,33,30,0.06)); border-radius: 12px; box-shadow: var(--neumo-inner); position: relative; }
+.lasalle-quote::before { content: "«"; position: absolute; top: -8px; left: 18px; font-size: 4rem; color: var(--af-red); opacity: .25; line-height: 1; font-family: 'Playfair Display', serif; }
+
+/* ═══════════════════════════════════════════════
+   CARRUSEL 3D · ENTREGAS DE DIPLOMAS
+═══════════════════════════════════════════════ */
+.diploma-carousel { margin: 30px auto 10px; max-width: 920px; }
+.diploma-carousel-eyebrow { display: inline-flex; align-items: center; gap: 10px; font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 800; letter-spacing: .2em; text-transform: uppercase; color: #fff; background: linear-gradient(180deg, var(--af-red) 0%, var(--af-red-dark) 100%); padding: 8px 18px; border-radius: 50px; box-shadow: 0 6px 14px rgba(200,33,30,0.3); margin-bottom: 18px; }
+.carousel-3d-wrap { position: relative; height: 420px; perspective: 1600px; margin: 18px auto 10px; max-width: 900px; overflow: hidden; }
+.carousel-3d { position: absolute; inset: 0; transform-style: preserve-3d; transition: transform 1s cubic-bezier(.22,.61,.36,1); }
+.carousel-3d .slide-3d { position: absolute; top: 50%; left: 50%; width: 320px; height: 380px; margin: -190px 0 0 -160px; border-radius: 22px; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,.35), 0 0 0 3px #fff; border: 1px solid rgba(200,33,30,0.25); background: #000; cursor: pointer; transition: filter .5s; }
+.carousel-3d .slide-3d.is-front { box-shadow: 0 30px 80px rgba(200,33,30,.45), 0 0 0 4px #fff, 0 0 0 6px var(--af-red); }
+.carousel-3d .slide-3d:not(.is-front) { filter: brightness(.6) saturate(.85); }
+.carousel-3d .slide-3d img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.carousel-3d .slide-3d .slide-caption { position: absolute; bottom: 0; left: 0; right: 0; padding: 14px 18px 16px; background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,.85) 100%); color: #fff; font-family: 'Outfit', sans-serif; font-size: 0.85rem; font-weight: 600; letter-spacing: .05em; text-align: center; }
+.carousel-3d-ctrls { display: flex; justify-content: center; gap: 14px; margin-top: 22px; align-items: center; flex-wrap: wrap; }
+.carousel-3d-ctrls button { width: 54px; height: 54px; border-radius: 50%; background: var(--bg-3d); border: 1px solid #fff; box-shadow: var(--neumo-pill); cursor: pointer; color: var(--af-red); font-weight: 800; font-size: 1.3rem; transition: all .25s; display: flex; align-items: center; justify-content: center; }
+.carousel-3d-ctrls button:hover { box-shadow: var(--neumo-inner); color: var(--af-red-dark); transform: scale(1.05); }
+.carousel-3d-ctrls .counter { font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 0.95rem; color: var(--af-muted); letter-spacing: .1em; min-width: 70px; text-align: center; }
+.carousel-3d-ctrls .counter strong { color: var(--af-red); font-size: 1.2rem; }
+@media (max-width: 720px) {
+    .carousel-3d-wrap { height: 340px; perspective: 1100px; }
+    .carousel-3d .slide-3d { width: 240px; height: 300px; margin: -150px 0 0 -120px; }
+}
+
+/* ═══════════════════════════════════════════════
+   VALIDACIÓN EN VIVO DEL FORMULARIO
+═══════════════════════════════════════════════ */
+.field.has-error input, .field.has-error select, input.has-error, select.has-error { border-color: var(--af-red) !important; box-shadow: 0 0 0 3px rgba(218,0,46,0.18) !important; }
+.field-error-msg { display: block; margin-top: 6px; color: var(--af-red); font-family: 'Outfit', sans-serif; font-size: 0.82rem; font-weight: 700; letter-spacing: .02em; }
+.field:not(.has-error) .field-error-msg { display: none; }
+
+/* ═══════════════════════════════════════════════
    FORMULARIO
 ═══════════════════════════════════════════════ */
 .form-page-wrap { padding: 60px 16px; }
@@ -851,9 +900,15 @@ form .full { grid-column: 1 / -1; }
                 <div class="hero-divider"></div>
                 <img src="lasalle.jpg" alt="La Salle">
             </div>
-            <span class="hero-eyebrow">Ministerio Francés de Educación</span>
+            <span class="hero-eyebrow">Embajada de Francia · Ministerio Francés de Educación</span>
             <h1>DELF Junior <span>2026</span></h1>
-            <p class="hero-sub">Certificación oficial de francés del Ministerio Francés de Educación. Alianza Francesa de San Cristóbal de Las Casas y Colegio La Salle, comprometidos con la excelencia lingüística de Chiapas.</p>
+            <p class="hero-sub">Certificación oficial de francés del Ministerio Francés de Educación. Una colaboración entre la Alianza Francesa de San Cristóbal de Las Casas y el Colegio La Salle, comprometidos con la excelencia lingüística de Chiapas.</p>
+            <div class="date-badge">
+                <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                Sesión de exámenes · Junio 2026
+            </div>
+            <div class="flag-strip"><span></span><span></span><span></span></div>
+            <p class="motto">Liberté · Égalité · Fraternité</p>
             <div class="tricolor"><span class="b1"></span><span class="b2"></span><span class="b3"></span></div>
         </header>
         <div class="container-ch">
@@ -1030,7 +1085,7 @@ form .full { grid-column: 1 / -1; }
         </div>
     </section>
 
-    <!-- CHAPTER 4: Alianza con historia + galería -->
+    <!-- CHAPTER 4: Alianza con historia + carrusel diplomas + contactos + galería -->
     <section id="chapter4" class="screen">
         <div class="container-ch" style="padding-top: 60px;">
             <div class="chapter-header">
@@ -1038,17 +1093,74 @@ form .full { grid-column: 1 / -1; }
                 <h2 class="chapter-title">Alianza con <em>historia</em></h2>
                 <p class="chapter-subtitle">Colegio La Salle y Alianza Francesa: una colaboración consolidada.</p>
             </div>
-            <div class="content-section" style="background: linear-gradient(135deg,rgba(20,20,20,.92),rgba(1,56,150,.88)); color: #fff; border: none;">
+            <div class="content-section" style="background: linear-gradient(135deg,rgba(20,20,20,.92),rgba(200,33,30,.88)); color: #fff; border: none;">
                 <h2 style="color: #fff;">Colegio La Salle × Alliance Française</h2>
                 <p style="color: rgba(255,255,255,0.92);">Desde hace varios años mantenemos una colaboración comprometida con la difusión de la lengua y la cultura francesa en Chiapas. Cada año, decenas de estudiantes lasallistas se preparan en la Alianza Francesa para presentar el examen DELF en la sede del Colegio, transformando su trayectoria académica con una certificación internacional.</p>
                 <p style="color: rgba(255,255,255,0.92);">Esta sinergia entre dos instituciones de excelencia —el rigor educativo lasallista y la tradición lingüística francesa— garantiza un proceso de passation organizado, transparente y conforme a los estándares del Ministerio Francés de Educación.</p>
+                <p style="color: rgba(255,255,255,0.92);">Cada año, la entrega de diplomas se realiza con la presencia distinguida de <span class="highlight-name" style="color:#fff; background: linear-gradient(180deg, transparent 60%, rgba(255,255,255,0.22) 60%);">Clémence Mayoral</span>, representante institucional, en una ceremonia que reconoce el esfuerzo y la dedicación de cada candidato. Los estudiantes con las mejores calificaciones reciben además <strong>menciones honoríficas</strong> que celebran su excelencia académica.</p>
+                <p style="color: rgba(255,255,255,0.92); opacity: .95;">Esta histórica colaboración consolida a San Cristóbal de Las Casas como un punto de referencia en la enseñanza del francés a nivel juvenil en el sureste de México.</p>
             </div>
+
+            <div class="content-section" style="margin-top: 25px;">
+                <div style="text-align:center;">
+                    <span class="diploma-carousel-eyebrow">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 15l-2 5-2-5"/><path d="M14 15l2 5 2-5"/><circle cx="12" cy="8" r="6"/></svg>
+                        Ceremonias previas
+                    </span>
+                </div>
+                <h2 style="text-align:center;">Entregas de diplomas <em style="color:var(--af-red);font-style:italic;">— años anteriores</em></h2>
+                <p style="text-align:center; max-width:680px; margin: 0 auto 10px;">Un recorrido visual por las ceremonias de entrega de diplomas DELF Junior en el Colegio La Salle. Cada imagen documenta el orgullo, el rigor y la alegría de las generaciones que nos preceden.</p>
+                <p style="text-align:center; max-width:680px; margin: 0 auto;"><em>Haz clic en la imagen central para ampliarla. Usa las flechas para navegar.</em></p>
+
+                <div class="diploma-carousel">
+                    <div class="carousel-3d-wrap" id="diploma-carousel-wrap">
+                        <div class="carousel-3d" id="diploma-carousel"></div>
+                    </div>
+                    <div class="carousel-3d-ctrls">
+                        <button type="button" onclick="diplomaCarouselPrev()" aria-label="Anterior">‹</button>
+                        <span class="counter"><strong id="diploma-carousel-index">1</strong> / <span id="diploma-carousel-total">—</span></span>
+                        <button type="button" onclick="diplomaCarouselNext()" aria-label="Siguiente">›</button>
+                    </div>
+                </div>
+
+                <blockquote class="lasalle-quote">Aprender francés es abrir una ventana al mundo. Cada diploma DELF entregado representa una historia de constancia, talento y futuro.</blockquote>
+            </div>
+
+            <div class="content-section" style="margin-top: 25px;">
+                <span class="section-tag">Contactos institucionales</span>
+                <h2>Estamos a tu disposición</h2>
+                <p>Para cualquier consulta sobre el proceso de inscripción, fechas o requisitos, ponte en contacto con la Dirección de la Alianza Francesa de San Cristóbal o con el profesor responsable del DELF Junior.</p>
+                <div class="contact-grid">
+                    <div class="contact-card">
+                        <div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></div>
+                        <h4>Dirección general</h4>
+                        <p class="value"><a href="mailto:DIRECCIONSANCRISTOBAL@ALIANZAFR.EDU.FR">DIRECCIONSANCRISTOBAL@<wbr>ALIANZAFR.EDU.FR</a></p>
+                    </div>
+                    <div class="contact-card">
+                        <div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></div>
+                        <h4>Línea administrativa</h4>
+                        <p class="value">+52 1 967 342 44 56</p>
+                    </div>
+                    <div class="contact-card">
+                        <div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.6.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.4-2.3-1.4-.8-.7-1.4-1.6-1.6-1.9-.2-.3 0-.4.1-.6.1-.1.3-.3.4-.5.1-.1.2-.3.3-.5.1-.2 0-.3 0-.5-.1-.1-.6-1.5-.9-2-.2-.5-.5-.5-.6-.5h-.6c-.2 0-.5.1-.7.3-.2.3-.9.9-.9 2.2 0 1.3 1 2.6 1.1 2.7.1.2 2 3.1 4.8 4.2 1.7.7 2.3.7 3.1.6.5-.1 1.7-.7 1.9-1.3.2-.7.2-1.2.2-1.3-.1-.1-.3-.2-.6-.3z"></path></svg></div>
+                        <h4>Pagos · Prof. Román Fuentes</h4>
+                        <p class="value"><a href="https://wa.me/524731219937" target="_blank" rel="noopener">WhatsApp +52 473 121 9937</a></p>
+                    </div>
+                    <div class="contact-card">
+                        <div class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></div>
+                        <h4>Sede de aplicación</h4>
+                        <p class="value">Colegio La Salle, San Cristóbal de Las Casas, Chiapas</p>
+                    </div>
+                </div>
+            </div>
+
             <div class="content-section" style="margin-top: 25px;">
                 <span class="section-tag">Galería institucional</span>
                 <h2>Momentos de nuestra comunidad</h2>
                 <p>Imágenes de jornadas culturales, sesiones de preparación y momentos de la vida lingüística compartida entre ambas instituciones. Haz clic en cualquier imagen para ampliarla.</p>
                 <div class="gallery-grid" id="galeria"></div>
             </div>
+
             <div class="chapter-nav">
                 <button class="btn-prev" onclick="goToChapter(3)">← Anterior</button>
                 <div class="chapter-dots"><span></span><span></span><span></span><span class="active"></span><span></span><span></span></div>
@@ -1380,8 +1492,10 @@ const bdCandidatos = [
     { nombre: "DANIEL ALEJANDRO", apellido: "ZUNIGA DOMINGUEZ", nivel: "A2", numero: "PENDIENTE", pdf: "#" }
 ];
 
-/* GALERÍA: lista completa de medios disponibles */
+/* GALERÍA: lista completa de medios disponibles
+   (los items cuya imagen/video no exista se ocultan vía onerror) */
 const galleryItems = [
+    { type: 'image', src: 'diplomas-2025.jpg' },
     { type: 'image', src: 'IMG-20241023-WA0017.jpg' },
     { type: 'image', src: 'IMG-20241023-WA0018.jpg' },
     { type: 'image', src: 'IMG-20241023-WA0019.jpg' },
@@ -1819,15 +1933,125 @@ function renderGallery(){
         const div = document.createElement('div');
         div.className = 'gallery-item';
         if(item.type === 'video'){
-            div.innerHTML = `<video preload="metadata" muted playsinline${item.poster ? ` poster="${item.poster}"` : ''}><source src="${item.src}#t=0.5" type="video/mp4"></video><div class="play-badge"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>`;
+            const posterAttr = item.poster ? ` poster="${item.poster}"` : '';
+            div.innerHTML = `<video preload="metadata" muted playsinline${posterAttr} onerror="this.parentElement.style.display='none'"><source src="${item.src}#t=0.5" type="video/mp4"></video><div class="play-badge"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>`;
             div.addEventListener('click', () => openLightbox('video', item.src));
         } else {
-            div.innerHTML = `<img src="${item.src}" alt="DELF" loading="lazy">`;
+            div.innerHTML = `<img src="${item.src}" alt="DELF" loading="lazy" onerror="this.parentElement.style.display='none'">`;
             div.addEventListener('click', () => openLightbox('image', item.src));
         }
         grid.appendChild(div);
     });
 }
+
+/* ═══════════════════════════════════════════════
+   CARRUSEL 3D · ENTREGAS DE DIPLOMAS (años anteriores)
+═══════════════════════════════════════════════ */
+/* Fotos seleccionadas de ceremonias previas. Se filtran las que existan. */
+const diplomaCeremonyPhotos = [
+    { src: 'IMG-20241023-WA0017.jpg', caption: 'Ceremonia · Octubre 2024' },
+    { src: 'IMG-20241023-WA0018.jpg', caption: 'Entrega de diplomas · Octubre 2024' },
+    { src: 'IMG-20241023-WA0019.jpg', caption: 'Ceremonia · Octubre 2024' },
+    { src: 'IMG_20241023_071530.jpg',  caption: 'Acto institucional · Octubre 2024' },
+    { src: 'IMG-20241028-WA0050.jpg', caption: 'Promoción 2024' },
+    { src: 'IMG-20241028-WA0056.jpg', caption: 'Promoción 2024' },
+    { src: 'IMG-20241028-WA0058.jpg', caption: 'Promoción 2024' },
+    { src: 'IMG-20251119-WA0158.jpg', caption: 'Preámbulo · Noviembre 2024' },
+    { src: 'IMG-20251204-WA0033.jpg', caption: 'Entrega de diplomas · Diciembre 2024' },
+    { src: 'IMG-20251204-WA0057.jpg', caption: 'Entrega de diplomas · Diciembre 2024' },
+    { src: 'IMG-20251204-WA0062.jpg', caption: 'Entrega de diplomas · Diciembre 2024' },
+    { src: 'IMG_20251204_123438.jpg', caption: 'Ceremonia La Salle · Diciembre 2024' },
+    { src: 'IMG_20251204_124832368_HDR.jpg', caption: 'Ceremonia La Salle · Diciembre 2024' },
+    { src: 'IMG_20251204_124849353.jpg', caption: 'Ceremonia La Salle · Diciembre 2024' },
+    { src: 'IMG_20251204_124852202.jpg', caption: 'Ceremonia La Salle · Diciembre 2024' },
+    { src: 'IMG_20251204_124949487_HDR.jpg', caption: 'Ceremonia La Salle · Diciembre 2024' },
+    { src: 'IMG_20251204_125050500_HDR.jpg', caption: 'Ceremonia La Salle · Diciembre 2024' },
+    { src: 'IMG_20251204_125059995_HDR.jpg', caption: 'Ceremonia La Salle · Diciembre 2024' },
+    { src: 'IMG_20251204_125231254_HDR.jpg', caption: 'Ceremonia La Salle · Diciembre 2024' }
+];
+
+let diplomaCarouselIndex = 0;
+let diplomaCarouselSlides = [];
+
+function checkDiplomaImage(url){
+    return new Promise(resolve => {
+        const img = new Image();
+        img.onload = () => resolve(img.naturalWidth > 1);
+        img.onerror = () => resolve(false);
+        img.src = url;
+    });
+}
+
+async function renderDiplomaCarousel(){
+    const stage = document.getElementById('diploma-carousel');
+    const total = document.getElementById('diploma-carousel-total');
+    if(!stage) return;
+    const checks = await Promise.all(diplomaCeremonyPhotos.map(async p => ({ p, ok: await checkDiplomaImage(p.src) })));
+    diplomaCarouselSlides = checks.filter(c => c.ok).map(c => c.p);
+    if(diplomaCarouselSlides.length === 0){
+        const wrap = document.getElementById('diploma-carousel-wrap');
+        if(wrap) wrap.style.display = 'none';
+        const ctrls = stage.parentElement.parentElement.querySelector('.carousel-3d-ctrls');
+        if(ctrls) ctrls.style.display = 'none';
+        return;
+    }
+    stage.innerHTML = '';
+    diplomaCarouselSlides.forEach((p, i) => {
+        const slide = document.createElement('div');
+        slide.className = 'slide-3d';
+        slide.dataset.idx = String(i);
+        slide.innerHTML = `<img src="${p.src}" alt="${p.caption}" loading="lazy"><div class="slide-caption">${p.caption}</div>`;
+        slide.addEventListener('click', () => {
+            if(i === diplomaCarouselIndex) openLightbox('image', p.src);
+            else diplomaCarouselGoTo(i);
+        });
+        stage.appendChild(slide);
+    });
+    if(total) total.textContent = String(diplomaCarouselSlides.length);
+    diplomaCarouselIndex = 0;
+    layoutDiplomaCarousel();
+}
+
+function layoutDiplomaCarousel(){
+    const stage = document.getElementById('diploma-carousel');
+    if(!stage || diplomaCarouselSlides.length === 0) return;
+    const n = diplomaCarouselSlides.length;
+    const radius = Math.min(520, Math.max(280, n * 38));
+    const slides = stage.querySelectorAll('.slide-3d');
+    const idxBadge = document.getElementById('diploma-carousel-index');
+    if(idxBadge) idxBadge.textContent = String(diplomaCarouselIndex + 1);
+    slides.forEach((el, i) => {
+        const offset = ((i - diplomaCarouselIndex) + n) % n;
+        const angle = (360 / n) * offset;
+        el.style.transform = `rotateY(${angle}deg) translateZ(${radius}px)`;
+        el.classList.toggle('is-front', offset === 0);
+        el.style.zIndex = String(offset === 0 ? 50 : 10 - Math.abs(offset - n / 2));
+    });
+}
+
+function diplomaCarouselGoTo(i){
+    const n = diplomaCarouselSlides.length;
+    if(n === 0) return;
+    diplomaCarouselIndex = ((i % n) + n) % n;
+    layoutDiplomaCarousel();
+}
+function diplomaCarouselNext(){ diplomaCarouselGoTo(diplomaCarouselIndex + 1); }
+function diplomaCarouselPrev(){ diplomaCarouselGoTo(diplomaCarouselIndex - 1); }
+
+/* Auto-avance suave cada 6s, se pausa al pasar el cursor */
+(function setupDiplomaAutoplay(){
+    let timer = null;
+    const start = () => { stop(); timer = setInterval(() => { if(diplomaCarouselSlides.length > 1) diplomaCarouselNext(); }, 6000); };
+    const stop = () => { if(timer){ clearInterval(timer); timer = null; } };
+    document.addEventListener('DOMContentLoaded', () => {
+        const wrap = document.getElementById('diploma-carousel-wrap');
+        if(!wrap) return;
+        wrap.addEventListener('mouseenter', stop);
+        wrap.addEventListener('mouseleave', start);
+        setTimeout(start, 3500);
+    });
+    window.addEventListener('resize', () => { try{ layoutDiplomaCarousel(); }catch(e){} });
+})();
 
 /* ═══════════════════════════════════════════════
    FORM: AUTOSAVE, DROPZONE, SUBMIT
@@ -1881,6 +2105,68 @@ function clearDraft(){
     if(dt) dt.textContent = 'Arrastra el archivo aquí o haz clic para seleccionarlo';
 }
 
+/* ═══════════════════════════════════════════════
+   VALIDACIÓN ESTRICTA POR REGEX
+═══════════════════════════════════════════════ */
+const REGEX_LETRAS = /^[a-zA-ZÀ-ÿñÑ\s.''\-]+$/;
+const REGEX_CORREO = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const REGEX_TELEFONO = /^[0-9 +()\-]{8,20}$/;
+const REGEX_NUMERO = /^\d+$/;
+
+const REGLAS_ESTRICTAS = {
+    apellidos:         { regex: REGEX_LETRAS,   msg: 'Solo letras y espacios.' },
+    nombres:           { regex: REGEX_LETRAS,   msg: 'Solo letras y espacios.' },
+    nacionalidad:      { regex: REGEX_LETRAS,   msg: 'Solo letras.' },
+    lengua_materna:    { regex: REGEX_LETRAS,   msg: 'Solo letras.' },
+    ciudad_nacimiento: { regex: REGEX_LETRAS,   msg: 'Solo letras.' },
+    pais_nacimiento:   { regex: REGEX_LETRAS,   msg: 'Solo letras.' },
+    ciudad:            { regex: REGEX_LETRAS,   msg: 'Solo letras.' },
+    estado:            { regex: REGEX_LETRAS,   msg: 'Solo letras.' },
+    correo:            { regex: REGEX_CORREO,   msg: 'Formato de correo inválido.' },
+    telefono:          { regex: REGEX_TELEFONO, msg: '8 a 20 dígitos. Solo números, espacios, +, () y -.' },
+    candidato_parte1:  { regex: REGEX_NUMERO, optional: true, msg: 'Solo dígitos.' },
+    candidato_parte2:  { regex: REGEX_NUMERO, optional: true, msg: 'Solo dígitos.' }
+};
+
+function getFieldDiv(input){
+    let n = input;
+    while(n && !(n.classList && n.classList.contains('field'))) n = n.parentElement;
+    return n;
+}
+function ensureErrorMsg(host, msg){
+    if(!host) return;
+    let span = host.querySelector('.field-error-msg');
+    if(!span){
+        span = document.createElement('span');
+        span.className = 'field-error-msg';
+        host.appendChild(span);
+    }
+    span.textContent = msg;
+}
+function validarCampo(input){
+    const regla = REGLAS_ESTRICTAS[input.name];
+    if(!regla) return true;
+    const val = (input.value || '').trim();
+    const host = getFieldDiv(input) || input.parentElement;
+    let ok = true;
+    if(val === ''){
+        ok = !!regla.optional || !input.hasAttribute('required');
+    } else {
+        ok = regla.regex.test(val);
+    }
+    if(ok){
+        input.classList.remove('has-error');
+        if(host) host.classList.remove('has-error');
+    } else {
+        input.classList.add('has-error');
+        if(host){
+            host.classList.add('has-error');
+            ensureErrorMsg(host, regla.msg);
+        }
+    }
+    return ok;
+}
+
 function setupForm(){
     const form = document.getElementById('inscripcionForm');
     if(!form) return;
@@ -1923,32 +2209,74 @@ function setupForm(){
         dropText.textContent = '✓ ' + f.name + ' (' + (f.size/1024/1024).toFixed(2) + ' MB)';
     }
 
-    form.addEventListener('submit', e => {
+    /* Validación regex estricta en vivo */
+    Object.keys(REGLAS_ESTRICTAS).forEach(name => {
+        const input = form.querySelector(`[name="${name}"]`);
+        if(!input) return;
+        input.addEventListener('blur', () => validarCampo(input));
+        input.addEventListener('input', () => {
+            if(getFieldDiv(input)?.classList.contains('has-error')) validarCampo(input);
+        });
+    });
+
+    form.addEventListener('submit', async e => {
         e.preventDefault();
         const submitBtn = document.getElementById('submitBtn');
         if(!form.checkValidity()){
             form.reportValidity();
             return;
         }
+        /* Pasada de validación regex */
+        let formValido = true;
+        Object.keys(REGLAS_ESTRICTAS).forEach(name => {
+            const input = form.querySelector(`[name="${name}"]`);
+            if(input && !validarCampo(input)) formValido = false;
+        });
+        if(!formValido){
+            const primerError = form.querySelector('.field.has-error input, .field.has-error select, input.has-error, select.has-error');
+            if(primerError) primerError.scrollIntoView({behavior:'smooth', block:'center'});
+            return;
+        }
+
         submitBtn.disabled = true;
+        const originalLabel = submitBtn.innerHTML;
         submitBtn.innerHTML = 'Enviando<span class="loading-dots"></span>';
-        setTimeout(() => {
-            clearDraft();
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = 'Enviar inscripción segura';
-            showScreen('postFormVideo');
-            const pv = document.getElementById('postVideo');
-            if(pv){
-                pv.muted = true; pv.currentTime = 0;
-                pv.play().catch(()=>{});
-                let done = false;
-                const goNext = ()=>{ if(done) return; done=true; pv.onended=null; fadeOutAndShow('postFormVideo','askReturn'); };
-                pv.onended = goNext;
-                setTimeout(goNext, 3500);
-            } else {
-                showScreen('askReturn');
-            }
-        }, 1500);
+
+        /* Construir el payload */
+        const data = new FormData(form);
+        const payload = { _subject: 'Nueva inscripción DELF Junior 2026 — ' + (data.get('apellidos')||'') + ' ' + (data.get('nombres')||''), _template: 'table', _captcha: 'false' };
+        data.forEach((v, k) => { if(typeof v === 'string') payload[k] = v; });
+
+        try{
+            const res = await fetch('https://formsubmit.co/ajax/DIRECCIONSANCRISTOBAL@ALIANZAFR.EDU.FR', {
+                method: 'POST',
+                headers: {'Content-Type':'application/json', 'Accept':'application/json'},
+                body: JSON.stringify(payload)
+            });
+            if(!res.ok) throw new Error('formsubmit no-ok');
+        } catch(err){
+            console.warn('Envío vía formsubmit falló; abriendo mailto como respaldo.', err);
+            try{
+                const cuerpo = Object.entries(payload).filter(([k]) => !k.startsWith('_')).map(([k,v]) => k+': '+v).join('\n');
+                window.location.href = 'mailto:DIRECCIONSANCRISTOBAL@ALIANZAFR.EDU.FR?subject=' + encodeURIComponent(payload._subject) + '&body=' + encodeURIComponent(cuerpo);
+            } catch(e){}
+        }
+
+        clearDraft();
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalLabel || 'Enviar inscripción segura';
+        showScreen('postFormVideo');
+        const pv = document.getElementById('postVideo');
+        if(pv){
+            pv.muted = true; pv.currentTime = 0;
+            pv.play().catch(()=>{});
+            let done = false;
+            const goNext = ()=>{ if(done) return; done=true; pv.onended=null; fadeOutAndShow('postFormVideo','askReturn'); };
+            pv.onended = goNext;
+            setTimeout(goNext, 3500);
+        } else {
+            showScreen('askReturn');
+        }
     });
 
     restoreDraft();
@@ -2075,12 +2403,13 @@ window.addEventListener('load', () => {
                 mouseControls: true, touchControls: true, gyroControls: false,
                 minHeight: 200.00, minWidth: 200.00,
                 scale: 1.00, scaleMobile: 1.00,
-                color: 0x013896, backgroundColor: 0xe0e5ec,
-                points: 10.00, maxDistance: 20.00, spacing: 18.00
+                color: 0xC8211E, backgroundColor: 0xf5f0eb,
+                points: 9.00, maxDistance: 24.00, spacing: 20.00
             });
         } catch(e){}
     }
     renderGallery();
+    renderDiplomaCarousel();
     setupForm();
 });
 </script>

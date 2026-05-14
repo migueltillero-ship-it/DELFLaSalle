@@ -1,0 +1,2089 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#013896">
+<meta name="format-detection" content="telephone=no">
+<title>Portal DELF Junior 2026 · Alliance Française & Colegio La Salle</title>
+<meta name="description" content="Portal oficial DELF Junior 2026. Inscripción y validación. Sede: Colegio La Salle, San Cristóbal de Las Casas. Niveles A1, A2, B1, B2.">
+<meta name="keywords" content="DELF Junior 2026, Alianza Francesa, Colegio La Salle, San Cristóbal de las Casas, certificación francés, France Éducation International">
+<meta name="author" content="Alianza Francesa de San Cristóbal de las Casas">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_MX">
+<meta property="og:url" content="https://migueltillero-ship-it.github.io/DELFLaSalle/">
+<meta property="og:title" content="Portal DELF Junior 2026 · Alianza Francesa & La Salle">
+<meta property="og:description" content="Certifica tu francés a nivel internacional. Inscripciones abiertas para Junio 2026.">
+<meta property="og:site_name" content="DELF La Salle 2026">
+
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+
+<style>
+/* ═══════════════════════════════════════════════
+   VARIABLES GLOBALES
+═══════════════════════════════════════════════ */
+:root {
+    --bleu-passation: #013896;
+    --rouge-passation: #DA002E;
+    --af-red: #C8211E;
+    --af-red-dark: #8a1715;
+    --af-gold: #A8843E;
+    --azul-francia: #002654;
+    --af-muted: #5b5b5b;
+    --af-dark: #1a1a1a;
+    --green: #1a8a4a;
+    --bg-3d: #e0e5ec;
+    --shadow-light: #ffffff;
+    --shadow-dark: #a3b1c6;
+    --neumo-main: 20px 20px 40px #bec3c9, -20px -20px 40px #ffffff;
+    --neumo-inner: inset 6px 6px 12px #bec3c9, inset -6px -6px 12px #ffffff;
+    --neumo-pill: 6px 6px 12px #bec3c9, -6px -6px 12px #ffffff;
+    --neumo-pill-hover: 8px 8px 16px #bec3c9, -8px -8px 16px #ffffff;
+    --base-font-size: 18px;
+    --line-height-body: 1.75;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+    font-family: 'Inter', -apple-system, system-ui, sans-serif;
+    background: var(--bg-3d);
+    color: var(--af-dark);
+    font-size: var(--base-font-size);
+    line-height: var(--line-height-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+body.intro-active { overflow: hidden; }
+
+#vanta-bg {
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: -1; pointer-events: none;
+}
+
+h1, h2, h3, h4 {
+    font-family: 'Playfair Display', Georgia, serif;
+    color: var(--af-dark);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+}
+a { color: var(--bleu-passation); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+.fade-out { animation: fadeOut 0.6s forwards !important; }
+@keyframes scaleIn { from { transform: scale(.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+@keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(.85); opacity: .7; } }
+@keyframes dots { 0%,20%{content:".";} 40%{content:"..";} 60%,100%{content:"...";} }
+.loading-dots::after { content: "."; display: inline-block; width: 18px; text-align: left; animation: dots 1.4s infinite; }
+
+/* ═══════════════════════════════════════════════
+   CONTROLES FLOTANTES
+═══════════════════════════════════════════════ */
+.music-btn, .fs-btn, .wa-fab, #back-to-top {
+    position: fixed; z-index: 9980; width: 55px; height: 55px;
+    border-radius: 50%; background: var(--bg-3d);
+    border: 1px solid #fff; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: var(--neumo-pill); transition: all .3s;
+}
+.music-btn { bottom: 25px; right: 95px; color: var(--bleu-passation); }
+.fs-btn { top: 25px; right: 25px; color: var(--bleu-passation); }
+.wa-fab { bottom: 25px; left: 25px; color: #25D366; text-decoration: none; }
+#back-to-top { bottom: 95px; right: 25px; color: var(--bleu-passation); opacity: 0; pointer-events: none; transform: translateY(20px); }
+#back-to-top.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+.music-btn:hover, .fs-btn:hover, #back-to-top:hover { transform: scale(1.1); box-shadow: var(--neumo-inner); color: var(--rouge-passation); }
+.wa-fab:hover { transform: scale(1.1); box-shadow: var(--neumo-inner); color: #128C7E; }
+.music-btn svg, .fs-btn svg, #back-to-top svg { width: 22px; height: 22px; fill: none; stroke: currentColor; }
+.wa-fab svg { width: 26px; height: 26px; fill: currentColor; }
+.music-btn .wave { display: none; }
+.music-btn.playing .icon-mute { display: none; }
+.music-btn.playing .wave { display: block; animation: pulse 1.5s ease infinite; }
+.fs-btn .icon-exit { display: none; }
+.fs-btn.active .icon-enter { display: none; }
+.fs-btn.active .icon-exit { display: block; }
+
+/* ═══════════════════════════════════════════════
+   MODAL & LIGHTBOX
+═══════════════════════════════════════════════ */
+.modal-overlay { position: fixed; inset: 0; background: rgba(224,229,236,0.8); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 10000; padding: 20px; }
+.modal-overlay.open { display: flex; animation: fadeIn 0.4s ease; }
+.modal-box { background: var(--bg-3d); border-radius: 24px; padding: 50px 40px; max-width: 800px; width: 100%; max-height: 85vh; overflow-y: auto; box-shadow: var(--neumo-main); border: 1px solid #fff; position: relative; }
+.modal-close { position: absolute; top: 20px; right: 20px; width: 40px; height: 40px; border-radius: 50%; background: var(--bg-3d); border: 1px solid #fff; color: var(--rouge-passation); font-size: 1.5rem; cursor: pointer; box-shadow: var(--neumo-pill); display: flex; align-items: center; justify-content: center; transition: all 0.3s; font-family: 'Outfit'; font-weight: 800; }
+.modal-close:hover { box-shadow: var(--neumo-inner); transform: scale(0.95); }
+.modal-box h2 { color: var(--bleu-passation); margin-bottom: 20px; font-size: 2.2rem; text-align: center; }
+.modal-box h3 { color: var(--rouge-passation); margin: 25px 0 10px; font-family: 'Inter', sans-serif; font-size: 1.2rem; font-weight: 800; }
+.modal-box p, .modal-box li { font-size: 1.05rem; color: var(--af-muted); margin-bottom: 10px; line-height: 1.6; }
+.modal-box ul { padding-left: 20px; margin-bottom: 15px; }
+
+.lightbox { position: fixed; inset: 0; z-index: 9999; background: rgba(10,10,20,.94); display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: all .35s ease; backdrop-filter: blur(10px); padding: 40px; }
+.lightbox.active { opacity: 1; visibility: visible; }
+.lightbox-container { max-width: 90vw; max-height: 88vh; border-radius: 20px; background: #000; position: relative; animation: scaleIn .4s ease; border: 3px solid #fff; }
+.lightbox img, .lightbox video { max-width: 90vw; max-height: 88vh; object-fit: contain; border-radius: 18px; display: block; }
+.lightbox-close { position: absolute; top: -25px; right: -25px; color: #fff; font-size: 2.2rem; line-height: 1; cursor: pointer; background: var(--bleu-passation); width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #fff; user-select: none; transition: all .3s; z-index: 10; }
+.lightbox-close:hover { background: var(--rouge-passation); transform: scale(1.05); }
+
+/* ═══════════════════════════════════════════════
+   SPLASH & SCREEN STRUCTURE
+═══════════════════════════════════════════════ */
+#splash-screen { position: fixed; inset: 0; background: rgba(224, 229, 236, 0.85); z-index: 9999; display: flex; justify-content: center; align-items: center; flex-direction: column; transition: opacity 0.6s ease; padding: 30px; backdrop-filter: blur(8px); }
+#splash-screen.hidden { opacity: 0; pointer-events: none; }
+.splash-logos { display: flex; gap: 35px; align-items: center; margin-bottom: 40px; flex-wrap: wrap; justify-content: center; }
+.splash-logos img { height: 90px; background: var(--bg-3d); padding: 14px 18px; border-radius: 15px; border: 1px solid #fff; box-shadow: var(--neumo-pill); object-fit: contain; }
+.splash-eyebrow { display: inline-block; font-size: 13px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--bleu-passation); background: var(--bg-3d); padding: 10px 24px; border-radius: 50px; border: 1px solid #fff; margin-bottom: 24px; box-shadow: var(--neumo-inner); font-family: 'Outfit', sans-serif; }
+.splash-title { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 6vw, 5rem); color: var(--bleu-passation); margin-bottom: 12px; text-align: center; font-weight: 800; }
+.splash-title em { color: var(--rouge-passation); font-style: italic; }
+.splash-sub { font-family: 'Outfit', sans-serif; color: var(--af-muted); font-size: 1.15rem; max-width: 720px; text-align: center; margin-bottom: 40px; line-height: 1.5; }
+
+.btn-chrome { background: linear-gradient(180deg, #ffffff 0%, #e0e0e0 40%, #cccccc 50%, #eeeeee 100%); color: var(--bleu-passation); padding: 22px 45px; border-radius: 50px; font-weight: 800; text-transform: uppercase; border: 1px solid #999; cursor: pointer; transition: 0.3s; box-shadow: inset 0 2px 4px #fff, inset 0 -2px 4px rgba(0,0,0,0.2), 6px 6px 15px rgba(0,0,0,0.3); text-shadow: 1px 1px 0px #fff; font-size: 1.05rem; display: inline-flex; align-items: center; justify-content: center; gap: 12px; font-family: 'Outfit', sans-serif; text-decoration: none; }
+.btn-chrome:hover { transform: translateY(-3px); color: var(--rouge-passation); box-shadow: 0 10px 20px rgba(0,0,0,0.4); text-decoration: none; }
+.btn-chrome.primary { background: linear-gradient(180deg, var(--bleu-passation) 0%, #012b73 100%); color: #fff; text-shadow: 1px 1px 2px #000; border: 1px solid #001540; }
+.btn-chrome.primary:hover { background: linear-gradient(180deg, var(--rouge-passation) 0%, #9B0C24 100%); border-color: #6a0818; color: #fff; }
+.btn-chrome:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+.btn-ghost { background: transparent !important; box-shadow: none !important; border: 2px solid var(--shadow-dark); color: var(--af-muted); }
+.btn-ghost:hover { border-color: var(--bleu-passation); color: var(--bleu-passation); }
+
+.splash-buttons { display: flex; gap: 25px; justify-content: center; flex-wrap: wrap; }
+.tricolor { display: flex; height: 6px; width: 160px; margin: 35px auto 0; border-radius: 50px; overflow: hidden; }
+.tricolor span { flex: 1; }
+.tricolor .b1 { background: var(--azul-francia); }
+.tricolor .b2 { background: #fff; }
+.tricolor .b3 { background: var(--af-red); }
+
+.screen { display: none; min-height: 100vh; animation: fadeIn 0.5s ease; padding-bottom: 60px; }
+.screen.active { display: block; }
+.screen.video-screen.active { display: flex; }
+.video-screen { position: fixed; inset: 0; background: #000; z-index: 1000; align-items: center; justify-content: center; flex-direction: column; padding-bottom: 0; }
+.video-screen video { width: 100%; height: 100%; max-width: 100vw; max-height: 100vh; object-fit: contain; }
+.video-controls { position: absolute; bottom: 35px; left: 50%; transform: translateX(-50%); display: flex; gap: 12px; z-index: 2; }
+.btn-video { padding: 15px 35px; background: rgba(255,255,255,.14); color: #fff; border: 1px solid rgba(255,255,255,.5); border-radius: 50px; font-family: inherit; font-weight: 600; font-size: 15px; cursor: pointer; backdrop-filter: blur(12px); transition: all .25s; }
+.btn-video:hover { background: rgba(255,255,255,.3); border-color: #fff; }
+
+/* ═══════════════════════════════════════════════
+   CHAPTER COMPONENTS
+═══════════════════════════════════════════════ */
+.hero { padding: 80px 24px 50px; text-align: center; position: relative; }
+.hero-logos { display: flex; justify-content: center; align-items: center; gap: 35px; margin-bottom: 35px; flex-wrap: wrap; }
+.hero-logos img { height: 90px; background: var(--bg-3d); padding: 15px 20px; border-radius: 15px; border: 1px solid #fff; box-shadow: var(--neumo-pill); object-fit: contain; }
+.hero-divider { width: 2px; height: 60px; background: var(--shadow-dark); }
+.hero-eyebrow { display: inline-block; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--bleu-passation); background: var(--bg-3d); padding: 10px 24px; border-radius: 50px; border: 1px solid #fff; margin-bottom: 24px; box-shadow: var(--neumo-inner); }
+.hero h1 { font-size: clamp(2.8rem, 7vw, 5rem); font-weight: 800; margin-bottom: 20px; letter-spacing: -0.02em; color: var(--bleu-passation); }
+.hero h1 span { color: var(--rouge-passation); font-style: italic; font-weight: 700; }
+.hero-sub { font-size: 1.15rem; max-width: 750px; margin: 0 auto 30px; background: var(--bg-3d); padding: 25px 35px; border-radius: 15px; border: 1px solid #fff; box-shadow: var(--neumo-pill); color: var(--af-muted); font-weight: 500; line-height: 1.6; }
+
+.container-ch { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+.chapter-header { max-width: 900px; margin: 0 auto 40px; text-align: center; }
+.chapter-progress { display: inline-block; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--af-red); background: var(--bg-3d); padding: 8px 22px; border-radius: 50px; border: 1px solid #fff; margin-bottom: 20px; box-shadow: var(--neumo-pill); }
+.chapter-title { font-size: clamp(2.2rem, 5vw, 4rem); font-weight: 800; margin-bottom: 15px; }
+.chapter-title em { color: var(--bleu-passation); font-style: italic; }
+.chapter-subtitle { font-size: 1.2rem; color: var(--af-muted); font-weight: 500; }
+
+.content-section { background: var(--bg-3d); border: 1px solid #fff; border-radius: 30px; padding: 55px 50px; margin: 0 auto 30px; box-shadow: var(--neumo-main); max-width: 1000px; }
+.section-tag { display: inline-flex; align-items: center; gap: 12px; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 800; letter-spacing: .18em; text-transform: uppercase; color: var(--bleu-passation); margin-bottom: 18px; }
+.section-tag::before { content: ""; width: 32px; height: 3px; background: var(--bleu-passation); border-radius: 2px; }
+.content-section h2 { font-size: 2.3rem; margin-bottom: 22px; font-weight: 800; }
+.content-section h3 { font-size: 1.4rem; margin: 25px 0 12px; font-family: 'Outfit', sans-serif; font-weight: 700; }
+.content-section p { margin-bottom: 16px; font-size: 1.1rem; color: var(--af-muted); line-height: 1.65; }
+.content-section ul { padding-left: 22px; margin-bottom: 18px; }
+.content-section li { font-size: 1.05rem; color: var(--af-muted); margin-bottom: 8px; line-height: 1.6; }
+
+.info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 22px; margin-top: 30px; }
+.info-card { padding: 30px 22px; background: var(--bg-3d); border: 1px solid #fff; border-radius: 18px; transition: all .3s; box-shadow: var(--neumo-pill); }
+.info-card:hover { transform: translateY(-4px); box-shadow: var(--neumo-pill-hover); }
+.info-card-icon { width: 56px; height: 56px; background: var(--bg-3d); color: var(--bleu-passation); border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 18px; box-shadow: var(--neumo-inner); }
+.info-card h4 { font-family: 'Outfit', sans-serif; font-size: 1.1rem; font-weight: 800; margin-bottom: 10px; color: var(--af-dark); }
+.info-card p { font-size: 0.97rem; color: var(--af-muted); line-height: 1.55; margin-bottom: 0; }
+
+.niveles-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 22px; margin-top: 25px; }
+.nivel-card { padding: 35px 22px; background: var(--bg-3d); border: 1px solid #fff; border-radius: 20px; transition: all .3s; position: relative; overflow: hidden; box-shadow: var(--neumo-pill); }
+.nivel-card::after { content: ""; position: absolute; bottom: 0; left: 0; right: 0; height: 5px; background: var(--bleu-passation); transform: scaleX(0); transform-origin: left; transition: transform .3s; }
+.nivel-card:hover { transform: translateY(-5px); box-shadow: var(--neumo-pill-hover); }
+.nivel-card:hover::after { transform: scaleX(1); }
+.nivel-code { font-family: 'Playfair Display', serif; font-size: 3.5rem; font-weight: 800; line-height: 1; color: var(--af-dark); text-align: center; }
+.nivel-tag { font-family: 'Outfit', sans-serif; font-size: 0.85rem; text-transform: uppercase; letter-spacing: .2em; color: var(--af-muted); margin: 12px 0 18px; font-weight: 700; text-align: center; }
+.nivel-price { font-size: 1.55rem; font-weight: 800; color: var(--af-red); text-align: center; }
+.nivel-desc { font-size: 0.93rem; color: var(--af-muted); margin-top: 14px; line-height: 1.5; text-align: left; }
+
+.date-grid { display: flex; gap: 20px; justify-content: center; margin: 25px 0; flex-wrap: wrap; }
+.date-card { background: var(--bg-3d); padding: 22px 30px; border-radius: 15px; box-shadow: var(--neumo-inner); flex: 1; min-width: 240px; }
+.date-card.blue { border-left: 5px solid var(--bleu-passation); }
+.date-card.red { border-left: 5px solid var(--rouge-passation); }
+.date-card h4 { color: var(--bleu-passation); margin-bottom: 6px; font-size: 1.05rem; font-family: 'Outfit', sans-serif; }
+.date-card.red h4 { color: var(--rouge-passation); }
+.date-card .big { font-size: 1.4rem; font-weight: 800; color: var(--af-dark); margin: 0; font-family: 'Outfit', sans-serif; }
+.beneficio-box { margin-top: 30px; background: #e8f4fd; border-left: 5px solid var(--bleu-passation); padding: 22px 28px; border-radius: 12px; box-shadow: var(--neumo-inner); }
+.beneficio-box strong { color: var(--bleu-passation); font-size: 1.1rem; font-family: 'Outfit', sans-serif; }
+.beneficio-box p { margin-top: 8px; font-size: 1rem; color: var(--af-dark); }
+
+.contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 22px; margin-top: 30px; }
+.contact-card { background: var(--bg-3d); border: 1px solid #fff; border-radius: 18px; padding: 30px 25px; transition: all .3s; box-shadow: var(--neumo-pill); }
+.contact-card:hover { transform: translateY(-3px); box-shadow: var(--neumo-pill-hover); }
+.contact-card .ico { width: 50px; height: 50px; background: var(--bg-3d); color: var(--bleu-passation); display: flex; align-items: center; justify-content: center; margin-bottom: 18px; border-radius: 14px; box-shadow: var(--neumo-inner); }
+.contact-card h4 { font-family: 'Outfit', sans-serif; font-size: 0.83rem; letter-spacing: .15em; text-transform: uppercase; color: var(--af-muted); margin-bottom: 10px; font-weight: 800; }
+.contact-card .value { font-size: 1.05rem; color: var(--af-dark); font-weight: 600; word-break: break-word; line-height: 1.5; }
+.contact-card .value a { color: var(--bleu-passation); font-weight: 700; }
+
+.regla-toggle { cursor: pointer; background: var(--bg-3d); border: 1px solid #fff; padding: 22px 30px; border-radius: 14px; display: flex; justify-content: space-between; align-items: center; margin-top: 16px; transition: all .25s; user-select: none; box-shadow: var(--neumo-pill); }
+.regla-toggle:hover { color: var(--bleu-passation); }
+.regla-toggle h3 { font-family: 'Outfit', sans-serif; font-size: 1.1rem; color: var(--af-dark); font-weight: 700; margin: 0; }
+.regla-toggle svg { transition: transform .3s; color: var(--bleu-passation); }
+.regla-toggle.open { box-shadow: var(--neumo-inner); border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+.regla-toggle.open svg { transform: rotate(180deg); }
+.regla-content { max-height: 0; overflow: hidden; transition: max-height .5s ease; }
+.regla-content.open { max-height: 3000px; }
+.regla-inner { padding: 28px 36px 32px; background: var(--bg-3d); border: 1px solid #fff; border-top: none; border-bottom-left-radius: 14px; border-bottom-right-radius: 14px; box-shadow: var(--neumo-inner); }
+.regla-inner h4 { color: var(--bleu-passation); font-family: 'Outfit', sans-serif; font-size: 0.88rem; font-weight: 800; text-transform: uppercase; letter-spacing: .14em; margin: 22px 0 10px; }
+.regla-inner h4:first-child { margin-top: 0; }
+.regla-inner ul { padding-left: 22px; margin-bottom: 14px; }
+.regla-inner li { margin-bottom: 9px; color: var(--af-muted); font-size: 1rem; line-height: 1.6; }
+.regla-inner p { font-size: 1rem; color: var(--af-muted); margin-bottom: 12px; line-height: 1.6; }
+
+.chapter-nav { max-width: 900px; margin: 40px auto 0; display: flex; justify-content: space-between; align-items: center; gap: 18px; flex-wrap: wrap; }
+.btn-prev, .btn-next { padding: 16px 36px; border: 1px solid #fff; background: var(--bg-3d); color: var(--af-dark); font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 1rem; border-radius: 50px; cursor: pointer; transition: all .3s; box-shadow: var(--neumo-pill); }
+.btn-prev:hover { color: var(--af-red); transform: translateY(-2px); }
+.btn-next { background: var(--bleu-passation); color: #fff; border: none; }
+.btn-next:hover { background: #012b73; transform: translateY(-2px); box-shadow: 0 10px 25px rgba(1,56,150,0.3); color: #fff; }
+.btn-spacer { width: 130px; }
+.chapter-dots { display: flex; gap: 10px; align-items: center; }
+.chapter-dots span { width: 12px; height: 12px; border-radius: 50%; background: var(--bg-3d); transition: all .3s; box-shadow: var(--neumo-inner); cursor: pointer; }
+.chapter-dots span.active { background: var(--bleu-passation); transform: scale(1.4); box-shadow: 0 0 10px rgba(1,56,150,0.4); }
+
+/* Galería */
+.gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 18px; margin-top: 25px; }
+.gallery-item { border-radius: 14px; overflow: hidden; height: 180px; cursor: pointer; border: 1px solid #fff; position: relative; transition: all .3s; box-shadow: var(--neumo-pill); background: #000; }
+.gallery-item:hover { transform: translateY(-4px); box-shadow: var(--neumo-pill-hover); border-color: var(--bleu-passation); }
+.gallery-item img, .gallery-item video { width: 100%; height: 100%; object-fit: cover; transition: transform .6s; display: block; pointer-events: none; }
+.gallery-item:hover img { transform: scale(1.05); }
+.gallery-item .play-badge { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 54px; height: 54px; background: rgba(255,255,255,0.85); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--bleu-passation); pointer-events: none; box-shadow: 0 6px 14px rgba(0,0,0,.3); }
+.gallery-item .play-badge svg { width: 22px; height: 22px; margin-left: 3px; }
+
+/* ═══════════════════════════════════════════════
+   FORMULARIO
+═══════════════════════════════════════════════ */
+.form-page-wrap { padding: 60px 16px; }
+.form-card { max-width: 950px; margin: 0 auto; background: var(--bg-3d); border: 1px solid #fff; border-radius: 30px; box-shadow: var(--neumo-main); overflow: hidden; }
+.form-header { background: linear-gradient(135deg, #1a1a2e 0%, var(--bleu-passation) 100%); padding: 45px 50px 35px; border-bottom: 4px solid var(--rouge-passation); position: relative; overflow: hidden; color: #fff; }
+.form-header-top { display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; margin-bottom: 30px; }
+.form-header-top img { height: 70px; background: #fff; padding: 10px 14px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+.form-header h2 { color: #fff; font-size: 2.4rem; font-weight: 800; }
+.form-header p { color: rgba(255,255,255,0.85); font-size: 1.05rem; margin-top: 8px; }
+.form-body { padding: 50px; }
+.form-section-title { display: flex; align-items: center; gap: 16px; font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 800; color: var(--bleu-passation); margin: 35px 0 22px; }
+.form-section-title:first-child { margin-top: 0; }
+.form-section-title .num { width: 38px; height: 38px; background: var(--bleu-passation); color: #fff; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 1.05rem; font-family: 'Outfit', sans-serif; }
+
+#draft-banner { display: none; background: #e8f4fd; border-left: 5px solid var(--bleu-passation); padding: 14px 22px; border-radius: 12px; margin-bottom: 28px; font-size: 0.98rem; color: var(--af-dark); align-items: center; justify-content: space-between; gap: 18px; box-shadow: var(--neumo-inner); flex-wrap: wrap; }
+#draft-banner.show { display: flex; }
+
+.drop-zone { background: var(--bg-3d); border: 2px dashed var(--shadow-dark); border-radius: 18px; padding: 38px 25px; text-align: center; cursor: pointer; transition: all 0.3s; box-shadow: var(--neumo-inner); }
+.drop-zone svg { width: 42px; height: 42px; color: var(--bleu-passation); margin-bottom: 12px; fill: none; stroke: currentColor; stroke-width: 2; }
+.drop-zone.dragover { border-color: var(--bleu-passation); background: rgba(1,56,150,0.05); }
+.drop-zone.success { border-color: var(--green); border-style: solid; box-shadow: var(--neumo-pill); }
+.drop-zone.error { border-color: var(--af-red); background: #fff5f5; }
+.drop-zone p { color: var(--bleu-passation); font-weight: 600; }
+
+form .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+form .full { grid-column: 1 / -1; }
+.field { display: flex; flex-direction: column; gap: 8px; }
+.field label { font-family: 'Outfit', sans-serif; font-size: 0.92rem; font-weight: 700; color: var(--af-dark); }
+.field .req { color: var(--af-red); }
+.field input[type=text], .field input[type=tel], .field input[type=email], .field input[type=date], .field select { padding: 15px 18px; border: none; border-radius: 12px; font-family: inherit; font-size: 1rem; transition: all .25s; background: var(--bg-3d); color: var(--af-dark); box-shadow: var(--neumo-inner); width: 100%; }
+.field input:focus, .field select:focus { outline: none; box-shadow: inset 3px 3px 6px #bec3c9, inset -3px -3px 6px #ffffff, 0 0 0 3px rgba(1,56,150,0.15); }
+
+.radio-row { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 5px; }
+.radio-pill { flex: 1; min-width: 110px; position: relative; }
+.radio-pill input { position: absolute; opacity: 0; pointer-events: none; }
+.radio-pill label { display: flex; align-items: center; justify-content: center; padding: 14px 18px; border: 1px solid #fff; border-radius: 12px; cursor: pointer; transition: all .25s; font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 0.95rem; background: var(--bg-3d); box-shadow: var(--neumo-pill); text-align: center; }
+.radio-pill input:checked + label { color: var(--bleu-passation); box-shadow: var(--neumo-inner); border-color: transparent; }
+
+.nivel-selector { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 18px; margin-top: 15px; }
+.nivel-pill { position: relative; }
+.nivel-pill input { position: absolute; opacity: 0; pointer-events: none; }
+.nivel-pill label { display: block; padding: 28px 18px; border: 1px solid #fff; border-radius: 16px; cursor: pointer; text-align: center; transition: all .3s; background: var(--bg-3d); box-shadow: var(--neumo-pill); }
+.nivel-pill label .code { display: block; font-family: 'Playfair Display', serif; font-size: 2.4rem; font-weight: 800; line-height: 1; color: var(--af-dark); }
+.nivel-pill label .price { display: block; margin-top: 10px; color: var(--af-red); font-weight: 800; font-size: 1.05rem; font-family: 'Outfit', sans-serif; }
+.nivel-pill input:checked + label { box-shadow: var(--neumo-inner); border-color: transparent; }
+.nivel-pill input:checked + label .code { color: var(--bleu-passation); }
+
+.payment-card-neumo { margin-top: 25px; background: var(--bg-3d); border: 1px solid #fff; padding: 35px; border-radius: 20px; box-shadow: var(--neumo-pill); }
+.bank-details-box { background: var(--bg-3d); padding: 26px; border-radius: 14px; box-shadow: var(--neumo-inner); margin-bottom: 22px; border: 1px solid rgba(255,255,255,0.5); }
+.bank-details-box p { font-size: 1rem; color: var(--af-dark); margin-bottom: 8px; font-family: 'Outfit', sans-serif; }
+.bank-details-box p strong { color: var(--bleu-passation); }
+.bank-details-box p span { font-family: monospace; letter-spacing: 1px; font-weight: 700; }
+
+.accept-box { background: var(--bg-3d); border-left: 5px solid var(--bleu-passation); border-radius: 12px; padding: 22px 28px; display: flex; gap: 16px; align-items: flex-start; margin-top: 35px; box-shadow: var(--neumo-inner); }
+.accept-box input[type=checkbox] { width: 22px; height: 22px; accent-color: var(--bleu-passation); flex-shrink: 0; cursor: pointer; margin-top: 3px; }
+.accept-box label { font-size: 1rem; color: var(--af-dark); line-height: 1.55; cursor: pointer; font-weight: 500; }
+.accept-box label a { text-decoration: underline; font-weight: 800; }
+
+.cta-wrap { margin-top: 35px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 16px; }
+.btn-submit { display: inline-flex; align-items: center; justify-content: center; gap: 12px; width: 100%; max-width: 420px; padding: 20px 40px; background: var(--bleu-passation); color: #fff; border: none; border-radius: 50px; font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.05rem; cursor: pointer; transition: all .3s; box-shadow: 0 10px 25px rgba(1,56,150,.3); text-transform: uppercase; letter-spacing: 0.05em; }
+.btn-submit:hover { transform: translateY(-3px); background: var(--rouge-passation); box-shadow: 0 14px 30px rgba(218,0,46,.35); }
+.btn-submit:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+.btn-back { background: transparent; border: none; color: var(--af-muted); font-family: 'Outfit', sans-serif; font-weight: 600; cursor: pointer; padding: 8px 20px; font-size: 0.95rem; }
+.btn-back:hover { color: var(--bleu-passation); }
+
+.btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 20px 45px; background: var(--bleu-passation); color: #fff; border: none; border-radius: 50px; font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 1.1rem; cursor: pointer; transition: all .3s; box-shadow: 0 10px 25px rgba(1,56,150,.3); text-transform: uppercase; }
+.btn-primary:hover { transform: translateY(-3px); background: var(--rouge-passation); box-shadow: 0 14px 30px rgba(218,0,46,.35); color: #fff; }
+
+/* ASK & THANKS */
+.ask-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 40px 24px; }
+.ask-card { background: var(--bg-3d); border: 1px solid #fff; border-radius: 30px; padding: 55px 45px; max-width: 650px; text-align: center; box-shadow: var(--neumo-main); }
+.ask-card h2 { color: var(--bleu-passation); font-size: 2.4rem; margin-bottom: 16px; }
+.ask-card p { font-size: 1.1rem; color: var(--af-muted); margin-bottom: 30px; }
+.ask-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.btn-yes { padding: 16px 32px; background: var(--bleu-passation); color: #fff; border: none; border-radius: 50px; font-weight: 800; cursor: pointer; font-family: 'Outfit'; font-size: 1rem; transition: all .3s; box-shadow: 0 8px 20px rgba(1,56,150,.3); }
+.btn-yes:hover { background: var(--rouge-passation); transform: translateY(-2px); }
+.btn-no { padding: 16px 32px; background: var(--bg-3d); color: var(--af-dark); border: 1px solid #fff; border-radius: 50px; font-weight: 800; cursor: pointer; font-family: 'Outfit'; font-size: 1rem; transition: all .3s; box-shadow: var(--neumo-pill); }
+.btn-no:hover { color: var(--bleu-passation); transform: translateY(-2px); }
+
+.thanks-overlay { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 3; background: linear-gradient(180deg, rgba(20,20,20,.8), rgba(1,56,150,.9)); color: #fff; text-align: center; padding: 40px; }
+.thanks-overlay h2 { font-family: 'Playfair Display', serif; font-size: clamp(2.6rem, 8vw, 5rem); color: #fff; font-weight: 800; font-style: italic; margin-bottom: 18px; }
+.thanks-overlay p { font-family: 'Outfit', sans-serif; font-size: 1.2rem; opacity: .95; max-width: 700px; line-height: 1.6; font-weight: 500; margin-bottom: 28px; }
+
+/* ═══════════════════════════════════════════════
+   ADMIN
+═══════════════════════════════════════════════ */
+#app-admin .video-hero { position: relative; min-height: 100vh; overflow: hidden; background: #000; display: flex; align-items: center; justify-content: center; }
+#app-admin .video-hero video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.55; }
+#app-admin .video-overlay { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 30px; padding: 60px 20px; text-align: center; }
+#app-admin .logos-hero { display: flex; align-items: center; gap: 30px; flex-wrap: wrap; justify-content: center; background: rgba(255,255,255,0.95); padding: 18px 28px; border-radius: 18px; box-shadow: 0 12px 30px rgba(0,0,0,0.4); }
+#app-admin .logos-hero img { height: 70px; object-fit: contain; }
+
+#app-admin .admin-container { max-width: 1100px; margin: 60px auto; padding: 0 20px; }
+.stats-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 40px; }
+.stat-pill { background: var(--bg-3d); border: 1px solid #fff; border-radius: 20px; padding: 28px 20px; text-align: center; box-shadow: var(--neumo-pill); }
+.stat-pill .num { font-family: 'Playfair Display', serif; font-size: 2.6rem; font-weight: 800; color: var(--bleu-passation); line-height: 1; }
+.stat-pill .lbl { font-family: 'Outfit', sans-serif; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--af-muted); margin-top: 8px; font-weight: 700; }
+
+#app-admin .card-3d { background: var(--bg-3d); border: 1px solid #fff; border-radius: 28px; padding: 50px 45px; box-shadow: var(--neumo-main); }
+#app-admin .card-3d h2 { font-size: 2.5rem; color: var(--bleu-passation); }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+.form-grid > div label { display: block; margin-bottom: 8px; }
+.form-grid input { width: 100%; padding: 18px 22px; border: none; border-radius: 14px; font-family: 'Outfit', sans-serif; font-size: 1.05rem; background: var(--bg-3d); box-shadow: var(--neumo-inner); color: var(--bleu-passation); font-weight: 600; text-transform: uppercase; }
+.form-grid input:focus { outline: none; box-shadow: inset 3px 3px 6px #bec3c9, inset -3px -3px 6px #ffffff, 0 0 0 3px rgba(1,56,150,0.15); }
+
+.ficha { background: #fff; border-radius: 20px; overflow: hidden; box-shadow: inset 3px 3px 10px rgba(0,0,0,0.06); border: 1px solid rgba(0,0,0,0.03); text-align: left; }
+.ficha-header { background: linear-gradient(135deg, var(--bleu-passation) 0%, #012b73 100%); padding: 24px 28px; display: flex; align-items: center; gap: 16px; color: #fff; }
+.ficha-icon { width: 50px; height: 50px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.ficha-header h3 { font-family: 'Playfair Display'; font-size: 1.6rem; font-weight: 700; color: #fff; }
+.ficha-body { padding: 30px; }
+.ficha-row { display: flex; align-items: center; gap: 18px; padding: 15px 0; border-bottom: 1px solid #eee; }
+.ficha-row:last-child { border-bottom: none; }
+.ficha-row-content { display: flex; flex-direction: column; gap: 4px; }
+.ficha-row-label { font-family: 'Outfit', sans-serif; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.13em; text-transform: uppercase; color: #888; }
+.ficha-row-value { font-family: 'Outfit', sans-serif; font-size: 1.2rem; font-weight: 700; color: var(--af-dark); }
+
+.footer-info { text-align: center; font-family: 'Outfit', sans-serif; font-size: 0.85rem; color: var(--af-muted); padding: 28px 20px; margin-top: 50px; border-top: 1px solid rgba(0,0,0,0.06); }
+
+/* ═══════════════════════════════════════════════
+   STEPPER VISUAL (FORM)
+═══════════════════════════════════════════════ */
+.form-stepper { display: flex; justify-content: space-between; align-items: center; max-width: 700px; margin: 0 auto 40px; gap: 8px; }
+.form-stepper .step { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; }
+.form-stepper .step .bullet { width: 42px; height: 42px; border-radius: 50%; background: var(--bg-3d); border: 1px solid #fff; display: flex; align-items: center; justify-content: center; font-family: 'Outfit', sans-serif; font-weight: 800; color: var(--af-muted); box-shadow: var(--neumo-pill); transition: all .3s; font-size: 1rem; }
+.form-stepper .step .lbl { font-family: 'Outfit', sans-serif; font-size: 0.72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--af-muted); font-weight: 700; text-align: center; }
+.form-stepper .step.active .bullet { background: var(--bleu-passation); color: #fff; box-shadow: 0 6px 14px rgba(1,56,150,.35); transform: scale(1.06); }
+.form-stepper .step.done .bullet { background: var(--green); color: #fff; box-shadow: var(--neumo-inner); }
+.form-stepper .step.active .lbl, .form-stepper .step.done .lbl { color: var(--bleu-passation); }
+.form-stepper .bar { flex: 0 0 auto; width: 36px; height: 3px; background: var(--shadow-dark); border-radius: 2px; }
+
+/* ═══════════════════════════════════════════════
+   BENTO GRID 3D + ESFERAS NEUMÓRFICAS
+═══════════════════════════════════════════════ */
+.bento-grid { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 140px; gap: 18px; margin-top: 28px; }
+.bento-cell { background: var(--bg-3d); border: 1px solid #fff; border-radius: 22px; padding: 22px; box-shadow: var(--neumo-pill); display: flex; flex-direction: column; justify-content: flex-end; transition: all .35s ease; overflow: hidden; position: relative; }
+.bento-cell:hover { transform: translateY(-5px); box-shadow: var(--neumo-pill-hover); }
+.bento-cell .b-num { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 800; color: var(--bleu-passation); line-height: 1; }
+.bento-cell .b-lbl { font-family: 'Outfit', sans-serif; font-size: 0.82rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--af-muted); margin-top: 6px; }
+.bento-cell.b-wide { grid-column: span 2; }
+.bento-cell.b-tall { grid-row: span 2; }
+.bento-cell.b-blue { background: linear-gradient(135deg, var(--bleu-passation), #012b73); color: #fff; }
+.bento-cell.b-blue .b-num, .bento-cell.b-blue .b-lbl { color: #fff; }
+.bento-cell.b-red { background: linear-gradient(135deg, var(--rouge-passation), #9B0C24); color: #fff; }
+.bento-cell.b-red .b-num, .bento-cell.b-red .b-lbl { color: #fff; }
+.bento-cell.b-img { padding: 0; background-size: cover; background-position: center; }
+.bento-cell.b-img .b-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 40%, rgba(0,0,0,.7)); display: flex; flex-direction: column; justify-content: flex-end; padding: 18px; color: #fff; }
+.bento-cell.b-img .b-overlay .b-num { color: #fff; font-size: 1.2rem; font-family: 'Outfit', sans-serif; }
+.bento-cell.b-img .b-overlay .b-lbl { color: rgba(255,255,255,.85); }
+@media (max-width: 768px) { .bento-grid { grid-template-columns: repeat(2, 1fr); } .bento-cell.b-wide { grid-column: span 2; } .bento-cell.b-tall { grid-row: span 1; } }
+
+.sphere-row { display: flex; gap: 28px; justify-content: center; margin: 35px 0 10px; flex-wrap: wrap; }
+.sphere { width: 130px; height: 130px; border-radius: 50%; background: var(--bg-3d); box-shadow: var(--neumo-main); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; transition: all .35s; }
+.sphere:hover { transform: translateY(-6px) scale(1.05); box-shadow: 25px 25px 50px #bec3c9, -25px -25px 50px #ffffff; }
+.sphere .s-num { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--bleu-passation); font-weight: 800; line-height: 1; }
+.sphere .s-lbl { font-family: 'Outfit', sans-serif; font-size: 0.72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--af-muted); font-weight: 700; text-align: center; padding: 0 12px; }
+
+/* ═══════════════════════════════════════════════
+   CARRUSEL 3D (galería secundaria)
+═══════════════════════════════════════════════ */
+.carousel-3d-wrap { position: relative; height: 360px; perspective: 1400px; margin: 30px auto 10px; max-width: 760px; overflow: hidden; }
+.carousel-3d { position: absolute; inset: 0; transform-style: preserve-3d; transition: transform 1s ease; }
+.carousel-3d .slide-3d { position: absolute; top: 50%; left: 50%; width: 280px; height: 320px; margin: -160px 0 0 -140px; border-radius: 20px; overflow: hidden; box-shadow: var(--neumo-main); border: 3px solid #fff; background: #000; }
+.carousel-3d .slide-3d img { width: 100%; height: 100%; object-fit: cover; }
+.carousel-3d-ctrls { display: flex; justify-content: center; gap: 16px; margin-top: 16px; }
+.carousel-3d-ctrls button { width: 50px; height: 50px; border-radius: 50%; background: var(--bg-3d); border: 1px solid #fff; box-shadow: var(--neumo-pill); cursor: pointer; color: var(--bleu-passation); font-weight: 800; font-size: 1.2rem; transition: all .25s; }
+.carousel-3d-ctrls button:hover { box-shadow: var(--neumo-inner); color: var(--rouge-passation); }
+
+/* ═══════════════════════════════════════════════
+   ADMIN: DEPÓSITO UPLOAD
+═══════════════════════════════════════════════ */
+.deposit-card { margin-top: 35px; padding: 30px; background: var(--bg-3d); border: 1px solid #fff; border-radius: 20px; box-shadow: var(--neumo-pill); }
+.deposit-card h4 { font-family: 'Outfit', sans-serif; font-size: 1.05rem; color: var(--bleu-passation); margin-bottom: 8px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.deposit-card p.sub { font-size: 0.95rem; color: var(--af-muted); margin-bottom: 18px; }
+.deposit-ok { display: none; margin-top: 14px; padding: 12px 18px; background: #e7f6ec; border-left: 4px solid var(--green); border-radius: 10px; color: #11663a; font-weight: 700; font-family: 'Outfit', sans-serif; font-size: 0.95rem; }
+.deposit-ok.show { display: block; }
+
+/* Preview de comprobante */
+.file-preview { display: none; margin-top: 14px; padding: 14px; background: var(--bg-3d); border-radius: 14px; box-shadow: var(--neumo-inner); align-items: center; gap: 14px; }
+.file-preview.show { display: flex; }
+.file-preview img { width: 80px; height: 80px; object-fit: cover; border-radius: 10px; border: 1px solid #fff; }
+.file-preview .fp-info { flex: 1; min-width: 0; }
+.file-preview .fp-name { font-family: 'Outfit', sans-serif; font-weight: 700; color: var(--af-dark); font-size: 0.95rem; word-break: break-all; }
+.file-preview .fp-size { font-size: 0.85rem; color: var(--af-muted); }
+.file-preview .fp-pdf { width: 80px; height: 80px; background: var(--rouge-passation); color: #fff; display: flex; align-items: center; justify-content: center; border-radius: 10px; font-family: 'Outfit', sans-serif; font-weight: 800; }
+
+/* MOBILE */
+@media (max-width: 768px) {
+    :root { --base-font-size: 16px; }
+    .splash-logos img { height: 65px; }
+    .splash-buttons { flex-direction: column; width: 100%; }
+    .splash-buttons .btn-chrome { width: 100%; }
+    .hero-logos img { height: 70px; }
+    .content-section { padding: 35px 22px; }
+    .form-body { padding: 30px 20px; }
+    .form-header { padding: 30px 25px 22px; }
+    form .grid { grid-template-columns: 1fr; }
+    .form-grid { grid-template-columns: 1fr; }
+    .stats-bar { grid-template-columns: 1fr; }
+    #app-admin .card-3d { padding: 30px 22px; }
+    .chapter-nav { flex-direction: column; }
+    .btn-prev, .btn-next, .btn-spacer { width: 100%; text-align: center; }
+    .niveles-grid { grid-template-columns: 1fr 1fr; }
+    .info-grid { grid-template-columns: 1fr; }
+    .music-btn { right: 80px; }
+}
+@media print {
+    .no-print { display: none !important; }
+    body { background: #fff; }
+    .screen { display: block !important; }
+    .video-screen, #splash-screen, #app-admin .video-hero { display: none !important; }
+    .content-section, .ficha, #app-admin .card-3d { box-shadow: none !important; border: 1px solid #000; }
+}
+</style>
+</head>
+<body class="intro-active">
+
+<div id="vanta-bg"></div>
+
+<audio id="bg-music" loop preload="none">
+    <source src="Arrival_at_the_Terminal (1).mp3" type="audio/mpeg">
+</audio>
+
+<button id="music-toggle" class="music-btn no-print" onclick="toggleMusic()" style="display:none;" aria-label="Música ambiental" title="Música ambiental">
+    <svg class="icon-mute" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
+    <svg class="wave" viewBox="0 0 24 24"><path d="M3 18V12a9 9 0 0 1 18 0v6"></path><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"></path></svg>
+</button>
+
+<button id="fs-toggle" class="fs-btn no-print" onclick="toggleFullscreen()" style="display:none;" aria-label="Pantalla completa" title="Pantalla completa">
+    <svg class="icon-enter" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"></path></svg>
+    <svg class="icon-exit" viewBox="0 0 24 24"><path d="M8 3v3a2 2 0 0 1-2 2H3M21 8h-3a2 2 0 0 1-2-2V3M3 16h3a2 2 0 0 1 2 2v3M16 21v-3a2 2 0 0 1 2-2h3"></path></svg>
+</button>
+
+<button id="back-to-top" class="no-print" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Volver arriba">
+    <svg viewBox="0 0 24 24" stroke-width="3"><polyline points="18 15 12 9 6 15"></polyline></svg>
+</button>
+
+<a class="wa-fab no-print" href="https://wa.me/524731219937" target="_blank" rel="noopener" aria-label="WhatsApp">
+    <svg viewBox="0 0 32 32"><path d="M16 0C7.16 0 0 7.16 0 16c0 2.82.74 5.46 2.04 7.76L0 32l8.46-2.22A15.92 15.92 0 0 0 16 32c8.84 0 16-7.16 16-16S24.84 0 16 0zm0 29.53c-2.4 0-4.75-.64-6.82-1.85l-.49-.29-5.07 1.33 1.35-4.94-.32-.5A13.43 13.43 0 0 1 2.53 16C2.53 8.58 8.58 2.53 16 2.53S29.47 8.58 29.47 16 23.42 29.53 16 29.53zm7.39-10.08c-.4-.2-2.38-1.18-2.75-1.31-.37-.14-.64-.2-.91.2-.27.4-1.04 1.31-1.28 1.58-.24.27-.47.3-.87.1-.4-.2-1.7-.63-3.24-1.99-1.2-1.06-2.01-2.37-2.24-2.77-.24-.4-.03-.61.17-.81.18-.18.4-.47.6-.7.2-.24.27-.4.4-.67.13-.27.07-.5-.03-.7-.1-.2-.91-2.18-1.24-2.99-.33-.79-.66-.68-.91-.69h-.77c-.27 0-.71.1-1.08.5-.37.4-1.41 1.38-1.41 3.36s1.45 3.89 1.65 4.16c.2.27 2.84 4.33 6.88 6.07 3.32 1.43 4.14 1.3 4.88 1.1.74-.2 2.38-.97 2.72-1.91.33-.94.33-1.74.23-1.91-.1-.17-.37-.27-.77-.47z"/></svg>
+</a>
+
+<!-- Lightbox -->
+<div id="lightbox" class="lightbox" onclick="closeLightbox(event)">
+    <div class="lightbox-container" onclick="event.stopPropagation()">
+        <span class="lightbox-close" onclick="closeLightbox()" role="button" aria-label="Cerrar">×</span>
+        <img id="lightbox-img" src="" alt="" style="display:none">
+        <video id="lightbox-video" controls playsinline style="display:none;"></video>
+    </div>
+</div>
+
+<!-- Privacy Modal -->
+<div id="modal-privacy" class="modal-overlay" role="dialog" aria-modal="true">
+    <div class="modal-box">
+        <button type="button" class="modal-close" aria-label="Cerrar" onclick="closePrivacy()">×</button>
+        <h2>Aviso de Privacidad</h2>
+        <p>De conformidad con la <strong>Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP)</strong> del marco jurídico mexicano.</p>
+        <h3>1. Identidad del Responsable</h3>
+        <p><strong>Alianza Franco Mexicana de San Cristóbal A.C. (Alliance Française de San Cristóbal de Las Casas)</strong>, con domicilio en Av. La Almolonga 80, San Cristóbal de Las Casas, Chiapas, es la entidad responsable del tratamiento de los datos personales.</p>
+        <h3>2. Datos personales recabados</h3>
+        <p>Para la inscripción al examen DELF Junior 2026 se recaban los siguientes datos del candidato (menor de edad) y de su tutor:</p>
+        <ul>
+            <li>Identificación: nombres, apellidos, fecha y ciudad de nacimiento, nacionalidad, lengua materna.</li>
+            <li>Contacto del tutor: nombre completo, teléfono celular, correo electrónico, dirección postal.</li>
+            <li>Académica: nivel seleccionado, número previo de candidato (si aplica), motivo del examen.</li>
+            <li>Comprobante de pago bancario (cargado por el usuario).</li>
+        </ul>
+        <h3>3. Finalidades del tratamiento</h3>
+        <ul>
+            <li>Procesar la inscripción y matrícula en el examen DELF Junior 2026.</li>
+            <li>Comunicar resultados y entregar diplomas oficiales.</li>
+            <li>Contactar al tutor legal para cualquier asunto relativo a la passation.</li>
+        </ul>
+        <h3>4. Transferencias de datos</h3>
+        <p>Los datos serán transferidos a <strong>France Éducation international (FEI)</strong>, organismo certificador francés del DELF, con sede en Sèvres, Francia, con el fin exclusivo de emitir los diplomas oficiales firmados por el Ministerio Francés de Educación.</p>
+        <h3>5. Derechos ARCO</h3>
+        <p>Usted tiene derecho a <strong>Acceder, Rectificar, Cancelar u Oponerse</strong> al tratamiento de sus datos personales. Para ejercerlos, envíe una solicitud a: <a href="mailto:DIRECCIONSANCRISTOBAL@ALIANZAFR.EDU.FR">DIRECCIONSANCRISTOBAL@ALIANZAFR.EDU.FR</a>.</p>
+        <h3>6. Menores de edad</h3>
+        <p>Tratándose de menores de edad, el consentimiento es otorgado por el padre, madre o tutor legal al momento de aceptar este aviso. Los datos se conservarán únicamente el periodo necesario para emitir y entregar el diploma oficial.</p>
+    </div>
+</div>
+
+<!-- SPLASH -->
+<div id="splash-screen">
+    <div class="splash-logos">
+        <img src="alianza.png" alt="Alliance Française">
+        <img src="lasalle.jpg" alt="Colegio La Salle">
+    </div>
+    <span class="splash-eyebrow">Portal Oficial · Junio 2026</span>
+    <h1 class="splash-title">DELF Junior <em>2026</em></h1>
+    <p class="splash-sub">Alianza Francesa de San Cristóbal de Las Casas × Colegio La Salle.<br>Selecciona el tipo de acceso para continuar.</p>
+    <div class="splash-buttons">
+        <button onclick="startAlumno()" class="btn-chrome primary" type="button">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 14l9-5-9-5-9 5 9 5z"></path><path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"></path><path d="M12 14v7"></path></svg>
+            INSCRIPCIÓN (CANDIDATOS)
+        </button>
+        <button onclick="startAdmin()" class="btn-chrome" type="button">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            VALIDACIÓN (PASSATION)
+        </button>
+        <button onclick="startConfirm()" class="btn-chrome" type="button" style="background:linear-gradient(180deg,#1a8a4a 0%,#0f5c2f 100%);color:#fff;text-shadow:1px 1px 2px #000;border:1px solid #0a3d1f;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"></path><circle cx="12" cy="12" r="10"></circle></svg>
+            CONFIRMACIÓN DE DATOS
+        </button>
+    </div>
+    <div class="tricolor"><span class="b1"></span><span class="b2"></span><span class="b3"></span></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     APP ADMIN
+═══════════════════════════════════════════════ -->
+<div id="app-admin" style="display:none;">
+    <div class="video-hero">
+        <video id="admin-vid-bg" autoplay muted loop playsinline preload="auto"><source src="1.mp4" type="video/mp4"></video>
+        <div class="video-overlay">
+            <div class="logos-hero">
+                <img src="alianza.png" alt="Alliance Française">
+                <div style="width: 2px; height: 60px; background: rgba(0,0,0,0.1);"></div>
+                <img src="lasalle.jpg" alt="Colegio La Salle">
+            </div>
+            <div style="color: #fff; text-shadow: 0 4px 20px rgba(0,0,0,0.6);">
+                <span class="splash-eyebrow" style="background: rgba(255,255,255,0.92); color: var(--bleu-passation);">Centro de Passation</span>
+                <h1 style="font-family:'Playfair Display'; font-size: clamp(2.5rem, 7vw, 5rem); margin: 18px 0 10px; color:#fff;">DELF Junior <em style="color: #ffcfd9; font-style: italic;">2026</em></h1>
+                <p style="font-size: 1.15rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; font-family:'Outfit',sans-serif;">Sede La Salle · San Cristóbal de Las Casas</p>
+            </div>
+            <button class="btn-video" onclick="skipAdminVideo()">Ver buscador ↓</button>
+        </div>
+    </div>
+
+    <div class="admin-container">
+        <div class="stats-bar no-print">
+            <div class="stat-pill"><div class="num" id="stat-total">—</div><div class="lbl">Candidatos totales</div></div>
+            <div class="stat-pill"><div class="num" id="stat-a2" style="color:var(--rouge-passation);">—</div><div class="lbl">Nivel A2</div></div>
+            <div class="stat-pill"><div class="num" id="stat-b2" style="color:var(--green);">—</div><div class="lbl">Nivel B2</div></div>
+        </div>
+
+        <div class="card-3d">
+            <h2 style="text-align: center; margin-bottom: 12px;">Buscar Candidato</h2>
+            <p style="text-align: center; color: var(--af-muted); font-size: 1.05rem;">Búsqueda inteligente con normalización de acentos y tolerancia ortográfica.</p>
+            <div class="form-grid no-print" style="margin-top: 32px;">
+                <div>
+                    <label style="font-family:'Outfit'; font-weight: 800; font-size: 0.88rem; color: var(--bleu-passation); letter-spacing:0.1em;">NOMBRE(S)</label>
+                    <input type="text" id="search-name" placeholder="EJ: SANTIAGO" autocomplete="off">
+                </div>
+                <div>
+                    <label style="font-family:'Outfit'; font-weight: 800; font-size: 0.88rem; color: var(--bleu-passation); letter-spacing:0.1em;">APELLIDO(S)</label>
+                    <input type="text" id="search-surname" placeholder="EJ: SALGADO SERVIN" autocomplete="off">
+                </div>
+            </div>
+            <div id="error-msg" style="display: none; color: white; background: var(--rouge-passation); padding: 16px; border-radius: 12px; text-align: center; font-weight: 700; margin-top: 25px; font-family:'Outfit';">Candidato no encontrado. Verifica la ortografía o contacta a tu sede.</div>
+            <div class="no-print" style="margin-top: 30px; text-align: center;" id="btn-buscar-container">
+                <button id="btn-buscar" class="btn-chrome primary" onclick="buscarCandidato()" style="width: 100%; max-width: 500px; padding: 20px;">
+                    <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 15.803a7.5 7.5 0 0 0 10.607 0z"/></svg>
+                    <span id="btn-buscar-label">BUSCAR EN BASE DE DATOS</span>
+                </button>
+            </div>
+
+            <div id="verification-area" style="display: none; margin-top: 45px; padding-top: 30px; border-top: 2px dashed var(--shadow-dark);">
+                <div style="display:flex; align-items:center; gap:12px; margin-bottom:24px; color:var(--green); justify-content:center;">
+                    <svg width="34" height="34" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/></svg>
+                    <h3 style="font-family:'Outfit'; font-size:1.6rem; font-weight:800; color:var(--green);">Candidato Localizado</h3>
+                </div>
+                <div class="ficha">
+                    <div class="ficha-header">
+                        <div class="ficha-icon"><svg width="26" height="26" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0zM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg></div>
+                        <div><h3 id="ficha-nombre">—</h3><p style="font-size: 0.95rem; opacity: 0.9; font-family:'Outfit';">Candidato DELF Junior 2026</p></div>
+                    </div>
+                    <div class="ficha-body">
+                        <div class="ficha-row">
+                            <div style="width:38px; height:38px; border-radius:8px; background:#f0f4ff; display:flex; align-items:center; justify-content:center; color:var(--bleu-passation);"><svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg></div>
+                            <div class="ficha-row-content"><span class="ficha-row-label">Nivel de Examen</span><span id="ficha-nivel" class="ficha-row-value" style="color:var(--rouge-passation); font-size:1.4rem;">—</span></div>
+                        </div>
+                        <div class="ficha-row">
+                            <div style="width:38px; height:38px; border-radius:8px; background:#f0f4ff; display:flex; align-items:center; justify-content:center; color:var(--bleu-passation);"><svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5.25 8.25h15m-16.5 7.5h15m-1.8-13.5-3.9 19.5m-2.1-19.5-3.9 19.5"/></svg></div>
+                            <div class="ficha-row-content"><span class="ficha-row-label">Número de Candidato FEI</span><span id="ficha-numero" class="ficha-row-value" style="font-size:1.35rem; letter-spacing:2px;">—</span></div>
+                        </div>
+                    </div>
+                    <div style="background:#f8fafc; padding:18px 28px; font-size:0.9rem; color:#666; border-top:1px solid #eee; font-family:'Outfit';"><span style="color: var(--green); font-weight: 800;">DATOS EN SISTEMA</span> · France Éducation International</div>
+                </div>
+                <div style="display: flex; gap: 16px; margin-top: 35px; flex-wrap: wrap;" class="no-print">
+                    <a href="#" id="btn-pdf" target="_blank" rel="noopener" class="btn-chrome" style="flex: 1; min-width: 220px; background: linear-gradient(180deg, var(--rouge-passation), #9B0C24); color: #fff; border: 1px solid #6a0818;">
+                        <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+                        DESCARGAR PDF OFICIAL
+                    </a>
+                    <button class="btn-chrome" style="flex: 1; min-width: 220px;" onclick="window.print()">
+                        <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                        IMPRIMIR FICHA
+                    </button>
+                </div>
+                <div class="no-print" style="text-align: center; margin-top: 25px;">
+                    <button class="btn-chrome btn-ghost" onclick="resetBusqueda()" style="padding: 14px 28px; font-size: 0.95rem;">← NUEVA BÚSQUEDA</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-info no-print">
+            <strong>Alliance Française de San Cristóbal de Las Casas</strong> · Av. La Almolonga 80 · Tel. +52 1 967 342 44 56
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     APP ALUMNO
+═══════════════════════════════════════════════ -->
+<!-- ═══════════════════════════════════════════════
+     APP CONFIRMACIÓN (Candidatos ya inscritos)
+═══════════════════════════════════════════════ -->
+<style>
+#app-confirm{display:none;min-height:100vh;font-family:'Outfit',sans-serif;background:var(--bg-3d)}
+#confirm-header{position:fixed;top:0;left:0;right:0;background:rgba(224,229,236,.88);backdrop-filter:blur(15px);padding:16px 30px;z-index:900;display:flex;justify-content:space-between;align-items:center;box-shadow:0 4px 15px rgba(0,0,0,.08);border-bottom:3px solid var(--rouge-passation)}
+#confirm-header img{height:72px;object-fit:contain;mix-blend-mode:multiply}
+#confirm-header .hdr-logos{display:flex;align-items:center;gap:30px}
+#confirm-header .hdr-back{background:none;border:2px solid var(--shadow-dark);border-radius:50px;padding:10px 22px;font-family:'Outfit',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;color:var(--af-muted);transition:all .3s}
+#confirm-header .hdr-back:hover{border-color:var(--bleu-passation);color:var(--bleu-passation)}
+.confirm-body{max-width:1050px;margin:0 auto;padding:160px 24px 80px}
+.c-card{background:var(--bg-3d);border-radius:30px;padding:50px;box-shadow:var(--neumo-main);border:1px solid #fff;margin-bottom:32px}
+.c-card h2{font-size:2rem;color:var(--bleu-passation);margin-bottom:18px}
+.c-card p{color:var(--af-text);margin-bottom:14px;font-size:1.02rem;line-height:1.75}
+.c-tag{display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--bleu-passation);margin-bottom:16px}
+.c-tag::before{content:"";width:28px;height:3px;background:var(--bleu-passation);border-radius:2px}
+.scoring-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:24px}
+.score-pill{background:var(--bg-3d);border-radius:16px;padding:22px 14px;text-align:center;box-shadow:var(--neumo-pill);border:1px solid #fff}
+.score-pill .sp-num{font-size:2rem;font-weight:800;font-family:'Playfair Display',serif;color:var(--bleu-passation);line-height:1}
+.score-pill .sp-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--af-muted);margin-top:6px}
+.c-seeker{background:var(--bg-3d);border-radius:24px;padding:40px;box-shadow:15px 15px 30px #bec3c9,-15px -15px 30px #fff;border:1px solid #fff;margin-bottom:32px}
+.c-seeker h3{font-family:'Outfit',sans-serif;font-size:1.4rem;color:var(--bleu-passation);margin-bottom:6px}
+.c-seeker p{color:var(--af-muted);font-size:.95rem;margin-bottom:24px}
+.c-grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:24px}
+.c-input{padding:18px 22px;border-radius:12px;border:none;background:var(--bg-3d);box-shadow:var(--neumo-inner);font-weight:600;text-transform:uppercase;width:100%;outline:none;font-size:1.05rem;font-family:'Outfit',sans-serif;color:var(--bleu-passation);transition:.25s}
+.c-input:focus{box-shadow:inset 3px 3px 6px #bec3c9,inset -3px -3px 6px #fff,0 0 0 3px rgba(1,56,150,.15)}
+.c-input::placeholder{text-transform:none;font-weight:400;color:var(--af-muted);opacity:.8}
+.btn-c-primary{display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:18px 30px;background:var(--bleu-passation);color:#fff;border:none;border-radius:50px;font-family:'Outfit',sans-serif;font-weight:800;font-size:1.1rem;cursor:pointer;transition:all .3s;box-shadow:0 10px 25px rgba(1,56,150,.3)}
+.btn-c-primary:hover{background:#012b73;transform:translateY(-2px);box-shadow:0 14px 34px rgba(1,56,150,.4)}
+.btn-c-primary:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.btn-c-ghost{background:transparent;border:2px solid var(--shadow-dark);border-radius:50px;padding:14px 30px;font-family:'Outfit',sans-serif;font-weight:700;font-size:.95rem;cursor:pointer;color:var(--af-muted);transition:all .3s;display:inline-flex;align-items:center;gap:8px}
+.btn-c-ghost:hover{border-color:var(--bleu-passation);color:var(--bleu-passation)}
+#c-verification-area{display:none;margin-top:30px}
+.c-ficha{background:#fff;border-radius:20px;overflow:hidden;box-shadow:inset 3px 3px 10px rgba(0,0,0,.06);border:1px solid rgba(0,0,0,.04)}
+.c-ficha-header{background:linear-gradient(135deg,var(--bleu-passation),#012b73);padding:22px 25px;display:flex;align-items:center;gap:14px;color:#fff}
+.c-ficha-icon{width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center}
+.c-ficha-nombre{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700}
+.c-ficha-body{padding:28px}
+.c-ficha-row{display:flex;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid #eee}
+.c-ficha-row:last-child{border-bottom:none}
+.c-ficha-row-icon{width:36px;height:36px;border-radius:8px;background:#f0f4ff;display:flex;align-items:center;justify-content:center;color:var(--bleu-passation)}
+.c-ficha-row-label{font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#888}
+.c-ficha-row-value{font-size:1.2rem;font-weight:700;color:var(--af-dark)}
+.c-ficha-footer{background:#f8fafc;padding:16px 24px;font-size:.88rem;color:#666;border-top:1px solid #eee}
+.c-accept{background:rgba(1,56,150,.05);border-left:4px solid var(--bleu-passation);border-radius:10px;padding:20px 24px;display:flex;gap:14px;align-items:flex-start;margin:24px 0;box-shadow:var(--neumo-inner)}
+.c-accept input[type=checkbox]{width:20px;height:20px;accent-color:var(--bleu-passation);flex-shrink:0;margin-top:2px;cursor:pointer}
+.c-accept label{font-size:.96rem;color:var(--af-text);line-height:1.65;cursor:pointer}
+#c-error-msg{display:none;color:#fff;background:var(--rouge-passation);padding:16px;border-radius:12px;text-align:center;font-weight:700;margin-top:16px}
+.c-deposito-zone{background:var(--bg-3d);border:2px dashed var(--shadow-dark);border-radius:18px;padding:36px;text-align:center;cursor:pointer;transition:all .3s;box-shadow:var(--neumo-inner);margin-top:18px}
+.c-deposito-zone.dragover{border-color:var(--bleu-passation);background:rgba(1,56,150,.05)}
+.c-deposito-zone.success{border-color:var(--green);border-style:solid}
+.c-deposito-zone.error{border-color:var(--rouge-passation);background:#fff5f5}
+#confirm-thanks{position:fixed;inset:0;z-index:10000;display:none;background:#000;align-items:center;justify-content:center}
+#confirm-thanks.active{display:flex;animation:fadeIn .6s ease}
+#confirm-thanks video{width:100%;height:100%;object-fit:contain}
+.ct-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(20,20,20,.7) 0%,rgba(1,56,150,.85) 100%);color:#fff;text-align:center;padding:40px;pointer-events:none}
+.ct-overlay h2{font-family:'Playfair Display',serif;font-size:clamp(3rem,9vw,5rem);font-weight:800;font-style:italic;margin-bottom:18px}
+.ct-overlay p{font-family:'Outfit',sans-serif;font-size:1.3rem;opacity:.96;max-width:700px;line-height:1.6}
+@media(max-width:768px){.scoring-grid{grid-template-columns:1fr 1fr}.c-grid2{grid-template-columns:1fr}.c-card{padding:28px 20px}.c-seeker{padding:28px 20px}.confirm-body{padding-top:140px}}
+</style>
+<div id="app-confirm" style="display:none;">
+    <header id="confirm-header">
+        <div class="hdr-logos">
+            <img src="alianza.png" alt="Alliance Française">
+            <img src="lasalle.jpg" alt="Colegio La Salle">
+        </div>
+        <button class="hdr-back" onclick="volverSplash()">← Volver al inicio</button>
+    </header>
+    <div class="confirm-body">
+        <div class="c-card">
+            <h1 style="font-size:clamp(2rem,4.5vw,3rem);color:var(--bleu-passation);margin-bottom:14px;">Confirmación de Registro <em style="color:var(--rouge-passation)">DELF Junior 2026</em></h1>
+            <p style="color:var(--af-muted);font-size:1.05rem;font-family:'Outfit';">Alliance Française × Colegio La Salle · San Cristóbal de las Casas · 06 Junio 2026</p>
+            <div class="c-tag" style="margin-top:24px">Proceso de verificación oficial</div>
+            <h2>¿Para qué sirve esta confirmación?</h2>
+            <p>Antes de la emisión del diploma oficial por <strong>France Éducation International</strong>, cada candidato debe verificar que sus datos en el sistema GAEL estén correctos. Un error en el nombre o fecha de nacimiento puede impedir la emisión del diploma vitalicio.</p>
+            <p>Esta confirmación es obligatoria. Una vez verificados los datos, podrás <strong>cargar tu comprobante de depósito o transferencia bancaria</strong> para completar el proceso.</p>
+        </div>
+        <div class="c-card">
+            <div class="c-tag">France Éducation International — MCER</div>
+            <h2>Sistema de calificación DELF</h2>
+            <p>El DELF evalúa cuatro competencias independientes (25 puntos c/u). Se requiere mínimo <strong>50/100</strong> globales y al menos <strong>5/25 en cada prueba</strong>.</p>
+            <div class="scoring-grid">
+                <div class="score-pill"><div class="sp-num">25</div><div class="sp-label">Compréhension de l'oral</div></div>
+                <div class="score-pill"><div class="sp-num">25</div><div class="sp-label">Compréhension des écrits</div></div>
+                <div class="score-pill"><div class="sp-num">25</div><div class="sp-label">Production écrite</div></div>
+                <div class="score-pill"><div class="sp-num">25</div><div class="sp-label">Production orale</div></div>
+            </div>
+        </div>
+        <div class="c-seeker" id="c-seeker-form">
+            <h3>Buscar mi registro</h3>
+            <p>Ingresa tu nombre y/o apellido tal como aparecen en tu identificación oficial.</p>
+            <div class="c-grid2">
+                <div>
+                    <label style="font-weight:800;font-size:.88rem;color:var(--bleu-passation);display:block;margin-bottom:8px;">NOMBRE(S)</label>
+                    <input type="text" id="c-search-name" placeholder="EJ: SANTIAGO" class="c-input" autocomplete="off">
+                </div>
+                <div>
+                    <label style="font-weight:800;font-size:.88rem;color:var(--bleu-passation);display:block;margin-bottom:8px;">APELLIDO(S)</label>
+                    <input type="text" id="c-search-surname" placeholder="EJ: SALGADO SERVIN" class="c-input" autocomplete="off">
+                </div>
+            </div>
+            <button id="btn-c-seeker" class="btn-c-primary" onclick="buscarRegistroConfirm()">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <span id="c-seeker-label">BUSCAR MI REGISTRO</span>
+            </button>
+            <div id="c-error-msg">Registro no localizado. Verifica la ortografía o contacta a tu sede.</div>
+        </div>
+        <div id="c-verification-area">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;color:var(--green);">
+                <svg width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/></svg>
+                <h3 style="font-family:'Outfit',sans-serif;font-size:1.7rem;font-weight:700;">Registro localizado</h3>
+            </div>
+            <div class="c-ficha">
+                <div class="c-ficha-header">
+                    <div class="c-ficha-icon"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0zM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg></div>
+                    <div><div id="c-ficha-nombre" class="c-ficha-nombre">—</div><p style="font-size:.92rem;opacity:.9">Candidato DELF Junior 2026 · Colegio La Salle</p></div>
+                </div>
+                <div class="c-ficha-body">
+                    <div class="c-ficha-row"><div class="c-ficha-row-icon">📝</div><div><div class="c-ficha-row-label">Nivel</div><div id="c-ficha-nivel" class="c-ficha-row-value" style="color:var(--rouge-passation)">—</div></div></div>
+                    <div class="c-ficha-row"><div class="c-ficha-row-icon">#</div><div><div class="c-ficha-row-label">Número FEI</div><div id="c-ficha-numero" class="c-ficha-row-value" style="letter-spacing:2px">—</div></div></div>
+                    <div class="c-ficha-row"><div class="c-ficha-row-icon">📅</div><div><div class="c-ficha-row-label">Fecha del examen</div><div class="c-ficha-row-value">Sábado 06 Junio 2026</div></div></div>
+                    <div class="c-ficha-row"><div class="c-ficha-row-icon">📍</div><div><div class="c-ficha-row-label">Sede</div><div class="c-ficha-row-value">Colegio La Salle, SCLC</div></div></div>
+                </div>
+                <div class="c-ficha-footer"><strong style="color:var(--green)">✓ DATOS EN SISTEMA GAEL</strong> · France Éducation International</div>
+            </div>
+            <div class="c-card" style="margin-top:24px;">
+                <div class="c-tag">Paso obligatorio · Comprobante de pago</div>
+                <h2>Carga tu depósito o transferencia bancaria</h2>
+                <p>Para completar la confirmación, debes adjuntar la fotografía o PDF de tu depósito/transferencia (PDF, JPG o PNG, máx. 5 MB). Este paso es obligatorio para que el equipo coordinador valide tu inscripción definitivamente.</p>
+                <div style="background:var(--bg-3d);padding:22px;border-radius:14px;box-shadow:var(--neumo-inner);margin:18px 0;font-size:.95rem;">
+                    <strong>Banco:</strong> BBVA Bancomer · <strong>Titular:</strong> ALIANZA FRANCO MEXICANA DE SAN CRISTÓBAL A.C.<br>
+                    <strong>Cuenta:</strong> 0186832806 · <strong>CLABE:</strong> 012130001868328069
+                </div>
+                <div class="c-deposito-zone" id="c-deposito-zone" onclick="document.getElementById('c-deposito-file').click()">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--bleu-passation)" stroke-width="2" style="margin-bottom:10px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                    <p id="c-deposito-text" style="font-weight:600;color:var(--bleu-passation)">Arrastra el comprobante aquí o haz clic para seleccionar</p>
+                    <p style="font-size:.8rem;color:var(--af-muted);margin-top:8px">PDF, JPG o PNG · Máximo 5 MB</p>
+                    <input type="file" id="c-deposito-file" accept=".pdf,image/jpeg,image/png" hidden>
+                </div>
+                <div class="c-accept">
+                    <input type="checkbox" id="c-acepto" required>
+                    <label for="c-acepto">He verificado que mis datos son correctos y declaro mi conformidad con el reglamento oficial de los exámenes DELF/DALF emitido por France Éducation International.</label>
+                </div>
+                <button id="btn-c-confirm" class="btn-c-primary" onclick="confirmarDatos()">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                    CONFIRMAR Y ENVIAR COMPROBANTE
+                </button>
+                <p style="text-align:center;font-size:.85rem;color:var(--af-muted);margin-top:14px;">También puedes enviarlo por WhatsApp a <a href="https://wa.me/529673424456" target="_blank" style="color:var(--bleu-passation);font-weight:700;">+52 967 342 4456 (Miguel Tillero)</a></p>
+                <div style="text-align:center;margin-top:18px;">
+                    <button class="btn-c-ghost" onclick="resetConfirm()">← NUEVA BÚSQUEDA</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="confirm-thanks">
+    <video id="confirm-thanks-video" playsinline preload="auto" muted><source src="6.mp4" type="video/mp4"></video>
+    <div class="ct-overlay">
+        <h2>Merci beaucoup !</h2>
+        <p>Tus datos están confirmados y tu comprobante fue registrado. Nos vemos el <strong style="color:#fff">06 de junio de 2026</strong> en el Colegio La Salle.</p>
+    </div>
+</div>
+
+<div id="app-alumno" style="display:none;">
+
+    <section id="welcome" class="screen video-screen">
+        <video id="welcomeVideo" playsinline preload="auto"><source src="1.mp4" type="video/mp4"></video>
+        <div class="video-controls"><button class="btn-video" onclick="skipWelcomeVideo()">Saltar intro →</button></div>
+    </section>
+
+    <section id="transition" class="screen video-screen">
+        <video id="transitionVideo" playsinline preload="auto" muted><source src="transicion.mp4" type="video/mp4"></video>
+        <div class="video-controls"><button class="btn-video" onclick="fadeOutAndShow('transition','chapter1')">Continuar →</button></div>
+    </section>
+
+    <!-- CHAPTER 1: Acerca del examen -->
+    <section id="chapter1" class="screen">
+        <header class="hero">
+            <div class="hero-logos">
+                <img src="alianza.png" alt="AF">
+                <div class="hero-divider"></div>
+                <img src="lasalle.jpg" alt="La Salle">
+            </div>
+            <span class="hero-eyebrow">Ministerio Francés de Educación</span>
+            <h1>DELF Junior <span>2026</span></h1>
+            <p class="hero-sub">Certificación oficial de francés del Ministerio Francés de Educación. Alianza Francesa de San Cristóbal de Las Casas y Colegio La Salle, comprometidos con la excelencia lingüística de Chiapas.</p>
+            <div class="tricolor"><span class="b1"></span><span class="b2"></span><span class="b3"></span></div>
+        </header>
+        <div class="container-ch">
+            <div class="chapter-header">
+                <span class="chapter-progress">Capítulo 1 de 6</span>
+                <h2 class="chapter-title">Acerca del <em>examen DELF</em></h2>
+                <p class="chapter-subtitle">Un diploma vitalicio reconocido en más de 170 países.</p>
+            </div>
+
+            <div class="content-section">
+                <span class="section-tag">DELF Junior</span>
+                <h2>Certificación con validez mundial</h2>
+                <p>El <strong>DELF</strong> (Diplôme d'études en langue française) es un diploma internacional, vitalicio y reconocido en más de <strong>170 países</strong>. Expedido por el <strong>Ministerio Francés de Educación Nacional</strong> a través de <strong>France Éducation International (FEI, Sèvres)</strong>, evalúa el dominio del francés mediante cuatro competencias fundamentales estructuradas bajo el <strong>Marco Común Europeo de Referencia (MCER)</strong>.</p>
+                <p>El DELF Junior está diseñado especialmente para adolescentes (de 12 a 17 años), con temáticas adaptadas a su entorno escolar y personal. Es la puerta de entrada para movilidad académica, intercambios internacionales y una distinción curricular reconocida por universidades francófonas.</p>
+                <div class="info-grid">
+                    <div class="info-card">
+                        <div class="info-card-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg></div>
+                        <h4>Comprensión Oral · CO</h4>
+                        <p>Cuestionarios basados en la escucha de grabaciones auténticas (anuncios, diálogos, noticias breves). 25 puntos.</p>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-card-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg></div>
+                        <h4>Comprensión Escrita · CE</h4>
+                        <p>Lectura crítica y resolución de preguntas sobre documentos auténticos (cartas, artículos, anuncios). 25 puntos.</p>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-card-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg></div>
+                        <h4>Producción Escrita · PE</h4>
+                        <p>Redacción estructurada de cartas, textos cortos o ensayos breves según el nivel del candidato. 25 puntos.</p>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-card-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></div>
+                        <h4>Producción Oral · PO</h4>
+                        <p>Entrevista interactiva frente a un jurado oficial: presentación, diálogo dirigido y juego de rol. 25 puntos.</p>
+                    </div>
+                </div>
+                <p style="margin-top: 30px;"><strong>Puntuación mínima para aprobar:</strong> 50/100 en total, con al menos 5/25 en cada una de las cuatro competencias.</p>
+
+                <div class="sphere-row">
+                    <div class="sphere"><span class="s-num">170+</span><span class="s-lbl">Países donde se reconoce</span></div>
+                    <div class="sphere"><span class="s-num">∞</span><span class="s-lbl">Validez vitalicia</span></div>
+                    <div class="sphere"><span class="s-num">6</span><span class="s-lbl">Niveles MCER (A1–C2)</span></div>
+                    <div class="sphere"><span class="s-num">4</span><span class="s-lbl">Competencias evaluadas</span></div>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <span class="section-tag">Información extendida</span>
+                <h2>¿Por qué el DELF marca una diferencia?</h2>
+                <p>El <strong>Diplôme d'études en langue française (DELF)</strong> es el único diploma de francés expedido directamente por el Ministerio Francés de Educación. Su validez es <strong>vitalicia</strong>: una vez obtenido, no caduca jamás y se reconoce internacionalmente en universidades, instituciones gubernamentales y empleadores de toda la francofonía.</p>
+                <p>Las pruebas son diseñadas por <strong>France Éducation International (FEI)</strong>, organismo público con sede en Sèvres, París, y son aplicadas en más de <strong>1,200 centros</strong> autorizados en 174 países. En México, la Alianza Francesa es la única red habilitada para la passation del DELF Junior.</p>
+                <h3>Equivalencias y usos académicos</h3>
+                <ul>
+                    <li><strong>Movilidad universitaria:</strong> el nivel <strong>B2</strong> es el requisito mínimo de admisión a la mayoría de las universidades francesas y a programas Erasmus francófonos.</li>
+                    <li><strong>Inmigración a Quebec y Francia:</strong> los niveles del DELF/DALF son aceptados en trámites de naturalización y residencia.</li>
+                    <li><strong>Diplomado escolar:</strong> el DELF Junior es reconocido por la SEP mexicana como certificación oficial de competencia lingüística.</li>
+                    <li><strong>Empleabilidad:</strong> el diploma figura en el CV como una distinción internacional verificable de por vida.</li>
+                </ul>
+                <h3>Estructura del MCER (Marco Común Europeo de Referencia)</h3>
+                <div class="bento-grid" style="grid-auto-rows: 130px;">
+                    <div class="bento-cell"><span class="b-num">A1</span><span class="b-lbl">Descubrimiento</span></div>
+                    <div class="bento-cell"><span class="b-num">A2</span><span class="b-lbl">Supervivencia</span></div>
+                    <div class="bento-cell b-blue"><span class="b-num">B1</span><span class="b-lbl">Umbral · Independiente</span></div>
+                    <div class="bento-cell b-blue"><span class="b-num">B2</span><span class="b-lbl">Avanzado · Independiente</span></div>
+                    <div class="bento-cell b-red"><span class="b-num">C1</span><span class="b-lbl">Autónomo (DALF)</span></div>
+                    <div class="bento-cell b-red"><span class="b-num">C2</span><span class="b-lbl">Maestría (DALF)</span></div>
+                    <div class="bento-cell b-wide"><span class="b-num">Junior</span><span class="b-lbl">DELF adaptado a 12–17 años · temáticas escolares</span></div>
+                </div>
+                <p style="margin-top: 18px; font-size: 0.95rem; color: var(--af-muted);"><em>En esta sesión 2026, la sede La Salle aplica únicamente los niveles A1 a B2. Para C1/C2 (DALF) consulta directamente con la Alianza Francesa.</em></p>
+            </div>
+
+            <div class="chapter-nav">
+                <span class="btn-spacer"></span>
+                <div class="chapter-dots"><span class="active"></span><span></span><span></span><span></span><span></span><span></span></div>
+                <button class="btn-next" onclick="goToChapterWithVideo(2)">Siguiente →</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- CHAPTER 2: Fechas y preparación -->
+    <section id="chapter2" class="screen">
+        <div class="container-ch" style="padding-top: 60px;">
+            <div class="chapter-header">
+                <span class="chapter-progress">Capítulo 2 de 6</span>
+                <h2 class="chapter-title">Fechas y <em>preparación</em></h2>
+                <p class="chapter-subtitle">Calendario oficial de la sesión Junio 2026.</p>
+            </div>
+            <div class="content-section">
+                <span class="section-tag">Calendario 2026</span>
+                <h2>Prepárate para el éxito</h2>
+                <p>Las pruebas oficiales se llevarán a cabo en las instalaciones del <strong>Colegio La Salle</strong>, sede de passation autorizada por la Alianza Francesa de San Cristóbal.</p>
+                <div class="date-grid">
+                    <div class="date-card blue">
+                        <h4>Pruebas Colectivas (CO · CE · PE)</h4>
+                        <p class="big">Martes 2 de junio de 2026</p>
+                    </div>
+                    <div class="date-card red">
+                        <h4>Pruebas Orales (PO)</h4>
+                        <p class="big">Jueves 4 de junio de 2026</p>
+                    </div>
+                </div>
+                <div class="beneficio-box">
+                    <strong>✓ Beneficio Exclusivo de la Sede</strong>
+                    <p>Una semana antes del examen, la Dirección de la Alianza Francesa ofrecerá <strong>2 sesiones gratuitas de preparación</strong> en los locales de la Alianza para aquellos candidatos inscritos que deseen familiarizarse con el formato de las pruebas. (El horario será a convenir con los participantes.)</p>
+                </div>
+
+                <h3>Recursos oficiales de práctica en línea</h3>
+                <div class="contact-grid" style="margin-top: 18px;">
+                    <div class="contact-card">
+                        <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18"></rect><line x1="7" y1="2" x2="7" y2="22"></line><line x1="17" y1="2" x2="17" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line></svg></div>
+                        <h4>TV5 Monde · Apprendre</h4>
+                        <p class="value"><a href="https://apprendre.tv5monde.com/es/exercices/delf" target="_blank" rel="noopener">Ir al simulador DELF →</a></p>
+                    </div>
+                    <div class="contact-card">
+                        <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M2 12h20"></path><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path></svg></div>
+                        <h4>France Éducation International</h4>
+                        <p class="value"><a href="https://www.france-education-international.fr/diplome/delf-junior-scolaire" target="_blank" rel="noopener">Ver ejemplos de pruebas →</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="chapter-nav">
+                <button class="btn-prev" onclick="goToChapter(1)">← Anterior</button>
+                <div class="chapter-dots"><span></span><span class="active"></span><span></span><span></span><span></span><span></span></div>
+                <button class="btn-next" onclick="goToChapterWithVideo(3)">Siguiente →</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- CHAPTER 3: Niveles y precios -->
+    <section id="chapter3" class="screen">
+        <div class="container-ch" style="padding-top: 60px;">
+            <div class="chapter-header">
+                <span class="chapter-progress">Capítulo 3 de 6</span>
+                <h2 class="chapter-title">Elige tu <em>nivel</em></h2>
+                <p class="chapter-subtitle">Marco Común Europeo de Referencia (MCER) · Niveles A1 a B2.</p>
+            </div>
+            <div class="content-section">
+                <span class="section-tag">Niveles MCER · Precios MXN</span>
+                <h2>Cuatro niveles, una sola excelencia</h2>
+                <p>Cada nivel certifica competencias específicas en francés. La inscripción incluye material oficial, derechos de examen ante FEI y emisión del diploma.</p>
+                <div class="niveles-grid">
+                    <div class="nivel-card">
+                        <div class="nivel-code">A1</div>
+                        <div class="nivel-tag">Elemental · Introductorio</div>
+                        <div class="nivel-price">$1,445 <small style="font-size:.8rem;">MXN</small></div>
+                        <p class="nivel-desc">Comprender y utilizar expresiones cotidianas. Presentarse, hablar de sí mismo y de su entorno inmediato con frases sencillas.</p>
+                    </div>
+                    <div class="nivel-card">
+                        <div class="nivel-code">A2</div>
+                        <div class="nivel-tag">Básico · Usuario elemental</div>
+                        <div class="nivel-price">$1,575 <small style="font-size:.8rem;">MXN</small></div>
+                        <p class="nivel-desc">Comunicar en situaciones cotidianas: compras, escuela, familia. Describir experiencias breves y necesidades inmediatas.</p>
+                    </div>
+                    <div class="nivel-card">
+                        <div class="nivel-code">B1</div>
+                        <div class="nivel-tag">Intermedio · Usuario independiente</div>
+                        <div class="nivel-price">$1,800 <small style="font-size:.8rem;">MXN</small></div>
+                        <p class="nivel-desc">Producir un discurso simple y coherente sobre temas familiares: viajes, planes, opiniones. Defender un punto de vista.</p>
+                    </div>
+                    <div class="nivel-card">
+                        <div class="nivel-code">B2</div>
+                        <div class="nivel-tag">Avanzado · Usuario independiente</div>
+                        <div class="nivel-price">$2,500 <small style="font-size:.8rem;">MXN</small></div>
+                        <p class="nivel-desc">Comprender textos complejos. Argumentar, defender ideas con claridad y matizar opiniones. Requisito para movilidad universitaria en Francia.</p>
+                    </div>
+                </div>
+                <p style="margin-top: 26px; font-size: 1rem; background: var(--bg-3d); padding: 18px 22px; border-radius: 12px; box-shadow: var(--neumo-inner); color: var(--af-dark);"><strong style="color: var(--bleu-passation);">Nota:</strong> Los pagos se realizan en una sola exhibición a la cuenta BBVA institucional. El comprobante se carga al momento de llenar la ficha de inscripción.</p>
+            </div>
+            <div class="chapter-nav">
+                <button class="btn-prev" onclick="goToChapter(2)">← Anterior</button>
+                <div class="chapter-dots"><span></span><span></span><span class="active"></span><span></span><span></span><span></span></div>
+                <button class="btn-next" onclick="goToChapterWithVideo(4)">Siguiente →</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- CHAPTER 4: Alianza con historia + galería -->
+    <section id="chapter4" class="screen">
+        <div class="container-ch" style="padding-top: 60px;">
+            <div class="chapter-header">
+                <span class="chapter-progress">Capítulo 4 de 6</span>
+                <h2 class="chapter-title">Alianza con <em>historia</em></h2>
+                <p class="chapter-subtitle">Colegio La Salle y Alianza Francesa: una colaboración consolidada.</p>
+            </div>
+            <div class="content-section" style="background: linear-gradient(135deg,rgba(20,20,20,.92),rgba(1,56,150,.88)); color: #fff; border: none;">
+                <h2 style="color: #fff;">Colegio La Salle × Alliance Française</h2>
+                <p style="color: rgba(255,255,255,0.92);">Desde hace varios años mantenemos una colaboración comprometida con la difusión de la lengua y la cultura francesa en Chiapas. Cada año, decenas de estudiantes lasallistas se preparan en la Alianza Francesa para presentar el examen DELF en la sede del Colegio, transformando su trayectoria académica con una certificación internacional.</p>
+                <p style="color: rgba(255,255,255,0.92);">Esta sinergia entre dos instituciones de excelencia —el rigor educativo lasallista y la tradición lingüística francesa— garantiza un proceso de passation organizado, transparente y conforme a los estándares del Ministerio Francés de Educación.</p>
+            </div>
+            <div class="content-section" style="margin-top: 25px;">
+                <span class="section-tag">Galería institucional</span>
+                <h2>Momentos de nuestra comunidad</h2>
+                <p>Imágenes de jornadas culturales, sesiones de preparación y momentos de la vida lingüística compartida entre ambas instituciones. Haz clic en cualquier imagen para ampliarla.</p>
+                <div class="gallery-grid" id="galeria"></div>
+            </div>
+            <div class="chapter-nav">
+                <button class="btn-prev" onclick="goToChapter(3)">← Anterior</button>
+                <div class="chapter-dots"><span></span><span></span><span></span><span class="active"></span><span></span><span></span></div>
+                <button class="btn-next" onclick="goToChapterWithVideo(5)">Siguiente →</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- CHAPTER 5: Reglamento -->
+    <section id="chapter5" class="screen">
+        <div class="container-ch" style="padding-top: 60px;">
+            <div class="chapter-header">
+                <span class="chapter-progress">Capítulo 5 de 6</span>
+                <h2 class="chapter-title"><em>Reglamento</em> oficial</h2>
+                <p class="chapter-subtitle">Lee con atención antes de inscribirte. El cumplimiento del reglamento es obligatorio.</p>
+            </div>
+            <div class="content-section">
+                <span class="section-tag">Reglamento DELF / DALF</span>
+                <h2>Compromisos del candidato</h2>
+                <p>El candidato y su tutor declaran haber leído y aceptado los siguientes puntos en el momento de la inscripción.</p>
+
+                <div class="regla-toggle" onclick="toggleRegla(this)"><h3>Día del examen</h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
+                <div class="regla-content"><div class="regla-inner">
+                    <h4>Obligaciones del candidato</h4>
+                    <ul>
+                        <li>Acudir puntualmente a la sede convocada (Colegio La Salle). Se recomienda llegar <strong>30 minutos antes</strong> de la hora indicada en la convocatoria.</li>
+                        <li>Presentar la <strong>convocatoria impresa</strong> y una <strong>identificación oficial con fotografía</strong> (INE, pasaporte o credencial escolar vigente con foto).</li>
+                        <li>Llevar exclusivamente <strong>pluma de tinta azul o negra</strong>.</li>
+                        <li><strong>Prohibido el uso de lápiz</strong>, corrector líquido o cinta correctora.</li>
+                        <li><strong>Prohibido el uso de dispositivos electrónicos</strong> en la sala (teléfonos, relojes inteligentes, audífonos, traductores).</li>
+                    </ul>
+                </div></div>
+
+                <div class="regla-toggle" onclick="toggleRegla(this)"><h3>Llegada y registro</h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
+                <div class="regla-content"><div class="regla-inner">
+                    <h4>Protocolo de registro</h4>
+                    <ul>
+                        <li>El candidato debe presentarse en la mesa de registro al menos 30 minutos antes del inicio de la prueba.</li>
+                        <li>Se verificará identidad mediante la convocatoria impresa y la identificación oficial vigente.</li>
+                        <li>Después de cerrada la puerta de la sala, <strong>no se permite el acceso bajo ninguna circunstancia</strong>.</li>
+                        <li>Las pertenencias personales (mochilas, teléfonos apagados, etc.) se depositarán en el área designada por el supervisor.</li>
+                    </ul>
+                </div></div>
+
+                <div class="regla-toggle" onclick="toggleRegla(this)"><h3>Material permitido</h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
+                <div class="regla-content"><div class="regla-inner">
+                    <h4>Material autorizado en la sala</h4>
+                    <ul>
+                        <li>Pluma azul o negra (se recomienda llevar dos).</li>
+                        <li>Convocatoria impresa.</li>
+                        <li>Identificación oficial con foto.</li>
+                        <li>Botella de agua transparente (sin etiqueta).</li>
+                    </ul>
+                    <h4>Material expresamente prohibido</h4>
+                    <ul>
+                        <li>Cualquier dispositivo electrónico (teléfono, smartwatch, audífonos, tablet).</li>
+                        <li>Diccionarios, apuntes, libros o cualquier material de consulta.</li>
+                        <li>Lápiz, corrector líquido o blanco.</li>
+                        <li>Alimentos sólidos.</li>
+                    </ul>
+                </div></div>
+
+                <div class="regla-toggle" onclick="toggleRegla(this)"><h3>Resultados y Diplomas</h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
+                <div class="regla-content"><div class="regla-inner">
+                    <h4>Entrega de resultados</h4>
+                    <ul>
+                        <li>Los resultados serán comunicados aproximadamente <strong>6 a 8 semanas</strong> después de la pasación.</li>
+                        <li>El candidato debe presentarse personalmente en la sede de la Alianza Francesa con su identificación oficial para retirar la <strong>constancia provisional</strong>.</li>
+                        <li><strong>No se entregarán resultados</strong> vía telefónica, WhatsApp ni por correo electrónico.</li>
+                        <li>La puntuación mínima para aprobar es <strong>50/100</strong>, con un mínimo de <strong>5/25</strong> en cada una de las cuatro competencias.</li>
+                    </ul>
+                    <h4>Diploma oficial</h4>
+                    <p>El diploma físico, firmado por el Ministerio Francés de Educación, es emitido por France Éducation International en París y puede tardar entre 4 y 6 meses adicionales. La <strong>constancia de aprobación</strong> tiene valor oficial para cualquier trámite mientras llega el diploma.</p>
+                </div></div>
+
+                <div class="regla-toggle" onclick="toggleRegla(this)"><h3>Aviso de Privacidad (ARCO)</h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
+                <div class="regla-content"><div class="regla-inner">
+                    <h4>Tratamiento de datos personales</h4>
+                    <ul>
+                        <li>Por tratarse de menores de edad, el consentimiento lo otorga el padre, madre o tutor legal al momento de aceptar este aviso.</li>
+                        <li>Usted tiene derecho a <strong>Acceder, Rectificar, Cancelar u Oponerse (ARCO)</strong> al tratamiento de sus datos personales.</li>
+                        <li>Los datos se transmiten mediante conexión cifrada exclusivamente a los sistemas de <strong>France Éducation International (París)</strong> para la emisión del diploma.</li>
+                        <li>Los datos se conservan únicamente el periodo necesario para emitir el diploma oficial.</li>
+                    </ul>
+                    <p>Consulta el <a href="javascript:void(0)" onclick="openPrivacy()" style="font-weight: 800;">aviso de privacidad completo</a>.</p>
+                </div></div>
+
+                <div class="regla-toggle" onclick="toggleRegla(this)"><h3>Sanciones</h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg></div>
+                <div class="regla-content"><div class="regla-inner">
+                    <h4>Causales de exclusión</h4>
+                    <ul>
+                        <li>Cualquier intento de <strong>fraude o copia</strong> resultará en la <strong>anulación inmediata</strong> del examen y la exclusión del candidato sin derecho a reembolso.</li>
+                        <li>El uso de cualquier dispositivo electrónico en la sala será considerado falta grave.</li>
+                        <li>La suplantación de identidad será denunciada ante las autoridades correspondientes.</li>
+                    </ul>
+                    <h4>Política de reembolsos</h4>
+                    <ul>
+                        <li>Una vez inscrito y registrado el candidato ante FEI, <strong>no procede reembolso</strong> del pago efectuado.</li>
+                        <li>En caso de fuerza mayor debidamente comprobada, la Alianza podrá ofrecer el aplazamiento a la siguiente sesión.</li>
+                    </ul>
+                </div></div>
+            </div>
+            <div class="chapter-nav">
+                <button class="btn-prev" onclick="goToChapter(4)">← Anterior</button>
+                <div class="chapter-dots"><span></span><span></span><span></span><span></span><span class="active"></span><span></span></div>
+                <button class="btn-next" onclick="goToChapterWithVideo(6)">Siguiente →</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- CHAPTER 6: CTA inscripción -->
+    <section id="chapter6" class="screen">
+        <div class="container-ch" style="padding-top: 60px;">
+            <div class="chapter-header">
+                <span class="chapter-progress">Capítulo 6 de 6</span>
+                <h2 class="chapter-title">Inscripción <em>formal</em></h2>
+                <p class="chapter-subtitle">Es momento de llenar tu ficha oficial de inscripción.</p>
+            </div>
+            <div class="content-section" style="text-align: center; padding: 70px 40px;">
+                <h2 style="font-size: 2.4rem;">¿Todo listo para tu inscripción?</h2>
+                <p style="font-size: 1.15rem; max-width: 620px; margin: 0 auto 35px;">Asegúrate de tener a la mano tus datos oficiales (identificación, fecha y ciudad de nacimiento) y el comprobante de pago BBVA en formato PDF, JPG o PNG.</p>
+                <div style="display: inline-flex; flex-direction: column; align-items: center; gap: 18px;">
+                    <button class="btn-primary" onclick="goToFormVideo()" type="button">Llenar ficha de inscripción</button>
+                    <small style="color: var(--af-muted); font-family:'Outfit'; font-size: 0.92rem;">Tus datos se guardan localmente mientras llenas la ficha.</small>
+                </div>
+            </div>
+            <div class="chapter-nav">
+                <button class="btn-prev" onclick="goToChapter(5)">← Anterior</button>
+                <div class="chapter-dots"><span></span><span></span><span></span><span></span><span></span><span class="active"></span></div>
+                <span class="btn-spacer"></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Transition before form -->
+    <section id="formVideo" class="screen video-screen">
+        <video id="formTransitionVideo" playsinline preload="auto" muted><source src="transicion.mp4" type="video/mp4"></video>
+        <div class="video-controls"><button class="btn-video" onclick="fadeOutAndShow('formVideo','formPage')">Continuar →</button></div>
+    </section>
+
+    <!-- FORM PAGE -->
+    <section id="formPage" class="screen">
+        <div class="form-page-wrap">
+            <div id="draft-banner">
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                    <span>Hemos restaurado tus datos guardados automáticamente.</span>
+                </div>
+                <button type="button" onclick="clearDraft()" style="background: none; border: none; color: var(--af-red); cursor: pointer; font-weight: 700; text-decoration: underline;">Descartar</button>
+            </div>
+
+            <div class="form-card">
+                <div class="form-header">
+                    <div class="form-header-top">
+                        <img src="alianza.png" alt="AF">
+                        <img src="lasalle.jpg" alt="La Salle">
+                    </div>
+                    <h2>Ficha de Inscripción 2026</h2>
+                    <p>Conforme al estándar GAEL · France Éducation International</p>
+                </div>
+
+                <div class="form-body">
+                    <form id="inscripcionForm" novalidate>
+                        <h3 class="form-section-title"><span class="num">1</span>Datos del Candidato</h3>
+                        <div class="grid">
+                            <div class="field full">
+                                <label>Tratamiento (Civilité) <span class="req">*</span></label>
+                                <div class="radio-row">
+                                    <div class="radio-pill"><input type="radio" id="tmad" name="civilite" value="MAD" required><label for="tmad">Sra. (MAD)</label></div>
+                                    <div class="radio-pill"><input type="radio" id="tmon" name="civilite" value="MON"><label for="tmon">Sr. (MON)</label></div>
+                                    <div class="radio-pill"><input type="radio" id="tnod" name="civilite" value="NOD"><label for="tnod">Otro (NOD)</label></div>
+                                </div>
+                            </div>
+                            <div class="field full"><label>Apellidos (Patronyme) <span class="req">*</span></label><input type="text" name="patronyme" required></div>
+                            <div class="field full"><label>Nombres (Prénom) <span class="req">*</span></label><input type="text" name="prenom" required></div>
+                            <div class="field"><label>Fecha de Nacimiento <span class="req">*</span></label><input type="date" name="date_naissance" required></div>
+                            <div class="field"><label>Ciudad de Nacimiento <span class="req">*</span></label><input type="text" name="ville_naissance" required></div>
+                            <div class="field full">
+                                <label>Nacionalidad <span class="req">*</span></label>
+                                <input type="text" name="nationalite" list="list-nationalite" placeholder="Ej: mexicaine" required>
+                                <datalist id="list-nationalite">
+                                    <option value="mexicaine"></option>
+                                    <option value="française"></option>
+                                    <option value="américaine"></option>
+                                    <option value="canadienne"></option>
+                                    <option value="guatemalteca"></option>
+                                    <option value="colombiana"></option>
+                                    <option value="argentine"></option>
+                                    <option value="espagnole"></option>
+                                </datalist>
+                            </div>
+                        </div>
+
+                        <h3 class="form-section-title"><span class="num">2</span>Contacto del Tutor</h3>
+                        <div class="grid">
+                            <div class="field"><label>Teléfono Celular <span class="req">*</span></label><input type="tel" name="telephone" required pattern="[0-9 +()\-]{8,}" placeholder="+52 ..."></div>
+                            <div class="field"><label>Correo Electrónico <span class="req">*</span></label><input type="email" name="courriel" required placeholder="tutor@correo.com"></div>
+                            <div class="field full"><label>Dirección Completa <span class="req">*</span></label><input type="text" name="adresse" required placeholder="Calle, número, colonia, ciudad, estado, C.P."></div>
+                        </div>
+
+                        <h3 class="form-section-title"><span class="num">3</span>Certificación DELF</h3>
+                        <div class="nivel-selector">
+                            <div class="nivel-pill"><input type="radio" id="na1" name="niveau" value="A1" required><label for="na1"><span class="code">A1</span><span class="price">$1,445</span></label></div>
+                            <div class="nivel-pill"><input type="radio" id="na2" name="niveau" value="A2"><label for="na2"><span class="code">A2</span><span class="price">$1,575</span></label></div>
+                            <div class="nivel-pill"><input type="radio" id="nb1" name="niveau" value="B1"><label for="nb1"><span class="code">B1</span><span class="price">$1,800</span></label></div>
+                            <div class="nivel-pill"><input type="radio" id="nb2" name="niveau" value="B2"><label for="nb2"><span class="code">B2</span><span class="price">$2,500</span></label></div>
+                        </div>
+
+                        <div class="field full" style="margin-top: 25px;">
+                            <label>Motivo del Examen (Motif inscription) <span class="req">*</span></label>
+                            <select name="motif" required>
+                                <option value="" disabled selected>Seleccione un motivo...</option>
+                                <option value="ECOL">ECOL · Estudios en país de origen</option>
+                                <option value="ETFR">ETFR · Movilidad estudiantil hacia Francia</option>
+                                <option value="ETAU">ETAU · Movilidad hacia otros países francófonos</option>
+                                <option value="PERS">PERS · Motivación personal</option>
+                                <option value="PROF">PROF · Necesidades profesionales</option>
+                            </select>
+                        </div>
+
+                        <h3 class="form-section-title"><span class="num">4</span>Comprobante de Pago</h3>
+                        <div class="payment-card-neumo">
+                            <div class="bank-details-box">
+                                <p><strong>Banco:</strong> BBVA Bancomer</p>
+                                <p><strong>Titular:</strong> ALIANZA FRANCO MEXICANA DE SAN CRISTÓBAL A.C.</p>
+                                <p><strong>Número de Cuenta:</strong> <span>0186832806</span></p>
+                                <p><strong>CLABE Interbancaria:</strong> <span>012130001868328069</span></p>
+                                <p style="margin-top: 10px; font-size: 0.92rem; color: var(--af-muted);">En referencia / concepto del depósito, incluye: <strong>"DELF 2026 + nombre del candidato"</strong>.</p>
+                            </div>
+                            <div class="field full" style="margin-top: 18px;">
+                                <label>Carga tu comprobante (PDF, JPG, PNG · máx 5MB) <span class="req">*</span></label>
+                                <div class="drop-zone" id="drop-zone">
+                                    <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                                    <p id="drop-text">Arrastra el archivo aquí o haz clic para seleccionarlo</p>
+                                    <input type="file" id="file-upload" name="comprobante" accept=".pdf,image/jpeg,image/png" required hidden>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="accept-box">
+                            <input type="checkbox" id="acepto" name="acepto" required>
+                            <label for="acepto">Como tutor legal del candidato menor de edad, acepto el reglamento del examen DELF Junior 2026 y el <a href="javascript:void(0)" onclick="openPrivacy()">Aviso de Privacidad</a> (LFPDPPP · derechos ARCO · transferencia a France Éducation International).</label>
+                        </div>
+
+                        <div class="cta-wrap">
+                            <button type="submit" class="btn-submit" id="submitBtn">Enviar inscripción segura</button>
+                            <button type="button" class="btn-back" onclick="goToChapter(1)">← Volver al inicio</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Post-form video -->
+    <section id="postFormVideo" class="screen video-screen">
+        <video id="postVideo" playsinline preload="auto" muted><source src="5.mp4" type="video/mp4"></video>
+        <div class="video-controls"><button class="btn-video" onclick="fadeOutAndShow('postFormVideo','askReturn')">Continuar →</button></div>
+    </section>
+
+    <!-- Ask return -->
+    <section id="askReturn" class="screen">
+        <div class="ask-screen">
+            <div class="ask-card">
+                <div style="display:flex; justify-content:center; margin-bottom:18px;">
+                    <div style="width:70px; height:70px; border-radius:50%; background: var(--bg-3d); display:flex; align-items:center; justify-content:center; color: var(--green); box-shadow: var(--neumo-pill);">
+                        <svg width="36" height="36" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/></svg>
+                    </div>
+                </div>
+                <h2>¡Inscripción recibida!</h2>
+                <p>Tu comprobante e información están en procesamiento. Pronto recibirás confirmación por correo electrónico.</p>
+                <div class="ask-buttons">
+                    <button class="btn-yes" onclick="goToFinal(true)">Volver al inicio</button>
+                    <button class="btn-no" onclick="goToFinal(false)">Finalizar</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Thanks final -->
+    <section id="thanks" class="screen video-screen">
+        <video id="thanksVideo" playsinline preload="auto"><source src="6.mp4" type="video/mp4"></video>
+        <div class="thanks-overlay">
+            <h2>Merci beaucoup !</h2>
+            <p>Tu inscripción al DELF Junior 2026 ha sido procesada correctamente. Te deseamos el mayor de los éxitos.</p>
+            <div style="display:flex; gap:14px; flex-wrap:wrap; justify-content:center;">
+                <a class="btn-chrome primary" href="https://wa.me/?text=Acabo%20de%20inscribirme%20al%20DELF%20Junior%202026%20en%20La%20Salle.%20%C2%A1Inscr%C3%ADbete%20aqu%C3%AD%3A%20https%3A%2F%2Fmigueltillero-ship-it.github.io%2FDELFLaSalle%2F" target="_blank" rel="noopener">Compartir con compañeros</a>
+                <button class="btn-chrome" onclick="fadeOutAndShow('thanks','chapter1')">Volver al inicio</button>
+            </div>
+            <div class="tricolor" style="margin-top:40px;"><span class="b1"></span><span class="b2"></span><span class="b3"></span></div>
+        </div>
+    </section>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════
+   BASE DE DATOS DE CANDIDATOS
+═══════════════════════════════════════════════ */
+const bdCandidatos = [
+    { nombre: "LUIS FERNANDO", apellido: "AGUILAR SUAREZ", nivel: "A2", numero: "052825010132", pdf: "20260512_GAEL_attestation_inscription_AGUILAR SUAREZ_Luis Fernando.pdf" },
+    { nombre: "SOFIA", apellido: "ALFONZO GARCIA", nivel: "A2", numero: "052825010138", pdf: "20260512_GAEL_attestation_inscription_ALFONZO GARCÍA_Sofía.pdf" },
+    { nombre: "SAMUEL", apellido: "CANCINO HERNANDEZ", nivel: "A2", numero: "052825010130", pdf: "20260512_GAEL_attestation_inscription_CANCINO HERNANDEZ_Samuel.pdf" },
+    { nombre: "SARA", apellido: "CANCINO SUAREZ", nivel: "A2", numero: "052825010141", pdf: "20260512_GAEL_attestation_inscription_CANCINO SUÁREZ_Sara.pdf" },
+    { nombre: "CAROLINA", apellido: "CONTRERAS CHACON", nivel: "A2", numero: "052825010136", pdf: "20260512_GAEL_attestation_inscription_CONTRERAS CHACÓN_Carolina.pdf" },
+    { nombre: "ERICK SANTIAGO", apellido: "DIAZ RAMOS", nivel: "A2", numero: "052825010137", pdf: "20260512_GAEL_attestation_inscription_DÍAZ RAMOS_Erick Santiago.pdf" },
+    { nombre: "LUIS EMILIO", apellido: "GOMEZ MEDINA", nivel: "B2", numero: "052825010129", pdf: "#" },
+    { nombre: "EMILIANO DE JESUS", apellido: "GUZMAN AGUILAR", nivel: "A2", numero: "052825010154", pdf: "#" },
+    { nombre: "MARIA FERNANDA", apellido: "HERNANDEZ QUEZADA", nivel: "A2", numero: "052825010146", pdf: "20260512_GAEL_attestation_inscription_HERNÁNDEZ QUEZADA_María Fernanda.pdf" },
+    { nombre: "RENATA", apellido: "LOPEZ RENDON", nivel: "A2", numero: "052825010155", pdf: "20260512_GAEL_attestation_inscription_LÓPEZ RENDÓN_Renata.pdf" },
+    { nombre: "JUAN MARIANO", apellido: "MARTINEZ VELASCO", nivel: "A2", numero: "052825010150", pdf: "20260512_GAEL_attestation_inscription_MARTÍNEZ VELASCO_Juan Mariano.pdf" },
+    { nombre: "DASHA CAMILA", apellido: "MONTOYA RUIZ", nivel: "A2", numero: "052825010153", pdf: "20260512_GAEL_attestation_inscription_MONTOYA RUIZ_Dasha Camila.pdf" },
+    { nombre: "IAN PABLO", apellido: "MORALES RODRIGUEZ", nivel: "A2", numero: "052825010156", pdf: "20260512_GAEL_attestation_inscription_MORALES RODRÍGUEZ_Ian Pablo.pdf" },
+    { nombre: "SILVANA", apellido: "MORALES SUAREZ", nivel: "A2", numero: "052825010157", pdf: "20260512_GAEL_attestation_inscription_MORALES SUÁREZ_Silvana.pdf" },
+    { nombre: "CARLOS RAUL", apellido: "NARVAEZ DIAZ", nivel: "A2", numero: "052825010158", pdf: "20260512_GAEL_attestation_inscription_NARVÁEZ DÍAZ_Carlos Raúl.pdf" },
+    { inputNombre: "JUNO", inputApellido: "OCAMPO", nombre: "JUNO XIMENA", apellido: "OCAMPO LOPEZ", nivel: "A2", numero: "052825010145", pdf: "20260512_GAEL_attestation_inscription_OCAMPO LÓPEZ_Juno Ximena.pdf" },
+    { nombre: "JORGE HUGO", apellido: "REYES VAZQUEZ", nivel: "A2", numero: "052825010147", pdf: "20260512_GAEL_attestation_inscription_REYES VÁZQUEZ_Jorge Hugo.pdf" },
+    { nombre: "ANA PAULA", apellido: "RUIZ ROQUE", nivel: "A2", numero: "052825010131", pdf: "20260512_GAEL_attestation_inscription_RUIZ ROQUE_Ana Paula.pdf" },
+    { nombre: "SANTIAGO", apellido: "SALGADO SERVIN", nivel: "A2", numero: "052825010152", pdf: "20260512_GAEL_attestation_inscription_SALGADO SERVÍN_Santiago.pdf" },
+    { nombre: "CRISTOBAL", apellido: "SANCHEZ FLORES", nivel: "A2", numero: "052825010135", pdf: "20260512_GAEL_attestation_inscription_SANCHEZ FLORES_Cristóbal.pdf" },
+    { nombre: "ANDREA MIRANDA", apellido: "SANTIAGO URBINA", nivel: "A2", numero: "052825010133", pdf: "20260512_GAEL_attestation_inscription_SANTIAGO URBINA_Andrea Miranda.pdf" },
+    { nombre: "XIOMARA SKARLETT", apellido: "TORREZ GONZALEZ", nivel: "A2", numero: "052825010148", pdf: "20260512_GAEL_attestation_inscription_TORREZ GONZÁLEZ_Xiomara Skarlett.pdf" },
+    { nombre: "ANGELA SOFIA", apellido: "TOVILLA DOMINGUEZ", nivel: "A2", numero: "052825010134", pdf: "20260512_GAEL_attestation_inscription_TOVILLA DOMINGUEZ_Ángela Sofía.pdf" },
+    { nombre: "JEFTZY SHAILE", apellido: "VAZQUEZ GARCIA", nivel: "A2", numero: "052825010139", pdf: "20260512_GAEL_attestation_inscription_VÁZQUEZ GARCÍA_Jeftzy Shaile.pdf" },
+    { nombre: "KIRA VALENTINA", apellido: "VEZZOLI DIAZ", nivel: "A2", numero: "052825010159", pdf: "20260512_GAEL_attestation_inscription_VEZZOLI DÍAZ_Kira Valentina.pdf" },
+    { nombre: "ANGEL", apellido: "CRUZ SOLIS", nivel: "A2", numero: "PENDIENTE", pdf: "#" },
+    { nombre: "MIRANDA", apellido: "RUIZ RIVERA", nivel: "A2", numero: "PENDIENTE", pdf: "#" },
+    { nombre: "CAMILA", apellido: "SILVA VELASCO", nivel: "A2", numero: "PENDIENTE", pdf: "#" },
+    { nombre: "DANIEL ALEJANDRO", apellido: "ZUNIGA DOMINGUEZ", nivel: "A2", numero: "PENDIENTE", pdf: "#" }
+];
+
+/* GALERÍA: lista completa de medios disponibles */
+const galleryItems = [
+    { type: 'image', src: 'IMG-20241023-WA0017.jpg' },
+    { type: 'image', src: 'IMG-20241023-WA0018.jpg' },
+    { type: 'image', src: 'IMG-20241023-WA0019.jpg' },
+    { type: 'image', src: 'IMG_20241023_071530.jpg' },
+    { type: 'image', src: 'IMG-20241028-WA0050.jpg' },
+    { type: 'image', src: 'IMG-20241028-WA0056.jpg' },
+    { type: 'image', src: 'IMG-20241028-WA0058.jpg' },
+    { type: 'image', src: 'IMG-20250609-WA0004.jpg' },
+    { type: 'image', src: 'IMG-20250609-WA0009.jpg' },
+    { type: 'image', src: 'IMG-20250609-WA0010.jpg' },
+    { type: 'image', src: 'IMG-20250609-WA0011.jpg' },
+    { type: 'image', src: 'IMG-20250609-WA0016.jpg' },
+    { type: 'image', src: 'IMG-20250609-WA0019.jpg' },
+    { type: 'image', src: 'IMG-20250609-WA0024.jpg' },
+    { type: 'image', src: 'IMG-20250609-WA0040.jpg' },
+    { type: 'image', src: 'IMG-20250609-WA0054.jpg' },
+    { type: 'image', src: 'IMG-20251119-WA0158.jpg' },
+    { type: 'image', src: 'IMG-20251204-WA0033.jpg' },
+    { type: 'image', src: 'IMG-20251204-WA0057.jpg' },
+    { type: 'image', src: 'IMG-20251204-WA0062.jpg' },
+    { type: 'image', src: 'IMG-20260309-WA0002.jpg' },
+    { type: 'image', src: 'IMG_20251204_123438.jpg' },
+    { type: 'image', src: 'IMG_20251204_124832368_HDR.jpg' },
+    { type: 'image', src: 'IMG_20251204_124849353.jpg' },
+    { type: 'image', src: 'IMG_20251204_124852202.jpg' },
+    { type: 'image', src: 'IMG_20251204_124949487_HDR.jpg' },
+    { type: 'image', src: 'IMG_20251204_125050500_HDR.jpg' },
+    { type: 'image', src: 'IMG_20251204_125059995_HDR.jpg' },
+    { type: 'image', src: 'IMG_20251204_125231254_HDR.jpg' },
+    { type: 'video', src: '4.mp4', poster: 'IMG-20251204-WA0057.jpg' },
+    { type: 'video', src: '5.mp4', poster: 'IMG-20251204-WA0062.jpg' },
+    { type: 'video', src: '6.mp4', poster: 'IMG-20250609-WA0054.jpg' }
+];
+
+/* Subset rotativo para carrusel 3D (8 imágenes destacadas) */
+const carousel3DSet = [
+    'IMG-20250609-WA0040.jpg',
+    'IMG-20251204-WA0033.jpg',
+    'IMG_20251204_124832368_HDR.jpg',
+    'IMG-20241028-WA0050.jpg',
+    'IMG-20250609-WA0010.jpg',
+    'IMG_20251204_125050500_HDR.jpg',
+    'IMG-20260309-WA0002.jpg',
+    'IMG-20250609-WA0024.jpg'
+];
+
+/* ═══════════════════════════════════════════════
+   UTILIDADES
+═══════════════════════════════════════════════ */
+function normalizar(t) {
+    return (t || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toUpperCase().trim();
+}
+
+const audioBg = document.getElementById('bg-music');
+const musicBtn = document.getElementById('music-toggle');
+const fsBtn = document.getElementById('fs-toggle');
+let isAudioActive = false;
+
+function activateMusicAndUI() {
+    if(musicBtn) musicBtn.style.display = 'flex';
+    if(fsBtn) fsBtn.style.display = 'flex';
+}
+
+/* Fade-in suave de la música de fondo (se llama cuando el intro termina) */
+function fadeInBgMusic(targetVol){
+    if(!audioBg) return;
+    if(window.__introAudioPlaying) return; // intro aún sonando
+    const target = (typeof targetVol === 'number') ? targetVol : 0.25;
+    try { audioBg.volume = 0; } catch(e) {}
+    audioBg.play().then(()=>{
+        if(musicBtn) musicBtn.classList.add('playing');
+        isAudioActive = true;
+        let v = 0;
+        const step = () => {
+            v = Math.min(target, v + 0.02);
+            try { audioBg.volume = v; } catch(e){}
+            if(v < target) setTimeout(step, 80);
+        };
+        step();
+    }).catch(()=>{});
+}
+
+/* Fade-out de la música de fondo (al iniciar un video con audio propio) */
+function fadeOutBgMusic(){
+    if(!audioBg || audioBg.paused) return;
+    let v = audioBg.volume;
+    const step = () => {
+        v = Math.max(0, v - 0.04);
+        try { audioBg.volume = v; } catch(e){}
+        if(v > 0) setTimeout(step, 60);
+        else { try { audioBg.pause(); } catch(e){} if(musicBtn) musicBtn.classList.remove('playing'); isAudioActive = false; }
+    };
+    step();
+}
+
+function toggleMusic(){
+    if(!audioBg) return;
+    if(audioBg.paused){
+        audioBg.volume = 0.25;
+        audioBg.play().then(()=>{
+            musicBtn.classList.add('playing');
+            isAudioActive = true;
+        }).catch(()=>{});
+    } else {
+        audioBg.pause();
+        musicBtn.classList.remove('playing');
+        isAudioActive = false;
+    }
+}
+
+function isFullscreen(){ return !!(document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement); }
+function toggleFullscreen(){
+    if(isFullscreen()) {
+        const exit = document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen;
+        if(exit) exit.call(document).catch(()=>{});
+    } else {
+        const el = document.documentElement;
+        const req = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
+        if(req) req.call(el).catch(()=>{});
+    }
+}
+['fullscreenchange','webkitfullscreenchange','msfullscreenchange'].forEach(ev=>{
+    document.addEventListener(ev, ()=>{ if(fsBtn) fsBtn.classList.toggle('active', isFullscreen()); });
+});
+
+/* Back to top */
+window.addEventListener('scroll', () => {
+    const btt = document.getElementById('back-to-top');
+    if(btt) btt.classList.toggle('visible', window.scrollY > 400);
+});
+
+/* Modal privacy */
+function openPrivacy(){ const m = document.getElementById('modal-privacy'); if(m) m.classList.add('open'); }
+function closePrivacy(){ const m = document.getElementById('modal-privacy'); if(m) m.classList.remove('open'); }
+
+/* Lightbox */
+function openLightbox(type, src){
+    const lb = document.getElementById('lightbox');
+    const img = document.getElementById('lightbox-img');
+    const vid = document.getElementById('lightbox-video');
+    if(type === 'video'){
+        img.style.display = 'none';
+        vid.style.display = 'block';
+        vid.src = src;
+        vid.play().catch(()=>{});
+    } else {
+        vid.pause(); vid.src = '';
+        vid.style.display = 'none';
+        img.style.display = 'block';
+        img.src = src;
+    }
+    lb.classList.add('active');
+}
+function closeLightbox(e){
+    if(e && e.target && e.target.id !== 'lightbox' && !(e.target.classList && e.target.classList.contains('lightbox-close'))) return;
+    const lb = document.getElementById('lightbox');
+    const vid = document.getElementById('lightbox-video');
+    if(vid){ vid.pause(); vid.src = ''; }
+    lb.classList.remove('active');
+}
+
+/* Toggle reglamento */
+function toggleRegla(el){
+    el.classList.toggle('open');
+    const c = el.nextElementSibling;
+    if(c) c.classList.toggle('open');
+}
+
+/* ═══════════════════════════════════════════════
+   NAVEGACIÓN DE PANTALLAS
+═══════════════════════════════════════════════ */
+function showScreen(id){
+    document.querySelectorAll('#app-alumno .screen').forEach(s => s.classList.remove('active'));
+    const target = document.getElementById(id);
+    if(target){
+        target.classList.add('active');
+        if(!target.classList.contains('video-screen')) window.scrollTo({top:0, behavior:'instant'});
+    }
+}
+
+function fadeOutAndShow(fromId, toId){
+    const from = document.getElementById(fromId);
+    if(from){
+        from.classList.add('fade-out');
+        setTimeout(()=>{
+            from.classList.remove('active','fade-out');
+            // stop any video
+            const v = from.querySelector('video');
+            if(v){ try{ v.pause(); }catch(e){} }
+            showScreen(toId);
+            // start chapter video if video-screen
+            const to = document.getElementById(toId);
+            if(to && to.classList.contains('video-screen')){
+                const vv = to.querySelector('video');
+                if(vv){ vv.muted = true; vv.currentTime = 0; vv.play().catch(()=>{}); }
+            }
+        }, 550);
+    } else {
+        showScreen(toId);
+    }
+}
+
+function playVideoSafe(videoEl, onEnded){
+    if(!videoEl) { if(onEnded) onEnded(); return; }
+    videoEl.muted = true;
+    videoEl.currentTime = 0;
+    videoEl.onended = () => { if(onEnded) onEnded(); };
+    videoEl.play().catch(()=>{
+        // fallback: skip after 3s
+        setTimeout(()=>{ if(onEnded) onEnded(); }, 3000);
+    });
+}
+
+function skipWelcomeVideo(){
+    const v = document.getElementById('welcomeVideo');
+    if(v){ try{ v.pause(); v.muted = true; }catch(e){} }
+    window.__introAudioPlaying = false;
+    fadeOutAndShow('welcome', 'transition');
+    fadeInBgMusic(0.25);
+    const t = document.getElementById('transitionVideo');
+    if(t){ t.muted = true; t.currentTime = 0; t.play().catch(()=>{}); t.onended = () => fadeOutAndShow('transition','chapter1'); }
+}
+
+function skipAdminVideo(){
+    document.querySelector('#app-admin .admin-container').scrollIntoView({behavior:'smooth'});
+}
+
+function goToChapter(n){
+    showScreen('chapter' + n);
+}
+
+function goToChapterWithVideo(n){
+    // Show transition video briefly then chapter
+    const cur = document.querySelector('#app-alumno .screen.active');
+    const curId = cur ? cur.id : null;
+    showScreen('transition');
+    const t = document.getElementById('transitionVideo');
+    if(t){
+        t.muted = true; t.currentTime = 0;
+        t.play().catch(()=>{});
+        let done = false;
+        const goNext = () => { if(done) return; done = true; t.onended = null; fadeOutAndShow('transition','chapter'+n); };
+        t.onended = goNext;
+        setTimeout(goNext, 2800); // safety: max 2.8s
+    } else {
+        showScreen('chapter'+n);
+    }
+}
+
+function goToFormVideo(){
+    showScreen('formVideo');
+    const v = document.getElementById('formTransitionVideo');
+    if(v){
+        v.muted = true; v.currentTime = 0;
+        v.play().catch(()=>{});
+        let done = false;
+        const goNext = () => { if(done) return; done = true; v.onended = null; fadeOutAndShow('formVideo','formPage'); };
+        v.onended = goNext;
+        setTimeout(goNext, 2800);
+    } else {
+        showScreen('formPage');
+    }
+}
+
+function goToFinal(volverInicio){
+    showScreen('thanks');
+    const tv = document.getElementById('thanksVideo');
+    if(tv){
+        tv.muted = false;
+        tv.volume = 0.85;
+        tv.currentTime = 0;
+        tv.play().catch(()=>{ tv.muted = true; tv.play().catch(()=>{}); });
+    }
+    if(volverInicio){
+        setTimeout(()=>{
+            const form = document.getElementById('inscripcionForm');
+            if(form) form.reset();
+        }, 600);
+    }
+}
+
+/* ═══════════════════════════════════════════════
+   INICIO ALUMNO / ADMIN
+═══════════════════════════════════════════════ */
+function startAlumno(){
+    document.getElementById('splash-screen').classList.add('hidden');
+    setTimeout(()=>{
+        document.getElementById('splash-screen').style.display = 'none';
+        document.getElementById('app-alumno').style.display = 'block';
+        document.body.classList.remove('intro-active');
+        showScreen('welcome');
+        const v = document.getElementById('welcomeVideo');
+        if(v){
+            window.__introAudioPlaying = true;
+            v.muted = false; v.volume = 1.0; v.currentTime = 0;
+            // Asegura que la música de fondo no compita con el audio del intro
+            fadeOutBgMusic();
+            const tryPlay = v.play();
+            if(tryPlay && tryPlay.catch){
+                tryPlay.catch(()=>{
+                    // Si el navegador bloquea el audio, lo intentamos en silencio
+                    try{ v.muted = true; v.play().catch(()=>{}); }catch(e){}
+                });
+            }
+            let done = false;
+            const goNext = ()=>{
+                if(done) return; done=true; v.onended=null;
+                // Fade out de audio del intro
+                let av = v.volume || 0;
+                const fadeAudio = () => {
+                    av = Math.max(0, av - 0.08);
+                    try{ v.volume = av; }catch(e){}
+                    if(av > 0) setTimeout(fadeAudio, 60);
+                    else { try{ v.pause(); v.muted = true; }catch(e){} }
+                };
+                fadeAudio();
+                window.__introAudioPlaying = false;
+                fadeOutAndShow('welcome','transition');
+                // El audio de fondo entra cuando el intro se desvanece
+                setTimeout(()=> fadeInBgMusic(0.25), 350);
+                const tt = document.getElementById('transitionVideo');
+                if(tt){ tt.muted=true; tt.currentTime=0; tt.play().catch(()=>{}); tt.onended = ()=> fadeOutAndShow('transition','chapter1'); setTimeout(()=>{ if(document.getElementById('transition').classList.contains('active')) fadeOutAndShow('transition','chapter1'); }, 3500); }
+            };
+            v.onended = goNext;
+            // safety: si el video no carga, máximo 12s
+            setTimeout(goNext, 12000);
+        }
+        activateMusicAndUI();
+    }, 550);
+}
+
+function startAdmin(){
+    document.getElementById('splash-screen').classList.add('hidden');
+    setTimeout(()=>{
+        document.getElementById('splash-screen').style.display = 'none';
+        document.getElementById('app-admin').style.display = 'block';
+        document.body.classList.remove('intro-active');
+        const vid = document.getElementById('admin-vid-bg');
+        if(vid){ vid.muted = true; vid.play().catch(()=>{}); }
+        renderStats();
+        activateMusicAndUI();
+        fadeInBgMusic(0.25);
+    }, 550);
+}
+
+/* ═══════════════════════════════════════════════
+   ADMIN: BÚSQUEDA Y STATS
+═══════════════════════════════════════════════ */
+function renderStats(){
+    const tot = bdCandidatos.length;
+    const a2 = bdCandidatos.filter(c=>c.nivel==='A2').length;
+    const b2 = bdCandidatos.filter(c=>c.nivel==='B2').length;
+    const t = document.getElementById('stat-total'); if(t) t.textContent = tot;
+    const a = document.getElementById('stat-a2'); if(a) a.textContent = a2;
+    const b = document.getElementById('stat-b2'); if(b) b.textContent = b2;
+}
+
+function buscarCandidato(){
+    const rawN = document.getElementById('search-name').value;
+    const rawA = document.getElementById('search-surname').value;
+    const errorMsg = document.getElementById('error-msg');
+    const resultArea = document.getElementById('verification-area');
+    const btnContainer = document.getElementById('btn-buscar-container');
+
+    if(!rawN.trim() && !rawA.trim()){ alert("Ingresa nombre o apellido para buscar."); return; }
+    const n = normalizar(rawN); const a = normalizar(rawA);
+    const btn = document.getElementById('btn-buscar');
+    const btnLabel = document.getElementById('btn-buscar-label');
+    btnLabel.innerHTML = 'BUSCANDO<span class="loading-dots"></span>';
+    btn.disabled = true;
+    errorMsg.style.display = 'none';
+    resultArea.style.display = 'none';
+
+    setTimeout(()=>{
+        btnLabel.textContent = 'BUSCAR EN BASE DE DATOS';
+        btn.disabled = false;
+
+        const registro = bdCandidatos.find(i => {
+            const dbN = normalizar(i.inputNombre || i.nombre);
+            const dbA = normalizar(i.inputApellido || i.apellido);
+            const matchN = !n || dbN.includes(n) || n.includes(dbN);
+            const matchA = !a || dbA.includes(a) || a.includes(dbA);
+            return matchN && matchA;
+        });
+
+        if(registro){
+            document.getElementById('ficha-nombre').textContent = `${registro.nombre} ${registro.apellido}`;
+            const niv = document.getElementById('ficha-nivel');
+            niv.textContent = `DELF JUNIOR ${registro.nivel}`;
+            niv.style.color = registro.nivel === 'B2' ? 'var(--green)' : 'var(--rouge-passation)';
+            document.getElementById('ficha-numero').textContent = registro.numero;
+            const pdfBtn = document.getElementById('btn-pdf');
+            if(registro.pdf && registro.pdf !== '#'){
+                pdfBtn.href = registro.pdf;
+                pdfBtn.style.pointerEvents = 'auto';
+                pdfBtn.style.opacity = '1';
+            } else {
+                pdfBtn.href = '#';
+                pdfBtn.style.pointerEvents = 'none';
+                pdfBtn.style.opacity = '0.5';
+            }
+            resultArea.style.display = 'block';
+            btnContainer.style.display = 'none';
+            resultArea.scrollIntoView({behavior:'smooth', block:'start'});
+        } else {
+            errorMsg.style.display = 'block';
+        }
+    }, 700);
+}
+
+function resetBusqueda(){
+    document.getElementById('search-name').value = '';
+    document.getElementById('search-surname').value = '';
+    document.getElementById('verification-area').style.display = 'none';
+    document.getElementById('btn-buscar-container').style.display = 'block';
+    document.getElementById('error-msg').style.display = 'none';
+    document.getElementById('search-name').focus();
+}
+
+['search-name', 'search-surname'].forEach(id => {
+    document.addEventListener('DOMContentLoaded', () => {
+        const el = document.getElementById(id);
+        if(el) el.addEventListener('keydown', e => { if(e.key === 'Enter') buscarCandidato(); });
+    });
+});
+
+/* ═══════════════════════════════════════════════
+   GALERÍA
+═══════════════════════════════════════════════ */
+function renderGallery(){
+    const grid = document.getElementById('galeria');
+    if(!grid) return;
+    grid.innerHTML = '';
+    galleryItems.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'gallery-item';
+        if(item.type === 'video'){
+            div.innerHTML = `<video preload="metadata" muted playsinline${item.poster ? ` poster="${item.poster}"` : ''}><source src="${item.src}#t=0.5" type="video/mp4"></video><div class="play-badge"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></div>`;
+            div.addEventListener('click', () => openLightbox('video', item.src));
+        } else {
+            div.innerHTML = `<img src="${item.src}" alt="DELF" loading="lazy">`;
+            div.addEventListener('click', () => openLightbox('image', item.src));
+        }
+        grid.appendChild(div);
+    });
+}
+
+/* ═══════════════════════════════════════════════
+   FORM: AUTOSAVE, DROPZONE, SUBMIT
+═══════════════════════════════════════════════ */
+const DRAFT_KEY = 'delfDraft';
+
+function autosaveDraft(){
+    const form = document.getElementById('inscripcionForm');
+    if(!form) return;
+    const data = {};
+    form.querySelectorAll('input:not([type=file]), select').forEach(f => {
+        if(f.type === 'radio'){ if(f.checked) data[f.name] = f.value; }
+        else if(f.type === 'checkbox'){ data[f.name] = f.checked; }
+        else { data[f.name] = f.value; }
+    });
+    try { localStorage.setItem(DRAFT_KEY, JSON.stringify(data)); } catch(e){}
+}
+
+function restoreDraft(){
+    try{
+        const raw = localStorage.getItem(DRAFT_KEY);
+        if(!raw) return;
+        const data = JSON.parse(raw);
+        const form = document.getElementById('inscripcionForm');
+        if(!form) return;
+        let restored = false;
+        Object.keys(data).forEach(name => {
+            const fields = form.querySelectorAll(`[name="${name}"]`);
+            fields.forEach(f => {
+                if(f.type === 'radio'){ if(f.value === data[name]){ f.checked = true; restored = true; } }
+                else if(f.type === 'checkbox'){ f.checked = !!data[name]; if(data[name]) restored = true; }
+                else if(data[name]){ f.value = data[name]; restored = true; }
+            });
+        });
+        if(restored){
+            const banner = document.getElementById('draft-banner');
+            if(banner) banner.classList.add('show');
+        }
+    }catch(e){}
+}
+
+function clearDraft(){
+    try { localStorage.removeItem(DRAFT_KEY); } catch(e){}
+    const banner = document.getElementById('draft-banner');
+    if(banner) banner.classList.remove('show');
+    const form = document.getElementById('inscripcionForm');
+    if(form) form.reset();
+    const dz = document.getElementById('drop-zone');
+    const dt = document.getElementById('drop-text');
+    if(dz) dz.classList.remove('success','error');
+    if(dt) dt.textContent = 'Arrastra el archivo aquí o haz clic para seleccionarlo';
+}
+
+function setupForm(){
+    const form = document.getElementById('inscripcionForm');
+    if(!form) return;
+    form.querySelectorAll('input, select').forEach(f => {
+        f.addEventListener('input', autosaveDraft);
+        f.addEventListener('change', autosaveDraft);
+    });
+
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-upload');
+    const dropText = document.getElementById('drop-text');
+    if(dropZone && fileInput){
+        dropZone.addEventListener('click', () => fileInput.click());
+        ['dragenter','dragover'].forEach(ev => dropZone.addEventListener(ev, e => { e.preventDefault(); dropZone.classList.add('dragover'); }));
+        ['dragleave','drop'].forEach(ev => dropZone.addEventListener(ev, e => { e.preventDefault(); dropZone.classList.remove('dragover'); }));
+        dropZone.addEventListener('drop', e => {
+            const f = e.dataTransfer.files && e.dataTransfer.files[0];
+            if(f){ fileInput.files = e.dataTransfer.files; handleFile(f); }
+        });
+        fileInput.addEventListener('change', () => {
+            const f = fileInput.files && fileInput.files[0];
+            if(f) handleFile(f);
+        });
+    }
+
+    function handleFile(f){
+        const max = 5 * 1024 * 1024;
+        if(f.size > max){
+            dropZone.classList.add('error'); dropZone.classList.remove('success');
+            dropText.textContent = 'Archivo demasiado grande (máx 5MB).';
+            return;
+        }
+        const ok = ['application/pdf','image/jpeg','image/png'].includes(f.type);
+        if(!ok){
+            dropZone.classList.add('error'); dropZone.classList.remove('success');
+            dropText.textContent = 'Formato no válido. Usa PDF, JPG o PNG.';
+            return;
+        }
+        dropZone.classList.remove('error'); dropZone.classList.add('success');
+        dropText.textContent = '✓ ' + f.name + ' (' + (f.size/1024/1024).toFixed(2) + ' MB)';
+    }
+
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        const submitBtn = document.getElementById('submitBtn');
+        if(!form.checkValidity()){
+            form.reportValidity();
+            return;
+        }
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = 'Enviando<span class="loading-dots"></span>';
+        setTimeout(() => {
+            clearDraft();
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = 'Enviar inscripción segura';
+            showScreen('postFormVideo');
+            const pv = document.getElementById('postVideo');
+            if(pv){
+                pv.muted = true; pv.currentTime = 0;
+                pv.play().catch(()=>{});
+                let done = false;
+                const goNext = ()=>{ if(done) return; done=true; pv.onended=null; fadeOutAndShow('postFormVideo','askReturn'); };
+                pv.onended = goNext;
+                setTimeout(goNext, 3500);
+            } else {
+                showScreen('askReturn');
+            }
+        }, 1500);
+    });
+
+    restoreDraft();
+}
+
+/* ═══════════════════════════════════════════════
+   MÓDULO CONFIRMACIÓN
+═══════════════════════════════════════════════ */
+function startConfirm(){
+    document.getElementById('splash-screen').classList.add('hidden');
+    setTimeout(()=>{
+        document.getElementById('splash-screen').style.display = 'none';
+        document.getElementById('app-confirm').style.display = 'block';
+        document.body.classList.remove('intro-active');
+        activateMusicAndUI();
+        fadeInBgMusic(0.25);
+        window.scrollTo({top:0, behavior:'auto'});
+    }, 550);
+}
+function volverSplash(){
+    document.getElementById('app-admin').style.display = 'none';
+    document.getElementById('app-confirm').style.display = 'none';
+    document.getElementById('app-alumno').style.display = 'none';
+    document.getElementById('splash-screen').classList.remove('hidden');
+    document.getElementById('splash-screen').style.display = 'flex';
+    document.body.classList.add('intro-active');
+    window.scrollTo({top:0,behavior:'auto'});
+}
+function buscarRegistroConfirm(){
+    const rawN = document.getElementById('c-search-name').value;
+    const rawA = document.getElementById('c-search-surname').value;
+    if(!rawN.trim() && !rawA.trim()){ alert('Ingresa nombre o apellido para buscar.'); return; }
+    const btn = document.getElementById('btn-c-seeker');
+    const label = document.getElementById('c-seeker-label');
+    label.innerHTML = 'BUSCANDO…';
+    btn.disabled = true;
+    document.getElementById('c-error-msg').style.display = 'none';
+    document.getElementById('c-verification-area').style.display = 'none';
+    setTimeout(()=>{
+        label.innerHTML = 'BUSCAR MI REGISTRO'; btn.disabled = false;
+        const n = normalizar(rawN), a = normalizar(rawA);
+        const registro = bdCandidatos.find(i => {
+            const dbN = normalizar(i.inputNombre || i.nombre);
+            const dbA = normalizar(i.inputApellido || i.apellido);
+            return (!n || dbN.includes(n) || n.includes(dbN)) && (!a || dbA.includes(a) || a.includes(dbA));
+        });
+        if(registro){
+            document.getElementById('c-seeker-form').style.display = 'none';
+            const va = document.getElementById('c-verification-area');
+            va.style.display = 'block';
+            document.getElementById('c-ficha-nombre').innerText = registro.nombre + ' ' + registro.apellido;
+            const nivelEl = document.getElementById('c-ficha-nivel');
+            nivelEl.innerText = 'DELF JUNIOR ' + registro.nivel;
+            nivelEl.style.color = registro.nivel === 'B2' ? 'var(--green)' : 'var(--rouge-passation)';
+            document.getElementById('c-ficha-numero').innerText = registro.numero;
+            window._confirmCurrent = registro;
+            va.scrollIntoView({behavior:'smooth', block:'start'});
+        } else {
+            document.getElementById('c-error-msg').style.display = 'block';
+        }
+    }, 800);
+}
+function resetConfirm(){
+    document.getElementById('c-search-name').value = '';
+    document.getElementById('c-search-surname').value = '';
+    document.getElementById('c-verification-area').style.display = 'none';
+    document.getElementById('c-seeker-form').style.display = 'block';
+    document.getElementById('c-acepto').checked = false;
+    const dz = document.getElementById('c-deposito-zone');
+    if(dz){ dz.classList.remove('success','error'); document.getElementById('c-deposito-text').innerText = 'Arrastra el comprobante aquí o haz clic para seleccionar'; document.getElementById('c-deposito-file').value=''; }
+    window._confirmDeposito = null;
+    document.getElementById('c-search-name').focus();
+}
+function confirmarDatos(){
+    if(!document.getElementById('c-acepto').checked){ alert('Debes declarar tu conformidad con el reglamento.'); return; }
+    if(!window._confirmDeposito){ alert('Debes cargar tu comprobante de depósito/transferencia para continuar.'); return; }
+    try {
+        const reg = window._confirmCurrent;
+        if(reg && reg.numero){
+            localStorage.setItem('delfDeposito_'+reg.numero, JSON.stringify({nombre:reg.nombre+' '+reg.apellido, file:window._confirmDeposito.name, size:window._confirmDeposito.size, ts:Date.now()}));
+        }
+    } catch(e) {}
+    if(typeof fadeOutBgMusic === 'function') fadeOutBgMusic();
+    document.getElementById('confirm-header').style.display = 'none';
+    const ts = document.getElementById('confirm-thanks');
+    const tv = document.getElementById('confirm-thanks-video');
+    ts.classList.add('active');
+    tv.muted = false; tv.play().catch(()=>{});
+}
+(function(){
+    const dz = document.getElementById('c-deposito-zone');
+    const fi = document.getElementById('c-deposito-file');
+    const txt = document.getElementById('c-deposito-text');
+    if(!dz || !fi) return;
+    const handle = (file) => {
+        if(!file) return;
+        const allowed = ['application/pdf','image/jpeg','image/png'];
+        dz.classList.remove('success','error');
+        if(!allowed.includes(file.type)){ dz.classList.add('error'); txt.innerHTML = '<span style="color:var(--rouge-passation)">❌ Solo PDF, JPG o PNG.</span>'; fi.value=''; window._confirmDeposito=null; return; }
+        if(file.size > 5*1024*1024){ dz.classList.add('error'); txt.innerHTML = '<span style="color:var(--rouge-passation)">❌ Máximo 5 MB.</span>'; fi.value=''; window._confirmDeposito=null; return; }
+        window._confirmDeposito = file;
+        dz.classList.add('success');
+        txt.innerHTML = '<span style="color:var(--green)">✅ '+(file.size/1024/1024).toFixed(2)+' MB — <em>'+file.name+'</em> listo.</span>';
+    };
+    ['dragenter','dragover','dragleave','drop'].forEach(ev => dz.addEventListener(ev, e=>{ e.preventDefault(); e.stopPropagation(); }));
+    ['dragenter','dragover'].forEach(ev => dz.addEventListener(ev, ()=> dz.classList.add('dragover')));
+    ['dragleave','drop'].forEach(ev => dz.addEventListener(ev, ()=> dz.classList.remove('dragover')));
+    dz.addEventListener('drop', e => handle(e.dataTransfer.files[0]));
+    fi.addEventListener('change', e => handle(e.target.files[0]));
+})();
+['c-search-name','c-search-surname'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.addEventListener('keydown', e => { if(e.key === 'Enter') buscarRegistroConfirm(); });
+});
+
+/* ═══════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════ */
+window.addEventListener('load', () => {
+    if(typeof VANTA !== 'undefined'){
+        try{
+            VANTA.NET({
+                el: "#vanta-bg",
+                mouseControls: true, touchControls: true, gyroControls: false,
+                minHeight: 200.00, minWidth: 200.00,
+                scale: 1.00, scaleMobile: 1.00,
+                color: 0x013896, backgroundColor: 0xe0e5ec,
+                points: 10.00, maxDistance: 20.00, spacing: 18.00
+            });
+        } catch(e){}
+    }
+    renderGallery();
+    setupForm();
+});
+</script>
+
+</body>
+</html>

@@ -384,6 +384,73 @@ form .full { grid-column: 1 / -1; }
 
 .footer-info { text-align: center; font-family: 'Outfit', sans-serif; font-size: 0.85rem; color: var(--af-muted); padding: 28px 20px; margin-top: 50px; border-top: 1px solid rgba(0,0,0,0.06); }
 
+/* ═══════════════════════════════════════════════
+   STEPPER VISUAL (FORM)
+═══════════════════════════════════════════════ */
+.form-stepper { display: flex; justify-content: space-between; align-items: center; max-width: 700px; margin: 0 auto 40px; gap: 8px; }
+.form-stepper .step { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; }
+.form-stepper .step .bullet { width: 42px; height: 42px; border-radius: 50%; background: var(--bg-3d); border: 1px solid #fff; display: flex; align-items: center; justify-content: center; font-family: 'Outfit', sans-serif; font-weight: 800; color: var(--af-muted); box-shadow: var(--neumo-pill); transition: all .3s; font-size: 1rem; }
+.form-stepper .step .lbl { font-family: 'Outfit', sans-serif; font-size: 0.72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--af-muted); font-weight: 700; text-align: center; }
+.form-stepper .step.active .bullet { background: var(--bleu-passation); color: #fff; box-shadow: 0 6px 14px rgba(1,56,150,.35); transform: scale(1.06); }
+.form-stepper .step.done .bullet { background: var(--green); color: #fff; box-shadow: var(--neumo-inner); }
+.form-stepper .step.active .lbl, .form-stepper .step.done .lbl { color: var(--bleu-passation); }
+.form-stepper .bar { flex: 0 0 auto; width: 36px; height: 3px; background: var(--shadow-dark); border-radius: 2px; }
+
+/* ═══════════════════════════════════════════════
+   BENTO GRID 3D + ESFERAS NEUMÓRFICAS
+═══════════════════════════════════════════════ */
+.bento-grid { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 140px; gap: 18px; margin-top: 28px; }
+.bento-cell { background: var(--bg-3d); border: 1px solid #fff; border-radius: 22px; padding: 22px; box-shadow: var(--neumo-pill); display: flex; flex-direction: column; justify-content: flex-end; transition: all .35s ease; overflow: hidden; position: relative; }
+.bento-cell:hover { transform: translateY(-5px); box-shadow: var(--neumo-pill-hover); }
+.bento-cell .b-num { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 800; color: var(--bleu-passation); line-height: 1; }
+.bento-cell .b-lbl { font-family: 'Outfit', sans-serif; font-size: 0.82rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--af-muted); margin-top: 6px; }
+.bento-cell.b-wide { grid-column: span 2; }
+.bento-cell.b-tall { grid-row: span 2; }
+.bento-cell.b-blue { background: linear-gradient(135deg, var(--bleu-passation), #012b73); color: #fff; }
+.bento-cell.b-blue .b-num, .bento-cell.b-blue .b-lbl { color: #fff; }
+.bento-cell.b-red { background: linear-gradient(135deg, var(--rouge-passation), #9B0C24); color: #fff; }
+.bento-cell.b-red .b-num, .bento-cell.b-red .b-lbl { color: #fff; }
+.bento-cell.b-img { padding: 0; background-size: cover; background-position: center; }
+.bento-cell.b-img .b-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 40%, rgba(0,0,0,.7)); display: flex; flex-direction: column; justify-content: flex-end; padding: 18px; color: #fff; }
+.bento-cell.b-img .b-overlay .b-num { color: #fff; font-size: 1.2rem; font-family: 'Outfit', sans-serif; }
+.bento-cell.b-img .b-overlay .b-lbl { color: rgba(255,255,255,.85); }
+@media (max-width: 768px) { .bento-grid { grid-template-columns: repeat(2, 1fr); } .bento-cell.b-wide { grid-column: span 2; } .bento-cell.b-tall { grid-row: span 1; } }
+
+.sphere-row { display: flex; gap: 28px; justify-content: center; margin: 35px 0 10px; flex-wrap: wrap; }
+.sphere { width: 130px; height: 130px; border-radius: 50%; background: var(--bg-3d); box-shadow: var(--neumo-main); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; transition: all .35s; }
+.sphere:hover { transform: translateY(-6px) scale(1.05); box-shadow: 25px 25px 50px #bec3c9, -25px -25px 50px #ffffff; }
+.sphere .s-num { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--bleu-passation); font-weight: 800; line-height: 1; }
+.sphere .s-lbl { font-family: 'Outfit', sans-serif; font-size: 0.72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--af-muted); font-weight: 700; text-align: center; padding: 0 12px; }
+
+/* ═══════════════════════════════════════════════
+   CARRUSEL 3D (galería secundaria)
+═══════════════════════════════════════════════ */
+.carousel-3d-wrap { position: relative; height: 360px; perspective: 1400px; margin: 30px auto 10px; max-width: 760px; overflow: hidden; }
+.carousel-3d { position: absolute; inset: 0; transform-style: preserve-3d; transition: transform 1s ease; }
+.carousel-3d .slide-3d { position: absolute; top: 50%; left: 50%; width: 280px; height: 320px; margin: -160px 0 0 -140px; border-radius: 20px; overflow: hidden; box-shadow: var(--neumo-main); border: 3px solid #fff; background: #000; }
+.carousel-3d .slide-3d img { width: 100%; height: 100%; object-fit: cover; }
+.carousel-3d-ctrls { display: flex; justify-content: center; gap: 16px; margin-top: 16px; }
+.carousel-3d-ctrls button { width: 50px; height: 50px; border-radius: 50%; background: var(--bg-3d); border: 1px solid #fff; box-shadow: var(--neumo-pill); cursor: pointer; color: var(--bleu-passation); font-weight: 800; font-size: 1.2rem; transition: all .25s; }
+.carousel-3d-ctrls button:hover { box-shadow: var(--neumo-inner); color: var(--rouge-passation); }
+
+/* ═══════════════════════════════════════════════
+   ADMIN: DEPÓSITO UPLOAD
+═══════════════════════════════════════════════ */
+.deposit-card { margin-top: 35px; padding: 30px; background: var(--bg-3d); border: 1px solid #fff; border-radius: 20px; box-shadow: var(--neumo-pill); }
+.deposit-card h4 { font-family: 'Outfit', sans-serif; font-size: 1.05rem; color: var(--bleu-passation); margin-bottom: 8px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.deposit-card p.sub { font-size: 0.95rem; color: var(--af-muted); margin-bottom: 18px; }
+.deposit-ok { display: none; margin-top: 14px; padding: 12px 18px; background: #e7f6ec; border-left: 4px solid var(--green); border-radius: 10px; color: #11663a; font-weight: 700; font-family: 'Outfit', sans-serif; font-size: 0.95rem; }
+.deposit-ok.show { display: block; }
+
+/* Preview de comprobante */
+.file-preview { display: none; margin-top: 14px; padding: 14px; background: var(--bg-3d); border-radius: 14px; box-shadow: var(--neumo-inner); align-items: center; gap: 14px; }
+.file-preview.show { display: flex; }
+.file-preview img { width: 80px; height: 80px; object-fit: cover; border-radius: 10px; border: 1px solid #fff; }
+.file-preview .fp-info { flex: 1; min-width: 0; }
+.file-preview .fp-name { font-family: 'Outfit', sans-serif; font-weight: 700; color: var(--af-dark); font-size: 0.95rem; word-break: break-all; }
+.file-preview .fp-size { font-size: 0.85rem; color: var(--af-muted); }
+.file-preview .fp-pdf { width: 80px; height: 80px; background: var(--rouge-passation); color: #fff; display: flex; align-items: center; justify-content: center; border-radius: 10px; font-family: 'Outfit', sans-serif; font-weight: 800; }
+
 /* MOBILE */
 @media (max-width: 768px) {
     :root { --base-font-size: 16px; }
@@ -497,6 +564,10 @@ form .full { grid-column: 1 / -1; }
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
             VALIDACIÓN (PASSATION)
         </button>
+        <button onclick="startConfirm()" class="btn-chrome" type="button" style="background:linear-gradient(180deg,#1a8a4a 0%,#0f5c2f 100%);color:#fff;text-shadow:1px 1px 2px #000;border:1px solid #0a3d1f;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"></path><circle cx="12" cy="12" r="10"></circle></svg>
+            CONFIRMACIÓN DE DATOS
+        </button>
     </div>
     <div class="tricolor"><span class="b1"></span><span class="b2"></span><span class="b3"></span></div>
 </div>
@@ -597,6 +668,169 @@ form .full { grid-column: 1 / -1; }
 <!-- ═══════════════════════════════════════════════
      APP ALUMNO
 ═══════════════════════════════════════════════ -->
+<!-- ═══════════════════════════════════════════════
+     APP CONFIRMACIÓN (Candidatos ya inscritos)
+═══════════════════════════════════════════════ -->
+<style>
+#app-confirm{display:none;min-height:100vh;font-family:'Outfit',sans-serif;background:var(--bg-3d)}
+#confirm-header{position:fixed;top:0;left:0;right:0;background:rgba(224,229,236,.88);backdrop-filter:blur(15px);padding:16px 30px;z-index:900;display:flex;justify-content:space-between;align-items:center;box-shadow:0 4px 15px rgba(0,0,0,.08);border-bottom:3px solid var(--rouge-passation)}
+#confirm-header img{height:72px;object-fit:contain;mix-blend-mode:multiply}
+#confirm-header .hdr-logos{display:flex;align-items:center;gap:30px}
+#confirm-header .hdr-back{background:none;border:2px solid var(--shadow-dark);border-radius:50px;padding:10px 22px;font-family:'Outfit',sans-serif;font-weight:700;font-size:.9rem;cursor:pointer;color:var(--af-muted);transition:all .3s}
+#confirm-header .hdr-back:hover{border-color:var(--bleu-passation);color:var(--bleu-passation)}
+.confirm-body{max-width:1050px;margin:0 auto;padding:160px 24px 80px}
+.c-card{background:var(--bg-3d);border-radius:30px;padding:50px;box-shadow:var(--neumo-main);border:1px solid #fff;margin-bottom:32px}
+.c-card h2{font-size:2rem;color:var(--bleu-passation);margin-bottom:18px}
+.c-card p{color:var(--af-text);margin-bottom:14px;font-size:1.02rem;line-height:1.75}
+.c-tag{display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--bleu-passation);margin-bottom:16px}
+.c-tag::before{content:"";width:28px;height:3px;background:var(--bleu-passation);border-radius:2px}
+.scoring-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:24px}
+.score-pill{background:var(--bg-3d);border-radius:16px;padding:22px 14px;text-align:center;box-shadow:var(--neumo-pill);border:1px solid #fff}
+.score-pill .sp-num{font-size:2rem;font-weight:800;font-family:'Playfair Display',serif;color:var(--bleu-passation);line-height:1}
+.score-pill .sp-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--af-muted);margin-top:6px}
+.c-seeker{background:var(--bg-3d);border-radius:24px;padding:40px;box-shadow:15px 15px 30px #bec3c9,-15px -15px 30px #fff;border:1px solid #fff;margin-bottom:32px}
+.c-seeker h3{font-family:'Outfit',sans-serif;font-size:1.4rem;color:var(--bleu-passation);margin-bottom:6px}
+.c-seeker p{color:var(--af-muted);font-size:.95rem;margin-bottom:24px}
+.c-grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:24px}
+.c-input{padding:18px 22px;border-radius:12px;border:none;background:var(--bg-3d);box-shadow:var(--neumo-inner);font-weight:600;text-transform:uppercase;width:100%;outline:none;font-size:1.05rem;font-family:'Outfit',sans-serif;color:var(--bleu-passation);transition:.25s}
+.c-input:focus{box-shadow:inset 3px 3px 6px #bec3c9,inset -3px -3px 6px #fff,0 0 0 3px rgba(1,56,150,.15)}
+.c-input::placeholder{text-transform:none;font-weight:400;color:var(--af-muted);opacity:.8}
+.btn-c-primary{display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:18px 30px;background:var(--bleu-passation);color:#fff;border:none;border-radius:50px;font-family:'Outfit',sans-serif;font-weight:800;font-size:1.1rem;cursor:pointer;transition:all .3s;box-shadow:0 10px 25px rgba(1,56,150,.3)}
+.btn-c-primary:hover{background:#012b73;transform:translateY(-2px);box-shadow:0 14px 34px rgba(1,56,150,.4)}
+.btn-c-primary:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.btn-c-ghost{background:transparent;border:2px solid var(--shadow-dark);border-radius:50px;padding:14px 30px;font-family:'Outfit',sans-serif;font-weight:700;font-size:.95rem;cursor:pointer;color:var(--af-muted);transition:all .3s;display:inline-flex;align-items:center;gap:8px}
+.btn-c-ghost:hover{border-color:var(--bleu-passation);color:var(--bleu-passation)}
+#c-verification-area{display:none;margin-top:30px}
+.c-ficha{background:#fff;border-radius:20px;overflow:hidden;box-shadow:inset 3px 3px 10px rgba(0,0,0,.06);border:1px solid rgba(0,0,0,.04)}
+.c-ficha-header{background:linear-gradient(135deg,var(--bleu-passation),#012b73);padding:22px 25px;display:flex;align-items:center;gap:14px;color:#fff}
+.c-ficha-icon{width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center}
+.c-ficha-nombre{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700}
+.c-ficha-body{padding:28px}
+.c-ficha-row{display:flex;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid #eee}
+.c-ficha-row:last-child{border-bottom:none}
+.c-ficha-row-icon{width:36px;height:36px;border-radius:8px;background:#f0f4ff;display:flex;align-items:center;justify-content:center;color:var(--bleu-passation)}
+.c-ficha-row-label{font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#888}
+.c-ficha-row-value{font-size:1.2rem;font-weight:700;color:var(--af-dark)}
+.c-ficha-footer{background:#f8fafc;padding:16px 24px;font-size:.88rem;color:#666;border-top:1px solid #eee}
+.c-accept{background:rgba(1,56,150,.05);border-left:4px solid var(--bleu-passation);border-radius:10px;padding:20px 24px;display:flex;gap:14px;align-items:flex-start;margin:24px 0;box-shadow:var(--neumo-inner)}
+.c-accept input[type=checkbox]{width:20px;height:20px;accent-color:var(--bleu-passation);flex-shrink:0;margin-top:2px;cursor:pointer}
+.c-accept label{font-size:.96rem;color:var(--af-text);line-height:1.65;cursor:pointer}
+#c-error-msg{display:none;color:#fff;background:var(--rouge-passation);padding:16px;border-radius:12px;text-align:center;font-weight:700;margin-top:16px}
+.c-deposito-zone{background:var(--bg-3d);border:2px dashed var(--shadow-dark);border-radius:18px;padding:36px;text-align:center;cursor:pointer;transition:all .3s;box-shadow:var(--neumo-inner);margin-top:18px}
+.c-deposito-zone.dragover{border-color:var(--bleu-passation);background:rgba(1,56,150,.05)}
+.c-deposito-zone.success{border-color:var(--green);border-style:solid}
+.c-deposito-zone.error{border-color:var(--rouge-passation);background:#fff5f5}
+#confirm-thanks{position:fixed;inset:0;z-index:10000;display:none;background:#000;align-items:center;justify-content:center}
+#confirm-thanks.active{display:flex;animation:fadeIn .6s ease}
+#confirm-thanks video{width:100%;height:100%;object-fit:contain}
+.ct-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(20,20,20,.7) 0%,rgba(1,56,150,.85) 100%);color:#fff;text-align:center;padding:40px;pointer-events:none}
+.ct-overlay h2{font-family:'Playfair Display',serif;font-size:clamp(3rem,9vw,5rem);font-weight:800;font-style:italic;margin-bottom:18px}
+.ct-overlay p{font-family:'Outfit',sans-serif;font-size:1.3rem;opacity:.96;max-width:700px;line-height:1.6}
+@media(max-width:768px){.scoring-grid{grid-template-columns:1fr 1fr}.c-grid2{grid-template-columns:1fr}.c-card{padding:28px 20px}.c-seeker{padding:28px 20px}.confirm-body{padding-top:140px}}
+</style>
+<div id="app-confirm" style="display:none;">
+    <header id="confirm-header">
+        <div class="hdr-logos">
+            <img src="alianza.png" alt="Alliance Française">
+            <img src="lasalle.jpg" alt="Colegio La Salle">
+        </div>
+        <button class="hdr-back" onclick="volverSplash()">← Volver al inicio</button>
+    </header>
+    <div class="confirm-body">
+        <div class="c-card">
+            <h1 style="font-size:clamp(2rem,4.5vw,3rem);color:var(--bleu-passation);margin-bottom:14px;">Confirmación de Registro <em style="color:var(--rouge-passation)">DELF Junior 2026</em></h1>
+            <p style="color:var(--af-muted);font-size:1.05rem;font-family:'Outfit';">Alliance Française × Colegio La Salle · San Cristóbal de las Casas · 06 Junio 2026</p>
+            <div class="c-tag" style="margin-top:24px">Proceso de verificación oficial</div>
+            <h2>¿Para qué sirve esta confirmación?</h2>
+            <p>Antes de la emisión del diploma oficial por <strong>France Éducation International</strong>, cada candidato debe verificar que sus datos en el sistema GAEL estén correctos. Un error en el nombre o fecha de nacimiento puede impedir la emisión del diploma vitalicio.</p>
+            <p>Esta confirmación es obligatoria. Una vez verificados los datos, podrás <strong>cargar tu comprobante de depósito o transferencia bancaria</strong> para completar el proceso.</p>
+        </div>
+        <div class="c-card">
+            <div class="c-tag">France Éducation International — MCER</div>
+            <h2>Sistema de calificación DELF</h2>
+            <p>El DELF evalúa cuatro competencias independientes (25 puntos c/u). Se requiere mínimo <strong>50/100</strong> globales y al menos <strong>5/25 en cada prueba</strong>.</p>
+            <div class="scoring-grid">
+                <div class="score-pill"><div class="sp-num">25</div><div class="sp-label">Compréhension de l'oral</div></div>
+                <div class="score-pill"><div class="sp-num">25</div><div class="sp-label">Compréhension des écrits</div></div>
+                <div class="score-pill"><div class="sp-num">25</div><div class="sp-label">Production écrite</div></div>
+                <div class="score-pill"><div class="sp-num">25</div><div class="sp-label">Production orale</div></div>
+            </div>
+        </div>
+        <div class="c-seeker" id="c-seeker-form">
+            <h3>Buscar mi registro</h3>
+            <p>Ingresa tu nombre y/o apellido tal como aparecen en tu identificación oficial.</p>
+            <div class="c-grid2">
+                <div>
+                    <label style="font-weight:800;font-size:.88rem;color:var(--bleu-passation);display:block;margin-bottom:8px;">NOMBRE(S)</label>
+                    <input type="text" id="c-search-name" placeholder="EJ: SANTIAGO" class="c-input" autocomplete="off">
+                </div>
+                <div>
+                    <label style="font-weight:800;font-size:.88rem;color:var(--bleu-passation);display:block;margin-bottom:8px;">APELLIDO(S)</label>
+                    <input type="text" id="c-search-surname" placeholder="EJ: SALGADO SERVIN" class="c-input" autocomplete="off">
+                </div>
+            </div>
+            <button id="btn-c-seeker" class="btn-c-primary" onclick="buscarRegistroConfirm()">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <span id="c-seeker-label">BUSCAR MI REGISTRO</span>
+            </button>
+            <div id="c-error-msg">Registro no localizado. Verifica la ortografía o contacta a tu sede.</div>
+        </div>
+        <div id="c-verification-area">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px;color:var(--green);">
+                <svg width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/></svg>
+                <h3 style="font-family:'Outfit',sans-serif;font-size:1.7rem;font-weight:700;">Registro localizado</h3>
+            </div>
+            <div class="c-ficha">
+                <div class="c-ficha-header">
+                    <div class="c-ficha-icon"><svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0zM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg></div>
+                    <div><div id="c-ficha-nombre" class="c-ficha-nombre">—</div><p style="font-size:.92rem;opacity:.9">Candidato DELF Junior 2026 · Colegio La Salle</p></div>
+                </div>
+                <div class="c-ficha-body">
+                    <div class="c-ficha-row"><div class="c-ficha-row-icon">📝</div><div><div class="c-ficha-row-label">Nivel</div><div id="c-ficha-nivel" class="c-ficha-row-value" style="color:var(--rouge-passation)">—</div></div></div>
+                    <div class="c-ficha-row"><div class="c-ficha-row-icon">#</div><div><div class="c-ficha-row-label">Número FEI</div><div id="c-ficha-numero" class="c-ficha-row-value" style="letter-spacing:2px">—</div></div></div>
+                    <div class="c-ficha-row"><div class="c-ficha-row-icon">📅</div><div><div class="c-ficha-row-label">Fecha del examen</div><div class="c-ficha-row-value">Sábado 06 Junio 2026</div></div></div>
+                    <div class="c-ficha-row"><div class="c-ficha-row-icon">📍</div><div><div class="c-ficha-row-label">Sede</div><div class="c-ficha-row-value">Colegio La Salle, SCLC</div></div></div>
+                </div>
+                <div class="c-ficha-footer"><strong style="color:var(--green)">✓ DATOS EN SISTEMA GAEL</strong> · France Éducation International</div>
+            </div>
+            <div class="c-card" style="margin-top:24px;">
+                <div class="c-tag">Paso obligatorio · Comprobante de pago</div>
+                <h2>Carga tu depósito o transferencia bancaria</h2>
+                <p>Para completar la confirmación, debes adjuntar la fotografía o PDF de tu depósito/transferencia (PDF, JPG o PNG, máx. 5 MB). Este paso es obligatorio para que el equipo coordinador valide tu inscripción definitivamente.</p>
+                <div style="background:var(--bg-3d);padding:22px;border-radius:14px;box-shadow:var(--neumo-inner);margin:18px 0;font-size:.95rem;">
+                    <strong>Banco:</strong> BBVA Bancomer · <strong>Titular:</strong> ALIANZA FRANCO MEXICANA DE SAN CRISTÓBAL A.C.<br>
+                    <strong>Cuenta:</strong> 0186832806 · <strong>CLABE:</strong> 012130001868328069
+                </div>
+                <div class="c-deposito-zone" id="c-deposito-zone" onclick="document.getElementById('c-deposito-file').click()">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--bleu-passation)" stroke-width="2" style="margin-bottom:10px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                    <p id="c-deposito-text" style="font-weight:600;color:var(--bleu-passation)">Arrastra el comprobante aquí o haz clic para seleccionar</p>
+                    <p style="font-size:.8rem;color:var(--af-muted);margin-top:8px">PDF, JPG o PNG · Máximo 5 MB</p>
+                    <input type="file" id="c-deposito-file" accept=".pdf,image/jpeg,image/png" hidden>
+                </div>
+                <div class="c-accept">
+                    <input type="checkbox" id="c-acepto" required>
+                    <label for="c-acepto">He verificado que mis datos son correctos y declaro mi conformidad con el reglamento oficial de los exámenes DELF/DALF emitido por France Éducation International.</label>
+                </div>
+                <button id="btn-c-confirm" class="btn-c-primary" onclick="confirmarDatos()">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                    CONFIRMAR Y ENVIAR COMPROBANTE
+                </button>
+                <p style="text-align:center;font-size:.85rem;color:var(--af-muted);margin-top:14px;">También puedes enviarlo por WhatsApp a <a href="https://wa.me/529673424456" target="_blank" style="color:var(--bleu-passation);font-weight:700;">+52 967 342 4456 (Miguel Tillero)</a></p>
+                <div style="text-align:center;margin-top:18px;">
+                    <button class="btn-c-ghost" onclick="resetConfirm()">← NUEVA BÚSQUEDA</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="confirm-thanks">
+    <video id="confirm-thanks-video" playsinline preload="auto" muted><source src="6.mp4" type="video/mp4"></video>
+    <div class="ct-overlay">
+        <h2>Merci beaucoup !</h2>
+        <p>Tus datos están confirmados y tu comprobante fue registrado. Nos vemos el <strong style="color:#fff">06 de junio de 2026</strong> en el Colegio La Salle.</p>
+    </div>
+</div>
+
 <div id="app-alumno" style="display:none;">
 
     <section id="welcome" class="screen video-screen">
@@ -657,6 +891,38 @@ form .full { grid-column: 1 / -1; }
                     </div>
                 </div>
                 <p style="margin-top: 30px;"><strong>Puntuación mínima para aprobar:</strong> 50/100 en total, con al menos 5/25 en cada una de las cuatro competencias.</p>
+
+                <div class="sphere-row">
+                    <div class="sphere"><span class="s-num">170+</span><span class="s-lbl">Países donde se reconoce</span></div>
+                    <div class="sphere"><span class="s-num">∞</span><span class="s-lbl">Validez vitalicia</span></div>
+                    <div class="sphere"><span class="s-num">6</span><span class="s-lbl">Niveles MCER (A1–C2)</span></div>
+                    <div class="sphere"><span class="s-num">4</span><span class="s-lbl">Competencias evaluadas</span></div>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <span class="section-tag">Información extendida</span>
+                <h2>¿Por qué el DELF marca una diferencia?</h2>
+                <p>El <strong>Diplôme d'études en langue française (DELF)</strong> es el único diploma de francés expedido directamente por el Ministerio Francés de Educación. Su validez es <strong>vitalicia</strong>: una vez obtenido, no caduca jamás y se reconoce internacionalmente en universidades, instituciones gubernamentales y empleadores de toda la francofonía.</p>
+                <p>Las pruebas son diseñadas por <strong>France Éducation International (FEI)</strong>, organismo público con sede en Sèvres, París, y son aplicadas en más de <strong>1,200 centros</strong> autorizados en 174 países. En México, la Alianza Francesa es la única red habilitada para la passation del DELF Junior.</p>
+                <h3>Equivalencias y usos académicos</h3>
+                <ul>
+                    <li><strong>Movilidad universitaria:</strong> el nivel <strong>B2</strong> es el requisito mínimo de admisión a la mayoría de las universidades francesas y a programas Erasmus francófonos.</li>
+                    <li><strong>Inmigración a Quebec y Francia:</strong> los niveles del DELF/DALF son aceptados en trámites de naturalización y residencia.</li>
+                    <li><strong>Diplomado escolar:</strong> el DELF Junior es reconocido por la SEP mexicana como certificación oficial de competencia lingüística.</li>
+                    <li><strong>Empleabilidad:</strong> el diploma figura en el CV como una distinción internacional verificable de por vida.</li>
+                </ul>
+                <h3>Estructura del MCER (Marco Común Europeo de Referencia)</h3>
+                <div class="bento-grid" style="grid-auto-rows: 130px;">
+                    <div class="bento-cell"><span class="b-num">A1</span><span class="b-lbl">Descubrimiento</span></div>
+                    <div class="bento-cell"><span class="b-num">A2</span><span class="b-lbl">Supervivencia</span></div>
+                    <div class="bento-cell b-blue"><span class="b-num">B1</span><span class="b-lbl">Umbral · Independiente</span></div>
+                    <div class="bento-cell b-blue"><span class="b-num">B2</span><span class="b-lbl">Avanzado · Independiente</span></div>
+                    <div class="bento-cell b-red"><span class="b-num">C1</span><span class="b-lbl">Autónomo (DALF)</span></div>
+                    <div class="bento-cell b-red"><span class="b-num">C2</span><span class="b-lbl">Maestría (DALF)</span></div>
+                    <div class="bento-cell b-wide"><span class="b-num">Junior</span><span class="b-lbl">DELF adaptado a 12–17 años · temáticas escolares</span></div>
+                </div>
+                <p style="margin-top: 18px; font-size: 0.95rem; color: var(--af-muted);"><em>En esta sesión 2026, la sede La Salle aplica únicamente los niveles A1 a B2. Para C1/C2 (DALF) consulta directamente con la Alianza Francesa.</em></p>
             </div>
 
             <div class="chapter-nav">
@@ -1114,24 +1380,52 @@ const bdCandidatos = [
     { nombre: "DANIEL ALEJANDRO", apellido: "ZUNIGA DOMINGUEZ", nivel: "A2", numero: "PENDIENTE", pdf: "#" }
 ];
 
-/* GALERÍA: lista de medios */
+/* GALERÍA: lista completa de medios disponibles */
 const galleryItems = [
     { type: 'image', src: 'IMG-20241023-WA0017.jpg' },
+    { type: 'image', src: 'IMG-20241023-WA0018.jpg' },
     { type: 'image', src: 'IMG-20241023-WA0019.jpg' },
+    { type: 'image', src: 'IMG_20241023_071530.jpg' },
     { type: 'image', src: 'IMG-20241028-WA0050.jpg' },
     { type: 'image', src: 'IMG-20241028-WA0056.jpg' },
     { type: 'image', src: 'IMG-20241028-WA0058.jpg' },
     { type: 'image', src: 'IMG-20250609-WA0004.jpg' },
+    { type: 'image', src: 'IMG-20250609-WA0009.jpg' },
     { type: 'image', src: 'IMG-20250609-WA0010.jpg' },
+    { type: 'image', src: 'IMG-20250609-WA0011.jpg' },
     { type: 'image', src: 'IMG-20250609-WA0016.jpg' },
+    { type: 'image', src: 'IMG-20250609-WA0019.jpg' },
     { type: 'image', src: 'IMG-20250609-WA0024.jpg' },
     { type: 'image', src: 'IMG-20250609-WA0040.jpg' },
+    { type: 'image', src: 'IMG-20250609-WA0054.jpg' },
+    { type: 'image', src: 'IMG-20251119-WA0158.jpg' },
     { type: 'image', src: 'IMG-20251204-WA0033.jpg' },
+    { type: 'image', src: 'IMG-20251204-WA0057.jpg' },
+    { type: 'image', src: 'IMG-20251204-WA0062.jpg' },
+    { type: 'image', src: 'IMG-20260309-WA0002.jpg' },
+    { type: 'image', src: 'IMG_20251204_123438.jpg' },
     { type: 'image', src: 'IMG_20251204_124832368_HDR.jpg' },
+    { type: 'image', src: 'IMG_20251204_124849353.jpg' },
+    { type: 'image', src: 'IMG_20251204_124852202.jpg' },
+    { type: 'image', src: 'IMG_20251204_124949487_HDR.jpg' },
     { type: 'image', src: 'IMG_20251204_125050500_HDR.jpg' },
+    { type: 'image', src: 'IMG_20251204_125059995_HDR.jpg' },
+    { type: 'image', src: 'IMG_20251204_125231254_HDR.jpg' },
     { type: 'video', src: '4.mp4', poster: 'IMG-20251204-WA0057.jpg' },
     { type: 'video', src: '5.mp4', poster: 'IMG-20251204-WA0062.jpg' },
     { type: 'video', src: '6.mp4', poster: 'IMG-20250609-WA0054.jpg' }
+];
+
+/* Subset rotativo para carrusel 3D (8 imágenes destacadas) */
+const carousel3DSet = [
+    'IMG-20250609-WA0040.jpg',
+    'IMG-20251204-WA0033.jpg',
+    'IMG_20251204_124832368_HDR.jpg',
+    'IMG-20241028-WA0050.jpg',
+    'IMG-20250609-WA0010.jpg',
+    'IMG_20251204_125050500_HDR.jpg',
+    'IMG-20260309-WA0002.jpg',
+    'IMG-20250609-WA0024.jpg'
 ];
 
 /* ═══════════════════════════════════════════════
@@ -1659,6 +1953,116 @@ function setupForm(){
 
     restoreDraft();
 }
+
+/* ═══════════════════════════════════════════════
+   MÓDULO CONFIRMACIÓN
+═══════════════════════════════════════════════ */
+function startConfirm(){
+    document.getElementById('splash-screen').classList.add('hidden');
+    setTimeout(()=>{
+        document.getElementById('splash-screen').style.display = 'none';
+        document.getElementById('app-confirm').style.display = 'block';
+        document.body.classList.remove('intro-active');
+        activateMusicAndUI();
+        fadeInBgMusic(0.25);
+        window.scrollTo({top:0, behavior:'auto'});
+    }, 550);
+}
+function volverSplash(){
+    document.getElementById('app-admin').style.display = 'none';
+    document.getElementById('app-confirm').style.display = 'none';
+    document.getElementById('app-alumno').style.display = 'none';
+    document.getElementById('splash-screen').classList.remove('hidden');
+    document.getElementById('splash-screen').style.display = 'flex';
+    document.body.classList.add('intro-active');
+    window.scrollTo({top:0,behavior:'auto'});
+}
+function buscarRegistroConfirm(){
+    const rawN = document.getElementById('c-search-name').value;
+    const rawA = document.getElementById('c-search-surname').value;
+    if(!rawN.trim() && !rawA.trim()){ alert('Ingresa nombre o apellido para buscar.'); return; }
+    const btn = document.getElementById('btn-c-seeker');
+    const label = document.getElementById('c-seeker-label');
+    label.innerHTML = 'BUSCANDO…';
+    btn.disabled = true;
+    document.getElementById('c-error-msg').style.display = 'none';
+    document.getElementById('c-verification-area').style.display = 'none';
+    setTimeout(()=>{
+        label.innerHTML = 'BUSCAR MI REGISTRO'; btn.disabled = false;
+        const n = normalizar(rawN), a = normalizar(rawA);
+        const registro = bdCandidatos.find(i => {
+            const dbN = normalizar(i.inputNombre || i.nombre);
+            const dbA = normalizar(i.inputApellido || i.apellido);
+            return (!n || dbN.includes(n) || n.includes(dbN)) && (!a || dbA.includes(a) || a.includes(dbA));
+        });
+        if(registro){
+            document.getElementById('c-seeker-form').style.display = 'none';
+            const va = document.getElementById('c-verification-area');
+            va.style.display = 'block';
+            document.getElementById('c-ficha-nombre').innerText = registro.nombre + ' ' + registro.apellido;
+            const nivelEl = document.getElementById('c-ficha-nivel');
+            nivelEl.innerText = 'DELF JUNIOR ' + registro.nivel;
+            nivelEl.style.color = registro.nivel === 'B2' ? 'var(--green)' : 'var(--rouge-passation)';
+            document.getElementById('c-ficha-numero').innerText = registro.numero;
+            window._confirmCurrent = registro;
+            va.scrollIntoView({behavior:'smooth', block:'start'});
+        } else {
+            document.getElementById('c-error-msg').style.display = 'block';
+        }
+    }, 800);
+}
+function resetConfirm(){
+    document.getElementById('c-search-name').value = '';
+    document.getElementById('c-search-surname').value = '';
+    document.getElementById('c-verification-area').style.display = 'none';
+    document.getElementById('c-seeker-form').style.display = 'block';
+    document.getElementById('c-acepto').checked = false;
+    const dz = document.getElementById('c-deposito-zone');
+    if(dz){ dz.classList.remove('success','error'); document.getElementById('c-deposito-text').innerText = 'Arrastra el comprobante aquí o haz clic para seleccionar'; document.getElementById('c-deposito-file').value=''; }
+    window._confirmDeposito = null;
+    document.getElementById('c-search-name').focus();
+}
+function confirmarDatos(){
+    if(!document.getElementById('c-acepto').checked){ alert('Debes declarar tu conformidad con el reglamento.'); return; }
+    if(!window._confirmDeposito){ alert('Debes cargar tu comprobante de depósito/transferencia para continuar.'); return; }
+    try {
+        const reg = window._confirmCurrent;
+        if(reg && reg.numero){
+            localStorage.setItem('delfDeposito_'+reg.numero, JSON.stringify({nombre:reg.nombre+' '+reg.apellido, file:window._confirmDeposito.name, size:window._confirmDeposito.size, ts:Date.now()}));
+        }
+    } catch(e) {}
+    if(typeof fadeOutBgMusic === 'function') fadeOutBgMusic();
+    document.getElementById('confirm-header').style.display = 'none';
+    const ts = document.getElementById('confirm-thanks');
+    const tv = document.getElementById('confirm-thanks-video');
+    ts.classList.add('active');
+    tv.muted = false; tv.play().catch(()=>{});
+}
+(function(){
+    const dz = document.getElementById('c-deposito-zone');
+    const fi = document.getElementById('c-deposito-file');
+    const txt = document.getElementById('c-deposito-text');
+    if(!dz || !fi) return;
+    const handle = (file) => {
+        if(!file) return;
+        const allowed = ['application/pdf','image/jpeg','image/png'];
+        dz.classList.remove('success','error');
+        if(!allowed.includes(file.type)){ dz.classList.add('error'); txt.innerHTML = '<span style="color:var(--rouge-passation)">❌ Solo PDF, JPG o PNG.</span>'; fi.value=''; window._confirmDeposito=null; return; }
+        if(file.size > 5*1024*1024){ dz.classList.add('error'); txt.innerHTML = '<span style="color:var(--rouge-passation)">❌ Máximo 5 MB.</span>'; fi.value=''; window._confirmDeposito=null; return; }
+        window._confirmDeposito = file;
+        dz.classList.add('success');
+        txt.innerHTML = '<span style="color:var(--green)">✅ '+(file.size/1024/1024).toFixed(2)+' MB — <em>'+file.name+'</em> listo.</span>';
+    };
+    ['dragenter','dragover','dragleave','drop'].forEach(ev => dz.addEventListener(ev, e=>{ e.preventDefault(); e.stopPropagation(); }));
+    ['dragenter','dragover'].forEach(ev => dz.addEventListener(ev, ()=> dz.classList.add('dragover')));
+    ['dragleave','drop'].forEach(ev => dz.addEventListener(ev, ()=> dz.classList.remove('dragover')));
+    dz.addEventListener('drop', e => handle(e.dataTransfer.files[0]));
+    fi.addEventListener('change', e => handle(e.target.files[0]));
+})();
+['c-search-name','c-search-surname'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.addEventListener('keydown', e => { if(e.key === 'Enter') buscarRegistroConfirm(); });
+});
 
 /* ═══════════════════════════════════════════════
    INIT

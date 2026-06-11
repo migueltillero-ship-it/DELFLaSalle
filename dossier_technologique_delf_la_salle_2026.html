@@ -404,16 +404,22 @@ code, .mono { font-family: 'JetBrains Mono', monospace; font-size: .92em; }
     position: relative;
     width: 380px; height: 380px;
     border-radius: 50%;
-    background: rgba(255,255,255,.97);
+    background: #ffffff;
     box-shadow:
         0 0 0 1px rgba(255,255,255,.4),
         0 0 0 12px rgba(255,255,255,.08),
         0 0 0 13px rgba(255,255,255,.15),
         0 30px 60px rgba(0,0,0,.35);
     display: grid; place-items: center;
-    padding: 50px;
+    padding: 70px;
+    overflow: hidden;
 }
-.cover-right .seal img { width: 100%; height: 100%; object-fit: contain; }
+.cover-right .seal img {
+    width: 100%; height: auto;
+    object-fit: contain;
+    background: #ffffff;
+    mix-blend-mode: multiply;
+}
 .cover-right .seal::before, .cover-right .seal::after {
     content: ""; position: absolute;
     border-radius: 50%;

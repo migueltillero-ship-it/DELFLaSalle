@@ -71,7 +71,7 @@ body {
                 0 15px 25px -5px rgba(0, 0, 0, 0.02);
     display: flex;
     flex-direction: column;
-    height: 760px;
+    height: 780px;
     justify-content: flex-start;
     overflow: hidden;
     padding: 100px 60px 60px 60px;
@@ -216,7 +216,7 @@ body {
     gap: 30px;
 }
 
-/* Layout Image à Bord (Parfait pour les nouvelles images) */
+/* Layout Image à Bord */
 .bleed-image-layout {
     padding: 0;
     grid-template-columns: 50% 50%;
@@ -234,7 +234,7 @@ body {
     height: 100%;
     width: 100%;
     position: relative;
-    background: #fff; /* Fond blanc pour intégrer parfaitement l'image */
+    background: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -303,22 +303,24 @@ body {
     letter-spacing: 1px;
 }
 
-.image-wrapper {
-    border-radius: 20px;
-    height: 400px;
+/* Image Hero Entière (Slide 1) */
+.hero-image-container {
     width: 100%;
+    height: 350px;
+    margin-bottom: 30px;
+    border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 25px 50px rgba(0,0,0,0.1);
-    border: 8px solid #ffffff;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
     background: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+}
+.hero-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
 }
 
-.image-wrapper img { width: 100%; height: 100%; object-fit: contain; }
-
-/* Galerie Opérationnelle (Nouvelle section) */
+/* Galerie Opérationnelle */
 .gallery-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -348,23 +350,6 @@ body {
     object-position: top;
 }
 
-/* Image Hero Entière (Slide 1) */
-.hero-image-container {
-    width: 100%;
-    height: 350px;
-    margin-bottom: 30px;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-    background: #fff;
-}
-.hero-image-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    object-position: center;
-}
-
 .slide-dark {
     background: var(--bg-dark);
     color: #fff;
@@ -384,8 +369,7 @@ body {
     </div>
     
     <div class="hero-image-container" style="background: linear-gradient(135deg, rgba(11, 52, 122, 0.1), rgba(11, 52, 122, 0.02)); display: flex; align-items: center; justify-content: center;">
-        <!-- UTILIZACIÓN DEL GRÁFICO OFICIAL (IMAGEN.PNG) -->
-        <img src="imagen.png" alt="Visuel Officiel DELF 2026 - France Éducation International" onerror="this.style.display='none'; this.parentNode.innerHTML='<h3 style=\'color: var(--bleu-passation); opacity: 0.5;\'>Espace Visuel Officiel</h3>';">
+        <img src="imagen.png" alt="Visuel Officiel DELF 2026 - France Éducation International">
     </div>
 
     <div class="title-layout" style="margin-top: 0; justify-content: flex-start;">
@@ -424,7 +408,7 @@ body {
     </div>
 </div>
 
-<!-- SLIDE 3: RESPUESTA A LA AUDITORÍA (IMAGEN.JPG A SANGRE) -->
+<!-- SLIDE 3: RESPUESTA A LA AUDITORÍA -->
 <div class="slide-container bleed-image-layout">
     <div class="content-container">
         <div class="institutional-header" style="left: 0; right: 0; top: 0; position: relative;">
@@ -441,8 +425,7 @@ body {
         </div>
     </div>
     <div class="image-container" style="background: linear-gradient(135deg, rgba(11, 52, 122, 0.05), transparent);">
-        <!-- UTILIZACIÓN DEL GRÁFICO OFICIAL (IMAGEN.JPG) -->
-        <img class="bleed-image-side" src="imagen.jpg" alt="Charte Graphique DELF 2026" onerror="this.style.display='none';">
+        <img class="bleed-image-side" src="imagen.jpg" alt="Charte Graphique DELF 2026">
     </div>
 </div>
 
@@ -467,7 +450,7 @@ body {
     </div>
 </div>
 
-<!-- SLIDE 5: INFRAESTRUCTURA GITHUB (NUEVA DIAPOSITIVA) -->
+<!-- SLIDE 5: INFRAESTRUCTURA GITHUB -->
 <div class="slide-container">
     <div class="institutional-header">
         <div class="meta-text">04. Infrastructure Technologique</div>
@@ -579,8 +562,7 @@ body {
         </div>
     </div>
     <div class="image-container" style="background: linear-gradient(135deg, rgba(11, 52, 122, 0.05), transparent);">
-        <!-- UTILIZACIÓN DEL GRÁFICO OFICIAL (IMAGEN.PNG) -->
-        <img class="bleed-image-side" src="imagen.png" style="object-fit: contain; padding: 40px;" alt="Vérification des diplômes" onerror="this.style.display='none';">
+        <img class="bleed-image-side" src="imagen.png" style="object-fit: contain; padding: 40px;" alt="Vérification des diplômes">
     </div>
 </div>
 
@@ -670,13 +652,12 @@ body {
             <div class="card-3d" style="background: rgba(227, 0, 27, 0.05); border-color: rgba(227, 0, 27, 0.2); margin-top: 15px;">
                 <h3 style="color: var(--rouge-passation);"><i class="fa-solid fa-triangle-exclamation" style="margin-right: 10px;"></i>Règle d'Exclusion Immédiate</h3>
                 <p>La possession (même éteinte) de téléphones portables ou montres connectées (smartwatches) durant les épreuves entraîne l'exclusion immédiate du centre, l'annulation du diplôme et un signalement à la Délégation Générale.</p>
+            </div>
         </div>
     </div>
-</div>
-<div class="image-container" style="background: linear-gradient(135deg, rgba(227, 0, 27, 0.05), transparent);">
-    <!-- UTILIZACIÓN DEL GRÁFICO OFICIAL (IMAGEN.JPG) -->
-    <img class="bleed-image-side" src="imagen.jpg" style="object-fit: cover;" alt="Alerte Fraude" onerror="this.style.display='none';">
-</div>
+    <div class="image-container" style="background: linear-gradient(135deg, rgba(227, 0, 27, 0.05), transparent);">
+        <img class="bleed-image-side" src="imagen.jpg" style="object-fit: cover;" alt="Alerte Fraude">
+    </div>
 </div>
 
 <!-- SLIDE 13: SINERGIA ACADÉMICA (LA SALLE) -->
@@ -701,7 +682,7 @@ body {
     </div>
 </div>
 
-<!-- SLIDE 14: GALERIE OPÉRATIONNELLE (NOUVEAU) -->
+<!-- SLIDE 14: GALERIE OPÉRATIONNELLE -->
 <div class="slide-container">
     <div class="institutional-header">
         <div class="meta-text">13. Galerie Opérationnelle</div>
@@ -711,28 +692,28 @@ body {
         <p>Aperçu des interfaces réelles déployées sur le répertoire institutionnel. Ces captures démontrent la fidélité de l'intégration du design Neumorphiste et l'ergonomie des modules de vérification GAEL et de tarification.</p>
         <div class="gallery-grid">
             <div class="gallery-item">
-                <img src="Captura%20de%20pantalla%202026-06-10%20165840.png" alt="Interface 1" onerror="this.style.display='none'; this.parentNode.innerHTML='<div style=\'display:flex; height:100%; align-items:center; justify-content:center; background:rgba(11,52,122,0.05); color:var(--bleu-passation); font-size:14px; text-align:center; padding:10px;\'>Synchronisation en cours...</div>';">
+                <img src="Captura de pantalla 2026-06-10 165840.png" alt="Interface 1">
             </div>
             <div class="gallery-item">
-                <img src="Captura%20de%20pantalla%202026-06-10%20165920.png" alt="Interface 2" onerror="this.style.display='none'; this.parentNode.innerHTML='<div style=\'display:flex; height:100%; align-items:center; justify-content:center; background:rgba(11,52,122,0.05); color:var(--bleu-passation); font-size:14px; text-align:center; padding:10px;\'>Synchronisation en cours...</div>';">
+                <img src="Captura de pantalla 2026-06-10 165920.png" alt="Interface 2">
             </div>
             <div class="gallery-item">
-                <img src="Captura%20de%20pantalla%202026-05-08%20150310.png" alt="Interface 3" onerror="this.style.display='none'; this.parentNode.innerHTML='<div style=\'display:flex; height:100%; align-items:center; justify-content:center; background:rgba(11,52,122,0.05); color:var(--bleu-passation); font-size:14px; text-align:center; padding:10px;\'>Synchronisation en cours...</div>';">
+                <img src="Captura de pantalla 2026-05-08 150310.png" alt="Interface 3">
             </div>
             <div class="gallery-item">
-                <img src="Captura%20de%20pantalla%202026-05-08%20160608.png" alt="Interface 4" onerror="this.style.display='none'; this.parentNode.innerHTML='<div style=\'display:flex; height:100%; align-items:center; justify-content:center; background:rgba(11,52,122,0.05); color:var(--bleu-passation); font-size:14px; text-align:center; padding:10px;\'>Synchronisation en cours...</div>';">
+                <img src="Captura de pantalla 2026-05-08 160608.png" alt="Interface 4">
             </div>
             <div class="gallery-item">
-                <img src="Captura%20de%20pantalla%202026-05-25%20074959.png" alt="Interface 5" onerror="this.style.display='none'; this.parentNode.innerHTML='<div style=\'display:flex; height:100%; align-items:center; justify-content:center; background:rgba(11,52,122,0.05); color:var(--bleu-passation); font-size:14px; text-align:center; padding:10px;\'>Synchronisation en cours...</div>';">
+                <img src="Captura de pantalla 2026-05-25 074959.png" alt="Interface 5">
             </div>
             <div class="gallery-item">
-                <img src="Captura%20de%20pantalla%202026-05-25%20075017.png" alt="Interface 6" onerror="this.style.display='none'; this.parentNode.innerHTML='<div style=\'display:flex; height:100%; align-items:center; justify-content:center; background:rgba(11,52,122,0.05); color:var(--bleu-passation); font-size:14px; text-align:center; padding:10px;\'>Synchronisation en cours...</div>';">
+                <img src="Captura de pantalla 2026-05-25 075017.png" alt="Interface 6">
             </div>
         </div>
     </div>
 </div>
 
-<!-- SLIDE 15: PROYECCIONES Y ROADMAP (Renumerado) -->
+<!-- SLIDE 15: PROYECCIONES Y ROADMAP -->
 <div class="slide-container">
     <div class="institutional-header">
         <div class="meta-text">14. Projections & Déploiement</div>
@@ -758,14 +739,14 @@ body {
     </div>
 </div>
 
-<!-- SLIDE 15: CONCLUSIÓN Y CIERRE -->
+<!-- SLIDE 16: CONCLUSIÓN Y CIERRE -->
 <div class="slide-container slide-dark">
     <div class="institutional-header">
         <div class="meta-text">Conclusion Officielle</div>
     </div>
     <div class="content-area" style="text-align: center; align-items: center; justify-content: center; height: 100%;">
         <div style="background: #fff; padding: 20px; border-radius: 20px; margin-bottom: 40px; display: inline-flex; align-items: center; justify-content: center; min-width: 200px; min-height: 100px;">
-            <img src="imagen.png" style="height: 100px; object-fit: contain;" alt="Logos Finaux" onerror="this.style.display='none'; this.parentNode.innerHTML='<span style=\'color: var(--bleu-passation); font-weight: bold;\'>DELF 2026</span>';">
+            <img src="imagen.png" style="height: 100px; object-fit: contain;" alt="Logos Finaux">
         </div>
         <h3 style="font-size: 40px; margin-bottom: 25px; font-family: 'Playfair Display', serif;">L'Excellence au Service du Réseau</h3>
         <p style="font-size: 24px; max-width: 1050px; color: #cbd5e1; line-height: 1.6;">

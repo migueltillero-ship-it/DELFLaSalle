@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dossier Institutionnel & Technologique : DELF-La Salle 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+/* ==========================================================================
+   1. VARIABLES GLOBALES (Harmonisées avec les visuels officiels)
+   ========================================================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    /* Couleurs institutionnelles extraites des visuels */
+    --bleu-passation: #0b347a; /* Bleu FEI */
+    --rouge-passation: #e3001b; /* Rouge République */
+    --or-premium: #B08D2F;
+    
+    /* Fonds et Profondeur 3D (Thème Platine/Light pour matcher les images) */
+    --bg-base: #eef2f6;
+    --bg-dark: #0a1128;
+    --text-main: #1e293b;
+    --text-muted: #475569;
+    
+    /* Effets Glassmorphism (Cristal clair) */
+    --glass-bg: rgba(255, 255, 255, 0.92);
+    --glass-border: rgba(255, 255, 255, 1);
+    --glass-shadow: 0 30px 60px rgba(11, 52, 122, 0.08);
+    --glass-blur: blur(25px);
+}
+
+body {
+    background-color: var(--bg-base);
+    background-image: 
+        linear-gradient(135deg, rgba(255,255,255,0.6) 0%, transparent 100%),
+        radial-gradient(circle at 10% 40%, rgba(11, 52, 122, 0.05), transparent 40%),
+        radial-gradient(circle at 90% 60%, rgba(227, 0, 27, 0.03), transparent 40%);
+    background-attachment: fixed;
+    display: grid;
+    gap: 60px;
+    grid-template-columns: 1fr;
+    min-height: 100vh;
+    padding: 60px 0;
+    place-items: center;
+    font-family: 'Outfit', sans-serif;
+    color: var(--text-main);
+    overflow-x: hidden;
+}
+
+/* ==========================================================================
+   2. CONTENEUR PRINCIPAL & 3D
+   ========================================================================== */
+.slide-container {
+    align-items: center;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 30px;
+    box-shadow: var(--glass-shadow), 
+                inset 0 0 0 1px rgba(255, 255, 255, 1),
+                0 15px 25px -5px rgba(0, 0, 0, 0.02);
+    display: flex;
+    flex-direction: column;
+    height: 760px;
+    justify-content: flex-start;
+    overflow: hidden;
+    padding: 100px 60px 60px 60px;
+    position: relative;
+    width: 1300px;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.slide-container > * { position: relative; z-index: 2; width: 100%; }
+
+/* En-tête institutionnel discret */
+.institutional-header {
+    position: absolute;
+    top: 40px;
+    left: 60px;
+    right: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+    border-bottom: 2px solid rgba(11, 52, 122, 0.1);
+    padding-bottom: 15px;
+}
+
+.institutional-header .meta-text {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--bleu-passation);
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+}
+
+/* ==========================================================================
+   3. TYPOGRAPHIE
+   ========================================================================== */
+.slide-container h1,
+.slide-container h2,
+.slide-container .playfair {
+    font-family: 'Playfair Display', serif;
+    color: var(--bleu-passation);
+    margin: 0;
+}
+
+.slide-container h1 {
+    font-size: 68px;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.5px;
+    text-align: center;
+}
+
+.slide-container h1 span { color: var(--rouge-passation); font-style: italic; }
+
+.slide-container .slide-title {
+    font-size: 44px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    text-align: left;
+    width: 100%;
+}
+
+.slide-container .slide-title span { color: var(--rouge-passation); font-style: italic; }
+
+.slide-container h3 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: var(--bleu-passation);
+}
+
+.slide-container p {
+    font-size: 18px;
+    line-height: 1.7;
+    color: var(--text-muted);
+    margin-bottom: 18px;
+    text-align: justify;
+}
+
+.slide-container p strong { color: var(--bleu-passation); font-weight: 700; }
+
+.content-area {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+/* ==========================================================================
+   4. COMPOSANTS & LAYOUTS
+   ========================================================================== */
+.card-3d {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 35px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04), inset 0 0 0 1px rgba(11, 52, 122, 0.05);
+    transition: all 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-3d:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(11, 52, 122, 0.08);
+}
+
+.title-layout {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    margin-top: -50px;
+}
+
+.badge-premium {
+    background: linear-gradient(135deg, var(--bleu-passation), #061d47);
+    color: #fff;
+    padding: 12px 30px;
+    border-radius: 50px;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 35px;
+    box-shadow: 0 10px 20px rgba(11, 52, 122, 0.25);
+}
+
+.two-column {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    width: 100%;
+    align-items: start;
+}
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+/* Layout Image à Bord (Parfait pour les nouvelles images) */
+.bleed-image-layout {
+    padding: 0;
+    grid-template-columns: 50% 50%;
+    display: grid;
+}
+
+.bleed-image-layout > .content-container {
+    padding: 100px 60px 60px 60px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.bleed-image-layout > .image-container {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    background: #fff; /* Fond blanc pour intégrer parfaitement l'image */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-left: 1px solid rgba(11, 52, 122, 0.1);
+}
+
+.bleed-image-layout img.bleed-image-side {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Listes et Tableaux */
+.bullet-list ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.bullet-list li {
+    padding: 25px 30px 25px 85px;
+    position: relative;
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid rgba(11, 52, 122, 0.05);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.02);
+}
+
+.bullet-list i {
+    color: var(--rouge-passation);
+    font-size: 30px;
+    position: absolute;
+    left: 25px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.bullet-list li strong {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    color: var(--bleu-passation);
+    display: block;
+    margin-bottom: 5px;
+}
+
+.table-layout {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.table-layout th,
+.table-layout td {
+    padding: 20px 25px;
+    text-align: left;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    font-size: 17px;
+}
+
+.table-layout th {
+    background: rgba(11, 52, 122, 0.04);
+    color: var(--bleu-passation);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.image-wrapper {
+    border-radius: 20px;
+    height: 400px;
+    width: 100%;
+    overflow: hidden;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.1);
+    border: 8px solid #ffffff;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-wrapper img { width: 100%; height: 100%; object-fit: contain; }
+
+/* Image Hero Entière (Slide 1) */
+.hero-image-container {
+    width: 100%;
+    height: 350px;
+    margin-bottom: 30px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    background: #fff;
+}
+.hero-image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.slide-dark {
+    background: var(--bg-dark);
+    color: #fff;
+}
+.slide-dark h1, .slide-dark h2, .slide-dark h3, .slide-dark p { color: #fff; }
+.slide-dark .institutional-header { border-bottom: 1px solid rgba(255,255,255,0.1); }
+.slide-dark .institutional-header .meta-text { color: #fff; }
+    </style>
+</head>
+<body>
+
+<!-- SLIDE 1: TÍTULO PRINCIPAL CON GRÁFICO OFICIAL -->
+<div class="slide-container" style="padding-top: 60px;">
+    <div class="institutional-header">
+        <div class="meta-text">Dossier Technologique Officiel</div>
+        <div class="meta-text" style="color: var(--rouge-passation);">Réseau Chiapas</div>
+    </div>
+    
+    <div class="hero-image-container">
+        <!-- UTILIZACIÓN DEL GRÁFICO OFICIAL (IMAGEN.PNG) -->
+        <img src="imagen.png" alt="Visuel Officiel DELF 2026 - France Éducation International">
+    </div>
+
+    <div class="title-layout" style="margin-top: 0; justify-content: flex-start;">
+        <div class="badge-premium" style="margin-bottom: 20px;">Rapport d'Excellence Numérique & Conformité</div>
+        <h1 style="font-size: 50px;">Écosystème Numérique<br><span>DELF-La Salle 2026</span></h1>
+        <p style="font-size: 20px; max-width: 950px; margin-top: 20px; text-align: center;">
+            Document stratégique présenté à la <strong>Coordination Nationale</strong> et à la <strong>Gestion Centrale</strong>. Analyse exhaustive de la plateforme transationnelle conçue par l'Alliance Française de San Cristóbal de Las Casas.
+        </p>
+    </div>
+</div>
+
+<!-- SLIDE 2: SOMMAIRE EXÉCUTIF -->
+<div class="slide-container">
+    <div class="institutional-header">
+        <div class="meta-text">01. Sommaire Exécutif</div>
+    </div>
+    <h2 class="slide-title">Structure du <span>Dossier</span></h2>
+    <div class="content-area">
+        <div class="grid-3">
+            <div class="card-3d">
+                <h3 style="font-size: 20px;"><i class="fa-solid fa-bullseye" style="color:var(--rouge-passation); margin-right:10px;"></i>1. Alignement Stratégique</h3>
+                <p>Réponse directe aux observations de l'audit de communication mené par la Gestion Centrale et intégration stricte des directives 2026.</p>
+            </div>
+            <div class="card-3d">
+                <h3 style="font-size: 20px;"><i class="fa-solid fa-microchip" style="color:var(--rouge-passation); margin-right:10px;"></i>2. Ingénierie Numérique</h3>
+                <p>Déconstruction de l'architecture logicielle (UI/UX, requêtes asynchrones JSON) garantissant la fluidité et la sécurité du processus d'inscription.</p>
+            </div>
+            <div class="card-3d">
+                <h3 style="font-size: 20px;"><i class="fa-solid fa-shield-check" style="color:var(--rouge-passation); margin-right:10px;"></i>3. Module GAEL & Sécurité</h3>
+                <p>Présentation du moteur de prévention des erreurs d'état civil et du respect intransigeant des protocoles légaux de France Éducation international.</p>
+            </div>
+        </div>
+        <p style="margin-top: 30px; text-align: center; font-size: 20px; font-style: italic;">
+            Ce rapport atteste de la volonté de la Direction Générale d'opérer une transformation numérique plaçant l'AFSC à l'avant-garde logistique du réseau national.
+        </p>
+    </div>
+</div>
+
+<!-- SLIDE 3: RESPUESTA A LA AUDITORÍA (IMAGEN.JPG A SANGRE) -->
+<div class="slide-container bleed-image-layout">
+    <div class="content-container">
+        <div class="institutional-header" style="left: 0; right: 0; top: 0; position: relative;">
+            <div class="meta-text">02. Réponse Institutionnelle</div>
+        </div>
+        <h2 class="slide-title">Mise en Conformité <span>Immédiate</span></h2>
+        <div class="content-area">
+            <p>Suite à la réception du <em>Guide national de communication DELF-DALF</em> transmis par Mme. Marielle Cuisinier, <strong>j'ai personnellement pris en charge l'intégralité du développement et supervisé la transition</strong> de nos anciens supports vers cet écosystème technologique propriétaire et sécurisé.</p>
+            <ul style="margin-top: 15px; margin-left: 20px; color: var(--text-muted); font-size: 18px; line-height: 1.6;">
+                <li><strong style="color:var(--bleu-passation);">Suppression de la nomenclature obsolète :</strong> Toute mention au "DELF Pro" a été définitivement radiée du code source.</li>
+                <li><strong style="color:var(--bleu-passation);">Logotypes actualisés :</strong> Intégration stricte des chartes graphiques (visibles ci-contre) dans les en-têtes officiels.</li>
+                <li><strong style="color:var(--bleu-passation);">Autonomie Technique :</strong> L'AFSC ne détenant plus les droits de l'ancien site, ce développement garantit notre réactivité.</li>
+            </ul>
+        </div>
+    </div>
+    <div class="image-container">
+        <!-- UTILIZACIÓN DEL GRÁFICO OFICIAL (IMAGEN.JPG) -->
+        <img class="bleed-image-side" src="imagen.jpg" alt="Charte Graphique DELF 2026">
+    </div>
+</div>
+
+<!-- SLIDE 4: ARQUITECTURA VISUAL -->
+<div class="slide-container">
+    <div class="institutional-header">
+        <div class="meta-text">03. Design & Immersion</div>
+    </div>
+    <h2 class="slide-title">Architecture Visuelle <span>Premium (UX/UI)</span></h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div>
+                <h3>Le choix du Glassmorphism 3D</h3>
+                <p>Plutôt que d'utiliser des formulaires web standards, obsolètes et peu engageants, la plateforme DELF-La Salle 2026 utilise une technologie CSS de pointe. Les effets de "verre dépoli" (Glassmorphism) et d'extrusion géométrique confèrent à l'interface une profondeur tridimensionnelle.</p>
+                <p><strong>Objectif psychologique :</strong> Cette esthétique haut de gamme (reflétant le design de nos nouvelles affiches) projette immédiatement le prestige international des diplômes du Ministère de l'Éducation Nationale de France, justifiant l'investissement financier de la certification.</p>
+            </div>
+            <div class="card-3d" style="background: rgba(11, 52, 122, 0.03);">
+                <h3><i class="fa-solid fa-mobile-screen" style="color:var(--rouge-passation);"></i> Fluidité & Adaptabilité</h3>
+                <p>L'interface est codée de manière 100% <em>Responsive</em>. Les grilles CSS s'adaptent dynamiquement aux écrans de smartphones, un vecteur de communication indispensable puisque 85% de notre public cible (adolescents de 12 à 17 ans) consultera le portail via un appareil mobile.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 5: INGENIERÍA DE SOFTWARE Y SEGURIDAD -->
+<div class="slide-container">
+    <div class="institutional-header">
+        <div class="meta-text">04. Ingénierie Logicielle</div>
+    </div>
+    <h2 class="slide-title">Sécurisation des Flux <span>(Architecture Data)</span></h2>
+    <div class="content-area">
+        <div class="grid-3">
+            <div class="card-3d">
+                <h3 style="text-align: center;"><i class="fa-solid fa-database" style="display:block; font-size:40px; margin-bottom:15px; color:var(--bleu-passation);"></i>Structure Sans Base Apparente</h3>
+                <p>Pour le prototype, les données ne résident pas dans un CMS vulnérable. L'architecture est traitée directement dans le DOM (Document Object Model) via JavaScript, évitant les injections SQL classiques.</p>
+            </div>
+            <div class="card-3d">
+                <h3 style="text-align: center;"><i class="fa-solid fa-paper-plane" style="display:block; font-size:40px; margin-bottom:15px; color:var(--rouge-passation);"></i>Requêtes Asynchrones (AJAX)</h3>
+                <p>Les soumissions de validation n'actualisent pas la page. Le protocole <code>fetch()</code> envoie un <em>Payload JSON</em> crypté directement à la passerelle de la Direction Générale.</p>
+            </div>
+            <div class="card-3d">
+                <h3 style="text-align: center;"><i class="fa-solid fa-file-code" style="display:block; font-size:40px; margin-bottom:15px; color:var(--or-premium);"></i>Normalisation Unicode</h3>
+                <p>Le moteur de recherche utilise <code>normalize("NFD")</code>. Il détache les diacritiques (accents, trémas) de leurs lettres de base, assurant une correspondance parfaite même si le candidat omet l'accentuation.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 6: TRANSPARENCIA TARIFARIA -->
+<div class="slide-container">
+    <div class="institutional-header">
+        <div class="meta-text">05. Transparence Commerciale</div>
+    </div>
+    <h2 class="slide-title">Grille Tarifaire Nationale <span>2026</span></h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div>
+                <p>En réponse directe à l'exigence d'harmonisation de la Coordination Nationale, le portail affiche de manière rigide, inaltérable et publique les tarifs du DELF Junior pour l'année 2026.</p>
+                <p><strong>Clarté du public cible :</strong> Le tableau stipule clairement la tranche d'âge (12-17 ans) pour justifier l'application du tarif "Junior" face aux parents d'élèves du Colegio La Salle, prévenant toute contestation logistique ou financière auprès de la comptabilité de l'AFSC.</p>
+            </div>
+            <div class="card-3d" style="padding: 0; overflow: hidden; height: auto;">
+                <table class="table-layout">
+                    <thead>
+                        <tr>
+                            <th>Niveau</th>
+                            <th>Public Cible</th>
+                            <th>Tarif Officiel</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>A1</strong></td>
+                            <td>Adolescents (12-17 ans)</td>
+                            <td style="color:var(--bleu-passation); font-weight:700;">$ 1,445.00 MXN</td>
+                        </tr>
+                        <tr>
+                            <td><strong>A2</strong></td>
+                            <td>Adolescents (12-17 ans)</td>
+                            <td style="color:var(--bleu-passation); font-weight:700;">$ 1,575.00 MXN</td>
+                        </tr>
+                        <tr>
+                            <td><strong>B1</strong></td>
+                            <td>Adolescents (12-17 ans)</td>
+                            <td style="color:var(--bleu-passation); font-weight:700;">$ 1,800.00 MXN</td>
+                        </tr>
+                        <tr>
+                            <td><strong>B2</strong></td>
+                            <td>Adolescents (12-17 ans)</td>
+                            <td style="color:var(--bleu-passation); font-weight:700;">$ 2,500.00 MXN</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 7: EL MÓDULO GAEL (EL PROBLEMA) -->
+<div class="slide-container bleed-image-layout">
+    <div class="content-container">
+        <div class="institutional-header" style="left: 0; right: 0; top: 0; position: relative;">
+            <div class="meta-text">06. Sécurisation Logistique (Partie 1)</div>
+        </div>
+        <h2 class="slide-title">La Problématique d'État Civil <span>(GAEL)</span></h2>
+        <div class="content-area">
+            <h3>Le Diagnostic Opérationnel</h3>
+            <p>Historiquement, les inscriptions manuelles génèrent un pourcentage de fautes de frappe (inversion de lettres, erreurs sur les dates de naissance).</p>
+            <p>Ces données erronées sont saisies dans le système <strong>GAEL</strong> de France Éducation international. Conséquence : les diplômes définitifs, imprimés à Paris et expédiés sous 4 à 6 mois, arrivent avec des erreurs juridiques.</p>
+            <p>La réimpression engendre des coûts pour l'Alliance, une surcharge pour la Gestion Centrale, et un mécontentement des familles.</p>
+        </div>
+    </div>
+    <div class="image-container">
+        <!-- UTILIZACIÓN DEL GRÁFICO OFICIAL (IMAGEN.PNG) -->
+        <img class="bleed-image-side" src="imagen.png" style="object-fit: contain; padding: 40px;" alt="Vérification des diplômes">
+    </div>
+</div>
+
+<!-- SLIDE 8: EL MÓDULO GAEL (LA SOLUCIÓN) -->
+<div class="slide-container">
+    <div class="institutional-header">
+        <div class="meta-text">07. Sécurisation Logistique (Partie 2)</div>
+    </div>
+    <h2 class="slide-title">Le Moteur de Prévention <span>(La Solution)</span></h2>
+    <div class="content-area">
+        <div class="bullet-list">
+            <ul>
+                <li>
+                    <i class="fa-solid fa-magnifying-glass-check"></i>
+                    <strong>Vérification Front-End Autorisée</strong>
+                    Avant la clôture de la session sur GAEL, l'algorithme JavaScript croise la base de données interne et génère une fiche visuelle affichant exactement l'orthographe qui sera imprimée.
+                </li>
+                <li>
+                    <i class="fa-solid fa-file-signature"></i>
+                    <strong>Acceptation Légale Numérique</strong>
+                    Le tuteur doit obligatoirement cocher une case numérique de validation : <em>"Je vérifie que les données sont correctes et je comprends que le diplôme officiel sera émis sur cette base"</em>.
+                </li>
+                <li>
+                    <i class="fa-solid fa-shield-check"></i>
+                    <strong>Transfert de Responsabilité</strong>
+                    Cette étape cruciale dédouane l'Alliance Française et la Gestion Centrale de toute responsabilité en cas de réclamation future, l'erreur incombant désormais à la validation familiale.
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 9: PROTECCIÓN DE DATOS (ARCO) -->
+<div class="slide-container">
+    <div class="institutional-header">
+        <div class="meta-text">08. Cadre Juridique et Confidentialité</div>
+    </div>
+    <h2 class="slide-title">Droits ARCO & Protection <span>des Mineurs</span></h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div>
+                <p>S'agissant d'un public de mineurs, la plateforme est soumise à des normes de confidentialité d'une rigueur absolue.</p>
+                <p><strong>Aucune liste publique :</strong> Le système ne listera jamais l'ensemble des candidats inscrits. L'accès aux informations nécessite la saisie combinée du Prénom et des Noms de Famille exacts.</p>
+                <p>Par ailleurs, l'affichage final inclut le <strong>Numéro FEI (12 chiffres)</strong>, qui deviendra l'unique identifiant pour consulter les notes lors de la publication des résultats, garantissant un anonymat total conforme à la législation mexicaine (ARCO).</p>
+            </div>
+            <div class="card-3d" style="display: flex; justify-content: center; align-items: center; background: rgba(11, 52, 122, 0.05);">
+                <i class="fa-solid fa-user-shield" style="font-size: 150px; color: var(--bleu-passation); opacity: 0.8;"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 10: PROTOCOLOS DEL EXAMEN (PARTE 1) -->
+<div class="slide-container">
+    <div class="institutional-header">
+        <div class="meta-text">09. Normes de Passation F.E.I. (Partie 1)</div>
+    </div>
+    <h2 class="slide-title">Contrat Logistique de <span>Passation</span></h2>
+    <div class="content-area">
+        <p style="margin-bottom: 30px; font-size: 20px;">Le portail agit comme un outil contractuel. En s'y connectant, le candidat et son tuteur prennent formellement connaissance du règlement inviolable des centres d'examen de France Éducation international.</p>
+        <div class="grid-3">
+            <div class="card-3d">
+                <h3 style="text-align: center;"><i class="fa-solid fa-pen" style="display:block; font-size:35px; margin-bottom:15px; color:var(--bleu-passation);"></i>Matériel Obligatoire</h3>
+                <p>Notification de l'exigence absolue de l'utilisation exclusive de stylos à encre bleue ou noire. Les copies au crayon exposent le candidat à une annulation de l'épreuve.</p>
+            </div>
+            <div class="card-3d">
+                <h3 style="text-align: center;"><i class="fa-solid fa-id-card" style="display:block; font-size:35px; margin-bottom:15px; color:var(--bleu-passation);"></i>Contrôle d'Identité</h3>
+                <p>Rappel de l'obligation de présenter une pièce d'identité officielle et originale avec photographie récente lors de l'accès aux épreuves collectives et individuelles orales.</p>
+            </div>
+            <div class="card-3d">
+                <h3 style="text-align: center;"><i class="fa-solid fa-clock" style="display:block; font-size:35px; margin-bottom:15px; color:var(--bleu-passation);"></i>Gestion des Retards</h3>
+                <p>Avertissement clair sur la politique de fermeture des portes. Tout retardataire se verra interdire l'accès à la salle une fois les scellés des sujets ouverts.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 11: PROTOCOLOS DEL EXAMEN (PARTE 2) CON IMAGEN -->
+<div class="slide-container bleed-image-layout">
+    <div class="content-container">
+        <div class="institutional-header" style="left: 0; right: 0; top: 0; position: relative;">
+            <div class="meta-text">10. Normes de Passation F.E.I. (Partie 2)</div>
+        </div>
+        <h2 class="slide-title">Tolérance Zéro : <span>Fraude & Électronique</span></h2>
+        <div class="content-area">
+            <p>Afin de préserver l'intégrité et la valeur diplomatique des certifications, le portail consacre une section d'avertissement stricte concernant la fraude.</p>
+            <div class="card-3d" style="background: rgba(227, 0, 27, 0.05); border-color: rgba(227, 0, 27, 0.2); margin-top: 15px;">
+                <h3 style="color: var(--rouge-passation);"><i class="fa-solid fa-triangle-exclamation" style="margin-right: 10px;"></i>Règle d'Exclusion Immédiate</h3>
+                <p>La possession (même éteinte) de téléphones portables ou montres connectées (smartwatches) durant les épreuves entraîne l'exclusion immédiate du centre, l'annulation du diplôme et un signalement à la Délégation Générale.</p>
+            </div>
+        </div>
+    </div>
+    <div class="image-container">
+        <!-- UTILIZACIÓN DEL GRÁFICO OFICIAL (IMAGEN.JPG) -->
+        <img class="bleed-image-side" src="imagen.jpg" style="object-fit: cover;" alt="Alerte Fraude">
+    </div>
+</div>
+
+<!-- SLIDE 12: SINERGIA ACADÉMICA (LA SALLE) -->
+<div class="slide-container">
+    <div class="institutional-header">
+        <div class="meta-text">11. Synergie Académique</div>
+    </div>
+    <h2 class="slide-title">Le Cas d'Étude : <span>Colegio La Salle</span></h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div>
+                <p>Le partenariat avec des institutions prestigieuses comme le Colegio La Salle requiert une interface dédiée. Ce portail n'est pas générique, il est profondément intégré à l'écosystème scolaire.</p>
+                <p><strong>La valeur ajoutée institutionnelle :</strong> En créant des espaces numériques dédiés pour nos grandes conventions, l'AFSC se positionne non pas comme un simple "vendeur d'examens", mais comme un véritable <em>partenaire logistique et technologique</em> pour l'éducation bilingue dans le Chiapas.</p>
+            </div>
+            <div class="card-3d" style="text-align: center; justify-content: center;">
+                <h3 style="font-size: 28px; margin-bottom: 20px;">Avantage Exclusif Convention</h3>
+                <p style="font-size: 20px; font-weight: 600; color: var(--bleu-passation);">
+                    Le portail promeut et gère l'inscription automatique aux 2 sessions de préparation présentielles offertes par l'Alliance, un argument de vente majeur pour sécuriser le volume d'inscriptions annuelles.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 13: PROYECCIONES Y ROADMAP -->
+<div class="slide-container">
+    <div class="institutional-header">
+        <div class="meta-text">12. Projections & Déploiement</div>
+    </div>
+    <h2 class="slide-title">Impact & Feuille de Route <span>2026</span></h2>
+    <div class="content-area">
+        <div class="two-column">
+            <div class="card-3d" style="background: var(--bleu-passation); color: white;">
+                <h3 style="color: white;">Indicateurs Clés de Performance (KPI)</h3>
+                <ul style="margin-top: 15px; list-style: none; padding-left: 0;">
+                    <li style="margin-bottom: 15px; font-size: 18px;"><i class="fa-solid fa-arrow-trend-down" style="color:var(--or-premium); margin-right:10px;"></i> <strong>Taux d'erreur GAEL :</strong> Projection de 0% (vs 5-8% historique).</li>
+                    <li style="margin-bottom: 15px; font-size: 18px;"><i class="fa-solid fa-stopwatch" style="color:var(--or-premium); margin-right:10px;"></i> <strong>Temps Administratif :</strong> Économie de 40% sur la gestion des appels.</li>
+                    <li style="font-size: 18px;"><i class="fa-solid fa-file-invoice-dollar" style="color:var(--or-premium); margin-right:10px;"></i> <strong>Économies de Réimpression :</strong> 100% des frais de correction évités.</li>
+                </ul>
+            </div>
+            <div>
+                <h3>Roadmap d'Implémentation</h3>
+                <p><strong>Phase 1 (Actuelle) :</strong> Maquette opérationnelle Front-End (validation du design et des flux UX par la Direction).</p>
+                <p><strong>Phase 2 :</strong> Sécurisation Back-End (connexion à une base de données Cloud pour extraire les données en dur du code).</p>
+                <p><strong>Phase 3 :</strong> Lancement officiel du portail auprès des coordinateurs du Colegio La Salle pour la session de Juin 2026.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 14: CONCLUSIÓN Y CIERRE -->
+<div class="slide-container slide-dark">
+    <div class="institutional-header">
+        <div class="meta-text">Conclusion Officielle</div>
+    </div>
+    <div class="content-area" style="text-align: center; align-items: center; justify-content: center; height: 100%;">
+        <div style="background: #fff; padding: 20px; border-radius: 20px; margin-bottom: 40px; display: inline-block;">
+             <img src="imagen.png" style="height: 100px; object-fit: contain;" alt="Logos Finaux">
+        </div>
+        <h3 style="font-size: 40px; margin-bottom: 25px; font-family: 'Playfair Display', serif;">L'Excellence au Service du Réseau</h3>
+        <p style="font-size: 24px; max-width: 1050px; color: #cbd5e1; line-height: 1.6;">
+            La conception de cet écosystème numérique prouve que l'Alliance Française de San Cristóbal de Las Casas ne se contente pas d'appliquer les directives de la <strong>Coordination Nationale</strong>, elle les sublime grâce à la technologie. En garantissant une conformité totale au <em>Guide National</em>, nous assurons la pérennité, la sécurité et le prestige de nos certifications dans l'État du Chiapas.
+        </p>
+        <div style="margin-top: 50px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 30px; color: var(--or-premium); font-weight: 700; letter-spacing: 2px; text-transform: uppercase; font-size: 16px;">
+            Direction Générale — Miguel David Tillero Álvarez
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

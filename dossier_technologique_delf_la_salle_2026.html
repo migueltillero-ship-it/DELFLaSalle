@@ -373,14 +373,119 @@ body.present-mode .present-indicator { display: block; }
     .frame { aspect-ratio: 4/3 !important; }
     a { color: inherit !important; text-decoration: none !important; }
 }
+
+/* ==========================================================================
+   INTRO OVERLAY OBLIGATORIO
+   ========================================================================== */
+.intro-overlay {
+    position: fixed; inset: 0; z-index: 9999; background: #000;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    animation: introFadeIn .4s ease;
+}
+.intro-overlay video {
+    width: 100%; height: 100%;
+    object-fit: cover; background: #000;
+}
+.intro-overlay::after {
+    content: ""; position: absolute; inset: 0;
+    background:
+        radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,.3) 100%),
+        linear-gradient(180deg, rgba(0,0,0,.4) 0%, transparent 20%, transparent 80%, rgba(0,0,0,.5) 100%);
+    pointer-events: none;
+}
+.intro-skip {
+    position: absolute; bottom: 30px; right: 30px;
+    background: rgba(255,255,255,.12);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,.3); color: #fff;
+    padding: 12px 24px; border-radius: 999px;
+    font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase;
+    cursor: pointer; display: inline-flex; align-items: center; gap: 10px;
+    opacity: 0;
+    transition: opacity .6s ease, background .25s ease, transform .15s;
+    z-index: 10;
+}
+.intro-skip.visible { opacity: 1; }
+.intro-skip:hover { background: rgba(255,255,255,.2); }
+.intro-skip:active { transform: scale(.97); }
+.intro-brand {
+    position: absolute; top: 40px; left: 40px; z-index: 10;
+    color: #fff;
+    display: flex; align-items: center; gap: 14px;
+    font-family: 'Playfair Display', serif;
+    font-size: 18px; letter-spacing: 1px;
+    opacity: .85;
+}
+.intro-brand .flag-mini {
+    width: 4px; height: 24px; border-radius: 2px;
+    background: linear-gradient(180deg, var(--rouge-rep) 0 33%, #fff 33% 66%, var(--bleu-fei) 66% 100%);
+}
+@keyframes introFadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes introFadeOut { to { opacity: 0; transform: scale(1.02); } }
+.intro-overlay.closing { animation: introFadeOut .6s ease forwards; pointer-events: none; }
+
+.toolbar .audio-btn.muted i.fa-volume-high { display: none; }
+.toolbar .audio-btn:not(.muted) i.fa-volume-xmark { display: none; }
+@media (prefers-reduced-motion: no-preference) {
+    .slide:not(.cover) .body > *,
+    .slide:not(.cover) .slide-title,
+    .slide:not(.cover) .slide-kicker,
+    .slide:not(.cover) .slide-lede {
+        opacity: 0; transform: translateY(24px);
+        transition: opacity .7s cubic-bezier(.2,.8,.2,1.1), transform .7s cubic-bezier(.2,.8,.2,1.1);
+    }
+    .slide.visible:not(.cover) .body > *,
+    .slide.visible:not(.cover) .slide-title,
+    .slide.visible:not(.cover) .slide-kicker,
+    .slide.visible:not(.cover) .slide-lede {
+        opacity: 1; transform: translateY(0);
+    }
+    .slide.visible .slide-kicker { transition-delay: .05s; }
+    .slide.visible .slide-title { transition-delay: .1s; }
+    .slide.visible .slide-lede { transition-delay: .18s; }
+    .slide.visible .body > *:nth-child(1) { transition-delay: .22s; }
+    .slide.visible .body > *:nth-child(2) { transition-delay: .28s; }
+    .slide.visible .body > *:nth-child(3) { transition-delay: .34s; }
+}
+@media print { .slide .body > *, .slide .slide-title, .slide .slide-kicker, .slide .slide-lede { opacity: 1 !important; transform: none !important; } }
     </style>
 </head>
 <body>
 
 <!-- ============================================================
-     TOOLBAR FLOTANTE (modo presentación · idioma · PDF)
+     INTRO OVERLAY OBLIGATORIO (video institucional)
+============================================================ -->
+<div class="intro-overlay" id="intro-overlay" role="dialog" aria-label="Introduction officielle">
+    <video id="intro-video" autoplay muted playsinline preload="auto">
+        <source src="transition_encabezados.mp4" type="video/mp4">
+    </video>
+    <div class="intro-brand">
+        <span class="flag-mini"></span>
+        <span data-fr="DELF · La Salle 2026" data-es="DELF · La Salle 2026">DELF · La Salle 2026</span>
+    </div>
+    <button type="button" class="intro-skip" id="intro-skip" aria-label="Entrer dans le dossier">
+        <i class="fa-solid fa-play"></i>
+        <span data-fr="Entrer" data-es="Entrar">Entrer</span>
+    </button>
+</div>
+
+<!-- ============================================================
+     AUDIO DE FONDO (institucional)
+============================================================ -->
+<audio id="bg-audio" loop preload="auto">
+    <source src="Arrival_at_the_Terminal (1).mp3" type="audio/mpeg">
+</audio>
+
+<!-- ============================================================
+     TOOLBAR FLOTANTE (modo presentación · idioma · PDF · audio)
 ============================================================ -->
 <nav class="toolbar" aria-label="Outils du dossier">
+    <button type="button" id="btn-audio" class="audio-btn muted" title="Activer / couper la musique" aria-label="Audio">
+        <i class="fa-solid fa-volume-xmark"></i>
+        <i class="fa-solid fa-volume-high"></i>
+    </button>
     <button type="button" id="btn-present" title="Modo presentación (F)" aria-label="Modo presentación">
         <i class="fa-solid fa-expand"></i> <span data-fr="Présentation" data-es="Presentación">Présentation</span>
     </button>
@@ -1341,6 +1446,63 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             e.preventDefault(); showSlide(total - 1);
         }
     });
+
+    /* ────────────── INTRO OVERLAY + AUDIO DE FONDO ────────────── */
+    const intro = document.getElementById('intro-overlay');
+    const introVideo = document.getElementById('intro-video');
+    const introSkip = document.getElementById('intro-skip');
+    const bgAudio = document.getElementById('bg-audio');
+    const btnAudio = document.getElementById('btn-audio');
+
+    let audioStarted = false;
+    function startAudio() {
+        if (audioStarted) return;
+        audioStarted = true;
+        bgAudio.volume = 0.18;
+        bgAudio.play().then(() => {
+            btnAudio.classList.remove('muted');
+        }).catch(() => {
+            btnAudio.classList.add('muted');
+        });
+    }
+    function closeIntro() {
+        if (!intro || intro.classList.contains('closing')) return;
+        intro.classList.add('closing');
+        startAudio();
+        setTimeout(() => { intro.remove(); }, 700);
+    }
+    if (intro) {
+        setTimeout(() => introSkip.classList.add('visible'), 2200);
+        introSkip.addEventListener('click', closeIntro);
+        intro.addEventListener('click', e => { if (e.target === intro || e.target === introVideo) closeIntro(); });
+        introVideo.addEventListener('ended', closeIntro);
+        document.addEventListener('keydown', e => {
+            if ((e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') && document.body.contains(intro)) {
+                e.preventDefault(); closeIntro();
+            }
+        }, { once: false });
+    }
+
+    btnAudio.addEventListener('click', () => {
+        if (!audioStarted) { startAudio(); return; }
+        if (bgAudio.paused) {
+            bgAudio.play();
+            btnAudio.classList.remove('muted');
+        } else {
+            bgAudio.pause();
+            btnAudio.classList.add('muted');
+        }
+    });
+
+    /* ────────────── ANIMACIÓN ENTRADA SLIDES ────────────── */
+    if ('IntersectionObserver' in window) {
+        const reveal = new IntersectionObserver(entries => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        }, { threshold: 0.15 });
+        slides.forEach(s => reveal.observe(s));
+    } else {
+        slides.forEach(s => s.classList.add('visible'));
+    }
 
     /* ────────────── MINI-MAPA SCROLL-SPY ────────────── */
     const minimapLinks = document.querySelectorAll('.minimap a');

@@ -178,10 +178,13 @@ code, .mono { font-family: 'JetBrains Mono', monospace; font-size: .92em; }
     position: relative; width: 380px; height: 380px;
     border-radius: 50%; background: #ffffff;
     box-shadow: 0 0 0 1px rgba(255,255,255,.4), 0 0 0 12px rgba(255,255,255,.08), 0 0 0 13px rgba(255,255,255,.15), 0 30px 60px rgba(0,0,0,.35);
-    display: grid; place-items: center; padding: 70px; overflow: hidden;
+    display: flex; align-items: center; justify-content: center; padding: 50px; overflow: hidden;
 }
-.cover-right .seal img, .cover-right .seal svg { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; }
-.cover-right .seal img { mix-blend-mode: multiply; }
+.cover-right .seal img, .cover-right .seal svg {
+    width: 100%; height: auto;
+    max-width: 100%; max-height: 100%;
+    object-fit: contain; display: block;
+}
 .cover-right .seal::before, .cover-right .seal::after { content: ""; position: absolute; border-radius: 50%; border: 1px dashed rgba(255,255,255,.25); }
 .cover-right .seal::before { inset: -40px; }
 .cover-right .seal::after { inset: -70px; border-style: dotted; opacity: .5; }
@@ -459,7 +462,7 @@ body.present-mode .present-indicator { display: block; }
 ============================================================ -->
 <div class="intro-overlay" id="intro-overlay" role="dialog" aria-label="Introduction officielle">
     <video id="intro-video" autoplay muted playsinline preload="auto">
-        <source src="transition_encabezados.mp4" type="video/mp4">
+        <source src="https://migueltillero-ship-it.github.io/DELFLaSalle/transition_1.mp4" type="video/mp4">
     </video>
     <div class="intro-brand">
         <span class="flag-mini"></span>
@@ -475,7 +478,7 @@ body.present-mode .present-indicator { display: block; }
      AUDIO DE FONDO (institucional)
 ============================================================ -->
 <audio id="bg-audio" loop preload="auto">
-    <source src="Arrival_at_the_Terminal (1).mp3" type="audio/mpeg">
+    <source src="https://migueltillero-ship-it.github.io/DELFLaSalle/Arrival_at_the_Terminal%20(1).mp3" type="audio/mpeg">
 </audio>
 
 <!-- ============================================================
@@ -666,7 +669,7 @@ body.present-mode .present-indicator { display: block; }
         </div>
         <div class="cover-right">
             <div class="seal">
-                <img src="alianza.png" alt="Alliance Française · San Cristóbal de Las Casas" onerror="this.outerHTML='<svg viewBox=&quot;0 0 600 200&quot;><use href=&quot;#logo-af&quot;/></svg>'">
+                <img src="https://migueltillero-ship-it.github.io/DELFLaSalle/alianza.png" alt="Alliance Française · San Cristóbal de Las Casas" onerror="this.outerHTML='<svg viewBox=&quot;0 0 600 200&quot;><use href=&quot;#logo-af&quot;/></svg>'">
             </div>
         </div>
     </div>
@@ -734,7 +737,7 @@ body.present-mode .present-indicator { display: block; }
                 </div>
             </div>
             <div class="logo-card" style="background: linear-gradient(160deg, #fff, #f1f5fb); padding: 0; overflow: hidden; align-items: stretch; min-height: 380px;">
-                <img src="qfdelfjuniorprototipo.jpg" alt="Prototype officiel — logos institutionnels DELF · La Salle" style="width: 100%; height: 100%; object-fit: cover; object-position: center; display: block;" onerror="this.parentNode.innerHTML='<div style=&quot;display:grid;gap:18px;padding:30px;place-items:center;width:100%&quot;><svg viewBox=&quot;0 0 600 200&quot; style=&quot;max-width:100%&quot;><use href=&quot;#logo-fei-delf&quot;/></svg><div class=&quot;divider&quot; style=&quot;width:80%&quot;></div><svg viewBox=&quot;0 0 600 200&quot; style=&quot;max-width:80%&quot;><use href=&quot;#logo-af&quot;/></svg></div>'">
+                <img src="https://migueltillero-ship-it.github.io/DELFLaSalle/qfdelfjuniorprototipo.jpg" alt="Prototype officiel — logos institutionnels DELF · La Salle" style="width: 100%; height: 100%; object-fit: cover; object-position: center; display: block;" onerror="this.parentNode.innerHTML='<div style=&quot;display:grid;gap:18px;padding:30px;place-items:center;width:100%&quot;><svg viewBox=&quot;0 0 600 200&quot; style=&quot;max-width:100%&quot;><use href=&quot;#logo-fei-delf&quot;/></svg><div class=&quot;divider&quot; style=&quot;width:80%&quot;></div><svg viewBox=&quot;0 0 600 200&quot; style=&quot;max-width:80%&quot;><use href=&quot;#logo-af&quot;/></svg></div>'">
             </div>
         </div>
     </div>
@@ -1048,7 +1051,7 @@ body.present-mode .present-indicator { display: block; }
                     </div>
                 </div>
                 <div class="frame contain" style="aspect-ratio: 4/5; max-height: 280px;">
-                    <img src="rqfdelfjuniorprototipo.jpg" alt="Affiche officielle DELF 2026 — prototype" style="object-fit: contain; padding: 0; background: #fff;">
+                    <img src="https://migueltillero-ship-it.github.io/DELFLaSalle/rqfdelfjuniorprototipo.jpg" alt="Affiche officielle DELF 2026 — prototype" style="object-fit: contain; padding: 0; background: #fff;">
                     <span class="cap" data-fr="Affiche officielle 2026" data-es="Cartel oficial 2026">Affiche officielle 2026</span>
                 </div>
             </div>
@@ -1165,14 +1168,14 @@ body.present-mode .present-indicator { display: block; }
             </div>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
                 <div class="logo-card" style="grid-column: 1 / -1; padding: 26px; background: linear-gradient(160deg, #fff, #f1f5fb); min-height: 200px;">
-                    <img src="lasalle.jpg" alt="Centro de Estudios La Salle · San Cristóbal" style="max-height: 170px; width: auto; object-fit: contain;" onerror="this.outerHTML='<svg viewBox=&quot;0 0 200 240&quot; style=&quot;max-height:200px;width:auto&quot;><use href=&quot;#logo-lasalle&quot;/></svg>'">
+                    <img src="https://migueltillero-ship-it.github.io/DELFLaSalle/lasalle.jpg" alt="Centro de Estudios La Salle · San Cristóbal" style="max-height: 170px; width: auto; object-fit: contain;" onerror="this.outerHTML='<svg viewBox=&quot;0 0 200 240&quot; style=&quot;max-height:200px;width:auto&quot;><use href=&quot;#logo-lasalle&quot;/></svg>'">
                 </div>
                 <div class="frame" style="aspect-ratio: 1/1;">
-                    <img src="IMG-20251204-WA0062.jpg" alt="Cérémonie 2025" onerror="this.parentNode.style.background='linear-gradient(160deg,#0b347a,#02143a)'; this.style.display='none'">
+                    <img src="https://migueltillero-ship-it.github.io/DELFLaSalle/IMG-20251204-WA0062.jpg" alt="Cérémonie 2025" onerror="this.parentNode.style.background='linear-gradient(160deg,#0b347a,#02143a)'; this.style.display='none'">
                     <span class="cap">Cérémonie</span>
                 </div>
                 <div class="frame" style="aspect-ratio: 1/1;">
-                    <img src="IMG-20251204-WA0057.jpg" alt="Lauréat La Salle" onerror="this.parentNode.style.background='linear-gradient(160deg,#0b347a,#02143a)'; this.style.display='none'">
+                    <img src="https://migueltillero-ship-it.github.io/DELFLaSalle/IMG-20251204-WA0057.jpg" alt="Lauréat La Salle" onerror="this.parentNode.style.background='linear-gradient(160deg,#0b347a,#02143a)'; this.style.display='none'">
                     <span class="cap">Lauréat</span>
                 </div>
             </div>
@@ -1193,12 +1196,12 @@ body.present-mode .present-indicator { display: block; }
     <p class="slide-lede" data-fr="Chaque année, l'AFSC organise une cérémonie officielle pour remettre les diplômes DELF aux candidats lauréats. Un moment porteur de sens, célébré aux côtés des familles, du Colegio La Salle et de la Direction de l'Alliance Française." data-es="Cada año, la AFSC organiza una ceremonia oficial para entregar los diplomas DELF a los candidatos laureados. Un momento significativo, celebrado junto a las familias, el Colegio La Salle y la Dirección de la Alianza Francesa.">Chaque année, l'AFSC organise une cérémonie officielle pour remettre les diplômes DELF aux candidats lauréats. Un moment porteur de sens, célébré aux côtés des familles, du Colegio La Salle et de la Direction de l'Alliance Française.</p>
     <div class="body">
         <div class="gallery" style="grid-template-columns: repeat(3, 1fr); gap: 16px;">
-            <div class="frame" style="aspect-ratio: 4/3;"><img src="IMG_20251204_124849353.jpg" alt=""><span class="cap" data-fr="Ouverture de séance" data-es="Apertura de la sesión">Ouverture de séance</span></div>
-            <div class="frame" style="aspect-ratio: 4/3;"><img src="IMG_20251204_124852202.jpg" alt=""><span class="cap" data-fr="Applaudissements" data-es="Aplausos">Applaudissements</span></div>
-            <div class="frame" style="aspect-ratio: 4/3;"><img src="IMG_20251204_124949487_HDR.jpg" alt=""><span class="cap" data-fr="Diplôme remis" data-es="Diploma entregado">Diplôme remis</span></div>
-            <div class="frame" style="aspect-ratio: 4/3;"><img src="IMG_20251204_125050500_HDR.jpg" alt=""><span class="cap" data-fr="Félicitations" data-es="Felicitaciones">Félicitations</span></div>
-            <div class="frame" style="aspect-ratio: 4/3;"><img src="IMG_20251204_125059995_HDR.jpg" alt=""><span class="cap" data-fr="Photo officielle" data-es="Foto oficial">Photo officielle</span></div>
-            <div class="frame" style="aspect-ratio: 4/3;"><img src="IMG_20251204_125231254_HDR.jpg" alt=""><span class="cap" data-fr="Souvenir de fin" data-es="Recuerdo final">Souvenir de fin</span></div>
+            <div class="frame" style="aspect-ratio: 4/3;"><img src="https://migueltillero-ship-it.github.io/DELFLaSalle/IMG_20251204_124849353.jpg" alt=""><span class="cap" data-fr="Ouverture de séance" data-es="Apertura de la sesión">Ouverture de séance</span></div>
+            <div class="frame" style="aspect-ratio: 4/3;"><img src="https://migueltillero-ship-it.github.io/DELFLaSalle/IMG_20251204_124852202.jpg" alt=""><span class="cap" data-fr="Applaudissements" data-es="Aplausos">Applaudissements</span></div>
+            <div class="frame" style="aspect-ratio: 4/3;"><img src="https://migueltillero-ship-it.github.io/DELFLaSalle/IMG_20251204_124949487_HDR.jpg" alt=""><span class="cap" data-fr="Diplôme remis" data-es="Diploma entregado">Diplôme remis</span></div>
+            <div class="frame" style="aspect-ratio: 4/3;"><img src="https://migueltillero-ship-it.github.io/DELFLaSalle/IMG_20251204_125050500_HDR.jpg" alt=""><span class="cap" data-fr="Félicitations" data-es="Felicitaciones">Félicitations</span></div>
+            <div class="frame" style="aspect-ratio: 4/3;"><img src="https://migueltillero-ship-it.github.io/DELFLaSalle/IMG_20251204_125059995_HDR.jpg" alt=""><span class="cap" data-fr="Photo officielle" data-es="Foto oficial">Photo officielle</span></div>
+            <div class="frame" style="aspect-ratio: 4/3;"><img src="https://migueltillero-ship-it.github.io/DELFLaSalle/IMG_20251204_125231254_HDR.jpg" alt=""><span class="cap" data-fr="Souvenir de fin" data-es="Recuerdo final">Souvenir de fin</span></div>
         </div>
     </div>
 </section>
@@ -1216,10 +1219,10 @@ body.present-mode .present-indicator { display: block; }
     <p class="slide-lede" data-fr="Quelques bannières et en-têtes conçus pour le portail, intégrant les chartes officielles des quatre institutions partenaires : République Française, France Éducation international, Colegio La Salle et Alliance Française de San Cristóbal." data-es="Algunas banderas y encabezados diseñados para el portal, integrando las identidades oficiales de las cuatro instituciones asociadas: República Francesa, France Éducation international, Colegio La Salle y Alianza Francesa de San Cristóbal.">Quelques bannières et en-têtes conçus pour le portail, intégrant les chartes officielles des quatre institutions partenaires : République Française, France Éducation international, Colegio La Salle et Alliance Française de San Cristóbal.</p>
     <div class="body">
         <div class="gallery" style="grid-template-columns: repeat(2, 1fr); gap: 28px;">
-            <div class="frame" style="aspect-ratio: 16/9;"><img src="Captura de pantalla 2026-06-10 165840.png" alt=""><span class="cap" data-fr="Bannière principale" data-es="Bandera principal">Bannière principale</span></div>
-            <div class="frame" style="aspect-ratio: 16/9;"><img src="Captura de pantalla 2026-05-08 160608.png" alt=""><span class="cap" data-fr="Composition sobre" data-es="Composición sobria">Composition sobre</span></div>
-            <div class="frame" style="aspect-ratio: 16/9;"><img src="Captura de pantalla 2026-05-08 150310.png" alt=""><span class="cap" data-fr="En-tête La Salle" data-es="Encabezado La Salle">En-tête La Salle</span></div>
-            <div class="frame" style="aspect-ratio: 16/9;"><img src="Captura de pantalla 2026-05-25 075017.png" alt=""><span class="cap" data-fr="Médaillons institutionnels" data-es="Medallones institucionales">Médaillons institutionnels</span></div>
+            <div class="frame" style="aspect-ratio: 16/9;"><img src="https://migueltillero-ship-it.github.io/DELFLaSalle/Captura%20de%20pantalla%202026-06-10%20165840.png" alt=""><span class="cap" data-fr="Bannière principale" data-es="Bandera principal">Bannière principale</span></div>
+            <div class="frame" style="aspect-ratio: 16/9;"><img src="https://migueltillero-ship-it.github.io/DELFLaSalle/Captura%20de%20pantalla%202026-05-08%20160608.png" alt=""><span class="cap" data-fr="Composition sobre" data-es="Composición sobria">Composition sobre</span></div>
+            <div class="frame" style="aspect-ratio: 16/9;"><img src="https://migueltillero-ship-it.github.io/DELFLaSalle/Captura%20de%20pantalla%202026-05-08%20150310.png" alt=""><span class="cap" data-fr="En-tête La Salle" data-es="Encabezado La Salle">En-tête La Salle</span></div>
+            <div class="frame" style="aspect-ratio: 16/9;"><img src="https://migueltillero-ship-it.github.io/DELFLaSalle/Captura%20de%20pantalla%202026-05-25%20075017.png" alt=""><span class="cap" data-fr="Médaillons institutionnels" data-es="Medallones institucionales">Médaillons institutionnels</span></div>
         </div>
     </div>
 </section>
@@ -1289,8 +1292,8 @@ body.present-mode .present-indicator { display: block; }
         <div class="pagenum">18 / 18</div>
     </div>
     <div class="body" style="justify-content: center; text-align: center; align-items: center; gap: 32px;">
-        <div style="background: #fff; padding: 22px 44px; border-radius: 22px; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 20px 50px rgba(0,0,0,.3); margin-top: 10px; max-width: 90%;">
-            <img src="alianza.png" alt="Alliance Française" style="height: 100px; width: auto; max-width: 100%; object-fit: contain; display: block;" onerror="this.outerHTML='<svg viewBox=&quot;0 0 600 200&quot; style=&quot;height:100px;width:auto&quot;><use href=&quot;#logo-af&quot;/></svg>'">
+        <div style="background: #fff; padding: 26px 36px; border-radius: 22px; display: inline-block; box-shadow: 0 20px 50px rgba(0,0,0,.3); margin-top: 10px;">
+            <img src="https://migueltillero-ship-it.github.io/DELFLaSalle/alianza.png" alt="Alliance Française" style="width: 320px; height: auto; max-width: 100%; object-fit: contain; display: block;" onerror="this.outerHTML='<svg viewBox=&quot;0 0 600 200&quot; style=&quot;width:320px;height:auto;display:block&quot;><use href=&quot;#logo-af&quot;/></svg>'">
         </div>
         <span class="badge gold" data-fr="Au service des familles &amp; de la langue française" data-es="Al servicio de las familias y de la lengua francesa">Au service des familles &amp; de la langue française</span>
         <h2 class="display-xl" style="font-size: 48px; max-width: 1050px; color: #fff;" data-fr-html="Une <em style=&quot;color: var(--or-lumiere);&quot;>esquisse</em> offerte au réseau, pour rapprocher les familles, les écoles et la langue française." data-es-html="Un <em style=&quot;color: var(--or-lumiere);&quot;>boceto</em> ofrecido a la red, para acercar a las familias, las escuelas y la lengua francesa.">

@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Outfit:wght@200;300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js" defer></script>
     <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -224,10 +225,139 @@ ul.clean li strong { color: var(--bleu-fei); }
 .frame:hover img { transform: scale(1.04); }
 .frame.contain img { object-fit: contain; padding: 30px; background: #fff; }
 .frame .cap { position: absolute; left: 16px; bottom: 16px; background: rgba(11,52,122,.92); color: #fff; font-size: 11px; letter-spacing: 2px; padding: 6px 14px; border-radius: 6px; text-transform: uppercase; }
-@media print { body { background: white; padding: 0; } .slide { box-shadow: none; border: 1px solid #e5e7eb; page-break-after: always; } }
+/* ==========================================================================
+   TOOLBAR FLOTANTE
+   ========================================================================== */
+.toolbar {
+    position: fixed; top: 18px; right: 18px; z-index: 1000;
+    display: flex; gap: 8px; padding: 8px;
+    background: rgba(255,255,255,.92);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid rgba(11,52,122,.12);
+    border-radius: 999px;
+    box-shadow: 0 12px 30px rgba(11,52,122,.15);
+}
+.toolbar button, .toolbar .lang-toggle {
+    appearance: none; border: none; cursor: pointer;
+    background: transparent;
+    color: var(--bleu-fei);
+    font-family: 'Outfit', sans-serif;
+    font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+    padding: 10px 16px; border-radius: 999px;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: background .25s ease, color .25s ease, transform .15s;
+}
+.toolbar button:hover { background: rgba(11,52,122,.07); }
+.toolbar button:active { transform: scale(.96); }
+.toolbar button.primary { background: linear-gradient(135deg, var(--bleu-fei), var(--bleu-nuit)); color: #fff; }
+.toolbar button.primary:hover { background: linear-gradient(135deg, var(--bleu-nuit), var(--bleu-deep)); }
+.toolbar .lang-toggle {
+    background: rgba(11,52,122,.06);
+    display: inline-flex; gap: 0; padding: 4px;
+}
+.toolbar .lang-toggle span {
+    padding: 6px 12px; border-radius: 999px;
+    font-size: 11px; font-weight: 700; letter-spacing: 1px;
+    color: var(--ink-mute);
+    transition: all .25s ease;
+}
+.toolbar .lang-toggle span.active {
+    background: #fff;
+    color: var(--bleu-fei);
+    box-shadow: 0 2px 6px rgba(11,52,122,.18);
+}
+
+/* ==========================================================================
+   MODO PRESENTACIÓN (pantalla completa, una slide visible)
+   ========================================================================== */
+body.present-mode {
+    padding: 0;
+    overflow: hidden;
+    background: #000;
+    gap: 0;
+}
+body.present-mode::before { display: none; }
+body.present-mode .toolbar { top: auto; bottom: 18px; right: 50%; transform: translateX(50%); }
+body.present-mode .slide {
+    display: none;
+    width: 100vw; height: 100vh; min-height: 100vh;
+    max-width: none; border-radius: 0; margin: 0;
+    transform: none !important;
+}
+body.present-mode .slide.active {
+    display: flex;
+    animation: slideIn .45s cubic-bezier(.2,.8,.2,1.1);
+}
+body.present-mode .slide.cover .cover-inner { min-height: 100vh; }
+body.present-mode .slide:hover { transform: none; box-shadow: var(--shadow-elev); }
+.present-indicator {
+    position: fixed; bottom: 24px; left: 24px; z-index: 999;
+    background: rgba(0,0,0,.6); color: #fff;
+    padding: 8px 14px; border-radius: 999px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 2px;
+    display: none;
+}
+body.present-mode .present-indicator { display: block; }
+@keyframes slideIn { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+
+/* ==========================================================================
+   IMPRESIÓN A4 PAYSAGE — calibración fina
+   ========================================================================== */
+@page { size: A4 landscape; margin: 0; }
+@media print {
+    html, body { background: #fff !important; padding: 0 !important; margin: 0 !important; gap: 0 !important; }
+    body::before { display: none !important; }
+    .toolbar, .present-indicator { display: none !important; }
+    .slide {
+        width: 297mm !important; height: 210mm !important;
+        min-height: 210mm !important; max-height: 210mm !important;
+        page-break-after: always; page-break-inside: avoid;
+        margin: 0 !important;
+        border-radius: 0 !important; border: none !important;
+        box-shadow: none !important;
+        padding: 22mm 18mm 14mm !important;
+        overflow: hidden !important;
+        backdrop-filter: none !important; -webkit-backdrop-filter: none !important;
+        background: #fff !important;
+        transform: none !important;
+    }
+    .slide:last-child { page-break-after: auto; }
+    .slide.cover { padding: 0 !important; }
+    .slide.cover .cover-inner { min-height: 210mm !important; height: 210mm !important; }
+    .t-bar { top: 10mm !important; left: 18mm !important; right: 24mm !important; }
+    .slide-title { font-size: 36pt !important; }
+    .display-xl { font-size: 38pt !important; }
+    .slide-lede { font-size: 12pt !important; }
+    h3 { font-size: 14pt !important; }
+    p { font-size: 10.5pt !important; }
+    .card { padding: 18px !important; }
+    .card:hover, .frame:hover img { transform: none !important; }
+    .gallery { gap: 10px !important; }
+    .frame { aspect-ratio: 4/3 !important; }
+    a { color: inherit !important; text-decoration: none !important; }
+}
     </style>
 </head>
 <body>
+
+<!-- ============================================================
+     TOOLBAR FLOTANTE (modo presentación · idioma · PDF)
+============================================================ -->
+<nav class="toolbar" aria-label="Outils du dossier">
+    <button type="button" id="btn-present" title="Modo presentación (F)" aria-label="Modo presentación">
+        <i class="fa-solid fa-expand"></i> <span data-fr="Présentation" data-es="Presentación">Présentation</span>
+    </button>
+    <button type="button" id="btn-print" class="primary" title="Imprimir / Guardar PDF (Ctrl+P)" aria-label="Imprimir PDF">
+        <i class="fa-solid fa-file-pdf"></i> <span data-fr="PDF" data-es="PDF">PDF</span>
+    </button>
+    <div class="lang-toggle" role="group" aria-label="Idioma">
+        <span class="active" data-lang="fr" tabindex="0" role="button">FR</span>
+        <span data-lang="es" tabindex="0" role="button">ES</span>
+    </div>
+</nav>
+<div class="present-indicator" id="present-indicator">01 / 17 · ← →</div>
 
 <!-- ============================================================
      SVG DEFS — Logos institucionales reutilizables (inline)
@@ -343,7 +473,7 @@ ul.clean li strong { color: var(--bleu-fei); }
      SLIDE 01 — COUVERTURE
 ============================================================ -->
 <section class="slide cover">
-    <span class="ribbon">Esquisse · Juin 2026</span>
+    <span class="ribbon" data-fr="Esquisse · Juin 2026" data-es="Borrador · Junio 2026">Esquisse · Juin 2026</span>
     <div class="cover-inner">
         <div class="cover-left">
             <div>
@@ -351,11 +481,11 @@ ul.clean li strong { color: var(--bleu-fei); }
                     <span class="flag"></span>
                     <span style="font-size: 12px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--bleu-fei);">République Française · France Éducation international</span>
                 </div>
-                <span class="chip">Ébauche · Proposition de mutualisation</span>
-                <h1 class="display-xl" style="margin-top: 22px;">
+                <span class="chip" data-fr="Ébauche · Proposition de mutualisation" data-es="Borrador · Propuesta de mutualización">Ébauche · Proposition de mutualisation</span>
+                <h1 class="display-xl" style="margin-top: 22px;" data-fr-html="Une Esquisse<br>au Service du<br><em>DELF · La Salle</em>" data-es-html="Un Boceto<br>al Servicio del<br><em>DELF · La Salle</em>">
                     Une Esquisse<br>au Service du<br><em>DELF · La Salle</em>
                 </h1>
-                <p class="slide-lede" style="margin-top: 26px; font-size: 18px;">
+                <p class="slide-lede" style="margin-top: 26px; font-size: 18px;" data-fr-html="Document de travail soumis à la bienveillance de la <strong>Coordination Nationale</strong> et de la <strong>Gestion Centrale</strong> — proposition d'outil numérique conçue par l'<strong>Alliance Française de San Cristóbal de Las Casas</strong> pour accompagner les familles et alléger la charge administrative." data-es-html="Documento de trabajo presentado a la <strong>Coordinación Nacional</strong> y a la <strong>Gestión Central</strong> — propuesta de herramienta digital concebida por la <strong>Alianza Francesa de San Cristóbal de Las Casas</strong> para acompañar a las familias y aligerar la carga administrativa.">
                     Document de travail soumis à la bienveillance de la <strong>Coordination Nationale</strong> et de la <strong>Gestion Centrale</strong> — proposition d'outil numérique conçue par l'<strong>Alliance Française de San Cristóbal de Las Casas</strong> pour accompagner les familles et alléger la charge administrative.
                 </p>
                 <div class="cover-meta" style="margin-top: 30px;">
@@ -716,9 +846,9 @@ ul.clean li strong { color: var(--bleu-fei); }
         <div class="crumb"><i class="fa-solid fa-qrcode"></i> 10 · Accessibilité familles</div>
         <div class="pagenum">11 / 17</div>
     </div>
-    <span class="slide-kicker">Un accès simple, partout</span>
-    <h2 class="slide-title">QR &amp; <em>Accessibilité familiale</em></h2>
-    <p class="slide-lede">Un QR code unique, à imprimer sur les supports remis par le Colegio La Salle, conduit les familles directement vers leur espace d'inscription. Pas d'URL longue à recopier, pas de mot de passe à retenir.</p>
+    <span class="slide-kicker" data-fr="Un accès simple, partout" data-es="Un acceso sencillo, en todas partes">Un accès simple, partout</span>
+    <h2 class="slide-title" data-fr-html="QR &amp; <em>Accessibilité familiale</em>" data-es-html="QR &amp; <em>Accesibilidad familiar</em>">QR &amp; <em>Accessibilité familiale</em></h2>
+    <p class="slide-lede" data-fr="Un QR code unique, à imprimer sur les supports remis par le Colegio La Salle, conduit les familles directement vers leur espace d'inscription. Pas d'URL longue à recopier, pas de mot de passe à retenir." data-es="Un código QR único, impreso en las circulares del Colegio La Salle, lleva a las familias directamente al espacio de inscripción. Sin URL larga que copiar, sin contraseña que recordar.">Un QR code unique, à imprimer sur les supports remis par le Colegio La Salle, conduit les familles directement vers leur espace d'inscription. Pas d'URL longue à recopier, pas de mot de passe à retenir.</p>
     <div class="body">
         <div class="grid-asym">
             <div>
@@ -745,11 +875,11 @@ ul.clean li strong { color: var(--bleu-fei); }
             </div>
             <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;">
                 <div class="qr-frame">
-                    <svg width="260" height="260" viewBox="0 0 29 29"><use href="#qr-code"/></svg>
+                    <canvas id="qr-real" width="260" height="260" aria-label="QR vers le portail DELF · La Salle"></canvas>
                 </div>
                 <div style="text-align: center;">
-                    <div style="font-family: 'Playfair Display', serif; font-size: 22px; color: var(--bleu-fei); font-weight: 700;">Portail DELF · La Salle</div>
-                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--ink-mute); margin-top: 4px;">afsancristobal.org / delf-lasalle</div>
+                    <div style="font-family: 'Playfair Display', serif; font-size: 22px; color: var(--bleu-fei); font-weight: 700;" data-fr="Portail DELF · La Salle" data-es="Portal DELF · La Salle">Portail DELF · La Salle</div>
+                    <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--ink-mute); margin-top: 4px;" id="qr-url-label">migueltillero-ship-it.github.io/DELFLaSalle</div>
                 </div>
             </div>
         </div>
@@ -969,14 +1099,14 @@ ul.clean li strong { color: var(--bleu-fei); }
         <div style="background: #fff; padding: 26px 40px; border-radius: 22px; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 20px 50px rgba(0,0,0,.3); margin-top: 10px;">
             <svg viewBox="0 0 600 200" style="height: 90px; width: auto;"><use href="#logo-af"/></svg>
         </div>
-        <span class="badge gold">Au service des familles &amp; de la langue française</span>
-        <h2 class="display-xl" style="font-size: 48px; max-width: 1050px; color: #fff;">
+        <span class="badge gold" data-fr="Au service des familles &amp; de la langue française" data-es="Al servicio de las familias y de la lengua francesa">Au service des familles &amp; de la langue française</span>
+        <h2 class="display-xl" style="font-size: 48px; max-width: 1050px; color: #fff;" data-fr-html="Une <em style=&quot;color: var(--or-lumiere);&quot;>esquisse</em> offerte au réseau, pour rapprocher les familles, les écoles et la langue française." data-es-html="Un <em style=&quot;color: var(--or-lumiere);&quot;>boceto</em> ofrecido a la red, para acercar a las familias, las escuelas y la lengua francesa.">
             Une <em style="color: var(--or-lumiere);">esquisse</em> offerte au réseau, pour rapprocher les familles, les écoles et la langue française.
         </h2>
-        <p style="max-width: 950px; font-size: 18px; line-height: 1.7; color: rgba(255,255,255,.82);">
+        <p style="max-width: 950px; font-size: 18px; line-height: 1.7; color: rgba(255,255,255,.82);" data-fr-html="Cette ébauche reflète l'engagement quotidien de l'Alliance Française de San Cristóbal de Las Casas : accompagner chaque candidat avec <strong>attention, clarté et bienveillance</strong>. Nous proposons cet outil au réseau dans un esprit de <em>mutualisation</em>, persuadés que les retours de la Coordination Nationale et de la Gestion Centrale enrichiront utilement les prochaines versions." data-es-html="Este borrador refleja el compromiso cotidiano de la Alianza Francesa de San Cristóbal de Las Casas : acompañar a cada candidato con <strong>atención, claridad y benevolencia</strong>. Ofrecemos esta herramienta a la red con espíritu de <em>mutualización</em>, convencidos de que las observaciones de la Coordinación Nacional y de la Gestión Central enriquecerán las próximas versiones.">
             Cette ébauche reflète l'engagement quotidien de l'Alliance Française de San Cristóbal de Las Casas : accompagner chaque candidat avec <strong>attention, clarté et bienveillance</strong>. Nous proposons cet outil au réseau dans un esprit de <em>mutualisation</em>, persuadés que les retours de la Coordination Nationale et de la Gestion Centrale enrichiront utilement les prochaines versions.
         </p>
-        <p style="max-width: 850px; font-size: 16px; line-height: 1.7; color: rgba(255,255,255,.7); font-style: italic;">
+        <p style="max-width: 850px; font-size: 16px; line-height: 1.7; color: rgba(255,255,255,.7); font-style: italic;" data-fr="Toute remarque sera reçue avec gratitude." data-es="Toda observación será recibida con gratitud.">
             Toute remarque sera reçue avec gratitude.
         </p>
         <div style="display: flex; gap: 50px; margin-top: 20px; align-items:center; flex-wrap: wrap; justify-content: center;">
@@ -995,5 +1125,130 @@ ul.clean li strong { color: var(--bleu-fei); }
     </div>
 </section>
 
+<script>
+(function() {
+    'use strict';
+
+    /* ───────────────────────── QR REAL ───────────────────────── */
+    const QR_URL = 'https://migueltillero-ship-it.github.io/DELFLaSalle/';
+    function renderQR() {
+        const canvas = document.getElementById('qr-real');
+        if (!canvas || typeof QRCode === 'undefined') return;
+        QRCode.toCanvas(canvas, QR_URL, {
+            width: 260,
+            margin: 1,
+            color: { dark: '#0b347a', light: '#ffffff' },
+            errorCorrectionLevel: 'M'
+        }, function(err) {
+            if (err) console.warn('QR render failed:', err);
+        });
+    }
+    if (document.readyState === 'loading') {
+        window.addEventListener('DOMContentLoaded', () => {
+            if (typeof QRCode !== 'undefined') renderQR();
+            else window.addEventListener('load', renderQR);
+        });
+    } else {
+        if (typeof QRCode !== 'undefined') renderQR();
+        else window.addEventListener('load', renderQR);
+    }
+
+    /* ────────────── TOGGLE IDIOMA FR / ES ────────────── */
+    const langButtons = document.querySelectorAll('.lang-toggle [data-lang]');
+    function setLang(lang) {
+        document.documentElement.lang = lang;
+        langButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.lang === lang));
+        document.querySelectorAll('[data-fr], [data-es]').forEach(el => {
+            const val = el.getAttribute('data-' + lang);
+            if (val !== null) el.textContent = val;
+        });
+        document.querySelectorAll('[data-fr-html], [data-es-html]').forEach(el => {
+            const val = el.getAttribute('data-' + lang + '-html');
+            if (val !== null) el.innerHTML = val;
+        });
+        try { localStorage.setItem('dossier-lang', lang); } catch (e) {}
+    }
+    langButtons.forEach(btn => {
+        btn.addEventListener('click', () => setLang(btn.dataset.lang));
+        btn.addEventListener('keydown', e => {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setLang(btn.dataset.lang); }
+        });
+    });
+    try {
+        const stored = localStorage.getItem('dossier-lang');
+        if (stored === 'es') setLang('es');
+    } catch (e) {}
+
+    /* ────────────── IMPRIMIR / PDF ────────────── */
+    document.getElementById('btn-print').addEventListener('click', () => window.print());
+
+    /* ────────────── MODO PRESENTACIÓN ────────────── */
+    const slides = Array.from(document.querySelectorAll('section.slide'));
+    const total = slides.length;
+    let current = 0;
+    const indicator = document.getElementById('present-indicator');
+    const btnPresent = document.getElementById('btn-present');
+
+    function updateIndicator() {
+        const n = String(current + 1).padStart(2, '0');
+        const t = String(total).padStart(2, '0');
+        indicator.textContent = `${n} / ${t} · ← →`;
+    }
+    function showSlide(i) {
+        current = (i + total) % total;
+        slides.forEach((s, idx) => s.classList.toggle('active', idx === current));
+        updateIndicator();
+    }
+    function enterPresent() {
+        document.body.classList.add('present-mode');
+        current = 0;
+        showSlide(0);
+        btnPresent.innerHTML = '<i class="fa-solid fa-compress"></i> <span data-fr="Quitter" data-es="Salir">Quitter</span>';
+        const lang = document.documentElement.lang === 'es' ? 'es' : 'fr';
+        btnPresent.querySelector('span').textContent = lang === 'es' ? 'Salir' : 'Quitter';
+        if (document.documentElement.requestFullscreen) {
+            document.documentElement.requestFullscreen().catch(() => {});
+        }
+    }
+    function exitPresent() {
+        document.body.classList.remove('present-mode');
+        slides.forEach(s => s.classList.remove('active'));
+        btnPresent.innerHTML = '<i class="fa-solid fa-expand"></i> <span data-fr="Présentation" data-es="Presentación">Présentation</span>';
+        const lang = document.documentElement.lang === 'es' ? 'es' : 'fr';
+        btnPresent.querySelector('span').textContent = lang === 'es' ? 'Presentación' : 'Présentation';
+        if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+    }
+    function togglePresent() {
+        if (document.body.classList.contains('present-mode')) exitPresent();
+        else enterPresent();
+    }
+    btnPresent.addEventListener('click', togglePresent);
+
+    document.addEventListener('keydown', e => {
+        const isPresent = document.body.classList.contains('present-mode');
+        if (e.key === 'f' || e.key === 'F') {
+            if (!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)) {
+                e.preventDefault(); togglePresent();
+            }
+        } else if (e.key === 'Escape' && isPresent) {
+            exitPresent();
+        } else if (isPresent && (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ')) {
+            e.preventDefault(); showSlide(current + 1);
+        } else if (isPresent && (e.key === 'ArrowLeft' || e.key === 'PageUp')) {
+            e.preventDefault(); showSlide(current - 1);
+        } else if (isPresent && e.key === 'Home') {
+            e.preventDefault(); showSlide(0);
+        } else if (isPresent && e.key === 'End') {
+            e.preventDefault(); showSlide(total - 1);
+        }
+    });
+
+    document.addEventListener('fullscreenchange', () => {
+        if (!document.fullscreenElement && document.body.classList.contains('present-mode')) {
+            exitPresent();
+        }
+    });
+})();
+</script>
 </body>
 </html>

@@ -225,6 +225,41 @@ ul.clean li strong { color: var(--bleu-fei); }
 .frame.contain img { object-fit: contain; padding: 30px; background: #fff; }
 .frame .cap { position: absolute; left: 16px; bottom: 16px; background: rgba(11,52,122,.92); color: #fff; font-size: 11px; letter-spacing: 2px; padding: 6px 14px; border-radius: 6px; text-transform: uppercase; }
 /* ==========================================================================
+   MINI-MAPA LATERAL (scroll mode)
+   ========================================================================== */
+.minimap {
+    position: fixed; right: 18px; top: 50%; transform: translateY(-50%);
+    z-index: 900; display: flex; flex-direction: column; gap: 6px;
+    padding: 12px 8px; background: rgba(255,255,255,.85);
+    backdrop-filter: blur(14px) saturate(150%);
+    -webkit-backdrop-filter: blur(14px) saturate(150%);
+    border: 1px solid rgba(11,52,122,.10);
+    border-radius: 999px;
+    box-shadow: 0 14px 28px rgba(11,52,122,.12);
+}
+.minimap a {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: rgba(11,52,122,.18); display: block;
+    transition: all .25s ease; position: relative;
+}
+.minimap a:hover { background: var(--bleu-fei); transform: scale(1.35); }
+.minimap a.active { background: var(--rouge-rep); transform: scale(1.45); box-shadow: 0 0 0 3px rgba(227,0,27,.18); }
+.minimap a::after {
+    content: attr(data-num) " · " attr(data-title);
+    position: absolute; right: calc(100% + 12px); top: 50%; transform: translateY(-50%);
+    background: var(--bleu-nuit); color: #fff;
+    font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 600;
+    letter-spacing: 1.5px; text-transform: uppercase;
+    padding: 6px 12px; border-radius: 6px; white-space: nowrap;
+    opacity: 0; pointer-events: none;
+    transition: opacity .2s ease;
+}
+.minimap a:hover::after { opacity: 1; }
+body.present-mode .minimap { display: none; }
+@media print { .minimap { display: none !important; } }
+@media (max-width: 900px) { .minimap { display: none; } }
+
+/* ==========================================================================
    TOOLBAR FLOTANTE
    ========================================================================== */
 .toolbar {
@@ -359,6 +394,29 @@ body.present-mode .present-indicator { display: block; }
 <div class="present-indicator" id="present-indicator">01 / 17 · ← →</div>
 
 <!-- ============================================================
+     MINI-MAPA LATERAL DE SLIDES
+============================================================ -->
+<nav class="minimap" id="minimap" aria-label="Navigation rapide">
+    <a href="#s1" data-num="01" data-title="Couverture"></a>
+    <a href="#s2" data-num="02" data-title="Esprit"></a>
+    <a href="#s3" data-num="03" data-title="Conformité"></a>
+    <a href="#s4" data-num="04" data-title="Design"></a>
+    <a href="#s5" data-num="05" data-title="Hébergement"></a>
+    <a href="#s6" data-num="06" data-title="Ingénierie"></a>
+    <a href="#s7" data-num="07" data-title="Tarifs"></a>
+    <a href="#s8" data-num="08" data-title="GAEL · diagnostic"></a>
+    <a href="#s9" data-num="09" data-title="GAEL · réponse"></a>
+    <a href="#s10" data-num="10" data-title="Dépôt numérique"></a>
+    <a href="#s11" data-num="11" data-title="QR · familles"></a>
+    <a href="#s12" data-num="12" data-title="Confidentialité"></a>
+    <a href="#s13" data-num="13" data-title="Passation F.E.I."></a>
+    <a href="#s14" data-num="14" data-title="La Salle"></a>
+    <a href="#s15" data-num="15" data-title="Identité visuelle"></a>
+    <a href="#s16" data-num="16" data-title="Feuille de route"></a>
+    <a href="#s17" data-num="17" data-title="Esprit du projet"></a>
+</nav>
+
+<!-- ============================================================
      SVG DEFS — Logos institucionales reutilizables (inline)
 ============================================================ -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -471,7 +529,7 @@ body.present-mode .present-indicator { display: block; }
 <!-- ============================================================
      SLIDE 01 — COUVERTURE
 ============================================================ -->
-<section class="slide cover">
+<section id="s1" class="slide cover">
     <span class="ribbon" data-fr="Esquisse · Juin 2026" data-es="Borrador · Junio 2026">Esquisse · Juin 2026</span>
     <div class="cover-inner">
         <div class="cover-left">
@@ -510,7 +568,7 @@ body.present-mode .present-indicator { display: block; }
 <!-- ============================================================
      SLIDE 02 — SOMMAIRE & ESPRIT
 ============================================================ -->
-<section class="slide">
+<section id="s2" class="slide">
     <div class="t-bar">
         <div class="crumb"><i class="fa-solid fa-bookmark"></i> 01 · Esprit du projet</div>
         <div class="pagenum">02 / 17</div>
@@ -548,7 +606,7 @@ body.present-mode .present-indicator { display: block; }
 <!-- ============================================================
      SLIDE 03 — CONFORMITÉ / ÉCOUTE
 ============================================================ -->
-<section class="slide">
+<section id="s3" class="slide">
     <div class="t-bar">
         <div class="crumb"><i class="fa-solid fa-stamp"></i> 02 · Écoute des orientations</div>
         <div class="pagenum">03 / 17</div>
@@ -578,7 +636,7 @@ body.present-mode .present-indicator { display: block; }
 <!-- ============================================================
      SLIDE 04 — DESIGN UX/UI
 ============================================================ -->
-<section class="slide">
+<section id="s4" class="slide">
     <div class="t-bar">
         <div class="crumb"><i class="fa-solid fa-palette"></i> 03 · Design & lisibilité</div>
         <div class="pagenum">04 / 17</div>
@@ -611,7 +669,7 @@ body.present-mode .present-indicator { display: block; }
 <!-- ============================================================
      SLIDE 05 — INFRASTRUCTURE GITHUB
 ============================================================ -->
-<section class="slide">
+<section id="s5" class="slide">
     <div class="t-bar">
         <div class="crumb"><i class="fa-brands fa-github"></i> 04 · Hébergement sobre</div>
         <div class="pagenum">05 / 17</div>
@@ -655,7 +713,7 @@ body.present-mode .present-indicator { display: block; }
 <!-- ============================================================
      SLIDE 06 — INGÉNIERIE LOGICIELLE
 ============================================================ -->
-<section class="slide">
+<section id="s6" class="slide">
     <div class="t-bar">
         <div class="crumb"><i class="fa-solid fa-code"></i> 05 · Petits choix techniques</div>
         <div class="pagenum">06 / 17</div>
@@ -698,7 +756,7 @@ body.present-mode .present-indicator { display: block; }
 <!-- ============================================================
      SLIDE 07 — TARIFS
 ============================================================ -->
-<section class="slide">
+<section id="s7" class="slide">
     <div class="t-bar">
         <div class="crumb"><i class="fa-solid fa-coins"></i> 06 · Transparence tarifaire</div>
         <div class="pagenum">07 / 17</div>
@@ -732,7 +790,7 @@ body.present-mode .present-indicator { display: block; }
 <!-- ============================================================
      SLIDE 08 — GAEL DIAGNOSTIC
 ============================================================ -->
-<section class="slide">
+<section id="s8" class="slide">
     <div class="t-bar">
         <div class="crumb"><i class="fa-solid fa-triangle-exclamation"></i> 07 · Erreurs d'état civil</div>
         <div class="pagenum">08 / 17</div>
@@ -766,7 +824,7 @@ body.present-mode .present-indicator { display: block; }
 <!-- ============================================================
      SLIDE 09 — GAEL SOLUTION
 ============================================================ -->
-<section class="slide">
+<section id="s9" class="slide">
     <div class="t-bar">
         <div class="crumb"><i class="fa-solid fa-shield-halved"></i> 08 · Une réponse douce</div>
         <div class="pagenum">09 / 17</div>
@@ -797,7 +855,7 @@ body.present-mode .present-indicator { display: block; }
 <!-- ============================================================
      SLIDE 10 — DÉPÔT NUMÉRIQUE
 ============================================================ -->
-<section class="slide">
+<section id="s10" class="slide">
     <div class="t-bar">
         <div class="crumb"><i class="fa-solid fa-cloud-arrow-up"></i> 09 · Dépôt Numérique</div>
         <div class="pagenum">10 / 17</div>
@@ -838,7 +896,7 @@ body.present-mode .present-indicator { display: block; }
 <!-- ============================================================
      SLIDE 11 — QR & ACCESSIBILITÉ
 ============================================================ -->
-<section class="slide">
+<section id="s11" class="slide">
     <div class="t-bar">
         <div class="crumb"><i class="fa-solid fa-qrcode"></i> 10 · Accessibilité familles</div>
         <div class="pagenum">11 / 17</div>
@@ -893,7 +951,7 @@ body.present-mode .present-indicator { display: block; }
 <!-- ============================================================
      SLIDE 12 — ARCO / CONFIDENTIALITÉ
 ============================================================ -->
-<section class="slide">
+<section id="s12" class="slide">
     <div class="t-bar">
         <div class="crumb"><i class="fa-solid fa-user-shield"></i> 11 · Confidentialité</div>
         <div class="pagenum">12 / 17</div>
@@ -924,7 +982,7 @@ body.present-mode .present-indicator { display: block; }
 <!-- ============================================================
      SLIDE 13 — NORMES F.E.I.
 ============================================================ -->
-<section class="slide">
+<section id="s13" class="slide">
     <div class="t-bar">
         <div class="crumb"><i class="fa-solid fa-clipboard-list"></i> 12 · Rappels de passation</div>
         <div class="pagenum">13 / 17</div>
@@ -964,7 +1022,7 @@ body.present-mode .present-indicator { display: block; }
 <!-- ============================================================
      SLIDE 14 — LA SALLE
 ============================================================ -->
-<section class="slide">
+<section id="s14" class="slide">
     <div class="t-bar">
         <div class="crumb"><i class="fa-solid fa-handshake"></i> 13 · Synergie La Salle</div>
         <div class="pagenum">14 / 17</div>
@@ -1016,7 +1074,7 @@ body.present-mode .present-indicator { display: block; }
 
 <!-- ============================================================
      SLIDE 15 — GALERIE (capturas reales) -->
-<section class="slide">
+<section id="s15" class="slide">
     <div class="t-bar">
         <div class="crumb"><i class="fa-solid fa-images"></i> 14 · Identité visuelle</div>
         <div class="pagenum">15 / 17</div>
@@ -1025,13 +1083,11 @@ body.present-mode .present-indicator { display: block; }
     <h2 class="slide-title" data-fr-html="Déclinaisons <em>graphiques</em>" data-es-html="Declinaciones <em>gráficas</em>">Déclinaisons <em>graphiques</em></h2>
     <p class="slide-lede" data-fr="Quelques bannières et en-têtes conçus pour le portail, intégrant les chartes officielles des quatre institutions partenaires : République Française, France Éducation international, Colegio La Salle et Alliance Française de San Cristóbal." data-es="Algunas banderas y encabezados diseñados para el portal, integrando las identidades oficiales de las cuatro instituciones asociadas: República Francesa, France Éducation international, Colegio La Salle y Alianza Francesa de San Cristóbal.">Quelques bannières et en-têtes conçus pour le portail, intégrant les chartes officielles des quatre institutions partenaires : République Française, France Éducation international, Colegio La Salle et Alliance Française de San Cristóbal.</p>
     <div class="body">
-        <div class="gallery">
-            <div class="frame"><img src="Captura de pantalla 2026-06-10 165840.png" alt=""><span class="cap" data-fr="Bannière principale" data-es="Bandera principal">Bannière principale</span></div>
-            <div class="frame"><img src="Captura de pantalla 2026-06-10 165920.png" alt=""><span class="cap" data-fr="Variante claire" data-es="Variante clara">Variante claire</span></div>
-            <div class="frame"><img src="Captura de pantalla 2026-05-08 150310.png" alt=""><span class="cap" data-fr="En-tête La Salle" data-es="Encabezado La Salle">En-tête La Salle</span></div>
-            <div class="frame"><img src="Captura de pantalla 2026-05-08 160608.png" alt=""><span class="cap" data-fr="Composition sobre" data-es="Composición sobria">Composition sobre</span></div>
-            <div class="frame"><img src="Captura de pantalla 2026-05-25 074959.png" alt=""><span class="cap" data-fr="Médaillons institutionnels" data-es="Medallones institucionales">Médaillons institutionnels</span></div>
-            <div class="frame"><img src="Captura de pantalla 2026-05-25 075017.png" alt=""><span class="cap" data-fr="Médaillons · variante" data-es="Medallones · variante">Médaillons · variante</span></div>
+        <div class="gallery" style="grid-template-columns: repeat(2, 1fr); gap: 28px;">
+            <div class="frame" style="aspect-ratio: 16/9;"><img src="Captura de pantalla 2026-06-10 165840.png" alt=""><span class="cap" data-fr="Bannière principale" data-es="Bandera principal">Bannière principale</span></div>
+            <div class="frame" style="aspect-ratio: 16/9;"><img src="Captura de pantalla 2026-05-08 160608.png" alt=""><span class="cap" data-fr="Composition sobre" data-es="Composición sobria">Composition sobre</span></div>
+            <div class="frame" style="aspect-ratio: 16/9;"><img src="Captura de pantalla 2026-05-08 150310.png" alt=""><span class="cap" data-fr="En-tête La Salle" data-es="Encabezado La Salle">En-tête La Salle</span></div>
+            <div class="frame" style="aspect-ratio: 16/9;"><img src="Captura de pantalla 2026-05-25 075017.png" alt=""><span class="cap" data-fr="Médaillons institutionnels" data-es="Medallones institucionales">Médaillons institutionnels</span></div>
         </div>
     </div>
 </section>
@@ -1039,7 +1095,7 @@ body.present-mode .present-indicator { display: block; }
 <!-- ============================================================
      SLIDE 16 — KPI / ROADMAP
 ============================================================ -->
-<section class="slide">
+<section id="s16" class="slide">
     <div class="t-bar">
         <div class="crumb"><i class="fa-solid fa-chart-line"></i> 15 · Hypothèses & étapes</div>
         <div class="pagenum">16 / 17</div>
@@ -1095,7 +1151,7 @@ body.present-mode .present-indicator { display: block; }
 <!-- ============================================================
      SLIDE 17 — CONCLUSION
 ============================================================ -->
-<section class="slide dark">
+<section id="s17" class="slide dark">
     <div class="t-bar">
         <div class="crumb"><i class="fa-solid fa-leaf"></i> Esprit du projet</div>
         <div class="pagenum">17 / 17</div>
@@ -1258,6 +1314,23 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
             e.preventDefault(); showSlide(total - 1);
         }
     });
+
+    /* ────────────── MINI-MAPA SCROLL-SPY ────────────── */
+    const minimapLinks = document.querySelectorAll('.minimap a');
+    if ('IntersectionObserver' in window && minimapLinks.length) {
+        const map = new Map();
+        minimapLinks.forEach(a => map.set(a.getAttribute('href').slice(1), a));
+        const io = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    minimapLinks.forEach(a => a.classList.remove('active'));
+                    const a = map.get(e.target.id);
+                    if (a) a.classList.add('active');
+                }
+            });
+        }, { rootMargin: '-40% 0px -40% 0px', threshold: 0 });
+        slides.forEach(s => { if (s.id) io.observe(s); });
+    }
 
     document.addEventListener('fullscreenchange', () => {
         if (!document.fullscreenElement && document.body.classList.contains('present-mode')) {
